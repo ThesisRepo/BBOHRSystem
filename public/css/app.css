@@ -613,7 +613,7 @@ pre code {
   .container-md,
   .container-lg,
   .container-xl {
-    max-width: 1140px;
+    max-width: 1285px;
   }
 }
 
@@ -1208,7 +1208,7 @@ pre code {
   }
 
   .col-md-8 {
-    flex: 0 0 66.66666667%;
+    flex: 0 0 35%;
     max-width: 66.66666667%;
   }
 
@@ -2101,6 +2101,12 @@ pre code {
   }
 }
 
+@media (max-width: 700px) {
+  .col-md-8 {
+    flex: 0 0 85%;
+    width: 66.66666667%;
+  }
+}
 .table-responsive {
   display: block;
   width: 100%;
@@ -2124,7 +2130,7 @@ pre code {
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid #ced4da;
-  border-radius: 0.25rem;
+  border-radius: 25px;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
@@ -2635,6 +2641,7 @@ textarea.form-control.is-invalid {
   line-height: 1.6;
   border-radius: 0.25rem;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  width: 100%;
 }
 
 @media (prefers-reduced-motion: reduce) {
