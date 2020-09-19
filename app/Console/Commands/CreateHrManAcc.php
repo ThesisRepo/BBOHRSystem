@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\User;
+use App\Models\Role;
 class CreateHrManAcc extends Command
 {
     /**
@@ -38,6 +39,10 @@ class CreateHrManAcc extends Command
      */
     public function handle()
     {
-        User::create(['name'=>'marion','email'=>'marion@gmail.com','password'=>'123456789']).info('hr manager account created successfully');
+        $password = bcrypt('123456789');
+        $user = new User(['name'=>'marionon','email'=>'ma@gmail.com','password'=> $password]);
+        $role = Role::find(2); 
+        $role = $role->users()->save($user).info('hr manager account created successfully');
+        
     }
 }

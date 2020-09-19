@@ -33,9 +33,9 @@ class Role extends Model
 
     /**
      * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
      */
     public function users() {
-        return $this->belongsTo('App\Models\User');
+        return $this->hasMany(User::class);
     }
 }

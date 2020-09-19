@@ -6,7 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
 
@@ -38,10 +38,10 @@ class User extends Authenticatable
     ];
 
     /**
-     *@return \Illuminate\Database\Eloquent\Relations\hasMany
+     *@return \Illuminate\Database\Eloquent\Relations\belongsTo
      */
-    public function roles() {
-        return $this->hasMany('App\Models\Role');
+    public function role() {
+        return $this->belongsTo(Role::class);
     }
 
     /**
@@ -61,5 +61,4 @@ class User extends Authenticatable
     public function assignedPrp() {
         return $this->belongsTo('__CLASS__', 'prp_assigned');
     }
-
 }
