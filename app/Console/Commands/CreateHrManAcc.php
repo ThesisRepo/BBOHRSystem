@@ -40,7 +40,7 @@ class CreateHrManAcc extends Command
     public function handle()
     {
         $password = bcrypt('123456789');
-        $user = new User(['name'=>'marionon','email'=>'ma@gmail.com','password'=> $password]);
+        $user = new User(['name'=>'marionon','email'=>'m@gmail.com','password'=> $password]);
         $role = Role::find(2); 
         $role = $role->users()->save($user).info('hr manager account created successfully');
         

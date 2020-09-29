@@ -9,9 +9,37 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::group(
+    [
+        'namespace' => 'Auth'
+    ], 
+    function () {
+
+        Route::get('login', 'LoginController@login')->name('login');
+
+        Route::post('login', 'LoginController@authenticate');
+
+        Route::post('logout', 'LoginController@logout')->name('logout');
+    
+        Route::get('forget-password', 'ForgotPasswordController@getEmail')->name('password.request');
+    
+        Route::post('forget-password', 'ForgotPasswordController@postEmail');
+
+        Route::get('reset-password/{token}', 'ResetPasswordController@getPassword')->name('password.reset');
+
+        Route::post('reset-password', 'ResetPasswordController@updatePassword');
+
+        Route::get('/email/verify', 'VerificationController@show')->name('verification.notice');
+
+        Route::get('/email/verify/{id}', 'VerificationController@verify')->name('verification.verify');
+
+        Route::post('/email/resend', 'VerificationController@resend')->name('verification.resend');
+    }
+);
+
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
-//Auth::routes(['verify' => true]);
 Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
