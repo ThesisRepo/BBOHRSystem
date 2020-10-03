@@ -5,17 +5,15 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ExampleTest extends TestCase
+class UserTest extends TestCase
 {
     /**
      * A basic test example.
-     *
+     * @test
      * @return void
      */
-    public function testBasicTest()
+    public function only_logged_in_users_can_see_the_dashboard()
     {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
+        $response = $this->get('/home')->assertRedirect('/login');
     }
 }
