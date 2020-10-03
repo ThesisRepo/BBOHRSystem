@@ -16,14 +16,16 @@
         "jquery": "^3.2",
         "laravel-mix": "^4.0.7",
         "lodash": "^4.17.13",
-        "popper.js": "^1.12",
+        "popper.js": "^1.16.1",
         "resolve-url-loader": "^2.3.1",
         "sass": "^1.20.1",
         "sass-loader": "^7.1.0",
-        "vue": "^2.5.17",
+        "vue": "^2.6.12",
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
-        "node-sass": "^4.14.1"
+        "node-sass": "^4.14.1",
+        "vue-router": "^3.4.5",
+        "vuetify": "^2.3.12"
     }
 }
