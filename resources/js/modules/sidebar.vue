@@ -51,9 +51,6 @@
       </v-toolbar-title>
     </v-app-bar>
 
-    <v-main>
-      <!--  -->
-    </v-main>
   </v-app>
 </template>
 <style>

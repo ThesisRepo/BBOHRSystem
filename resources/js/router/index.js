@@ -16,7 +16,7 @@ Vue.use(Router);
 Vue.use(Vuetify);
 
 const router = new Router({
-  mode: "history",
+  mode: "hash",
   base: process.env.BASE_URL,
   routes : [
     {

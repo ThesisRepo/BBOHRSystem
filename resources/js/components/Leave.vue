@@ -1,11 +1,27 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="desserts"
-    :items-per-page="5"
-    class="elevation-1"
-  ></v-data-table>
+  <v-app>
+    <v-btn
+      depressed
+      color="primary"
+      width= "15%"
+    >
+      Add Request
+    </v-btn>
+    <v-data-table
+      :headers="headers"
+      :items="desserts"
+      :items-per-page="5"
+      class="elevation-1"
+    ></v-data-table>
+  </v-app>
 </template>
+
+<style>
+v-btn {
+  float: right;
+}
+</style>
+
 <script>
   export default {
     data () {
