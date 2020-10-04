@@ -72,15 +72,16 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 The Laravel framework is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
 
-##setup instruction
+setup instruction
 
-#for laravel
+for laravel
 
 composer install
 php artisan key:generate
 php artisan migrate --seed
 php artisan serve
 
-#for vue js
+for vue js
+
 npm install
 npm run dev && npm run watch
