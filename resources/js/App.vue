@@ -1,11 +1,13 @@
 <template>
-    <v-main>
-        <sidebar id="sidebar"></sidebar>
-        <v-container class="container" fluid>
-            <router-view>
-            </router-view>
-        </v-container>
-    </v-main>
+    <v-app id="sample">
+        <v-main>
+            <sidebar id="sidebar"></sidebar>
+            <v-container class="container" fluid>
+                <router-view>
+                </router-view>
+            </v-container>
+        </v-main>
+    </v-app>
 </template>
 <script>
 import Vuetify from "vuetify";

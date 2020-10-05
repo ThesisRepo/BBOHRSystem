@@ -2,8 +2,6 @@
 
 @section('content')
 @auth
-    <div>
-        <dashboard-view />
-    </div>
+    <dashboard-view />
 @endauth
 @endsection
