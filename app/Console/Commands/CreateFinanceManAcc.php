@@ -4,9 +4,9 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Eloquent\Implementations\UserEloquent;
-use CommandInput;
-use CommandValidation;
-use CommandAccRegister;
+use App\Traits\CommandInput;
+use App\Traits\CommandValidation;
+use App\Traits\CommandAccRegister;
 use DB;
 
 class CreateFinanceManAcc extends Command

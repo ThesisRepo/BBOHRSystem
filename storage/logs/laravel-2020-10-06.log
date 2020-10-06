@@ -276,3 +276,75 @@ Did you mean one of these?
 #9 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #10 {main}
 "} 
+[2020-10-06 13:49:51] local.ERROR: Cannot declare trait CommandAccRegister, because the name is already in use {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 64): Cannot declare trait CommandAccRegister, because the name is already in use at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CommandAccRegister.php:3)
+[stacktrace]
+#0 {main}
+"} 
+[2020-10-06 13:49:51] local.ERROR: Cannot declare trait CommandAccRegister, because the name is already in use {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 64): Cannot declare trait CommandAccRegister, because the name is already in use at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CommandAccRegister.php:3)
+[stacktrace]
+#0 {main}
+"} 
+[2020-10-06 13:55:38] local.ERROR: Cannot declare trait CommandAccRegister, because the name is already in use {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 64): Cannot declare trait CommandAccRegister, because the name is already in use at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CommandAccRegister.php:3)
+[stacktrace]
+#0 {main}
+"} 
+[2020-10-06 13:55:38] local.ERROR: Cannot declare trait CommandAccRegister, because the name is already in use {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 64): Cannot declare trait CommandAccRegister, because the name is already in use at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CommandAccRegister.php:3)
+[stacktrace]
+#0 {main}
+"} 
+[2020-10-06 13:55:47] local.ERROR: Cannot declare trait CommandAccRegister, because the name is already in use {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 64): Cannot declare trait CommandAccRegister, because the name is already in use at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CommandAccRegister.php:3)
+[stacktrace]
+#0 {main}
+"} 
+[2020-10-06 13:55:47] local.ERROR: Cannot declare trait CommandAccRegister, because the name is already in use {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 64): Cannot declare trait CommandAccRegister, because the name is already in use at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CommandAccRegister.php:3)
+[stacktrace]
+#0 {main}
+"} 
+[2020-10-06 13:56:25] local.ERROR: Trait 'CommandAccRegister' not found {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 1): Trait 'CommandAccRegister' not found at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateFinanceManAcc.php:12)
+[stacktrace]
+#0 {main}
+"} 
+[2020-10-06 13:56:29] local.ERROR: Trait 'CommandAccRegister' not found {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 1): Trait 'CommandAccRegister' not found at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateFinanceManAcc.php:12)
+[stacktrace]
+#0 {main}
+"} 
+[2020-10-06 13:56:31] local.ERROR: Trait 'CommandAccRegister' not found {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 1): Trait 'CommandAccRegister' not found at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateFinanceManAcc.php:12)
+[stacktrace]
+#0 {main}
+"} 
+[2020-10-06 13:56:39] local.ERROR: Trait 'CommandAccRegister' not found {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 1): Trait 'CommandAccRegister' not found at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateFinanceManAcc.php:12)
+[stacktrace]
+#0 {main}
+"} 
+[2020-10-06 13:58:19] local.ERROR: Cannot declare trait CommandAccRegister, because the name is already in use {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 64): Cannot declare trait CommandAccRegister, because the name is already in use at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CommandAccRegister.php:2)
+[stacktrace]
+#0 {main}
+"} 
+[2020-10-06 13:58:19] local.ERROR: Cannot declare trait CommandAccRegister, because the name is already in use {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 64): Cannot declare trait CommandAccRegister, because the name is already in use at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CommandAccRegister.php:2)
+[stacktrace]
+#0 {main}
+"} 
+[2020-10-06 13:58:25] local.ERROR: Cannot declare trait CommandAccRegister, because the name is already in use {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 64): Cannot declare trait CommandAccRegister, because the name is already in use at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CommandAccRegister.php:2)
+[stacktrace]
+#0 {main}
+"} 
+[2020-10-06 13:58:25] local.ERROR: Cannot declare trait CommandAccRegister, because the name is already in use {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 64): Cannot declare trait CommandAccRegister, because the name is already in use at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CommandAccRegister.php:2)
+[stacktrace]
+#0 {main}
+"} 
+[2020-10-06 14:01:34] local.ERROR: Trait 'CommandInput' not found {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 1): Trait 'CommandInput' not found at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateFinanceManAcc.php:12)
+[stacktrace]
+#0 {main}
+"} 
+[2020-10-06 14:01:45] local.ERROR: Trait 'CommandInput' not found {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 1): Trait 'CommandInput' not found at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateFinanceManAcc.php:12)
+[stacktrace]
+#0 {main}
+"} 
+[2020-10-06 14:02:57] local.ERROR: Trait 'CommandInput' not found {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 1): Trait 'CommandInput' not found at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateFinanceManAcc.php:12)
+[stacktrace]
+#0 {main}
+"} 
+[2020-10-06 14:03:11] local.ERROR: Trait 'CommandInput' not found {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 1): Trait 'CommandInput' not found at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateFinanceManAcc.php:12)
+[stacktrace]
+#0 {main}
+"} 

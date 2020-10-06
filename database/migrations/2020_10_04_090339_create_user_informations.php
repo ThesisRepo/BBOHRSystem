@@ -16,6 +16,7 @@ class CreateUserInformations extends Migration
         Schema::create('user_informations', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->index();
+            $table->string('company_id');
             $table->string('position');
             $table->date('date_hired');
             $table->string('contact_number');

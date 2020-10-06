@@ -5,9 +5,9 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Eloquent\Implementations\UserEloquent;
 use App\Models\User;
-use CommandValidation;
-use CommandAccRegister;
-use CommandInput;
+use App\Traits\CommandValidation;
+use App\Traits\CommandAccRegister;
+use App\Traits\CommandInput;
 use DB;
 
 class CreateHrManAcc extends Command
