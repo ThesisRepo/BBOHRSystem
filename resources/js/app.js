@@ -33,12 +33,11 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import Vuetify from 'vuetify';
-   Vue.use(Vuetify);
-
+Vue.use(Vuetify);
+Vue.component('dashboard', App);
 Vue.config.productionTip = false;
 const app = new Vue({
   router,
   el: '#app',
-  vuetify : new Vuetify(),
-  render: h => h(App)
+  vuetify : new Vuetify()
 })

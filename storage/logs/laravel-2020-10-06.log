@@ -1,0 +1,278 @@
+[2020-10-06 01:15:02] local.ERROR: Too few arguments to function App\Eloquent\Implementations\UserEloquent::__construct(), 0 passed in C:\Users\2ndyrGroupC\Desktop\Projects\BBOHRSystem\app\Console\Commands\CreateHrManAcc.php on line 49 and exactly 1 expected {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): Too few arguments to function App\\Eloquent\\Implementations\\UserEloquent::__construct(), 0 passed in C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateHrManAcc.php on line 49 and exactly 1 expected at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Eloquent\\Implementations\\UserEloquent.php:10)
+[stacktrace]
+#0 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateHrManAcc.php(49): App\\Eloquent\\Implementations\\UserEloquent->__construct()
+#1 [internal function]: App\\Console\\Commands\\CreateHrManAcc->__construct()
+#2 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(825): ReflectionClass->newInstanceArgs(Array)
+#3 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(667): Illuminate\\Container\\Container->build('App\\\\Console\\\\Com...')
+#4 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(615): Illuminate\\Container\\Container->resolve('App\\\\Console\\\\Com...', Array)
+#5 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(767): Illuminate\\Container\\Container->make('App\\\\Console\\\\Com...', Array)
+#6 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(258): Illuminate\\Foundation\\Application->make('App\\\\Console\\\\Com...')
+#7 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(244): Illuminate\\Console\\Application->resolve('App\\\\Console\\\\Com...')
+#8 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(149): Illuminate\\Foundation\\Console\\Kernel->Illuminate\\Foundation\\Console\\{closure}(Object(Illuminate\\Console\\Application))
+#9 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(72): Illuminate\\Console\\Application->bootstrap()
+#10 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(342): Illuminate\\Console\\Application->__construct(Object(Illuminate\\Foundation\\Application), Object(Illuminate\\Events\\Dispatcher), '5.8.38')
+#11 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(133): Illuminate\\Foundation\\Console\\Kernel->getArtisan()
+#12 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#13 {main}
+"} 
+[2020-10-06 01:16:19] local.ERROR: Argument 1 passed to App\Eloquent\Implementations\UserEloquent::__construct() must be an instance of App\Models\User, string given, called in C:\Users\2ndyrGroupC\Desktop\Projects\BBOHRSystem\app\Console\Commands\CreateHrManAcc.php on line 50 {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): Argument 1 passed to App\\Eloquent\\Implementations\\UserEloquent::__construct() must be an instance of App\\Models\\User, string given, called in C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateHrManAcc.php on line 50 at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Eloquent\\Implementations\\UserEloquent.php:10)
+[stacktrace]
+#0 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateHrManAcc.php(50): App\\Eloquent\\Implementations\\UserEloquent->__construct('App\\\\Models\\\\User')
+#1 [internal function]: App\\Console\\Commands\\CreateHrManAcc->__construct()
+#2 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(825): ReflectionClass->newInstanceArgs(Array)
+#3 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(667): Illuminate\\Container\\Container->build('App\\\\Console\\\\Com...')
+#4 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(615): Illuminate\\Container\\Container->resolve('App\\\\Console\\\\Com...', Array)
+#5 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(767): Illuminate\\Container\\Container->make('App\\\\Console\\\\Com...', Array)
+#6 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(258): Illuminate\\Foundation\\Application->make('App\\\\Console\\\\Com...')
+#7 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(244): Illuminate\\Console\\Application->resolve('App\\\\Console\\\\Com...')
+#8 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(149): Illuminate\\Foundation\\Console\\Kernel->Illuminate\\Foundation\\Console\\{closure}(Object(Illuminate\\Console\\Application))
+#9 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(72): Illuminate\\Console\\Application->bootstrap()
+#10 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(342): Illuminate\\Console\\Application->__construct(Object(Illuminate\\Foundation\\Application), Object(Illuminate\\Events\\Dispatcher), '5.8.38')
+#11 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(133): Illuminate\\Foundation\\Console\\Kernel->getArtisan()
+#12 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#13 {main}
+"} 
+[2020-10-06 01:16:47] local.ERROR: Cannot call constructor {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): Cannot call constructor at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Eloquent\\Implementations\\UserEloquent.php:12)
+[stacktrace]
+#0 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateHrManAcc.php(50): App\\Eloquent\\Implementations\\UserEloquent->__construct(Object(App\\Models\\User))
+#1 [internal function]: App\\Console\\Commands\\CreateHrManAcc->__construct()
+#2 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(825): ReflectionClass->newInstanceArgs(Array)
+#3 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(667): Illuminate\\Container\\Container->build('App\\\\Console\\\\Com...')
+#4 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(615): Illuminate\\Container\\Container->resolve('App\\\\Console\\\\Com...', Array)
+#5 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(767): Illuminate\\Container\\Container->make('App\\\\Console\\\\Com...', Array)
+#6 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(258): Illuminate\\Foundation\\Application->make('App\\\\Console\\\\Com...')
+#7 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(244): Illuminate\\Console\\Application->resolve('App\\\\Console\\\\Com...')
+#8 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(149): Illuminate\\Foundation\\Console\\Kernel->Illuminate\\Foundation\\Console\\{closure}(Object(Illuminate\\Console\\Application))
+#9 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(72): Illuminate\\Console\\Application->bootstrap()
+#10 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(342): Illuminate\\Console\\Application->__construct(Object(Illuminate\\Foundation\\Application), Object(Illuminate\\Events\\Dispatcher), '5.8.38')
+#11 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(133): Illuminate\\Foundation\\Console\\Kernel->getArtisan()
+#12 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#13 {main}
+"} 
+[2020-10-06 12:03:38] local.ERROR: Cannot call constructor {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): Cannot call constructor at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Eloquent\\Implementations\\UserEloquent.php:12)
+[stacktrace]
+#0 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateHrManAcc.php(50): App\\Eloquent\\Implementations\\UserEloquent->__construct(Object(App\\Models\\User))
+#1 [internal function]: App\\Console\\Commands\\CreateHrManAcc->__construct()
+#2 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(825): ReflectionClass->newInstanceArgs(Array)
+#3 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(667): Illuminate\\Container\\Container->build('App\\\\Console\\\\Com...')
+#4 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(615): Illuminate\\Container\\Container->resolve('App\\\\Console\\\\Com...', Array)
+#5 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(767): Illuminate\\Container\\Container->make('App\\\\Console\\\\Com...', Array)
+#6 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(258): Illuminate\\Foundation\\Application->make('App\\\\Console\\\\Com...')
+#7 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(244): Illuminate\\Console\\Application->resolve('App\\\\Console\\\\Com...')
+#8 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(149): Illuminate\\Foundation\\Console\\Kernel->Illuminate\\Foundation\\Console\\{closure}(Object(Illuminate\\Console\\Application))
+#9 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(72): Illuminate\\Console\\Application->bootstrap()
+#10 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(342): Illuminate\\Console\\Application->__construct(Object(Illuminate\\Foundation\\Application), Object(Illuminate\\Events\\Dispatcher), '5.8.38')
+#11 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(133): Illuminate\\Foundation\\Console\\Kernel->getArtisan()
+#12 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#13 {main}
+"} 
+[2020-10-06 12:07:40] local.ERROR: Cannot call constructor {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): Cannot call constructor at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Eloquent\\Implementations\\UserEloquent.php:12)
+[stacktrace]
+#0 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateHrManAcc.php(50): App\\Eloquent\\Implementations\\UserEloquent->__construct(Object(App\\Models\\User))
+#1 [internal function]: App\\Console\\Commands\\CreateHrManAcc->__construct(Object(App\\Models\\User))
+#2 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(825): ReflectionClass->newInstanceArgs(Array)
+#3 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(667): Illuminate\\Container\\Container->build('App\\\\Console\\\\Com...')
+#4 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(615): Illuminate\\Container\\Container->resolve('App\\\\Console\\\\Com...', Array)
+#5 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(767): Illuminate\\Container\\Container->make('App\\\\Console\\\\Com...', Array)
+#6 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(258): Illuminate\\Foundation\\Application->make('App\\\\Console\\\\Com...')
+#7 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(244): Illuminate\\Console\\Application->resolve('App\\\\Console\\\\Com...')
+#8 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(149): Illuminate\\Foundation\\Console\\Kernel->Illuminate\\Foundation\\Console\\{closure}(Object(Illuminate\\Console\\Application))
+#9 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(72): Illuminate\\Console\\Application->bootstrap()
+#10 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(342): Illuminate\\Console\\Application->__construct(Object(Illuminate\\Foundation\\Application), Object(Illuminate\\Events\\Dispatcher), '5.8.38')
+#11 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(133): Illuminate\\Foundation\\Console\\Kernel->getArtisan()
+#12 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#13 {main}
+"} 
+[2020-10-06 12:11:55] local.ERROR: Cannot call constructor {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): Cannot call constructor at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Eloquent\\Implementations\\UserEloquent.php:12)
+[stacktrace]
+#0 [internal function]: App\\Eloquent\\Implementations\\UserEloquent->__construct(Object(App\\Models\\User))
+#1 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(825): ReflectionClass->newInstanceArgs(Array)
+#2 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(667): Illuminate\\Container\\Container->build('App\\\\Eloquent\\\\Im...')
+#3 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(615): Illuminate\\Container\\Container->resolve('App\\\\Eloquent\\\\Im...', Array)
+#4 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(767): Illuminate\\Container\\Container->make('App\\\\Eloquent\\\\Im...', Array)
+#5 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(927): Illuminate\\Foundation\\Application->make('App\\\\Eloquent\\\\Im...')
+#6 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(855): Illuminate\\Container\\Container->resolveClass(Object(ReflectionParameter))
+#7 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(816): Illuminate\\Container\\Container->resolveDependencies(Array)
+#8 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(667): Illuminate\\Container\\Container->build('App\\\\Console\\\\Com...')
+#9 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(615): Illuminate\\Container\\Container->resolve('App\\\\Console\\\\Com...', Array)
+#10 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(767): Illuminate\\Container\\Container->make('App\\\\Console\\\\Com...', Array)
+#11 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(258): Illuminate\\Foundation\\Application->make('App\\\\Console\\\\Com...')
+#12 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(244): Illuminate\\Console\\Application->resolve('App\\\\Console\\\\Com...')
+#13 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(149): Illuminate\\Foundation\\Console\\Kernel->Illuminate\\Foundation\\Console\\{closure}(Object(Illuminate\\Console\\Application))
+#14 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(72): Illuminate\\Console\\Application->bootstrap()
+#15 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(342): Illuminate\\Console\\Application->__construct(Object(Illuminate\\Foundation\\Application), Object(Illuminate\\Events\\Dispatcher), '5.8.38')
+#16 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(133): Illuminate\\Foundation\\Console\\Kernel->getArtisan()
+#17 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#18 {main}
+"} 
+[2020-10-06 12:24:05] local.ERROR: Trait 'CommandAccRegister' not found {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 1): Trait 'CommandAccRegister' not found at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateHrManAcc.php:12)
+[stacktrace]
+#0 {main}
+"} 
+[2020-10-06 12:31:12] local.ERROR: Trait 'CommandAccRegister' not found {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 1): Trait 'CommandAccRegister' not found at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateHrManAcc.php:12)
+[stacktrace]
+#0 {main}
+"} 
+[2020-10-06 12:31:35] local.ERROR: Call to a member function create() on null {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): Call to a member function create() on null at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CommandAccRegister.php:14)
+[stacktrace]
+#0 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateHrManAcc.php(63): App\\Console\\Commands\\CreateHrManAcc->createSuperAdmin(2, 'dfd', 'dfd', 'asdfasd@ddd', 'asdfdfdfdfd')
+#1 [internal function]: App\\Console\\Commands\\CreateHrManAcc->handle()
+#2 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(32): call_user_func_array(Array, Array)
+#3 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(90): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#4 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(34): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#5 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(576): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#6 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(183): Illuminate\\Container\\Container->call(Array)
+#7 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Command\\Command.php(255): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#8 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#9 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Application.php(1009): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#10 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Application.php(273): Symfony\\Component\\Console\\Application->doRunCommand(Object(App\\Console\\Commands\\CreateHrManAcc), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#11 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Application.php(149): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#12 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(90): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#13 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(133): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#14 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#15 {main}
+"} 
+[2020-10-06 12:34:11] local.ERROR: Call to a member function create() on null {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): Call to a member function create() on null at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CommandAccRegister.php:14)
+[stacktrace]
+#0 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateHrManAcc.php(63): App\\Console\\Commands\\CreateHrManAcc->createSuperAdmin(2, 'dd', 'df', 'df@s', 'sdfdfdfdfdf')
+#1 [internal function]: App\\Console\\Commands\\CreateHrManAcc->handle()
+#2 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(32): call_user_func_array(Array, Array)
+#3 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(90): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#4 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(34): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#5 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(576): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#6 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(183): Illuminate\\Container\\Container->call(Array)
+#7 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Command\\Command.php(255): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#8 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#9 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Application.php(1009): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#10 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Application.php(273): Symfony\\Component\\Console\\Application->doRunCommand(Object(App\\Console\\Commands\\CreateHrManAcc), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#11 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Application.php(149): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#12 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(90): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#13 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(133): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#14 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#15 {main}
+"} 
+[2020-10-06 12:35:25] local.ERROR: Call to a member function create() on null {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): Call to a member function create() on null at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CommandAccRegister.php:14)
+[stacktrace]
+#0 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateHrManAcc.php(63): App\\Console\\Commands\\CreateHrManAcc->createSuperAdmin(2, 'sdfd', 'f', 'd@sdf', 'sadfsdfdfdfdf')
+#1 [internal function]: App\\Console\\Commands\\CreateHrManAcc->handle()
+#2 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(32): call_user_func_array(Array, Array)
+#3 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(90): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#4 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(34): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#5 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(576): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#6 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(183): Illuminate\\Container\\Container->call(Array)
+#7 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Command\\Command.php(255): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#8 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#9 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Application.php(1009): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#10 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Application.php(273): Symfony\\Component\\Console\\Application->doRunCommand(Object(App\\Console\\Commands\\CreateHrManAcc), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#11 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Application.php(149): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#12 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(90): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#13 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(133): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#14 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#15 {main}
+"} 
+[2020-10-06 12:35:46] local.ERROR: Trait 'CommandAccRegister' not found {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 1): Trait 'CommandAccRegister' not found at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateHrManAcc.php:12)
+[stacktrace]
+#0 {main}
+"} 
+[2020-10-06 12:36:10] local.ERROR: Trait 'CommandAccRegister' not found {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 1): Trait 'CommandAccRegister' not found at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateHrManAcc.php:12)
+[stacktrace]
+#0 {main}
+"} 
+[2020-10-06 12:38:05] local.ERROR: Argument 1 passed to App\Console\Commands\CreateHrManAcc::createSuperAdmin() must be an instance of App\Eloquent\Implementations\UserEloquent, int given, called in C:\Users\2ndyrGroupC\Desktop\Projects\BBOHRSystem\app\Console\Commands\CreateHrManAcc.php on line 63 {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): Argument 1 passed to App\\Console\\Commands\\CreateHrManAcc::createSuperAdmin() must be an instance of App\\Eloquent\\Implementations\\UserEloquent, int given, called in C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateHrManAcc.php on line 63 at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CommandAccRegister.php:7)
+[stacktrace]
+#0 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateHrManAcc.php(63): App\\Console\\Commands\\CreateHrManAcc->createSuperAdmin(2, 'fd', 's', 's@s', 'sfdfddfd')
+#1 [internal function]: App\\Console\\Commands\\CreateHrManAcc->handle()
+#2 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(32): call_user_func_array(Array, Array)
+#3 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(90): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#4 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(34): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#5 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(576): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#6 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(183): Illuminate\\Container\\Container->call(Array)
+#7 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Command\\Command.php(255): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#8 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#9 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Application.php(1009): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#10 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Application.php(273): Symfony\\Component\\Console\\Application->doRunCommand(Object(App\\Console\\Commands\\CreateHrManAcc), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#11 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Application.php(149): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#12 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(90): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#13 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(133): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#14 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#15 {main}
+"} 
+[2020-10-06 12:48:49] local.ERROR: Too few arguments to function App\Console\Commands\CreateHrManAcc::setModel(), 0 passed in C:\Users\2ndyrGroupC\Desktop\Projects\BBOHRSystem\app\Console\Commands\CreateHrManAcc.php on line 62 and exactly 1 expected {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): Too few arguments to function App\\Console\\Commands\\CreateHrManAcc::setModel(), 0 passed in C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateHrManAcc.php on line 62 and exactly 1 expected at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CommandAccRegister.php:9)
+[stacktrace]
+#0 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateHrManAcc.php(62): App\\Console\\Commands\\CreateHrManAcc->setModel()
+#1 [internal function]: App\\Console\\Commands\\CreateHrManAcc->handle()
+#2 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(32): call_user_func_array(Array, Array)
+#3 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(90): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#4 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(34): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#5 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(576): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#6 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(183): Illuminate\\Container\\Container->call(Array)
+#7 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Command\\Command.php(255): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#8 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#9 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Application.php(1009): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#10 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Application.php(273): Symfony\\Component\\Console\\Application->doRunCommand(Object(App\\Console\\Commands\\CreateHrManAcc), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#11 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Application.php(149): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#12 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(90): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#13 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(133): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#14 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#15 {main}
+"} 
+[2020-10-06 12:53:03] local.ERROR: Trait 'CommandInput' not found {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 1): Trait 'CommandInput' not found at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateGenManAcc.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2020-10-06 12:55:51] local.ERROR: Trait 'CommandValidation' not found {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 1): Trait 'CommandValidation' not found at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateGenManAcc.php:13)
+[stacktrace]
+#0 {main}
+"} 
+[2020-10-06 12:56:09] local.ERROR: Command "create:gen-manager-acc" is not defined.
+
+Did you mean one of these?
+    create:finance-manager-acc
+    create:general-manager-acc
+    create:hr-manager-acc {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"create:gen-manager-acc\" is not defined.
+
+Did you mean one of these?
+    create:finance-manager-acc
+    create:general-manager-acc
+    create:hr-manager-acc at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Application.php:676)
+[stacktrace]
+#0 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Application.php(237): Symfony\\Component\\Console\\Application->find('create:gen-mana...')
+#1 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Application.php(149): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#2 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(90): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#3 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(133): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#5 {main}
+"} 
+[2020-10-06 13:06:43] local.ERROR: Call to undefined method App\Eloquent\Implementations\UserEloquent::where() {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): Call to undefined method App\\Eloquent\\Implementations\\UserEloquent::where() at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Eloquent\\Implementations\\EloquentImplementation.php:34)
+[stacktrace]
+#0 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\app\\Console\\Commands\\CreateFinanceManAcc.php(61): App\\Eloquent\\Implementations\\EloquentImplementation->count(2)
+#1 [internal function]: App\\Console\\Commands\\CreateFinanceManAcc->handle()
+#2 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(32): call_user_func_array(Array, Array)
+#3 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(90): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#4 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(34): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#5 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(576): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#6 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(183): Illuminate\\Container\\Container->call(Array)
+#7 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Command\\Command.php(255): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#8 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#9 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Application.php(1009): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#10 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Application.php(273): Symfony\\Component\\Console\\Application->doRunCommand(Object(App\\Console\\Commands\\CreateFinanceManAcc), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#11 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Application.php(149): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#12 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(90): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#13 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(133): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#14 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#15 {main}
+"} 
+[2020-10-06 13:27:59] local.ERROR: The "--seed" option does not exist. {"exception":"[object] (Symfony\\Component\\Console\\Exception\\RuntimeException(code: 0): The \"--seed\" option does not exist. at C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Input\\ArgvInput.php:201)
+[stacktrace]
+#0 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Input\\ArgvInput.php(145): Symfony\\Component\\Console\\Input\\ArgvInput->addLongOption('seed', NULL)
+#1 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Input\\ArgvInput.php(79): Symfony\\Component\\Console\\Input\\ArgvInput->parseLongOption('--seed')
+#2 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Input\\Input.php(55): Symfony\\Component\\Console\\Input\\ArgvInput->parse()
+#3 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Command\\Command.php(214): Symfony\\Component\\Console\\Input\\Input->bind(Object(Symfony\\Component\\Console\\Input\\InputDefinition))
+#4 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Application.php(1009): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#5 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Application.php(273): Symfony\\Component\\Console\\Application->doRunCommand(Object(Symfony\\Component\\Console\\Command\\ListCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#6 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\symfony\\console\\Application.php(149): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#7 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(90): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(133): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#9 C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#10 {main}
+"} 
