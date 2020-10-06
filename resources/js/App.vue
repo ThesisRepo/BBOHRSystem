@@ -1,13 +1,13 @@
 <template>
-    <div>
+    <v-app id="sample">
         <v-main>
-            <v-container class="fill-height" fluid>
+            <sidebar id="sidebar"></sidebar>
+            <v-container class="container" fluid>
                 <router-view>
                 </router-view>
             </v-container>
-            <sidebar />
         </v-main>
-    </div>
+    </v-app>
 </template>
 <script>
 import Vuetify from "vuetify";
@@ -20,3 +20,11 @@ export default {
     }
 }
 </script>  
+<style>
+v-main {
+    background-color: black;
+}
+#sidebar{
+    position:absolute;
+}
+</style>
