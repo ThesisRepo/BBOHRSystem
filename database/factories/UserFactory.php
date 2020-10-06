@@ -31,6 +31,7 @@ $factory->define(User::class, function (Faker $faker) {
 
 $factory->afterCreating(User::class, function ($user, $faker) {
     $user->userInformation()->create([
+        'company_id' => $faker->randomNumber(6),
         'position' => $user->role->name,
         'date_hired' => new Carbon('2016-01-23'),
         'contact_number' => $faker->phoneNumber,

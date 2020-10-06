@@ -14,6 +14,7 @@ class UserInformation extends Model
      * @var array
      */
     protected $fillable = [
+        'company_id',
         'position',
         'date_hired',
         'contact_number',
