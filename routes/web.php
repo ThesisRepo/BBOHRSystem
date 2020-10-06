@@ -35,6 +35,7 @@ Route::group(
         Route::get('/email/verify/{id}', 'VerificationController@verify')->name('verification.verify');
 
         Route::post('/email/resend', 'VerificationController@resend')->name('verification.resend');
+
     }
 );
 
@@ -43,3 +44,4 @@ Route::get('/', function () {
 });
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
+Route::get('/home/laure', 'RoleController@retrieveRole');

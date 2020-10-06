@@ -1922,13 +1922,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "app",
+  props: ['user'],
   components: {
     sidebar: _modules_sidebar_vue__WEBPACK_IMPORTED_MODULE_1__["default"] // dashboard
 
+  },
+  mounted: function mounted() {
+    this.setUserType();
+  },
+  methods: {
+    setUserType: function setUserType() {
+      localStorage.setItem('user_type', this.user.role.name);
+    }
   }
 });
 
@@ -3154,32 +3164,65 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      showModal: false,
       dialog: false,
       dialogDelete: false,
       headers: [{
-        text: 'REASON',
+        text: 'NAME',
         align: 'start',
         sortable: false,
-        value: 'reason'
+        value: 'name'
       }, {
-        text: 'TOTAL DAY/S LEAVE',
-        value: 'total_days'
+        text: 'ID NO.',
+        value: 'id_number'
       }, {
-        text: 'START DATE',
-        value: 'start_date'
+        text: 'COMPANY EMAIL',
+        value: 'email'
       }, {
-        text: 'END DATE',
-        value: 'end_date'
+        text: 'PASSWORD',
+        value: 'password'
       }, {
-        text: 'PRP IN CHARGE',
-        value: 'prp_assigned'
+        text: 'DEPARTMENT',
+        value: 'department'
       }, {
-        text: 'STATUS',
-        value: 'status'
+        text: 'REGULARIZATION DATE',
+        value: 'regularization_date'
       }, {
         text: 'ACTIONS',
         value: 'actions',
@@ -3188,20 +3231,20 @@ __webpack_require__.r(__webpack_exports__);
       desserts: [],
       editedIndex: -1,
       editedItem: {
-        reason: '',
-        total_days: 0,
-        start_date: 0,
-        end_date: 0,
-        prp_assigned: '',
-        status: ''
+        name: '',
+        id_number: 0,
+        email: 0,
+        password: 0,
+        department: '',
+        regularization_date: ''
       },
       defaultItem: {
-        reason: '',
-        total_days: 0,
-        start_date: 0,
-        end_date: 0,
-        prp_assigned: '',
-        status: ''
+        name: '',
+        id_number: 0,
+        email: 0,
+        password: 0,
+        department: '',
+        regularization_date: ''
       }
     };
   },
@@ -3211,12 +3254,12 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     initialize: function initialize() {
       this.desserts = [{
-        reason: 'Wlay kwarta',
-        total_days: 159,
-        start_date: 6,
-        end_date: 24,
-        prp_assigned: 'claire',
-        status: 'pending'
+        name: 'Wlay kwarta',
+        id_number: 159,
+        email: 6,
+        password: 24,
+        department: 'claire',
+        regularization_date: 'pending'
       }];
     },
     editItem: function editItem(item) {
@@ -3259,6 +3302,9 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       this.close();
+    },
+    seeItem: function seeItem(item) {
+      this.showModal = true;
     }
   }
 });
@@ -5539,12 +5585,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      user: "EMPLOYEE",
+      user_type: localStorage.getItem('user_type'),
       drawer: null,
+      data: null,
       links: [{
         icon: "mdi-account",
         text: "My Account",
@@ -5582,7 +5634,7 @@ __webpack_require__.r(__webpack_exports__);
         text: "Travel Authorization",
         route: "/TravelAuthorization"
       }, {
-        icon: "mdi-users",
+        icon: "mdi-account-group",
         text: "Manage Users",
         route: "/ManageUsers"
       }, {
@@ -5632,6 +5684,9 @@ __webpack_require__.r(__webpack_exports__);
         route: "/TravelAuthorization"
       }]
     };
+  },
+  mounted: function mounted() {
+    console.log(this.user_type);
   },
   methods: {
     redirect: function redirect(route) {
@@ -41981,7 +42036,9 @@ var render = function() {
             { staticClass: "container", attrs: { fluid: "" } },
             [_c("router-view")],
             1
-          )
+          ),
+          _vm._v(" "),
+          _c("h1", [_vm._v(_vm._s(_vm.user.role.name))])
         ],
         1
       )
@@ -43586,7 +43643,7 @@ var render = function() {
               "v-toolbar",
               { attrs: { flat: "" } },
               [
-                _c("v-toolbar-title", [_vm._v("Leave Requests")]),
+                _c("v-toolbar-title", [_vm._v("Manage Users")]),
                 _vm._v(" "),
                 _c("v-divider", {
                   staticClass: "mx-4",
@@ -43638,17 +43695,17 @@ var render = function() {
                                       },
                                       [
                                         _c("v-text-field", {
-                                          attrs: { label: "reason" },
+                                          attrs: { label: "name" },
                                           model: {
-                                            value: _vm.editedItem.reason,
+                                            value: _vm.editedItem.name,
                                             callback: function($$v) {
                                               _vm.$set(
                                                 _vm.editedItem,
-                                                "reason",
+                                                "name",
                                                 $$v
                                               )
                                             },
-                                            expression: "editedItem.reason"
+                                            expression: "editedItem.name"
                                           }
                                         })
                                       ],
@@ -43662,17 +43719,17 @@ var render = function() {
                                       },
                                       [
                                         _c("v-text-field", {
-                                          attrs: { label: "total_days" },
+                                          attrs: { label: "id_number" },
                                           model: {
-                                            value: _vm.editedItem.total_days,
+                                            value: _vm.editedItem.id_number,
                                             callback: function($$v) {
                                               _vm.$set(
                                                 _vm.editedItem,
-                                                "total_days",
+                                                "id_number",
                                                 $$v
                                               )
                                             },
-                                            expression: "editedItem.total_days"
+                                            expression: "editedItem.id_number"
                                           }
                                         })
                                       ],
@@ -43686,17 +43743,17 @@ var render = function() {
                                       },
                                       [
                                         _c("v-text-field", {
-                                          attrs: { label: "start_date" },
+                                          attrs: { label: "email" },
                                           model: {
-                                            value: _vm.editedItem.start_date,
+                                            value: _vm.editedItem.email,
                                             callback: function($$v) {
                                               _vm.$set(
                                                 _vm.editedItem,
-                                                "start_date",
+                                                "email",
                                                 $$v
                                               )
                                             },
-                                            expression: "editedItem.start_date"
+                                            expression: "editedItem.email"
                                           }
                                         })
                                       ],
@@ -43710,17 +43767,17 @@ var render = function() {
                                       },
                                       [
                                         _c("v-text-field", {
-                                          attrs: { label: "end_date" },
+                                          attrs: { label: "password" },
                                           model: {
-                                            value: _vm.editedItem.end_date,
+                                            value: _vm.editedItem.password,
                                             callback: function($$v) {
                                               _vm.$set(
                                                 _vm.editedItem,
-                                                "end_date",
+                                                "password",
                                                 $$v
                                               )
                                             },
-                                            expression: "editedItem.end_date"
+                                            expression: "editedItem.password"
                                           }
                                         })
                                       ],
@@ -43734,42 +43791,46 @@ var render = function() {
                                       },
                                       [
                                         _c("v-text-field", {
-                                          attrs: { label: "prp_assigned" },
+                                          attrs: { label: "department" },
                                           model: {
-                                            value: _vm.editedItem.prp_assigned,
+                                            value: _vm.editedItem.department,
                                             callback: function($$v) {
                                               _vm.$set(
                                                 _vm.editedItem,
-                                                "prp_assigned",
+                                                "department",
+                                                $$v
+                                              )
+                                            },
+                                            expression: "editedItem.department"
+                                          }
+                                        })
+                                      ],
+                                      1
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-col",
+                                      {
+                                        attrs: { cols: "12", sm: "6", md: "4" }
+                                      },
+                                      [
+                                        _c("v-text-field", {
+                                          attrs: {
+                                            label: "regularization_date"
+                                          },
+                                          model: {
+                                            value:
+                                              _vm.editedItem
+                                                .regularization_date,
+                                            callback: function($$v) {
+                                              _vm.$set(
+                                                _vm.editedItem,
+                                                "regularization_date",
                                                 $$v
                                               )
                                             },
                                             expression:
-                                              "editedItem.prp_assigned"
-                                          }
-                                        })
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "v-col",
-                                      {
-                                        attrs: { cols: "12", sm: "6", md: "4" }
-                                      },
-                                      [
-                                        _c("v-text-field", {
-                                          attrs: { label: "status" },
-                                          model: {
-                                            value: _vm.editedItem.status,
-                                            callback: function($$v) {
-                                              _vm.$set(
-                                                _vm.editedItem,
-                                                "status",
-                                                $$v
-                                              )
-                                            },
-                                            expression: "editedItem.status"
+                                              "editedItem.regularization_date"
                                           }
                                         })
                                       ],
@@ -43882,6 +43943,78 @@ var render = function() {
         fn: function(ref) {
           var item = ref.item
           return [
+            _c(
+              "v-icon",
+              {
+                staticClass: "mr-2",
+                attrs: { small: "" },
+                on: {
+                  click: function($event) {
+                    return _vm.seeItem(item)
+                  }
+                }
+              },
+              [_vm._v("\n      mdi-eye\n    ")]
+            ),
+            _vm._v(" "),
+            _c(
+              "v-dialog",
+              {
+                attrs: { width: "600px" },
+                model: {
+                  value: _vm.showModal,
+                  callback: function($$v) {
+                    _vm.showModal = $$v
+                  },
+                  expression: "showModal"
+                }
+              },
+              [
+                _c("v-simple-table", {
+                  scopedSlots: _vm._u(
+                    [
+                      {
+                        key: "default",
+                        fn: function() {
+                          return [
+                            _c("thead", [
+                              _c("tr", [
+                                _c("th", { staticClass: "text-left" }, [
+                                  _vm._v("\n              Name\n            ")
+                                ]),
+                                _vm._v(" "),
+                                _c("th", { staticClass: "text-left" }, [
+                                  _vm._v(
+                                    "\n              Calories\n            "
+                                  )
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "tbody",
+                              _vm._l(_vm.desserts, function(item) {
+                                return _c("tr", { key: item.name }, [
+                                  _c("td", [_vm._v(_vm._s(item.name))]),
+                                  _vm._v(" "),
+                                  _c("td", [_vm._v(_vm._s(item.calories))])
+                                ])
+                              }),
+                              0
+                            )
+                          ]
+                        },
+                        proxy: true
+                      }
+                    ],
+                    null,
+                    true
+                  )
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
             _c(
               "v-icon",
               {
@@ -48142,29 +48275,47 @@ var render = function() {
           _vm._v(" "),
           _c("v-divider"),
           _vm._v(" "),
-          _vm.user === "ADMIN"
+          _vm.user_type === "general mngr"
             ? _c(
                 "v-list",
                 [
                   _c(
                     "v-list-item-group",
-                    { attrs: { "active-class": "white blue--text" } },
-                    _vm._l(_vm.links, function(ref) {
-                      var icon = ref[0]
-                      var text = ref[1]
+                    { attrs: { "active-class": "sky blue blue--text" } },
+                    _vm._l(_vm.links, function(item, index) {
                       return _c(
                         "v-list-item",
-                        { key: icon, attrs: { link: "" } },
+                        {
+                          key: index,
+                          attrs: { link: "" },
+                          on: {
+                            click: function($event) {
+                              return _vm.redirect(item.route)
+                            }
+                          }
+                        },
                         [
                           _c(
                             "v-list-item-icon",
-                            [_c("v-icon", [_vm._v(_vm._s(icon))])],
+                            [
+                              _c(
+                                "v-icon",
+                                { attrs: { color: "white darken-2" } },
+                                [_vm._v(_vm._s(item.icon))]
+                              )
+                            ],
                             1
                           ),
                           _vm._v(" "),
                           _c(
                             "v-list-item-content",
-                            [_c("v-list-item-title", [_vm._v(_vm._s(text))])],
+                            [
+                              _c(
+                                "v-list-item-title",
+                                { staticClass: "white--text lighten-1--text" },
+                                [_vm._v(_vm._s(item.text))]
+                              )
+                            ],
                             1
                           )
                         ],
@@ -48178,7 +48329,7 @@ var render = function() {
               )
             : _vm._e(),
           _vm._v(" "),
-          _vm.user === "EMPLOYEE"
+          _vm.user_type === "emp"
             ? _c(
                 "v-list",
                 [
@@ -48215,7 +48366,7 @@ var render = function() {
                             [
                               _c(
                                 "v-list-item-title",
-                                { staticClass: "white--text lighten-1--text " },
+                                { staticClass: "white--text lighten-1--text" },
                                 [_vm._v(_vm._s(item.text))]
                               )
                             ],
@@ -107351,8 +107502,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./router */ "./resources/js/router/index.js");
-/* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuetify */ "./node_modules/vuetify/dist/vuetify.js");
-/* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vuetify__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuetify */ "./node_modules/vuetify/dist/vuetify.js");
+/* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vuetify__WEBPACK_IMPORTED_MODULE_3__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -107381,12 +107534,14 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('dashboard-view', __webpack
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuetify__WEBPACK_IMPORTED_MODULE_2___default.a);
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuetify__WEBPACK_IMPORTED_MODULE_3___default.a);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$axios = axios__WEBPACK_IMPORTED_MODULE_2___default.a;
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.config.productionTip = false;
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   router: _router__WEBPACK_IMPORTED_MODULE_1__["default"],
   el: '#app',
-  vuetify: new vuetify__WEBPACK_IMPORTED_MODULE_2___default.a()
+  vuetify: new vuetify__WEBPACK_IMPORTED_MODULE_3___default.a()
 });
 
 /***/ }),

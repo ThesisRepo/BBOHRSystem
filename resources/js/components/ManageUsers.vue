@@ -8,7 +8,7 @@
       <v-toolbar
         flat
       >
-        <v-toolbar-title>Leave Requests</v-toolbar-title>
+        <v-toolbar-title>Manage Users</v-toolbar-title>
         <v-divider
           class="mx-4"
           inset
@@ -32,8 +32,8 @@
                     md="4"
                   >
                     <v-text-field
-                      v-model="editedItem.reason"
-                      label="reason"
+                      v-model="editedItem.name"
+                      label="name"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -42,8 +42,8 @@
                     md="4"
                   >
                     <v-text-field
-                      v-model="editedItem.total_days"
-                      label="total_days"
+                      v-model="editedItem.id_number"
+                      label="id_number"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -52,8 +52,8 @@
                     md="4"
                   >
                     <v-text-field
-                      v-model="editedItem.start_date"
-                      label="start_date"
+                      v-model="editedItem.email"
+                      label="email"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -62,8 +62,8 @@
                     md="4"
                   >
                     <v-text-field
-                      v-model="editedItem.end_date"
-                      label="end_date"
+                      v-model="editedItem.password"
+                      label="password"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -72,8 +72,8 @@
                     md="4"
                   >
                     <v-text-field
-                      v-model="editedItem.prp_assigned"
-                      label="prp_assigned"
+                      v-model="editedItem.department"
+                      label="department"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -82,8 +82,8 @@
                     md="4"
                   >
                     <v-text-field
-                      v-model="editedItem.status"
-                      label="status"
+                      v-model="editedItem.regularization_date"
+                      label="regularization_date"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -122,6 +122,38 @@
       </v-toolbar>
     </template>
     <template v-slot:item.actions="{ item }">
+        <v-icon
+        small
+        class="mr-2"
+        @click="seeItem(item)"
+      >
+        mdi-eye
+      </v-icon>
+      <v-dialog v-model="showModal" width="600px">
+       <v-simple-table>
+        <template v-slot:default>
+          <thead>
+            <tr>
+              <th class="text-left">
+                Name
+              </th>
+              <th class="text-left">
+                Calories
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="item in desserts"
+              :key="item.name"
+            >
+              <td>{{ item.name }}</td>
+              <td>{{ item.calories }}</td>
+            </tr>
+          </tbody>
+        </template>
+      </v-simple-table>      
+      </v-dialog>
       <v-icon
         small
         class="mr-2"
@@ -150,39 +182,40 @@
 import createLeave from './modals/create_leave.vue'
   export default {
     data: () => ({
+      showModal: false,
       dialog: false,
       dialogDelete: false,
       headers: [
         {
-          text: 'REASON',
+          text: 'NAME',
           align: 'start',
           sortable: false,
-          value: 'reason',
+          value: 'name',
         },
-        { text: 'TOTAL DAY/S LEAVE', value: 'total_days' },
-        { text: 'START DATE', value: 'start_date' },
-        { text: 'END DATE', value: 'end_date' },
-        { text: 'PRP IN CHARGE', value: 'prp_assigned' },
-        { text: 'STATUS', value: 'status' },
+        { text: 'ID NO.', value: 'id_number' },
+        { text: 'COMPANY EMAIL', value: 'email' },
+        { text: 'PASSWORD', value: 'password' },
+        { text: 'DEPARTMENT', value: 'department' },
+        { text: 'REGULARIZATION DATE', value: 'regularization_date' },
         { text: 'ACTIONS', value: 'actions', sortable: false },
       ],
       desserts: [],
       editedIndex: -1,
       editedItem: {
-        reason: '',
-        total_days: 0,
-        start_date: 0,
-        end_date: 0,
-        prp_assigned: '',
-        status:''
+        name: '',
+        id_number: 0,
+        email: 0,
+        password: 0,
+        department: '',
+        regularization_date:''
       },
       defaultItem: {
-        reason: '',
-        total_days: 0,
-        start_date: 0,
-        end_date: 0,
-        prp_assigned: '',
-        status: ''
+        name: '',
+        id_number: 0,
+        email: 0,
+        password: 0,
+        department: '',
+        regularization_date: ''
       },
     }),
     components: {
@@ -192,12 +225,12 @@ import createLeave from './modals/create_leave.vue'
       initialize () {
         this.desserts = [
           {
-            reason: 'Wlay kwarta',
-            total_days: 159,
-            start_date: 6,
-            end_date: 24,
-            prp_assigned: 'claire',
-            status: 'pending'
+            name: 'Wlay kwarta',
+            id_number: 159,
+            email: 6,
+            password: 24,
+            department: 'claire',
+            regularization_date: 'pending'
           }
         ]
       },
@@ -242,6 +275,9 @@ import createLeave from './modals/create_leave.vue'
         }
         this.close()
       },
+      seeItem(item){
+        this.showModal = true
+      }
     },
   }
 </script>
