@@ -17,7 +17,7 @@
       </template>
       <v-card>
         <v-card-title>
-          <span class="headline">Shift Change Request Form</span>
+          <span class="headline">Overtime Request Form</span>
         </v-card-title>
         <v-card-text>
           <v-container>
@@ -28,7 +28,7 @@
                   required
                 ></v-text-field>
               </v-col>
-<v-col cols="12" sm="4">
+              <v-col cols="12" sm="4">
                 <v-menu
                   ref="menu1"
                   v-model="menu1"
@@ -42,7 +42,7 @@
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
                       v-model="dateFormatted"
-                      label="Shift Date*"
+                      label="Date*"
                       required
                       persistent-hint
                       v-bind="attrs"
@@ -57,12 +57,19 @@
                   ></v-date-picker>
                 </v-menu>
               </v-col>
-              <v-col cols="12" sm="6">
-                <v-select
-                  :items="['2- 5pm', 'Single Parent Leave', 'Vacation Leave', 'Other Leave']"
-                  label="Shift Time*"
+              <v-col cols="12" sm="4">
+                <v-text-field
+                  label="Start Time*"
+                  type="time"
                   required
-                ></v-select>
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="4">
+                <v-text-field
+                  label="End Time*"
+                  type="time"
+                  required
+                ></v-text-field>
               </v-col>
               <v-col
                 cols="12">

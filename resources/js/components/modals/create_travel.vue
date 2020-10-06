@@ -17,18 +17,25 @@
       </template>
       <v-card>
         <v-card-title>
-          <span class="headline">Shift Change Request Form</span>
+          <span class="headline">Travel Authorization Form</span>
         </v-card-title>
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col cols="12">
+              <v-col
+                cols="12">
                 <v-text-field
-                  label="Reason*"
+                  label="Destination*"
                   required
                 ></v-text-field>
               </v-col>
-<v-col cols="12" sm="4">
+              <v-col cols="12">
+                <v-text-field
+                  label="Employee to Cover*"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6">
                 <v-menu
                   ref="menu1"
                   v-model="menu1"
@@ -42,7 +49,7 @@
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
                       v-model="dateFormatted"
-                      label="Shift Date*"
+                      label="Start Date*"
                       required
                       persistent-hint
                       v-bind="attrs"
@@ -58,19 +65,47 @@
                 </v-menu>
               </v-col>
               <v-col cols="12" sm="6">
-                <v-select
-                  :items="['2- 5pm', 'Single Parent Leave', 'Vacation Leave', 'Other Leave']"
-                  label="Shift Time*"
-                  required
-                ></v-select>
+                <v-menu
+                  ref="menu1"
+                  v-model="menu1"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  max-width="290px"
+                  min-width="290px"
+                  margin-left="20px"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="dateFormatted"
+                      label="End Date*"
+                      required
+                      persistent-hint
+                      v-bind="attrs"
+                      @blur="date = parseDate(dateFormatted)"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="date"
+                    no-title
+                    @input="menu1 = false"
+                  ></v-date-picker>
+                </v-menu>
               </v-col>
               <v-col
                 cols="12">
-                <v-select
-                  :items="['Sick Leave', 'Single Parent Leave', 'Vacation Leave', 'Other Leave']"
-                  label="PRP in Charge*"
+                <v-text-field
+                  label="Details*"
                   required
-                ></v-select>
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field
+                  label="Amount Needed*"
+                  type="number"
+                  required
+                ></v-text-field>
               </v-col>
               <!-- <v-col cols="12">
                 <v-text-field

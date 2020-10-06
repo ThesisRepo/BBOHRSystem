@@ -17,18 +17,18 @@
       </template>
       <v-card>
         <v-card-title>
-          <span class="headline">Shift Change Request Form</span>
+          <span class="headline">Petty Cash Request Form</span>
         </v-card-title>
         <v-card-text>
           <v-container>
             <v-row>
               <v-col cols="12">
                 <v-text-field
-                  label="Reason*"
+                  label="Description of Need*"
                   required
                 ></v-text-field>
               </v-col>
-<v-col cols="12" sm="4">
+              <v-col cols="12" sm="4">
                 <v-menu
                   ref="menu1"
                   v-model="menu1"
@@ -42,7 +42,7 @@
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
                       v-model="dateFormatted"
-                      label="Shift Date*"
+                      label="Date*"
                       required
                       persistent-hint
                       v-bind="attrs"
@@ -57,12 +57,19 @@
                   ></v-date-picker>
                 </v-menu>
               </v-col>
-              <v-col cols="12" sm="6">
+              <v-col cols="12" sm="4">
                 <v-select
-                  :items="['2- 5pm', 'Single Parent Leave', 'Vacation Leave', 'Other Leave']"
-                  label="Shift Time*"
+                  :items="['Sick Leave', 'Single Parent Leave', 'Vacation Leave', 'Other Leave']"
+                  label="Department*"
                   required
                 ></v-select>
+              </v-col>
+              <v-col cols="12" sm="4">
+                <v-text-field
+                  label="Total Amount*"
+                  type="number"
+                  required
+                ></v-text-field>
               </v-col>
               <v-col
                 cols="12">
