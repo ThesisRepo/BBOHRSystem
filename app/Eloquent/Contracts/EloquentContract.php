@@ -9,4 +9,5 @@ interface EloquentContract {
    * populates db
    */
   public function create(array $data);
-}
+
+} 

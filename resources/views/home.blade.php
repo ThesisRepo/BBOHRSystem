@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+@auth
 <div>
-    <sidebar-header />
+    <dashboard/>
 </div>
+@endauth
 @endsection
