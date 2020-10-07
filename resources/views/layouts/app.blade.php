@@ -44,6 +44,9 @@
                 </div>
             </div>
         </nav>
+        <div>
+            
+        </div>
         @endguest
         <div id="app">
             <main class="py-4">

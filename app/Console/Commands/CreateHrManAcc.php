@@ -3,10 +3,27 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Eloquent\Implementations\UserEloquent;
 use App\Models\User;
-use App\Models\Role;
+use App\Traits\CommandValidation;
+use App\Traits\CommandAccRegister;
+use App\Traits\CommandInput;
+use DB;
+
 class CreateHrManAcc extends Command
 {
+    /**
+     * trait for input generation.
+     */
+    use CommandInput;
+
+    /**
+     * trait for validation of Inputs.
+     */
+    use CommandValidation;
+
+    use CommandAccRegister;
+
     /**
      * The name and signature of the console command.
      *
@@ -14,6 +31,7 @@ class CreateHrManAcc extends Command
      */
     protected $signature = 'create:hr-manager-acc';
 
+    protected $user;
     /**
      * The console command description.
      *
@@ -27,9 +45,10 @@ class CreateHrManAcc extends Command
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(UserEloquent $user)
     {
         parent::__construct();
+        $this->user = $user;
     }
 
     /**
@@ -38,11 +57,28 @@ class CreateHrManAcc extends Command
      * @return mixed
      */
     public function handle()
-    {
-        $password = bcrypt('123456789');
-        $user = new User(['name'=>'marionon','email'=>'m@gmail.com','password'=> $password]);
-        $role = Role::find(2); 
-        $role = $role->users()->save($user).info('hr manager account created successfully');
-        
+    {        
+        if(!$this->user->isRoleExisting(2)) {
+            $this->setRegisterValues();
+            try {
+                DB::beginTransaction();
+                
+                $this->setModel($this->user);
+                $this->createSuperAdmin(2, $this->firstname, $this->lastname, $this->email, $this->pwd);
+
+                DB::commit();
+                $this->info('HR Account created for '.$this->firstname . ' ' . $this->lastname);
+
+            }catch(\Exception $e) {
+                
+                $this->info('failed creation of HR account' . $e);
+                DB::rollback();
+            } 
+        }else {
+
+            $this->info('An HR Manager account was already created!');
+
+        }   
     }
+
 }

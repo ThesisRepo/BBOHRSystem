@@ -5589,6 +5589,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -10166,7 +10167,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\nv-app-bar {\r\n  overflow: hidden !important;\n}\n.v-list-item__title {\r\n  font-size: 15px;\n}\r\n", ""]);
+exports.push([module.i, "\nv-app-bar{\r\n  overflow: hidden !important;\n}\n.v-list-item__title{\r\n font-size: 15px;\n}\r\n", ""]);
 
 // exports
 
@@ -48326,7 +48327,7 @@ var render = function() {
               )
             : _vm._e(),
           _vm._v(" "),
-          _vm.user_type === "emp"
+          _vm.user === "emp"
             ? _c(
                 "v-list",
                 [

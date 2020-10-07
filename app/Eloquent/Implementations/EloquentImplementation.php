@@ -4,28 +4,36 @@ namespace App\Eloquent\Implementations;
 use App\Eloquent\Contracts\EloquentContract;
 use Illuminate\Database\Eloquent\Model;
 
-class EloquentImplementation implements EloquentContract{
+class EloquentImplementation implements EloquentContract {
+
   /**
    * @var Illuminate\Database\Eloquent\Model
    */
   protected $model;
+
   /**
    * @param Model
    * called during instantiation
    * 
    * @return void
    */
-  public function _construct( Model $model) {
+  public function __construct( Model $model) {
     $this->model = $model;
   }
+
+  public function all() {
+    return $this->model->all();
+  }
+
   /**
    * @param array $data
    * 
    * populates db
    */
   public function create( array $data) {
+    $this->model->create($data);
   }
-
+  
   /**
    * @param string $model
    * creates a model
@@ -44,6 +52,7 @@ class EloquentImplementation implements EloquentContract{
    * @return App\Eloquent\Implementations\EloquentImplementation
    */
   public function with( $relationship) {
+
     return $this->model->with( $relationship);
   }
 }
