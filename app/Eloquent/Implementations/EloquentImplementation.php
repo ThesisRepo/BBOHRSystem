@@ -21,6 +21,10 @@ class EloquentImplementation implements EloquentContract {
     $this->model = $model;
   }
 
+  public function all() {
+    return $this->model->all();
+  }
+
   /**
    * @param array $data
    * 
