@@ -8,7 +8,7 @@
       <v-toolbar
         flat
       >
-        <v-toolbar-title>Travel Authorization</v-toolbar-title>
+        <v-toolbar-title>Manage Users</v-toolbar-title>
         <v-divider
           class="mx-4"
           inset
@@ -20,7 +20,7 @@
           max-width="500px"
         >
           <template v-slot:activator="{ on, attrs }">
-            <createTravel></createTravel>
+            <createLeave></createLeave>
           </template>
           <v-card>
             <v-card-text>
@@ -32,8 +32,8 @@
                     md="4"
                   >
                     <v-text-field
-                      v-model="editedItem.destination"
-                      label="destination"
+                      v-model="editedItem.name"
+                      label="name"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -42,8 +42,8 @@
                     md="4"
                   >
                     <v-text-field
-                      v-model="editedItem.start_date"
-                      label="start_date"
+                      v-model="editedItem.id_number"
+                      label="id_number"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -52,8 +52,8 @@
                     md="4"
                   >
                     <v-text-field
-                      v-model="editedItem.end_date"
-                      label="end_date"
+                      v-model="editedItem.email"
+                      label="email"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -62,8 +62,8 @@
                     md="4"
                   >
                     <v-text-field
-                      v-model="editedItem.emergency_contact"
-                      label="emergency_contact"
+                      v-model="editedItem.password"
+                      label="password"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -72,8 +72,8 @@
                     md="4"
                   >
                     <v-text-field
-                      v-model="editedItem.employee_cover"
-                      label="employee_cover"
+                      v-model="editedItem.department"
+                      label="department"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -82,28 +82,8 @@
                     md="4"
                   >
                     <v-text-field
-                      v-model="editedItem.details"
-                      label="details"
-                    ></v-text-field>
-                  </v-col>
-                   <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.prp_assigned"
-                      label="prp_assigned"
-                    ></v-text-field>
-                   </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.status"
-                      label="status"
+                      v-model="editedItem.regularization_date"
+                      label="regularization_date"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -142,6 +122,38 @@
       </v-toolbar>
     </template>
     <template v-slot:item.actions="{ item }">
+        <v-icon
+        small
+        class="mr-2"
+        @click="seeItem(item)"
+      >
+        mdi-eye
+      </v-icon>
+      <v-dialog v-model="showModal" width="600px">
+       <v-simple-table>
+        <template v-slot:default>
+          <thead>
+            <tr>
+              <th class="text-left">
+                Name
+              </th>
+              <th class="text-left">
+                Calories
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="item in desserts"
+              :key="item.name"
+            >
+              <td>{{ item.name }}</td>
+              <td>{{ item.calories }}</td>
+            </tr>
+          </tbody>
+        </template>
+      </v-simple-table>      
+      </v-dialog>
       <v-icon
         small
         class="mr-2"
@@ -167,65 +179,58 @@
   </v-data-table>
 </template>
 <script>
-import createTravel from './modals/create_travel.vue'
+import createLeave from './modals/create_leave.vue'
   export default {
     data: () => ({
+      showModal: false,
       dialog: false,
       dialogDelete: false,
       headers: [
         {
-          text: 'DESTINATION',
+          text: 'NAME',
           align: 'start',
           sortable: false,
-          value: 'destination',
+          value: 'name',
         },
-        { text: 'START DATE', value: 'start_date' },
-        { text: 'END DATE', value: 'end_date' },
-        { text: 'EMERGENCY CONTACT', value: 'emergency_contact' },
-        { text: 'EMPLOYEE TO COVER', value: 'employee_cover' },
-        { text: 'DETAILS', value: 'details' },
-        { text: 'PRP IN CHARGE', value: 'prp_assigned' },
-        { text: 'STATUS', value: 'status' },
+        { text: 'ID NO.', value: 'id_number' },
+        { text: 'COMPANY EMAIL', value: 'email' },
+        { text: 'PASSWORD', value: 'password' },
+        { text: 'DEPARTMENT', value: 'department' },
+        { text: 'REGULARIZATION DATE', value: 'regularization_date' },
         { text: 'ACTIONS', value: 'actions', sortable: false },
       ],
       desserts: [],
       editedIndex: -1,
       editedItem: {
-        destination: '',
-        start_date: '',
-        end_date: 0,
-        emergency_contact: 0,
-        employee_cover: 0,
-        details: '',
-        prp_assigned: '',
-        status:''
+        name: '',
+        id_number: 0,
+        email: 0,
+        password: 0,
+        department: '',
+        regularization_date:''
       },
       defaultItem: {
-        destination: '',
-        start_date: '',
-        end_date: 0,
-        emergency_contact: 0,
-        employee_cover: 0,
-        details: '',
-        prp_assigned: '',
-        status: ''
+        name: '',
+        id_number: 0,
+        email: 0,
+        password: 0,
+        department: '',
+        regularization_date: ''
       },
     }),
     components: {
-      createTravel
+      createLeave
     },
     methods: {
       initialize () {
         this.desserts = [
           {
-            destination: 'Cebu',
-            start_date: 'Wlay kwarta',
-            end_date: 159,
-            emergency_contact: 6,
-            employee_cover: 24,
-            details: 'going home',
-            prp_assigned: 'Claire',
-            status: 'pending'
+            name: 'Wlay kwarta',
+            id_number: 159,
+            email: 6,
+            password: 24,
+            department: 'claire',
+            regularization_date: 'pending'
           }
         ]
       },
@@ -270,6 +275,9 @@ import createTravel from './modals/create_travel.vue'
         }
         this.close()
       },
+      seeItem(item){
+        this.showModal = true
+      }
     },
   }
 </script>

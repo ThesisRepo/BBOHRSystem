@@ -1,111 +1,145 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="desserts"
-    :items-per-page="5"
-    class="elevation-1"
-  ></v-data-table>
+  <v-row>
+    <v-container cols="4">
+      <v-col>
+        <v-card class="mx-auto">
+          <v-card-title>
+            <span class="headline">USER PROFILE</span>
+          </v-card-title>
+
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title class="title">
+                Marion Jay Balugo Gwapo
+              </v-list-item-title>
+              <v-list-item-subtitle>Network Engineer</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-card>
+      </v-col>
+    </v-container>
+    <v-container cols="8">
+      <v-col>
+        <v-card>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col cols="12" sm="4" md="4">
+                  <v-text-field label="Position*" required></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="4" md="4">
+                  <v-menu
+                    ref="menu1"
+                    v-model="menu1"
+                    :close-on-content-click="false"
+                    transition="scale-transition"
+                    offset-y
+                    max-width="290px"
+                    min-width="290px"
+                    margin-left="20px"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        v-model="dateFormatted"
+                        label="Date Hired*"
+                        required
+                        persistent-hint
+                        prepend-icon="mdi-calendar"
+                        v-bind="attrs"
+                        @blur="date = parseDate(dateFormatted)"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker
+                      v-model="date"
+                      no-title
+                      @input="menu1 = false"
+                    ></v-date-picker>
+                  </v-menu>
+                </v-col>
+                <v-col cols="12" sm="4" md="4">
+                  <v-text-field
+                    label="Contact Number*"
+                    persistent-hint
+                    required
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="4" md="4">
+                  <v-text-field label="Address" required></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="4" md="4">
+                  <v-select
+                    :items="['Single', 'Married', 'Widowed', 'Separated']"
+                    label="Status*"
+                    required
+                  ></v-select>
+                </v-col>
+                <v-col cols="12" sm="4" md="4">
+                  <v-menu
+                    v-model="menu2"
+                    :close-on-content-click="false"
+                    transition="scale-transition"
+                    offset-y
+                    max-width="290px"
+                    min-width="290px"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        v-model="computedDateFormatted"
+                        label="Date of Birth*"
+                        persistent-hint
+                        prepend-icon="mdi-calendar"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker
+                      v-model="date"
+                      no-title
+                      @input="menu2 = false"
+                    ></v-date-picker>
+                  </v-menu>
+                </v-col>
+                <v-col cols="12" sm="3" md="3">
+                  <v-text-field label="PagIbig No.*" required></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="3" md="3">
+                  <v-text-field label="Tin No.*" required></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="3" md="3">
+                  <v-text-field label="PhilHealth No." required></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="3" md="3">
+                  <v-text-field label="SSS No." required></v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="dialog = false">
+              Cancel
+            </v-btn>
+            <v-btn color="blue darken-1" text @click="dialog = false">
+              Update
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-container>
+  </v-row>
 </template>
+<style scoped>
+v-card {
+  margin-top: 10%;
+}
+</style>
+</style>
 <script>
-  export default {
-    data () {
-      return {
-        headers: [
-          {
-            text: 'Dessert (100g serving)',
-            align: 'start',
-            sortable: false,
-            value: 'name',
-          },
-          { text: 'Calories', value: 'calories' },
-          { text: 'Fat (g)', value: 'fat' },
-          { text: 'Carbs (g)', value: 'carbs' },
-          { text: 'Protein (g)', value: 'protein' },
-          { text: 'Iron (%)', value: 'iron' },
-        ],
-        desserts: [
-          {
-            name: 'Frozen Yogurt',
-            calories: 159,
-            fat: 6.0,
-            carbs: 24,
-            protein: 4.0,
-            iron: '1%',
-          },
-          {
-            name: 'Ice cream sandwich',
-            calories: 237,
-            fat: 9.0,
-            carbs: 37,
-            protein: 4.3,
-            iron: '1%',
-          },
-          {
-            name: 'Eclair',
-            calories: 262,
-            fat: 16.0,
-            carbs: 23,
-            protein: 6.0,
-            iron: '7%',
-          },
-          {
-            name: 'Cupcake',
-            calories: 305,
-            fat: 3.7,
-            carbs: 67,
-            protein: 4.3,
-            iron: '8%',
-          },
-          {
-            name: 'Gingerbread',
-            calories: 356,
-            fat: 16.0,
-            carbs: 49,
-            protein: 3.9,
-            iron: '16%',
-          },
-          {
-            name: 'Jelly bean',
-            calories: 375,
-            fat: 0.0,
-            carbs: 94,
-            protein: 0.0,
-            iron: '0%',
-          },
-          {
-            name: 'Lollipop',
-            calories: 392,
-            fat: 0.2,
-            carbs: 98,
-            protein: 0,
-            iron: '2%',
-          },
-          {
-            name: 'Honeycomb',
-            calories: 408,
-            fat: 3.2,
-            carbs: 87,
-            protein: 6.5,
-            iron: '45%',
-          },
-          {
-            name: 'Donut',
-            calories: 452,
-            fat: 25.0,
-            carbs: 51,
-            protein: 4.9,
-            iron: '22%',
-          },
-          {
-            name: 'KitKat',
-            calories: 518,
-            fat: 26.0,
-            carbs: 65,
-            protein: 7,
-            iron: '6%',
-          },
-        ],
-      }
-    },
-  }
+export default {
+  data: () => ({
+    dialog: false,
+  }),
+};
 </script>

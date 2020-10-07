@@ -34,6 +34,7 @@ Route::group(
         Route::get('/email/verify/{id}', 'VerificationController@verify')->name('verification.verify');
 
         Route::post('/email/resend', 'VerificationController@resend')->name('verification.resend');
+
     }
 );
 
@@ -43,6 +44,4 @@ Route::get('/', function () {
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
 
-Route::resource('user_info', UserInformationController::class)->except([
-    'create'
-]);
+Route::resource('user_info', UserInformationController::class)->except(['create']);

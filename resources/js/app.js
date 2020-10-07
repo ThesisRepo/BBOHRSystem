@@ -19,7 +19,7 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('sidebar-header', require('./modules/sidebar.vue').default);
+Vue.component('dashboard-view', require('./App.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -30,11 +30,12 @@ Vue.component('sidebar-header', require('./modules/sidebar.vue').default);
 
 
 import Vue from "vue";
-import App from "./App.vue";
 import router from "./router";
+import axios from 'axios';
 import Vuetify from 'vuetify';
 Vue.use(Vuetify);
-Vue.component('dashboard', App);
+
+Vue.prototype.$axios = axios
 Vue.config.productionTip = false;
 const app = new Vue({
   router,
