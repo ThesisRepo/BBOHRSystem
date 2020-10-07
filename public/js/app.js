@@ -48327,7 +48327,7 @@ var render = function() {
               )
             : _vm._e(),
           _vm._v(" "),
-          _vm.user === "emp"
+          _vm.user_type === "emp"
             ? _c(
                 "v-list",
                 [
@@ -108974,8 +108974,8 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\capstonestudent\Documents\Thesis PN2020-B\BBOHRSystem\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\capstonestudent\Documents\Thesis PN2020-B\BBOHRSystem\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\2ndyrGroupC\Desktop\Projects\BBOHRSystem\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\2ndyrGroupC\Desktop\Projects\BBOHRSystem\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

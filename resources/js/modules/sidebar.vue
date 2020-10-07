@@ -28,7 +28,7 @@
           </v-list-item>
         </v-list-item-group>
       </v-list>
-      <v-list v-if="user === 'emp'">
+      <v-list v-if="user_type  === 'emp'">
         <v-list-item-group active-class="sky blue blue--text">
           <v-list-item
             v-for="(item, index) in employ"
