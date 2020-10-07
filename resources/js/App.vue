@@ -6,7 +6,6 @@
                 <router-view>
                 </router-view>
             </v-container>
-            <h1>{{ user.role.name }}</h1>
         </v-main>
     </v-app>
 </template>

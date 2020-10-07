@@ -1922,7 +1922,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -42036,9 +42035,7 @@ var render = function() {
             { staticClass: "container", attrs: { fluid: "" } },
             [_c("router-view")],
             1
-          ),
-          _vm._v(" "),
-          _c("h1", [_vm._v(_vm._s(_vm.user.role.name))])
+          )
         ],
         1
       )

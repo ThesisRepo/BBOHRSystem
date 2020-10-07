@@ -1,18 +1,8 @@
 <template>
   <v-row justify="center">
-    <v-dialog
-      v-model="dialog"
-      persistent
-      max-width="600px"
-    >
+    <v-dialog v-model="dialog" persistent max-width="600px">
       <template>
-        <v-btn
-          color="primary"
-          dark
-          v-model="showDetails"
-        >
-          Make Request
-        </v-btn>
+        <v-btn color="primary" dark v-model="showDetails">Make Request</v-btn>
       </template>
       <v-card>
         <v-card-title>
@@ -21,8 +11,7 @@
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col
-                cols="12">
+              <v-col cols="12">
                 <v-select
                   :items="['Sick Leave', 'Single Parent Leave', 'Vacation Leave', 'Other Leave']"
                   label="Reason*"
@@ -30,11 +19,7 @@
                 ></v-select>
               </v-col>
               <v-col cols="12" sm="4">
-                <v-text-field
-                  label="Total Day/s of Leave*"
-                  type="number"
-                  required
-                ></v-text-field>
+                <v-text-field label="Total Day/s of Leave*" type="number" required></v-text-field>
               </v-col>
               <v-col cols="12" sm="4">
                 <v-menu
@@ -58,11 +43,7 @@
                       v-on="on"
                     ></v-text-field>
                   </template>
-                  <v-date-picker
-                    v-model="date"
-                    no-title
-                    @input="menu1 = false"
-                  ></v-date-picker>
+                  <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
                 </v-menu>
               </v-col>
               <v-col cols="12" sm="4">
@@ -87,15 +68,10 @@
                       v-on="on"
                     ></v-text-field>
                   </template>
-                  <v-date-picker
-                    v-model="date"
-                    no-title
-                    @input="menu1 = false"
-                  ></v-date-picker>
+                  <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
                 </v-menu>
               </v-col>
-              <v-col
-                cols="12">
+              <v-col cols="12">
                 <v-select
                   :items="['Sick Leave', 'Single Parent Leave', 'Vacation Leave', 'Other Leave']"
                   label="PRP in Charge*"
@@ -106,36 +82,24 @@
                 <v-text-field
                   label="Status"
                 ></v-text-field>
-              </v-col> -->
+              </v-col>-->
             </v-row>
           </v-container>
           <small>*indicates required field</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="dialog = false"
-          >
-            Close
-          </v-btn>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="dialog = false"
-          >
-            Save
-          </v-btn>
+          <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+          <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
   </v-row>
 </template>
 <script>
-  export default {
-    data: () => ({
-      dialog: false,
-    }),
-  }
+export default {
+  data: () => ({
+    dialog: false
+  })
+};
 </script>
