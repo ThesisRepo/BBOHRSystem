@@ -17,6 +17,7 @@ class CreateUserInformations extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->index();
             $table->string('company_id');
+            $table->string('profile_url')->nullable();  
             $table->string('position');
             $table->date('date_hired');
             $table->string('contact_number');
@@ -27,6 +28,7 @@ class CreateUserInformations extends Migration
             $table->string('sss_number');
             $table->string('pag_ibig_number');
             $table->string('philhealth_number');
+            $table->integer('allowed_leave_number');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });

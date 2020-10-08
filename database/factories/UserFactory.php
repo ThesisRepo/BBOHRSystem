@@ -41,6 +41,7 @@ $factory->afterCreating(User::class, function ($user, $faker) {
         'tin_number' => $faker->randomNumber(6),
         'sss_number' => $faker->randomNumber(6),
         'pag_ibig_number' => $faker->randomNumber(6),
-        'philhealth_number' => $faker->randomNumber(6)
+        'philhealth_number' => $faker->randomNumber(6),
+        'allowed_leave_number' => $faker->unique()->numberBetween(1,10)
     ]);
 });
