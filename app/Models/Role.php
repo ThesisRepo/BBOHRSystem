@@ -36,6 +36,6 @@ class Role extends Model
      * @return \Illuminate\Database\Eloquent\Relations\hasMany
      */
     public function users() {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'role_users')->withTimestamps();
     }
 }

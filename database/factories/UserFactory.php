@@ -29,9 +29,13 @@ $factory->define(User::class, function (Faker $faker) {
 });
 
 $factory->afterCreating(User::class, function ($user, $faker) {
+    $user->roles()->attach(5);
+});
+
+$factory->afterCreating(User::class, function ($user, $faker) {
     $user->userInformation()->create([
         'company_id' => $faker->randomNumber(6),
-        'position' => $user->role->name,
+        'position' => 'employee',
         'date_hired' => new Carbon('2016-01-23'),
         'contact_number' => $faker->phoneNumber,
         'status' => 'regular',
@@ -45,6 +49,3 @@ $factory->afterCreating(User::class, function ($user, $faker) {
     ]);
 });
 
-$factory->afterCreating(User::class, function ($user, $faker) {
-    $user->roles()->attach(5);
-});
