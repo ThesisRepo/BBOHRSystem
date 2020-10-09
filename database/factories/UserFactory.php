@@ -21,7 +21,6 @@ use Carbon\Carbon;
 
 $factory->define(User::class, function (Faker $faker) {
     return [
-        'role_id' => 5,
         'first_name' => $faker->firstName,
         'last_name' => $faker->lastName,
         'email' => $faker->unique()->safeEmail,
@@ -30,9 +29,13 @@ $factory->define(User::class, function (Faker $faker) {
 });
 
 $factory->afterCreating(User::class, function ($user, $faker) {
+    $user->roles()->attach(5);
+});
+
+$factory->afterCreating(User::class, function ($user, $faker) {
     $user->userInformation()->create([
         'company_id' => $faker->randomNumber(6),
-        'position' => $user->role->name,
+        'position' => 'employee',
         'date_hired' => new Carbon('2016-01-23'),
         'contact_number' => $faker->phoneNumber,
         'status' => 'regular',
@@ -41,6 +44,8 @@ $factory->afterCreating(User::class, function ($user, $faker) {
         'tin_number' => $faker->randomNumber(6),
         'sss_number' => $faker->randomNumber(6),
         'pag_ibig_number' => $faker->randomNumber(6),
-        'philhealth_number' => $faker->randomNumber(6)
+        'philhealth_number' => $faker->randomNumber(6),
+        'allowed_leave_number' => $faker->unique()->numberBetween(1,10)
     ]);
 });
+
