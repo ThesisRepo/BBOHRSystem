@@ -137,6 +137,11 @@
   export default {
     data: () => ({
       dialog: false,
+      menu1: null,
+      date: null
     }),
+    methods: {
+      menu1(){}
+    }
   }
 </script>

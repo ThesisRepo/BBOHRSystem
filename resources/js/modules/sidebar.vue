@@ -4,13 +4,13 @@
       <center>
         <v-sheet color="light-blue darken-4" class="pa-5">
           <v-avatar class="mb-10" color="grey darken-1" size="64"></v-avatar>
-          <div style="color:white">Marion Jay Balugo</div>
+          <div style="color:white">{{ user_name }}</div>
         </v-sheet>
       </center>
 
       <v-divider></v-divider>
 
-      <v-list v-if="user_type === 'general mngr'">
+      <v-list v-if="user_type === 'general mngr' || user_type === 'hr mngr'">
         <v-list-item-group active-class="sky blue blue--text">
           <v-list-item
             v-for="(item, index) in links"
@@ -28,7 +28,7 @@
           </v-list-item>
         </v-list-item-group>
       </v-list>
-      <v-list v-if="user === 'emp'">
+      <v-list v-if="user_type === 'emp' || user_type === 'finance mngr' || user_type === 'prp emp'">
         <v-list-item-group active-class="sky blue blue--text">
           <v-list-item
             v-for="(item, index) in employ"
@@ -70,6 +70,7 @@ import ROUTER from "../router";
 export default {
   data: () => ({
     user_type: localStorage.getItem('user_type'),
+    user_name: localStorage.getItem('user_name'),
     drawer: null,
     data: null,
     links: [
