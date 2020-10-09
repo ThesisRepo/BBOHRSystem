@@ -21,7 +21,6 @@ use Carbon\Carbon;
 
 $factory->define(User::class, function (Faker $faker) {
     return [
-        'role_id' => 5,
         'first_name' => $faker->firstName,
         'last_name' => $faker->lastName,
         'email' => $faker->unique()->safeEmail,
@@ -44,4 +43,8 @@ $factory->afterCreating(User::class, function ($user, $faker) {
         'philhealth_number' => $faker->randomNumber(6),
         'allowed_leave_number' => $faker->unique()->numberBetween(1,10)
     ]);
+});
+
+$factory->afterCreating(User::class, function ($user, $faker) {
+    $user->roles()->attach(5);
 });
