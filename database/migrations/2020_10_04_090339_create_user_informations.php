@@ -16,7 +16,8 @@ class CreateUserInformations extends Migration
         Schema::create('user_informations', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->index();
-            $table->string('company_id');
+            $table->unsignedBigInteger('department_id');
+            $table->string('company_number');
             $table->string('profile_url')->nullable();  
             $table->string('position');
             $table->date('date_hired');
@@ -30,6 +31,7 @@ class CreateUserInformations extends Migration
             $table->string('philhealth_number');
             $table->integer('allowed_leave_number');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
             $table->timestamps();
         });
     }
