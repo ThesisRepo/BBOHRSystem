@@ -22,7 +22,7 @@ class UserInformationController extends Controller
      */
     public function index()
     {
-        dd($this->user->all());
+        return $this->user->all();
     }
 
     /**
@@ -33,7 +33,7 @@ class UserInformationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->user->create($request->all());
     }
 
     /**
@@ -44,18 +44,7 @@ class UserInformationController extends Controller
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        $this->user->find($id);
     }
 
     /**
@@ -67,7 +56,7 @@ class UserInformationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->user->update($request->all(), $id);        
     }
 
     /**
@@ -78,6 +67,6 @@ class UserInformationController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->user->delete($id);
     }
 }

@@ -31,9 +31,44 @@ class EloquentImplementation implements EloquentContract {
    * populates db
    */
   public function create( array $data) {
-    $this->model->create($data);
+    return $this->model->create($data);
   }
-  
+
+  /**
+   * @param int $id
+   * 
+   * find the matching value of id
+   */
+  public function find( $id) {
+    return $this->model->find($id);
+  }
+
+  /**
+   * @param int $id
+   * 
+   * find the matching value of id
+   */
+  public function findOrFail( $id) {
+    return $this->model->findOrFail($id);
+  }
+
+  /**
+   * @param array $data
+   * @param int $id
+   * updates data for matching id in db
+   */
+  public function update(array $data, $id){
+    return $this->findOrFail($id)->update($data);
+  }
+
+  /**
+   * @param int $id
+   * deletes data for matching id in db
+   */
+  public function delete($id){
+    return $this->where('id', $id)->delete();
+  }
+
   /**
    * @param string $model
    * creates a model
@@ -52,7 +87,6 @@ class EloquentImplementation implements EloquentContract {
    * @return App\Eloquent\Implementations\EloquentImplementation
    */
   public function with( $relationship) {
-
     return $this->model->with( $relationship);
   }
 }

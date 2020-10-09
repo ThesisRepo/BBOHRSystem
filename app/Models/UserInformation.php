@@ -15,6 +15,7 @@ class UserInformation extends Model
      */
     protected $fillable = [
         'company_id',
+        'profile_url',
         'position',
         'date_hired',
         'contact_number',
@@ -24,7 +25,8 @@ class UserInformation extends Model
         'tin_number',
         'sss_number',
         'pag_ibig_number',
-        'philhealth_number'
+        'philhealth_number',
+        'allowed_leave_number'
     ];
 
     /**

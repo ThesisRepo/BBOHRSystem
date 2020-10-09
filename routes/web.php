@@ -44,4 +44,5 @@ Route::get('/', function () {
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
 
-Route::resource('user_info', UserInformationController::class)->except(['create']);
+Route::resource('user_info', UserInformationController::class)->except(['create', 'edit']);
+
