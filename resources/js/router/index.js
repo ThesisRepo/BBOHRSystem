@@ -10,6 +10,7 @@ import ActualOverTime from "../components/Actual_OT.vue";
 import PettyCash from "../components/Petty_Cash.vue";
 import Budget from "../components/Budget.vue";
 import TravelAuthorization from "../components/Travel_Authorization.vue";
+import ManageUsers from "../components/ManageUsers.vue";
 
 
 Vue.use(Router);
@@ -63,6 +64,11 @@ const router = new Router({
       path: "/TravelAuthorization",
       name: "TravelAuthorization",
       component: TravelAuthorization
+    },
+    {
+      path: "/ManageUsers",
+      name: "ManageUsers",
+      component: ManageUsers
     }
   ] 
 });

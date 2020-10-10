@@ -31,9 +31,11 @@ Vue.component('dashboard-view', require('./App.vue').default);
 
 import Vue from "vue";
 import router from "./router";
+import axios from 'axios';
 import Vuetify from 'vuetify';
-   Vue.use(Vuetify);
+Vue.use(Vuetify);
 
+Vue.prototype.$axios = axios
 Vue.config.productionTip = false;
 const app = new Vue({
   router,

@@ -10,32 +10,41 @@
 
       <v-divider></v-divider>
 
-      <v-list v-if="user === 'ADMIN'">
-        <v-list-item v-for="[icon, text] in links" :key="icon" link>
-          <v-list-item-icon>
-            <v-icon>{{ icon }}</v-icon>
-          </v-list-item-icon>
+      <v-list v-if="user_type === 'general mngr'">
+        <v-list-item-group active-class="sky blue blue--text">
+          <v-list-item
+            v-for="(item, index) in links"
+            :key="index"
+            link
+            @click="redirect(item.route)"
+          >
+            <v-list-item-icon>
+              <v-icon color="white darken-2">{{ item.icon }}</v-icon>
+            </v-list-item-icon>
 
           <v-list-item-content >
-            <v-list-item-title >{{ text }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+              <v-list-item-title class="white--text lighten-1--text">{{ item.text }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
       </v-list>
-      <v-list v-if="user === 'EMPLOYEE'">
-        <v-list-item
-          v-for="(item, index) in employ"
-          :key="index"
-          link
-          @click="redirect(item.route)"
-        >
-          <v-list-item-icon >
-            <v-icon color="white darken-2">{{ item.icon }}</v-icon>
-          </v-list-item-icon>
+      <v-list v-if="user_type  === 'emp'">
+        <v-list-item-group active-class="sky blue blue--text">
+          <v-list-item
+            v-for="(item, index) in employ"
+            :key="index"
+            link
+            @click="redirect(item.route)"
+          >
+            <v-list-item-icon >
+              <v-icon color="white darken-2">{{ item.icon }}</v-icon>
+            </v-list-item-icon>
 
-          <v-list-item-content>
-            <v-list-item-title class="white--text lighten-1--text ">{{ item.text }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+            <v-list-item-content>
+              <v-list-item-title class="white--text lighten-1--text">{{ item.text }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
 
@@ -59,59 +68,42 @@ v-app-bar {
 import ROUTER from "../router";
 export default {
   data: () => ({
-    user: "EMPLOYEE",
+    user_type: localStorage.getItem('user_type'),
     drawer: null,
+    data: null,
     links: [
-      ["mdi-inbox-arrow-down", "Inbox"],
-      ["mdi-send", "Send"],
-      ["mdi-delete", "Trash"],
-      ["mdi-alert-octagon", "Spam"],
+      { icon: "mdi-account", text: "My Account", route: "/MyAccount" },
+      { icon: "mdi-apps", text: "Dashboard", route: "/Dashboard" },
+      { icon: "mdi-calendar-edit", text: "Leave Request", route: "/Leave" },
+      { icon: "mdi-calendar-account", text: "Shift Change Request", route: "/ShiftChange" },
+      { icon: "mdi-calendar-clock", text: "Overtime Request", route: "/Overtime" },
+      { icon: "mdi-calendar-multiple-check", text: "Actual Overtime Request", route: "/ActualOverTime" },
+      { icon: "mdi-account-cash", text: "Petty Cash Request", route: "/PettyCash" },
+      { icon: "mdi-account-cash-outline", text: "Budget Request", route: "/Budget" },
+      { icon: "mdi-airplane", text: "Travel Authorization", route: "/TravelAuthorization" },
+      { icon: "mdi-account-group", text: "Manage Users", route: "/ManageUsers" },
+      { icon: "mdi-logout", text: "LogOut", route: "/TravelAuthorization" }
     ],
     employ: [
       { icon: "mdi-account", text: "My Account", route: "/MyAccount" },
       { icon: "mdi-apps", text: "Dashboard", route: "/Dashboard" },
       { icon: "mdi-calendar-edit", text: "Leave Request", route: "/Leave" },
-      {
-        icon: "mdi-calendar-account",
-        text: "Shift Change Request",
-        route: "/ShiftChange",
-      },
-      {
-        icon: "mdi-calendar-clock",
-        text: "Overtime Request",
-        route: "/Overtime",
-      },
-      {
-        icon: "mdi-calendar-multiple-check",
-        text: "Actual Overtime Request",
-        route: "/ActualOverTime",
-      },
-      {
-        icon: "mdi-account-cash",
-        text: "Petty Cash Request",
-        route: "/PettyCash",
-      },
-      {
-        icon: "mdi-account-cash-outline",
-        text: "Budget Request",
-        route: "/Budget",
-      },
-      {
-        icon: "mdi-airplane",
-        text: "Travel Authorization",
-        route: "/TravelAuthorization",
-      },
-      {
-        icon: "mdi-logout",
-        text: "LogOut",
-        route: "/TravelAuthorization",
-      }
+      { icon: "mdi-calendar-account", text: "Shift Change Request", route: "/ShiftChange" },
+      { icon: "mdi-calendar-clock", text: "Overtime Request", route: "/Overtime" },
+      { icon: "mdi-calendar-multiple-check", text: "Actual Overtime Request", route: "/ActualOverTime" },
+      { icon: "mdi-account-cash", text: "Petty Cash Request", route: "/PettyCash" },
+      { icon: "mdi-account-cash-outline", text: "Budget Request", route: "/Budget" },
+      { icon: "mdi-airplane", text: "Travel Authorization", route: "/TravelAuthorization" },
+      { icon: "mdi-logout", text: "LogOut", route: "/TravelAuthorization" }
     ],
   }),
+  mounted(){
+    console.log(this.user_type)
+  },
   methods: {
     redirect(route) {
       ROUTER.push(route).catch(() => {});
     },
   },
 };
-</script>
+</script> 

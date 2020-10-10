@@ -14,9 +14,18 @@ import Vuetify from "vuetify";
 import sidebar from "./modules/sidebar.vue";
 export default {
     name: "app",
+    props: ['user'],
     components: {
         sidebar
         // dashboard
+    },
+    mounted(){
+        this.setUserType()
+    },
+    methods: {
+        setUserType(){
+            localStorage.setItem('user_type', this.user.roles[0].name)
+        }
     }
 }
 </script>  
