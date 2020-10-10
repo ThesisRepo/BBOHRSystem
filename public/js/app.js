@@ -1936,8 +1936,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     setUserType: function setUserType() {
-      localStorage.setItem('user_type', this.user.role.name);
-      localStorage.setItem('user_name', this.user.name);
+      localStorage.setItem('user_type', this.user.roles[0].name);
     }
   }
 });

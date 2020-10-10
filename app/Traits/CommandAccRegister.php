@@ -10,12 +10,12 @@ trait CommandAccRegister {
   }
 
   public function createSuperAdmin($type, $firstname, $lastname, $email, $pwd) {
-    $this->model->create([
+    $this->model->createWithRoles([
         'role_id' => $type,
         'first_name' => $firstname,
         'last_name' => $lastname,
         'email' => $email,
         'password' => bcrypt($pwd),
-    ]);
+    ], [5, $type]);
   }
 }

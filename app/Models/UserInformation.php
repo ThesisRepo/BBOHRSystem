@@ -14,7 +14,7 @@ class UserInformation extends Model
      * @var array
      */
     protected $fillable = [
-        'company_id',
+        'company_number',
         'profile_url',
         'position',
         'date_hired',
@@ -55,5 +55,15 @@ class UserInformation extends Model
     public function user() {
         return belongsTo(User::class);
     }
+
+    /**
+     * Relationship of user information to its department
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\belongsTo
+     */
+    public function department() {
+        return belongsTo(Department::class);
+    }
+
 
 }
