@@ -2,19 +2,38 @@
   <v-row>
     <v-container cols="4">
       <v-col>
-        <v-card class="mx-auto">
+        <v-card class="mx-auto pa-2">
           <v-card-title>
-            <span class="headline">USER PROFILE</span>
+            <span
+              class="headline"
+              color="blue lighten-3
+"
+              >USER PROFILE</span
+            >
           </v-card-title>
-
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title class="title">
-                Marion Jay Balugo Gwapo
-              </v-list-item-title>
-              <v-list-item-subtitle>Network Engineer</v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
+          <v-divider></v-divider>
+          <v-row>
+            <v-col cols="12" sm="4" md="4">
+              <v-avatar
+                class="ml-15"
+                color="grey darken-1"
+                size="190"
+              ></v-avatar>
+              <v-col>
+                <v-btn color="primary" class="ml-16"> Change Profile </v-btn>
+              </v-col>
+            </v-col>
+            <v-col cols="12" sm="4" md="4" pa="3">
+              <h1 class="title-2 text-center mt-10">Marion Jay Balugo</h1>
+              <h5 class="title-2 text-center">
+                Company Email: mbalugo@bbo.com
+              </h5>
+              <h6 class="subtitle-2 text-center">Id Number: 260197300</h6>
+            </v-col>
+            <v-col cols="12" sm="4" md="4" class="text-right">
+              <editProfile></editProfile>
+            </v-col>
+          </v-row>
         </v-card>
       </v-col>
     </v-container>
@@ -22,96 +41,96 @@
       <v-col>
         <v-card>
           <v-card-text>
+            <br />
             <v-container>
               <v-row>
                 <v-col cols="12" sm="4" md="4">
-                  <v-text-field label="Position*" required></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="4" md="4">
-                  <v-menu
-                    ref="menu1"
-                    v-model="menu1"
-                    :close-on-content-click="false"
-                    transition="scale-transition"
-                    offset-y
-                    max-width="290px"
-                    min-width="290px"
-                    margin-left="20px"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                        v-model="dateFormatted"
-                        label="Date Hired*"
-                        required
-                        persistent-hint
-                        prepend-icon="mdi-calendar"
-                        v-bind="attrs"
-                        @blur="date = parseDate(dateFormatted)"
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker
-                      v-model="date"
-                      no-title
-                      @input="menu1 = false"
-                    ></v-date-picker>
-                  </v-menu>
-                </v-col>
-                <v-col cols="12" sm="4" md="4">
                   <v-text-field
-                    label="Contact Number*"
-                    persistent-hint
-                    required
+                    value="Web Integration"
+                    label="Department"
+                    outlined
+                    readonly
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4" md="4">
-                  <v-text-field label="Address" required></v-text-field>
+                  <v-text-field
+                    value="Computer Engineer"
+                    label="Position"
+                    outlined
+                    readonly
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4" md="4">
-                  <v-select
-                    :items="['Single', 'Married', 'Widowed', 'Separated']"
-                    label="Status*"
-                    required
-                  ></v-select>
+                  <v-text-field
+                    value="07/10/2020"
+                    label="Date Hired"
+                    outlined
+                    readonly
+                  ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="4" md="4">
-                  <v-menu
-                    v-model="menu2"
-                    :close-on-content-click="false"
-                    transition="scale-transition"
-                    offset-y
-                    max-width="290px"
-                    min-width="290px"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                        v-model="computedDateFormatted"
-                        label="Date of Birth*"
-                        persistent-hint
-                        prepend-icon="mdi-calendar"
-                        readonly
-                        v-bind="attrs"
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker
-                      v-model="date"
-                      no-title
-                      @input="menu2 = false"
-                    ></v-date-picker>
-                  </v-menu>
+                <v-col cols="12" sm="4" md="3">
+                  <v-text-field
+                    value="Lapu-Lapu City"
+                    label="Address"
+                    outlined
+                    readonly
+                  ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="3" md="3">
-                  <v-text-field label="PagIbig No.*" required></v-text-field>
+                <v-col cols="12" sm="4" md="3">
+                  <v-text-field
+                    value="Single"
+                    label="Status"
+                    outlined
+                    readonly
+                  ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="3" md="3">
-                  <v-text-field label="Tin No.*" required></v-text-field>
+                <v-col cols="12" sm="4" md="3">
+                  <v-text-field
+                    value="December 24,1997"
+                    label="Birthdate"
+                    outlined
+                    readonly
+                  ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="3" md="3">
-                  <v-text-field label="PhilHealth No." required></v-text-field>
+                <v-col cols="12" sm="4" md="3">
+                  <v-text-field
+                    value="09102957389"
+                    label="Contact Number"
+                    outlined
+                    readonly
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3">
-                  <v-text-field label="SSS No." required></v-text-field>
+                  <v-text-field
+                    value="4204223242"
+                    label="PagIbig Number"
+                    outlined
+                    readonly
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="3" md="3">
+                  <v-text-field
+                    value="4204223242"
+                    label="Tin Number"
+                    outlined
+                    readonly
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="3" md="3">
+                  <v-text-field
+                    value="4204223242"
+                    label="PhilHealth Number"
+                    outlined
+                    readonly
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="3" md="3">
+                  <v-text-field
+                    value="4204223242"
+                    label="SSS Number"
+                    outlined
+                    readonly
+                  ></v-text-field>
                 </v-col>
               </v-row>
             </v-container>
@@ -131,15 +150,16 @@
   </v-row>
 </template>
 <style scoped>
-v-card {
-  margin-top: 10%;
-}
 </style>
 </style>
 <script>
+import editProfile from "./modals/edit_profile.vue";
 export default {
   data: () => ({
     dialog: false,
   }),
+  components: {
+    editProfile,
+  },
 };
 </script>
