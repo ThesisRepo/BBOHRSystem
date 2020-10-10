@@ -8,12 +8,15 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class ExampleTest extends TestCase
 {
     /**
+     * 
+     * @test
+     * 
      * A basic test example.
-     *
+     * 
      * @return void
      */
-    public function testBasicTest()
+    public function only_logged_in_users_can_see_the_dashboard()
     {
-        $this->assertTrue(true);
+        $response = $this->get('/home')->assertRedirect('/login');
     }
 }

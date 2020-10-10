@@ -16,7 +16,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'rold_id', 'name', 'email', 'password','prp_assigned'
+        'first_name', 'last_name', 'email', 'password','prp_assigned'
     ];
 
     /**
@@ -38,10 +38,12 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
+     * relationship of roles to employees
+     * 
      *@return \Illuminate\Database\Eloquent\Relations\belongsTo
      */
-    public function role() {
-        return $this->belongsTo(Role::class);
+    public function roles() {
+        return $this->belongsToMany(Role::class, 'role_users')->withTimestamps();
     }
 
     /**
@@ -60,5 +62,14 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function assignedPrp() {
         return $this->belongsTo('__CLASS__', 'prp_assigned');
+    }
+
+    /**
+     * relationship of user to its information
+     * 
+     * @return \Illuminate\Databas\Eloquent\Relations\hasOne
+     */
+    public function userInformation() {
+        return $this->hasOne(UserInformation::class);
     }
 }
