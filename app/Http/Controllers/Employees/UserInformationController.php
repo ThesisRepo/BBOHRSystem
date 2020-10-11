@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Employees;
 
 use Illuminate\Http\Request;
 use App\Eloquent\Implementations\UserEloquent;
+use App\Http\Controllers\Controller;
 
 class UserInformationController extends Controller
 {
@@ -11,7 +12,7 @@ class UserInformationController extends Controller
     protected $user;
 
     public function __construct(UserEloquent $user) {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'verify.employee']);
         $this->user = $user;
     }
 

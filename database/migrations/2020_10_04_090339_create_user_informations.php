@@ -19,10 +19,10 @@ class CreateUserInformations extends Migration
             $table->unsignedBigInteger('department_id');
             $table->string('company_number');
             $table->string('profile_url')->nullable();  
-            $table->string('position');
+            $table->string('company_position');
             $table->date('date_hired');
             $table->string('contact_number');
-            $table->string('status');
+            $table->string('civil_status');
             $table->date('birthday');
             $table->string('address');  
             $table->string('tin_number');

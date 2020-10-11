@@ -9,6 +9,11 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/', function () {
+    return redirect()->route('login');
+});
+
 Route::group(
     [
         'namespace' => 'Auth'
@@ -41,9 +46,3 @@ Route::group(
 Route::get('/', function () {
     return redirect()->route('login');
 });
-
-Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
-
-Route::resource('user_info', UserInformationController::class)->except(['create', 'edit']);
-Route::resource('user_info/:id', UserInformationController::class)->except(['create', 'edit']);
-
