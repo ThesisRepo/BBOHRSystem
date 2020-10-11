@@ -25,6 +25,7 @@ export default {
     methods: {
         setUserType(){
             localStorage.setItem('user_type', this.user.roles[0].name)
+            localStorage.setItem('id', this.user.id)
         }
     }
 }

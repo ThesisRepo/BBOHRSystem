@@ -12,7 +12,7 @@
 
       <v-list v-if="user_type === 'general mngr' || user_type === 'hr mngr'">
         <v-list-item-group active-class="sky blue blue--text">
-          <v-list-item
+          <v-list-item px-0
             v-for="(item, index) in links"
             :key="index"
             link
@@ -84,7 +84,7 @@ export default {
       { icon: "mdi-account-cash-outline", text: "Budget Request", route: "/Budget" },
       { icon: "mdi-airplane", text: "Travel Authorization", route: "/TravelAuthorization" },
       { icon: "mdi-account-group", text: "Manage Users", route: "/ManageUsers" },
-      { icon: "mdi-logout", text: "LogOut", route: "/TravelAuthorization" }
+      { icon: "mdi-logout", text: "LogOut", route: "/logout" }
     ],
     employ: [
       { icon: "mdi-account", text: "My Account", route: "/MyAccount" },
