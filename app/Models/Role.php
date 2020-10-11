@@ -20,7 +20,7 @@ class Role extends Model
      * @var array
      */
     protected $fillable = [
-        'name'
+        'role_name'
     ];
 
     /**
@@ -37,5 +37,9 @@ class Role extends Model
      */
     public function users() {
         return $this->belongsToMany(User::class, 'role_users')->withTimestamps();
+    }
+
+    public function leave_requests() {
+        return $this->hasMany(Requests\LeaveRequest::class);
     }
 }

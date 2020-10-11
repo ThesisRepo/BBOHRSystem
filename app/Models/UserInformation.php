@@ -16,10 +16,10 @@ class UserInformation extends Model
     protected $fillable = [
         'company_number',
         'profile_url',
-        'position',
+        'company_position',
         'date_hired',
         'contact_number',
-        'status',
+        'civil_status',
         'birthday',
         'address',
         'tin_number',

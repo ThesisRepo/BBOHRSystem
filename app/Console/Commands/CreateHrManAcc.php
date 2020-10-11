@@ -58,13 +58,13 @@ class CreateHrManAcc extends Command
      */
     public function handle()
     {        
-        if(!$this->user->isRoleExisting(2)) {
+        if(!$this->user->isRoleExisting(4)) {
             $this->setRegisterValues();
             try {
                 DB::beginTransaction();
                 
                 $this->setModel($this->user);
-                $this->createSuperAdmin(2, $this->firstname, $this->lastname, $this->email, $this->pwd);
+                $this->createSuperAdmin(4, $this->firstname, $this->lastname, $this->email, $this->pwd);
 
                 DB::commit();
                 $this->info('HR Account created for '.$this->firstname . ' ' . $this->lastname);
