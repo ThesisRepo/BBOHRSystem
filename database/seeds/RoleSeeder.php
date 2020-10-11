@@ -13,11 +13,11 @@ class RoleSeeder extends Seeder
     public function run()
     {
         if(!DB::table('roles')->count()) {
-            Role::create(['name' => 'general mngr']);
-            Role::create(['name' => 'hr mngr']);
-            Role::create(['name' => 'finance mngr']);
-            Role::create(['name' => 'prp emp']);
-            Role::create(['name' => 'emp']);
+            Role::create(['role_name' => 'general mngr']);
+            Role::create(['role_name' => 'hr mngr']);
+            Role::create(['role_name' => 'finance mngr']);
+            Role::create(['role_name' => 'prp emp']);
+            Role::create(['role_name' => 'emp']);
         }     
     }
 }

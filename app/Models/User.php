@@ -72,4 +72,12 @@ class User extends Authenticatable implements MustVerifyEmail
     public function userInformation() {
         return $this->hasOne(UserInformation::class);
     }
+    
+    public function leave_requests() {
+        return $this->hasMany(Requests\LeaveRequest::class);
+    }
+
+    public function approved_leave_requests() {
+        return $this->morphByMany(Requests\LeaveRequest::class, 'approved_request_records');
+    }
 }
