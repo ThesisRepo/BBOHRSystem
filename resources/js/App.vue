@@ -1,5 +1,6 @@
 <template>
     <v-app id="sample">
+        <!-- <h1>{{user}}</h1> -->
         <v-main>
             <sidebar id="sidebar"></sidebar>
             <v-container class="container" fluid>
@@ -20,6 +21,7 @@ export default {
         // dashboard
     },
     mounted(){
+        console.log('dfd', this.user);
         this.setUserType()
     },
     methods: {
@@ -36,4 +38,5 @@ v-main {
 #sidebar{
     position:absolute;
 }
+
 </style>

@@ -244,5 +244,5 @@ import createLeave from './modals/create_leave.vue'
       },
     },
   }
-};
+
 </script>

@@ -230,5 +230,4 @@ import createShift from './modals/create_shift.vue'
       },
     },
   }
-};
 </script>

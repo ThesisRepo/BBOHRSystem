@@ -24,7 +24,7 @@
               </v-col>
             </v-col>
             <v-col cols="12" sm="4" md="4" pa="3">
-              <h1 class="title-2 text-center mt-10">Marion Jay Balugo</h1>
+              <h1 class="title-2 text-center mt-10 ">Marion Jay Balugo</h1>
               <h5 class="title-2 text-center">
                 Company Email: mbalugo@bbo.com
               </h5>
