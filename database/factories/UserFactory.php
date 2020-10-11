@@ -29,7 +29,7 @@ $factory->define(User::class, function (Faker $faker) {
 });
 
 $factory->afterCreating(User::class, function ($user, $faker) {
-    $user->roles()->attach(5);
+    $user->roles()->attach(1);
 });
 
 $factory->afterCreating(User::class, function ($user, $faker) {
