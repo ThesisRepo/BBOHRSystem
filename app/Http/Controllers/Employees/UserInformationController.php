@@ -48,7 +48,7 @@ class UserInformationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return $this->user->fail($request->all(), $id);        
+        return $this->user->update($request->all(), $id);        
     }
 
     /**
