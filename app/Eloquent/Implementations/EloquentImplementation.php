@@ -58,7 +58,7 @@ class EloquentImplementation implements EloquentContract {
    * updates data for matching id in db
    */
   public function update(array $data, $id){
-    return $this->findOrFail($id)->userInformation()->fill($data);
+    return $this->findOrFail($id)->userInformation()->update($data);
   }
 
   /**
