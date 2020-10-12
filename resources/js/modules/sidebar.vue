@@ -100,7 +100,6 @@ export default {
     ],
   }),
   mounted(){
-    console.log(this.user_type)
   },
   methods: {
     redirect(route) {

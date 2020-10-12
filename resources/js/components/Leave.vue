@@ -97,10 +97,13 @@
     <v-data-table v-if="!requests && (user_type !== 'hr mngr' || user_type !== 'prp emp' || user_type !== 'general mngr')" :headers="headers" :items="desserts" class="elevation-3">
       <template v-slot:top>
         <v-toolbar flat>
-          <!-- <v-toolbar-title>Employees Leave Request</v-toolbar-title> -->
+          <v-toolbar-title>Leave Request</v-toolbar-title>
           <!-- <v-col class="mt-8">
                     <v-select :items="items" label="Month"></v-select>
           </v-col>-->
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <v-divider class="mx-1" vertical></v-divider>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <v-text-field
             v-model="search"
             v-icon="mdi-magnify"
@@ -108,7 +111,6 @@
             single-line
             hide-details
           ></v-text-field>
-          <v-divider class="mx-1" vertical></v-divider>
           <v-spacer></v-spacer>
           <createLeave></createLeave>
           <v-dialog v-model="dialog">

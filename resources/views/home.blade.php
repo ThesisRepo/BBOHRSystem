@@ -2,6 +2,6 @@
 
 @section('content')
 @auth
-    <dashboard-view :user="{{auth()->user()->load('roles')}}"></dashboard-view>
+    <dashboard-view :user="{{auth()->user()->load('roles')->load('userInformation')}}"></dashboard-view>
 @endauth
 @endsection

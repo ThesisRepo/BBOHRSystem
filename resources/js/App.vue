@@ -24,8 +24,11 @@ export default {
     },
     methods: {
         setUserType(){
-            localStorage.setItem('user_type', this.user.roles[0].name)
+            localStorage.setItem('user_type', this.user.roles[0].role_name)
             localStorage.setItem('id', this.user.id)
+            localStorage.setItem('user_name', this.user.first_name + " " + this.user.last_name)
+            localStorage.setItem('email', this.user.email)
+            localStorage.setItem('company_id', this.user.user_information.company_number)
         }
     }
 }

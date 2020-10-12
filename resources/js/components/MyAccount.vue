@@ -6,8 +6,7 @@
           <v-card-title>
             <span
               class="headline"
-              color="blue lighten-3
-"
+              color="blue lighten-3"
               >USER PROFILE</span
             >
           </v-card-title>
@@ -26,9 +25,9 @@
             <v-col cols="12" sm="4" md="4" pa="3">
               <h1 class="title-2 text-center mt-10">{{ user_name }}</h1>
               <h5 class="title-2 text-center">
-                Company Email: name@bbo.com.ph
+                Company Email: {{ user_email }}
               </h5>
-              <h6 class="subtitle-2 text-center">Id Number: 260197300</h6>
+              <h6 class="subtitle-2 text-center">Id Number: {{ company_number }}</h6>
             </v-col>
             <v-col cols="12" sm="4" md="4" class="text-right">
               <editProfile></editProfile>
@@ -149,17 +148,15 @@
     </v-container>
   </v-row>
 </template>
-<style scoped>
-</style>
-</style>
 <script>
 import editProfile from "./modals/edit_profile.vue";
-import { userInfo } from 'os';
 export default {
   data() {
     return {
       user_name: localStorage.getItem('user_name'),
       user_id: localStorage.getItem('id'),
+      user_email: localStorage.getItem('email'),
+      company_number: localStorage.getItem('company_id'),
       dialog: false,
       department: null,
       position: null,
@@ -183,16 +180,18 @@ export default {
   methods: {
     getInfo() {
       axios.get('http://localhost:8000/user_info/'+ this.user_id).then(response => {
-        this.position = response.data.position
+        console.log(response.data)
+        this.position = response.data.company_position
         this.date_hired = response.data.date_hired
         this.address = response.data.address
-        this.status = response.data.status
+        this.status = response.data.civil_status
         this.birthdate = response.data.birthday
-        this.contact_number = response.data.company_number
+        this.contact_number = response.data.contact_number
         this.pag_ibig = response.data.pag_ibig_number
         this.tin_number = response.data.tin_number
         this.philhealth_num = response.data.philhealth_number
-        this.sss_num = response.data.sss_number
+        this.sss_num = response.data.sss_number 
+        console.log('-----------test-----------', this.position, this.date_hired)       
       })
       .catch(e => {
         console.log(e);
