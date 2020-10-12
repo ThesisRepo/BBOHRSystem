@@ -1933,14 +1933,20 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.setUserType();
+    axios.get('http://localhost:8000/user_info/1').then(function (response) {
+      console.log('response', response);
+    });
   },
   methods: {
     setUserType: function setUserType() {
       localStorage.setItem('user_type', this.user.roles[0].role_name);
+<<<<<<< HEAD
       localStorage.setItem('id', this.user.id);
       localStorage.setItem('user_name', this.user.first_name + " " + this.user.last_name);
       localStorage.setItem('email', this.user.email);
       localStorage.setItem('company_id', this.user.user_information.company_number);
+=======
+>>>>>>> 1a77aa48a0a28e2820a9128c3ca26b5c0aed4ad6
     }
   }
 });

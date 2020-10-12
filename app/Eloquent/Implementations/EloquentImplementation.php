@@ -40,7 +40,7 @@ class EloquentImplementation implements EloquentContract {
    * find the matching value of id
    */
   public function find( $id) {
-    return $this->model->find($id)->userInformation;
+    return $this->model->with('userInformation')->find($id);
   }
 
   /**

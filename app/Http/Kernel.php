@@ -64,7 +64,8 @@ class Kernel extends HttpKernel
         'verify.prp' => \App\Http\Middleware\VerifyUserType\VerifyIfPrp::class,
         'verify.manager.hr' => \App\Http\Middleware\VerifyUserType\VerifyIfHRManager::class,
         'verify.manager.finance' => \App\Http\Middleware\VerifyUserType\VerifyIfFinanceManager::class,
-        'verify.manager.general' => \App\Http\Middleware\VerifyUserType\VerifyIfGenManager::class
+        'verify.manager.general' => \App\Http\Middleware\VerifyUserType\VerifyIfGenManager::class,
+        'cors' => \App\Http\Middleware\Cors::class
     ];
 
     /**
