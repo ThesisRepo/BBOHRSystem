@@ -23,6 +23,7 @@ class CreateUserInformations extends Migration
             $table->date('date_hired');
             $table->string('contact_number');
             $table->string('civil_status');
+            $table->string('company_status');
             $table->date('birthday');
             $table->string('address');  
             $table->string('tin_number');
