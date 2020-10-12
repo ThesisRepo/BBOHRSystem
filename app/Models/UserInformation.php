@@ -20,6 +20,7 @@ class UserInformation extends Model
         'date_hired',
         'contact_number',
         'civil_status',
+        'company_status',
         'birthday',
         'address',
         'tin_number',
