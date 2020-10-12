@@ -36,7 +36,7 @@ class UserInformationController extends Controller
      */
     public function show($id)
     {
-        return $this->user->find($id);
+        return [$this->user->find($id)];
     }
 
     /**
