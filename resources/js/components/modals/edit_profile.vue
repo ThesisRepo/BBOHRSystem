@@ -23,7 +23,7 @@
               </v-col>
               <v-col cols="12" sm="6" md="4">
                 <v-select
-                  :items="['Single', 'Married', 'Widowed', 'Single-Parent']"
+                  :items="['single', 'Married', 'Widowed', 'Single-Parent']"
                   label="Status*"
                   v-model="datas.civil_status"
                   required
@@ -52,7 +52,7 @@
           <v-btn color="blue darken-1" text @click="dialog = false">
             Close
           </v-btn>
-          <v-btn color="blue darken-1" text @click="dialog = false">
+          <v-btn color="blue darken-1" text @click="update()">
             Save
           </v-btn>
         </v-card-actions>
@@ -67,6 +67,28 @@ export default {
   }),
   props: ['datas'],
   methods: {
+    update() {
+      if(this.datas.company_position === null && this.datas.address === null && this.datas.civil_status === null && this.datas.contact_number === null &&
+      this.datas.pag_ibig_number === null && this.datas.sss_number === null && this.datas.tin_number === null && this.datas.philhealth_number === null) {
+        e.preventDefault()
+      }
+      let params = {
+        company_position: this.datas.company_position,
+        address: this.datas.address,
+        civil_status: this.datas.civil_status,
+        contact_number: this.datas.contact_number,
+        pag_ibig_number: this.datas.pag_ibig_number,
+        sss_number: this.datas.sss_number,
+        tin_number: this.datas.tin_number,
+        philhealth_number: this.datas.philhealth_number
+      }
+      this.$axios.post('http://localhost:8000/user_info/update/' + localStorage.getItem('id'), params).then(response => {
+        if(response.data.length > 0) {
+          this.$parent.getInfo()
+          // this.dialog = false
+        }
+      })
+    }
   }
 };
 </script>

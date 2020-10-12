@@ -172,7 +172,8 @@ export default {
       pag_ibig: null,
       tin_number: null,
       philhealth_num: null,
-      sss_num: null
+      sss_num: null,
+      datas: [],
     }
   },
   mounted() {
@@ -183,27 +184,23 @@ export default {
   },
   methods: {
     getInfo() {
-      axios.get('http://localhost:8000/user_info/' + this.user_id).then(response => {
-        this.datas = response.data[0].user_information
-        this.position = response.data[0].user_information.company_position
-        this.date_hired = response.data[0].user_information.date_hired
-        this.address = response.data[0].user_information.address
-        this.status = response.data[0].user_information.civil_status
-        this.birthdate = response.data[0].user_information.birthday
-        this.contact_number = response.data[0].user_information.contact_number
-        this.pag_ibig = response.data[0].user_information.pag_ibig_number
-        this.tin_number = response.data[0].user_information.tin_number
-        this.philhealth_num = response.data[0].user_information.philhealth_number
-        this.sss_num = response.data[0].user_information.sss_number 
-        console.log('-----------test-----------', this.datas)       
+      this.$axios.get('http://localhost:8000/user_info/' + this.user_id).then(response => {
+        this.datas = response.data.user_information
+        this.position = response.data.user_information.company_position
+        this.date_hired = response.data.user_information.date_hired
+        this.address = response.data.user_information.address
+        this.status = response.data.user_information.civil_status
+        this.birthdate = response.data.user_information.birthday
+        this.contact_number = response.data.user_information.contact_number
+        this.pag_ibig = response.data.user_information.pag_ibig_number
+        this.tin_number = response.data.user_information.tin_number
+        this.philhealth_num = response.data.user_information.philhealth_number
+        this.sss_num = response.data.user_information.sss_number    
       })
       .catch(e => {
         console.log(e);
       })
-    },
-    editProfile() {
-      this.userInfo = userInfo
     }
   }
-};
+}
 </script>
