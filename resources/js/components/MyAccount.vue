@@ -2,19 +2,37 @@
   <v-row>
     <v-container cols="4">
       <v-col>
-        <v-card class="mx-auto">
+        <v-card class="mx-auto pa-2">
           <v-card-title>
-            <span class="headline">USER PROFILE</span>
+            <span
+              class="headline"
+              color="blue lighten-3"
+              >USER PROFILE</span
+            >
           </v-card-title>
-
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title class="title">
-                Marion Jay Balugo Gwapo
-              </v-list-item-title>
-              <v-list-item-subtitle>Network Engineer</v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
+          <v-divider></v-divider>
+          <v-row>
+            <v-col cols="12" sm="4" md="4">
+              <v-avatar
+                class="ml-15"
+                color="grey darken-1"
+                size="190"
+              ></v-avatar>
+              <v-col>
+                <v-btn color="primary" class="ml-16"> Change Profile </v-btn>
+              </v-col>
+            </v-col>
+            <v-col cols="12" sm="4" md="4" pa="3">
+              <h1 class="title-2 text-center mt-10">{{ user_name }}</h1>
+              <h5 class="title-2 text-center">
+                Company Email: {{ user_email }}
+              </h5>
+              <h6 class="subtitle-2 text-center">Id Number: {{ company_number }}</h6>
+            </v-col>
+            <v-col cols="12" sm="4" md="4" class="text-right">
+              <editProfile></editProfile>
+            </v-col>
+          </v-row>
         </v-card>
       </v-col>
     </v-container>
@@ -22,96 +40,96 @@
       <v-col>
         <v-card>
           <v-card-text>
+            <br />
             <v-container>
               <v-row>
                 <v-col cols="12" sm="4" md="4">
-                  <v-text-field label="Position*" required></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="4" md="4">
-                  <v-menu
-                    ref="menu1"
-                    v-model="menu1"
-                    :close-on-content-click="false"
-                    transition="scale-transition"
-                    offset-y
-                    max-width="290px"
-                    min-width="290px"
-                    margin-left="20px"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                        v-model="dateFormatted"
-                        label="Date Hired*"
-                        required
-                        persistent-hint
-                        prepend-icon="mdi-calendar"
-                        v-bind="attrs"
-                        @blur="date = parseDate(dateFormatted)"
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker
-                      v-model="date"
-                      no-title
-                      @input="menu1 = false"
-                    ></v-date-picker>
-                  </v-menu>
-                </v-col>
-                <v-col cols="12" sm="4" md="4">
                   <v-text-field
-                    label="Contact Number*"
-                    persistent-hint
-                    required
+                    label="Department"
+                    outlined
+                    readonly
+                    v-model="department"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4" md="4">
-                  <v-text-field label="Address" required></v-text-field>
+                  <v-text-field
+                    v-model="position"
+                    label="Position"
+                    outlined
+                    readonly
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4" md="4">
-                  <v-select
-                    :items="['Single', 'Married', 'Widowed', 'Separated']"
-                    label="Status*"
-                    required
-                  ></v-select>
+                  <v-text-field
+                    v-model="date_hired"
+                    label="Date Hired"
+                    outlined
+                    readonly
+                  ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="4" md="4">
-                  <v-menu
-                    v-model="menu2"
-                    :close-on-content-click="false"
-                    transition="scale-transition"
-                    offset-y
-                    max-width="290px"
-                    min-width="290px"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                        v-model="computedDateFormatted"
-                        label="Date of Birth*"
-                        persistent-hint
-                        prepend-icon="mdi-calendar"
-                        readonly
-                        v-bind="attrs"
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker
-                      v-model="date"
-                      no-title
-                      @input="menu2 = false"
-                    ></v-date-picker>
-                  </v-menu>
+                <v-col cols="12" sm="4" md="3">
+                  <v-text-field
+                    v-model="address"
+                    label="Address"
+                    outlined
+                    readonly
+                  ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="3" md="3">
-                  <v-text-field label="PagIbig No.*" required></v-text-field>
+                <v-col cols="12" sm="4" md="3">
+                  <v-text-field
+                    v-model="status"
+                    label="Status"
+                    outlined
+                    readonly
+                  ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="3" md="3">
-                  <v-text-field label="Tin No.*" required></v-text-field>
+                <v-col cols="12" sm="4" md="3">
+                  <v-text-field
+                    v-model="birthdate"
+                    label="Birthdate"
+                    outlined
+                    readonly
+                  ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="3" md="3">
-                  <v-text-field label="PhilHealth No." required></v-text-field>
+                <v-col cols="12" sm="4" md="3">
+                  <v-text-field
+                    v-model="contact_number"
+                    label="Contact Number"
+                    outlined
+                    readonly
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3">
-                  <v-text-field label="SSS No." required></v-text-field>
+                  <v-text-field
+                    v-model="pag_ibig"
+                    label="PagIbig Number"
+                    outlined
+                    readonly
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="3" md="3">
+                  <v-text-field
+                    v-model="tin_number"
+                    label="Tin Number"
+                    outlined
+                    readonly
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="3" md="3">
+                  <v-text-field
+                    v-model="philhealth_num"
+                    label="PhilHealth Number"
+                    outlined
+                    readonly
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="3" md="3">
+                  <v-text-field
+                    v-model="sss_num"
+                    label="SSS Number"
+                    outlined
+                    readonly
+                  ></v-text-field>
                 </v-col>
               </v-row>
             </v-container>
@@ -130,16 +148,58 @@
     </v-container>
   </v-row>
 </template>
-<style scoped>
-v-card {
-  margin-top: 10%;
-}
-</style>
-</style>
 <script>
+import editProfile from "./modals/edit_profile.vue";
 export default {
-  data: () => ({
-    dialog: false,
-  }),
+  data() {
+    return {
+      user_name: localStorage.getItem('user_name'),
+      user_id: localStorage.getItem('id'),
+      user_email: localStorage.getItem('email'),
+      company_number: localStorage.getItem('company_id'),
+      dialog: false,
+      department: null,
+      position: null,
+      date_hired: null,
+      address: null,
+      status: null,
+      birthdate: null,
+      contact_number: null,
+      pag_ibig: null,
+      tin_number: null,
+      philhealth_num: null,
+      sss_num: null
+    }
+  },
+  mounted() {
+    this.getInfo()
+  },
+  components: {
+    editProfile,
+  },
+  methods: {
+    getInfo() {
+      axios.get('http://localhost:8000/user_info/1').then(response => {
+        console.log(response)
+        this.position = response.data.company_position
+        this.date_hired = response.data.date_hired
+        this.address = response.data.address
+        this.status = response.data.civil_status
+        this.birthdate = response.data.birthday
+        this.contact_number = response.data.contact_number
+        this.pag_ibig = response.data.pag_ibig_number
+        this.tin_number = response.data.tin_number
+        this.philhealth_num = response.data.philhealth_number
+        this.sss_num = response.data.sss_number 
+        console.log('-----------test-----------', this.position, this.date_hired)       
+      })
+      .catch(e => {
+        console.log(e);
+      })
+    },
+    editProfile() {
+      this.userInfo = userInfo
+    }
+  }
 };
 </script>
