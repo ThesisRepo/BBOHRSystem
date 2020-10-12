@@ -1932,9 +1932,6 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   mounted: function mounted() {
-    axios.get('http://localhost:8000/user_info/1').then(function (response) {
-      console.log('haha', response);
-    });
     this.setUserType();
   },
   methods: {
@@ -3641,6 +3638,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -3660,7 +3661,8 @@ __webpack_require__.r(__webpack_exports__);
       pag_ibig: null,
       tin_number: null,
       philhealth_num: null,
-      sss_num: null
+      sss_num: null,
+      datas: []
     };
   },
   mounted: function mounted() {
@@ -3673,25 +3675,21 @@ __webpack_require__.r(__webpack_exports__);
     getInfo: function getInfo() {
       var _this = this;
 
-      axios.get('http://localhost:8000/user_info/1').then(function (response) {
-        console.log(response);
-        _this.position = response.data.company_position;
-        _this.date_hired = response.data.date_hired;
-        _this.address = response.data.address;
-        _this.status = response.data.civil_status;
-        _this.birthdate = response.data.birthday;
-        _this.contact_number = response.data.contact_number;
-        _this.pag_ibig = response.data.pag_ibig_number;
-        _this.tin_number = response.data.tin_number;
-        _this.philhealth_num = response.data.philhealth_number;
-        _this.sss_num = response.data.sss_number;
-        console.log('-----------test-----------', _this.position, _this.date_hired);
+      this.$axios.get('http://localhost:8000/user_info/' + this.user_id).then(function (response) {
+        _this.datas = response.data.user_information;
+        _this.position = response.data.user_information.company_position;
+        _this.date_hired = response.data.user_information.date_hired;
+        _this.address = response.data.user_information.address;
+        _this.status = response.data.user_information.civil_status;
+        _this.birthdate = response.data.user_information.birthday;
+        _this.contact_number = response.data.user_information.contact_number;
+        _this.pag_ibig = response.data.user_information.pag_ibig_number;
+        _this.tin_number = response.data.user_information.tin_number;
+        _this.philhealth_num = response.data.user_information.philhealth_number;
+        _this.sss_num = response.data.user_information.sss_number;
       })["catch"](function (e) {
         console.log(e);
       });
-    },
-    editProfile: function editProfile() {
-      this.userInfo = userInfo;
     }
   }
 });
@@ -5820,16 +5818,39 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       dialog: false
     };
   },
-  methods: {}
+  props: ['datas'],
+  methods: {
+    update: function update() {
+      var _this = this;
+
+      if (this.datas.company_position === null && this.datas.address === null && this.datas.civil_status === null && this.datas.contact_number === null && this.datas.pag_ibig_number === null && this.datas.sss_number === null && this.datas.tin_number === null && this.datas.philhealth_number === null) {
+        e.preventDefault();
+      }
+
+      var params = {
+        company_position: this.datas.company_position,
+        address: this.datas.address,
+        civil_status: this.datas.civil_status,
+        contact_number: this.datas.contact_number,
+        pag_ibig_number: this.datas.pag_ibig_number,
+        sss_number: this.datas.sss_number,
+        tin_number: this.datas.tin_number,
+        philhealth_number: this.datas.philhealth_number
+      };
+      this.$axios.post('http://localhost:8000/user_info/update/' + localStorage.getItem('id'), params).then(function (response) {
+        if (response.data.length > 0) {
+          _this.$parent.getInfo(); // this.dialog = false
+
+        }
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -45244,7 +45265,7 @@ var render = function() {
                           staticClass: "text-right",
                           attrs: { cols: "12", sm: "4", md: "4" }
                         },
-                        [_c("editProfile")],
+                        [_c("editProfile", { attrs: { datas: _vm.datas } })],
                         1
                       )
                     ],
@@ -49379,191 +49400,197 @@ var render = function() {
               _c(
                 "v-card-text",
                 [
-                  _c(
-                    "v-container",
-                    [
-                      _c(
-                        "v-row",
+                  _vm.datas !== null
+                    ? _c(
+                        "v-container",
                         [
                           _c(
-                            "v-col",
-                            { attrs: { cols: "12", sm: "6", md: "4" } },
+                            "v-row",
                             [
-                              _c("v-text-field", {
-                                attrs: { label: "Full Name*", required: "" },
-                                model: {
-                                  value: _vm.userInfo.name,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.userInfo, "name", $$v)
-                                  },
-                                  expression: "userInfo.name"
-                                }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-col",
-                            { attrs: { cols: "12", sm: "6", md: "4" } },
-                            [
-                              _c("v-text-field", {
-                                attrs: { label: "Position*", required: "" },
-                                model: {
-                                  value: _vm.userInfo.position,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.userInfo, "position", $$v)
-                                  },
-                                  expression: "userInfo.position"
-                                }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-col",
-                            { attrs: { cols: "12", sm: "6", md: "4" } },
-                            [
-                              _c("v-text-field", {
-                                attrs: { label: "Address*", required: "" },
-                                model: {
-                                  value: _vm.userInfo.address,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.userInfo, "address", $$v)
-                                  },
-                                  expression: "userInfo.address"
-                                }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-col",
-                            { attrs: { cols: "12", sm: "6", md: "4" } },
-                            [
-                              _c("v-select", {
-                                attrs: {
-                                  items: [
-                                    "Single",
-                                    "Married",
-                                    "Widowed",
-                                    "Single-Parent"
-                                  ],
-                                  label: "Status*",
-                                  required: ""
-                                },
-                                model: {
-                                  value: _vm.userInfo.status,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.userInfo, "status", $$v)
-                                  },
-                                  expression: "userInfo.status"
-                                }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-col",
-                            { attrs: { cols: "12", sm: "6", md: "4" } },
-                            [
-                              _c("v-text-field", {
-                                attrs: { label: "Contact No.*", required: "" },
-                                model: {
-                                  value: _vm.userInfo.contact_num,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.userInfo, "contact_num", $$v)
-                                  },
-                                  expression: "userInfo.contact_num"
-                                }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-col",
-                            { attrs: { cols: "12", sm: "6", md: "4" } },
-                            [
-                              _c("v-text-field", {
-                                attrs: { label: "PagIbig No.*", required: "" },
-                                model: {
-                                  value: _vm.userInfo.pag_ibig,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.userInfo, "pag_ibig", $$v)
-                                  },
-                                  expression: "userInfo.pag_ibig"
-                                }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-col",
-                            { attrs: { cols: "12", sm: "6", md: "4" } },
-                            [
-                              _c("v-text-field", {
-                                attrs: { label: "SSS No.*", required: "" },
-                                model: {
-                                  value: _vm.userInfo.sss_num,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.userInfo, "sss_num", $$v)
-                                  },
-                                  expression: "userInfo.sss_num"
-                                }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-col",
-                            { attrs: { cols: "12", sm: "6", md: "4" } },
-                            [
-                              _c("v-text-field", {
-                                attrs: { label: "Tin No.*", required: "" },
-                                model: {
-                                  value: _vm.userInfo.tin_num,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.userInfo, "tin_num", $$v)
-                                  },
-                                  expression: "userInfo.tin_num"
-                                }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-col",
-                            { attrs: { cols: "12", sm: "6", md: "4" } },
-                            [
-                              _c("v-text-field", {
-                                attrs: {
-                                  label: "PhilHealth No.*",
-                                  required: ""
-                                },
-                                model: {
-                                  value: _vm.userInfo.philhealth,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.userInfo, "philhealth", $$v)
-                                  },
-                                  expression: "userInfo.philhealth"
-                                }
-                              })
+                              _c(
+                                "v-col",
+                                { attrs: { cols: "12", sm: "6", md: "4" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: { label: "Position*", required: "" },
+                                    model: {
+                                      value: _vm.datas.company_position,
+                                      callback: function($$v) {
+                                        _vm.$set(
+                                          _vm.datas,
+                                          "company_position",
+                                          $$v
+                                        )
+                                      },
+                                      expression: "datas.company_position"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-col",
+                                { attrs: { cols: "12", sm: "6", md: "4" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: { label: "Address*", required: "" },
+                                    model: {
+                                      value: _vm.datas.address,
+                                      callback: function($$v) {
+                                        _vm.$set(_vm.datas, "address", $$v)
+                                      },
+                                      expression: "datas.address"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-col",
+                                { attrs: { cols: "12", sm: "6", md: "4" } },
+                                [
+                                  _c("v-select", {
+                                    attrs: {
+                                      items: [
+                                        "single",
+                                        "Married",
+                                        "Widowed",
+                                        "Single-Parent"
+                                      ],
+                                      label: "Status*",
+                                      required: ""
+                                    },
+                                    model: {
+                                      value: _vm.datas.civil_status,
+                                      callback: function($$v) {
+                                        _vm.$set(_vm.datas, "civil_status", $$v)
+                                      },
+                                      expression: "datas.civil_status"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-col",
+                                { attrs: { cols: "12", sm: "6", md: "4" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: {
+                                      label: "Contact No.*",
+                                      required: ""
+                                    },
+                                    model: {
+                                      value: _vm.datas.contact_number,
+                                      callback: function($$v) {
+                                        _vm.$set(
+                                          _vm.datas,
+                                          "contact_number",
+                                          $$v
+                                        )
+                                      },
+                                      expression: "datas.contact_number"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-col",
+                                { attrs: { cols: "12", sm: "6", md: "4" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: {
+                                      label: "PagIbig No.*",
+                                      required: ""
+                                    },
+                                    model: {
+                                      value: _vm.datas.pag_ibig_number,
+                                      callback: function($$v) {
+                                        _vm.$set(
+                                          _vm.datas,
+                                          "pag_ibig_number",
+                                          $$v
+                                        )
+                                      },
+                                      expression: "datas.pag_ibig_number"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-col",
+                                { attrs: { cols: "12", sm: "6", md: "4" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: { label: "SSS No.*", required: "" },
+                                    model: {
+                                      value: _vm.datas.sss_number,
+                                      callback: function($$v) {
+                                        _vm.$set(_vm.datas, "sss_number", $$v)
+                                      },
+                                      expression: "datas.sss_number"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-col",
+                                { attrs: { cols: "12", sm: "6", md: "4" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: { label: "Tin No.*", required: "" },
+                                    model: {
+                                      value: _vm.datas.tin_number,
+                                      callback: function($$v) {
+                                        _vm.$set(_vm.datas, "tin_number", $$v)
+                                      },
+                                      expression: "datas.tin_number"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-col",
+                                { attrs: { cols: "12", sm: "6", md: "4" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: {
+                                      label: "PhilHealth No.*",
+                                      required: ""
+                                    },
+                                    model: {
+                                      value: _vm.datas.philhealth_number,
+                                      callback: function($$v) {
+                                        _vm.$set(
+                                          _vm.datas,
+                                          "philhealth_number",
+                                          $$v
+                                        )
+                                      },
+                                      expression: "datas.philhealth_number"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
                             ],
                             1
                           )
                         ],
                         1
                       )
-                    ],
-                    1
-                  )
+                    : _vm._e()
                 ],
                 1
               ),
@@ -49592,7 +49619,7 @@ var render = function() {
                       attrs: { color: "blue darken-1", text: "" },
                       on: {
                         click: function($event) {
-                          _vm.dialog = false
+                          return _vm.update()
                         }
                       }
                     },
@@ -110500,8 +110527,8 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\DatawordsPH\Desktop\BBO\BBOHRSystem\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\DatawordsPH\Desktop\BBO\BBOHRSystem\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\capstonestudent\Documents\Thesis PN2020-B\herrera\BBOHRSystem\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\capstonestudent\Documents\Thesis PN2020-B\herrera\BBOHRSystem\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
