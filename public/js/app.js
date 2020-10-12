@@ -1933,10 +1933,13 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.setUserType();
+    axios.get('http://localhost:8000/user_info/1').then(function (response) {
+      console.log('response', response);
+    });
   },
   methods: {
     setUserType: function setUserType() {
-      localStorage.setItem('user_type', this.user.roles[0].name);
+      localStorage.setItem('user_type', this.user.roles[0].role_name);
     }
   }
 });
