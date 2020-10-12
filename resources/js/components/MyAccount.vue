@@ -179,8 +179,8 @@ export default {
   },
   methods: {
     getInfo() {
-      axios.get('http://localhost:8000/user_info/'+ this.user_id).then(response => {
-        console.log(response.data)
+      axios.get('http://localhost:8000/user_info/1').then(response => {
+        console.log(response)
         this.position = response.data.company_position
         this.date_hired = response.data.date_hired
         this.address = response.data.address

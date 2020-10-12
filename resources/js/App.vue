@@ -20,6 +20,9 @@ export default {
         // dashboard
     },
     mounted(){
+        axios.get('http://localhost:8000/user_info/1').then(response => {
+            console.log('haha', response)
+        })
         this.setUserType()
     },
     methods: {

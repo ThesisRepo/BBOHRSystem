@@ -1932,10 +1932,10 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   mounted: function mounted() {
-    this.setUserType();
     axios.get('http://localhost:8000/user_info/1').then(function (response) {
-      console.log('response', response);
+      console.log('haha', response);
     });
+    this.setUserType();
   },
   methods: {
     setUserType: function setUserType() {
@@ -3673,8 +3673,8 @@ __webpack_require__.r(__webpack_exports__);
     getInfo: function getInfo() {
       var _this = this;
 
-      axios.get('http://localhost:8000/user_info/' + this.user_id).then(function (response) {
-        console.log(response.data);
+      axios.get('http://localhost:8000/user_info/1').then(function (response) {
+        console.log(response);
         _this.position = response.data.company_position;
         _this.date_hired = response.data.date_hired;
         _this.address = response.data.address;
