@@ -4,11 +4,7 @@
       <v-col>
         <v-card class="mx-auto pa-2">
           <v-card-title>
-            <span
-              class="headline"
-              color="blue lighten-3"
-              >USER PROFILE</span
-            >
+            <span class="headline primary--text">USER PROFILE</span>
           </v-card-title>
           <v-divider></v-divider>
           <v-row>
@@ -16,18 +12,30 @@
               <v-avatar
                 class="ml-15"
                 color="grey darken-1"
-                size="190"
+                size="200"
               ></v-avatar>
               <v-col>
                 <v-btn color="primary" class="ml-16"> Change Profile </v-btn>
               </v-col>
             </v-col>
-            <v-col cols="12" sm="4" md="4" pa="3">
-              <h1 class="title-2 text-center mt-10">{{ user_name }}</h1>
-              <h5 class="title-2 text-center">
+            <v-col>
+              <h1 class="title-h3 text-md-h3 text-sm-h3 text-truncate mt-8">
+                {{ user_name }}
+              </h1>
+              <h2 class="title-h5 text-md-h5 text-sm-h5 text-truncate">
+                PHP Developer
+              </h2>
+
+              <h3
+                class="text--primary text-caption text-sm-body-2 text-md-body-1"
+              >
                 Company Email: {{ user_email }}
-              </h5>
-              <h6 class="subtitle-2 text-center">Id Number: {{ company_number }}</h6>
+              </h3>
+              <span
+                class="text--primary text-caption text-sm-body-2 text-md-body-1"
+              >
+                Id Number: {{ company_number }}
+              </span>
             </v-col>
             <v-col cols="12" sm="4" md="4" class="text-right">
 
@@ -55,10 +63,11 @@
                     v-model="department"
                   ></v-text-field>
                 </v-col>
+
                 <v-col cols="12" sm="4" md="4">
                   <v-text-field
-                    v-model="position"
-                    label="Position"
+                    v-model="date_hired"
+                    label="Type of Employee"
                     outlined
                     readonly
                   ></v-text-field>
@@ -157,10 +166,10 @@ import editProfile from "./modals/edit_profile.vue";
 export default {
   data() {
     return {
-      user_name: localStorage.getItem('user_name'),
-      user_id: localStorage.getItem('id'),
-      user_email: localStorage.getItem('email'),
-      company_number: localStorage.getItem('company_id'),
+      user_name: localStorage.getItem("user_name"),
+      user_id: localStorage.getItem("id"),
+      user_email: localStorage.getItem("email"),
+      company_number: localStorage.getItem("company_id"),
       dialog: false,
       department: null,
       position: null,
@@ -177,7 +186,7 @@ export default {
     }
   },
   mounted() {
-    this.getInfo()
+    this.getInfo();
   },
   components: {
     editProfile,
@@ -186,6 +195,7 @@ export default {
     getInfo() {
       console.log('hi')
       this.$axios.get('http://localhost:8000/user_info/' + this.user_id).then(response => {
+        console.log(response.data)
         this.datas = response.data.user_information
         this.position = response.data.user_information.company_position
         this.date_hired = response.data.user_information.date_hired
