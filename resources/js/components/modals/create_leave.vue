@@ -1,18 +1,10 @@
 <template>
   <v-row justify="center">
-    <v-dialog
-      v-model="dialog"
-      persistent
-      max-width="600px"
-    >
+    <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          color="primary"
-          dark
-          v-bind="attrs"
-          v-on="on"
-        >
-          Make Request
+        <v-btn color="light blue darken-2" rounded outlined dark v-bind="attrs" v-on="on">
+          <v-icon>mdi-plus</v-icon>
+          <v-toolbar-title>Make Request</v-toolbar-title>
         </v-btn>
       </template>
       <v-card>
@@ -22,11 +14,11 @@
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col
-                cols="12">
+              <v-col cols="12">
                 <v-select
-                  :items="['Sick Leave', 'Single Parent Leave', 'Vacation Leave', 'Other Leave']"
+                  :items="['Sick Leave', 'Solo Parent Leave', 'Vacation Leave', 'Emergency Leave', 'Paternity Leave', 'Maternity Leave']"
                   label="Reason*"
+                  v-model="reason"
                   required
                 ></v-select>
               </v-col>
@@ -34,114 +26,106 @@
                 <v-text-field
                   label="Total Day/s of Leave*"
                   type="number"
+                  v-model="number_of_leave"
                   required
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="4">
                 <v-menu
-                  ref="menu1"
-                  v-model="menu1"
                   :close-on-content-click="false"
                   transition="scale-transition"
                   offset-y
-                  max-width="290px"
                   min-width="290px"
-                  margin-left="20px"
                 >
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
-                      v-model="dateFormatted"
-                      label="Start Date*"
-                      required
-                      persistent-hint
+                      v-model="start_date"
+                      label="Start Date"
+                      prepend-icon="mdi-calendar"
+                      readonly
                       v-bind="attrs"
-                      @blur="date = parseDate(dateFormatted)"
                       v-on="on"
                     ></v-text-field>
                   </template>
                   <v-date-picker
-                    v-model="date"
+                    v-model="start_date"
+                    :allowed-dates="disabledDates"
                     no-title
-                    @input="menu1 = false"
+                    scrollable
+                    color="primary"
                   ></v-date-picker>
                 </v-menu>
               </v-col>
               <v-col cols="12" sm="4">
                 <v-menu
-                  ref="menu1"
-                  v-model="menu1"
                   :close-on-content-click="false"
                   transition="scale-transition"
                   offset-y
-                  max-width="290px"
                   min-width="290px"
-                  margin-left="20px"
                 >
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
-                      v-model="dateFormatted"
-                      label="End Date*"
-                      required
-                      persistent-hint
+                      v-model="end_date"
+                      label="End Date"
+                      prepend-icon="mdi-calendar"
+                      readonly
                       v-bind="attrs"
-                      @blur="date = parseDate(dateFormatted)"
                       v-on="on"
                     ></v-text-field>
                   </template>
                   <v-date-picker
-                    v-model="date"
+                    v-model="end_date"
+                    :allowed-dates="disabledDates2"
                     no-title
-                    @input="menu1 = false"
+                    color="primary"
+                    scrollable
                   ></v-date-picker>
                 </v-menu>
               </v-col>
-              <v-col
-                cols="12">
+              <v-col cols="12">
                 <v-select
                   :items="['Sick Leave', 'Single Parent Leave', 'Vacation Leave', 'Other Leave']"
                   label="PRP in Charge*"
+                  v-model="prp_assigned"
                   required
                 ></v-select>
               </v-col>
-              <!-- <v-col cols="12">
-                <v-text-field
-                  label="Status"
-                ></v-text-field>
-              </v-col> -->
             </v-row>
           </v-container>
           <small>*indicates required field</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="dialog = false"
-          >
-            Close
-          </v-btn>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="dialog = false"
-          >
-            Save
-          </v-btn>
+          <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+          <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
   </v-row>
 </template>
 <script>
-  export default {
-    data: () => ({
-      dialog: false,
-      menu1: null,
-      date: null
-    }),
-    methods: {
-      menu1(){}
-    }
+export default {
+  data: () => ({
+    dialog: false,
+    menu1: null,
+    reason: null,
+    number_of_leave: null,
+    start_date: null,
+    end_date: null,
+    prp_assigned: null
+  }),
+  methods: {
+    disabledDates(date) {
+      return date >  new Date().toISOString().substr(0, 10)
+    },
+    disabledDates2(date) {
+      return date >  new Date(this.start_date).toISOString().substr(0, 10)
+    },
+    differenceDates() {
+      var diff = this.end_date - this.start_date
+      console.log(diff)
+    },
+    menu1() {}
   }
+};
 </script>
