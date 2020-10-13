@@ -38,7 +38,11 @@
               </span>
             </v-col>
             <v-col cols="12" sm="4" md="4" class="text-right">
-              <editProfile></editProfile>
+
+              <editProfile
+              :datas="datas">
+              </editProfile>
+
             </v-col>
           </v-row>
         </v-card>
@@ -178,7 +182,8 @@ export default {
       tin_number: null,
       philhealth_num: null,
       sss_num: null,
-    };
+      datas: [],
+    }
   },
   mounted() {
     this.getInfo();
@@ -188,33 +193,24 @@ export default {
   },
   methods: {
     getInfo() {
-      axios
-        .get("http://localhost:8000/user_info/1")
-        .then((response) => {
-          console.log(response);
-          this.position = response.data.company_position;
-          this.date_hired = response.data.date_hired;
-          this.address = response.data.address;
-          this.status = response.data.civil_status;
-          this.birthdate = response.data.birthday;
-          this.contact_number = response.data.contact_number;
-          this.pag_ibig = response.data.pag_ibig_number;
-          this.tin_number = response.data.tin_number;
-          this.philhealth_num = response.data.philhealth_number;
-          this.sss_num = response.data.sss_number;
-          console.log(
-            "-----------test-----------",
-            this.position,
-            this.date_hired
-          );
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    },
-    editProfile() {
-      this.userInfo = userInfo;
-    },
-  },
-};
+      console.log('hi')
+      this.$axios.get('http://localhost:8000/user_info/' + this.user_id).then(response => {
+        this.datas = response.data.user_information
+        this.position = response.data.user_information.company_position
+        this.date_hired = response.data.user_information.date_hired
+        this.address = response.data.user_information.address
+        this.status = response.data.user_information.civil_status
+        this.birthdate = response.data.user_information.birthday
+        this.contact_number = response.data.user_information.contact_number
+        this.pag_ibig = response.data.user_information.pag_ibig_number
+        this.tin_number = response.data.user_information.tin_number
+        this.philhealth_num = response.data.user_information.philhealth_number
+        this.sss_num = response.data.user_information.sss_number    
+      })
+      .catch(e => {
+        console.log(e);
+      })
+    }
+  }
+}
 </script>
