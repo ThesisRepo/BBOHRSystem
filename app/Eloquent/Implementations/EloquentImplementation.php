@@ -40,7 +40,7 @@ class EloquentImplementation implements EloquentContract {
    * find the matching value of id
    */
   public function find( $id) {
-    return $this->model->with('userInformation')->find($id);
+    return $this->find( $id);
   }
 
   /**
@@ -52,13 +52,16 @@ class EloquentImplementation implements EloquentContract {
     return $this->model->findOrFail($id);
   }
 
+  public function findWith( $id, $relationship) {
+    return $this->with( $relationship)->find( $id);
+  }
   /**
    * @param array $data
    * @param int $id
    * updates data for matching id in db
    */
   public function update(array $data, $id){
-    return $this->findOrFail($id)->userInformation()->update($data);
+    return $this->findOrFail($id)->pdate($data);
   }
 
   /**

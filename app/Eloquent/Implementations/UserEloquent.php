@@ -18,4 +18,7 @@ class UserEloquent extends EloquentImplementation {
     public function createWithRoles($data, array $id) {
       return $this->model->create($data)->roles()->attach($id);
     }
+    public function updateWithUserInfo($data, $id){
+       return  $this->model->findorFail($id)->userInformation()->update($data);
+    }
 }
