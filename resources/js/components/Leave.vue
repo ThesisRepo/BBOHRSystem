@@ -1,24 +1,21 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="desserts"
-    class="elevation-1"
-  >
+  <v-data-table :headers="headers" :items="desserts" class="elevation-1">
     <template v-slot:top>
-      <v-toolbar
-        flat
-      >
-        <v-toolbar-title>Leave Requests</v-toolbar-title>
-        <v-divider
-          class="mx-4"
-          inset
-          vertical
-        ></v-divider>
-        <v-spacer></v-spacer>
-        <v-dialog
-          v-model="dialog"
-          max-width="500px"
+      <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+        <v-toolbar-title class="col pa-3 py-4 white--text"
+          >LEAVE REQUEST</v-toolbar-title
         >
+        <v-text-field
+          v-model="search"
+          clearable
+          flat
+          solo-inverted
+          hide-details
+          prepend-inner-icon="mdi-magnify"
+          label="Search"
+        ></v-text-field>
+
+        <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on, attrs }">
             <createLeave></createLeave>
           </template>
@@ -26,61 +23,37 @@
             <v-card-text>
               <v-container>
                 <v-row>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
+                  <v-col cols="12" sm="6" md="4">
                     <v-text-field
                       v-model="editedItem.reason"
                       label="reason"
                     ></v-text-field>
                   </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
+                  <v-col cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="editedItem.total_days"
-                      label="total_days"
+                      v-model="editedItem.date"
+                      label="date"
                     ></v-text-field>
                   </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
+                  <v-col cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="editedItem.start_date"
-                      label="start_date"
+                      v-model="editedItem.start_time"
+                      label="start_time"
                     ></v-text-field>
                   </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
+                  <v-col cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="editedItem.end_date"
-                      label="end_date"
+                      v-model="editedItem.end_time"
+                      label="end_time"
                     ></v-text-field>
                   </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
+                  <v-col cols="12" sm="6" md="4">
                     <v-text-field
                       v-model="editedItem.prp_assigned"
                       label="prp_assigned"
                     ></v-text-field>
                   </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
+                  <v-col cols="12" sm="6" md="4">
                     <v-text-field
                       v-model="editedItem.status"
                       label="status"
@@ -91,30 +64,24 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="close"
-              >
-                Cancel
-              </v-btn>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="save"
-              >
-                Save
-              </v-btn>
+              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
+              <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
-            <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
+            <v-card-title class="headline"
+              >Are you sure you want to delete this item?</v-card-title
+            >
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
+              <v-btn color="blue darken-1" text @click="closeDelete"
+                >Cancel</v-btn
+              >
+              <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+                >OK</v-btn
+              >
               <v-spacer></v-spacer>
             </v-card-actions>
           </v-card>
@@ -122,127 +89,132 @@
       </v-toolbar>
     </template>
     <template v-slot:item.actions="{ item }">
-      <v-icon
-        small
-        class="mr-2"
-        @click="editItem(item)"
-      >
-        mdi-pencil
-      </v-icon>
-      <v-icon
-        small
-        @click="deleteItem(item)"
-      >
-        mdi-delete
-      </v-icon>
+      <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
+      <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
     </template>
     <template v-slot:no-data>
-      <v-btn
-        color="primary"
-        @click="initialize"
-      >
-        Reset
-      </v-btn>
+      <v-btn color="primary" @click="initialize"> Reset </v-btn>
     </template>
   </v-data-table>
 </template>
 <script>
-import createLeave from './modals/create_leave.vue'
-  export default {
-    data: () => ({
-      dialog: false,
-      dialogDelete: false,
-      headers: [
+import createLeave from "./modals/create_leave.vue";
+export default {
+  data: () => ({
+    user_type: localStorage.getItem("user_type"),
+    // employees: false,
+    // requests: true,
+    employees:
+      localStorage.getItem("user_type") !== "emp" &&
+      localStorage.getItem("user_type") !== "finance mngr"
+        ? false
+        : true,
+    requests:
+      localStorage.getItem("user_type") !== "emp" &&
+      localStorage.getItem("user_type") !== "finance mngr"
+        ? true
+        : false,
+    dialog: false,
+    dialogDelete: false,
+    headers: [
+      {
+        text: "REASON",
+        align: "start",
+        sortable: false,
+        value: "reason",
+      },
+      { text: "TOTAL DAY/S LEAVE", value: "total_days" },
+      { text: "START DATE", value: "start_date" },
+      { text: "END DATE", value: "end_date" },
+      { text: "PRP IN CHARGE", value: "prp_assigned" },
+      { text: "STATUS", value: "status" },
+      { text: "ACTIONS", value: "actions", sortable: false },
+    ],
+    desserts: [],
+    editedIndex: -1,
+    editedItem: {
+      reason: "",
+      total_days: 0,
+      start_date: 0,
+      end_date: 0,
+      prp_assigned: "",
+      status: "",
+    },
+    defaultItem: {
+      reason: "",
+      total_days: 0,
+      start_date: 0,
+      end_date: 0,
+      prp_assigned: "",
+      status: "",
+    },
+    items: ["Foo", "Bar", "Fizz", "Buzz"],
+  }),
+  components: {
+    createLeave,
+  },
+  mounted() {
+    console.log(
+      "----------testing------------",
+      this.user_type,
+      this.requests,
+      this.employees
+    );
+  },
+  methods: {
+    initialize() {
+      this.desserts = [
         {
-          text: 'REASON',
-          align: 'start',
-          sortable: false,
-          value: 'reason',
+          reason: "Wlay kwarta",
+          total_days: 159,
+          start_date: 6,
+          end_date: 24,
+          prp_assigned: "claire",
+          status: "pending",
         },
-        { text: 'TOTAL DAY/S LEAVE', value: 'total_days' },
-        { text: 'START DATE', value: 'start_date' },
-        { text: 'END DATE', value: 'end_date' },
-        { text: 'PRP IN CHARGE', value: 'prp_assigned' },
-        { text: 'STATUS', value: 'status' },
-        { text: 'ACTIONS', value: 'actions', sortable: false },
-      ],
-      desserts: [],
-      editedIndex: -1,
-      editedItem: {
-        reason: '',
-        total_days: 0,
-        start_date: 0,
-        end_date: 0,
-        prp_assigned: '',
-        status:''
-      },
-      defaultItem: {
-        reason: '',
-        total_days: 0,
-        start_date: 0,
-        end_date: 0,
-        prp_assigned: '',
-        status: ''
-      },
-    }),
-    components: {
-      createLeave
+      ];
     },
-    methods: {
-      initialize () {
-        this.desserts = [
-          {
-            reason: 'Wlay kwarta',
-            total_days: 159,
-            start_date: 6,
-            end_date: 24,
-            prp_assigned: 'claire',
-            status: 'pending'
-          }
-        ]
-      },
-      editItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
-      },
-
-      deleteItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialogDelete = true
-      },
-
-      deleteItemConfirm () {
-        this.desserts.splice(this.editedIndex, 1)
-        this.closeDelete()
-      },
-
-      close () {
-        this.dialog = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-
-      closeDelete () {
-        this.dialogDelete = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-
-      save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.desserts[this.editedIndex], this.editedItem)
-        } else {
-          this.desserts.push(this.editedItem)
-        }
-        this.close()
-      },
+    editItem(item) {
+      this.editedIndex = this.desserts.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
     },
-  }
 
+    deleteItem(item) {
+      this.editedIndex = this.desserts.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialogDelete = true;
+    },
+
+    deleteItemConfirm() {
+      this.desserts.splice(this.editedIndex, 1);
+      this.closeDelete();
+    },
+
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+
+    closeDelete() {
+      this.dialogDelete = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+
+    save() {
+      if (this.editedIndex > -1) {
+        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+      } else {
+        this.desserts.push(this.editedItem);
+      }
+      this.close();
+    },
+  },
+};
 </script>

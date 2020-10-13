@@ -21,12 +21,18 @@ export default {
         // dashboard
     },
     mounted(){
-        console.log('dfd', this.user);
+        axios.get('http://localhost:8000/user_info/1').then(response => {
+            console.log('haha', response)
+        })
         this.setUserType()
     },
     methods: {
         setUserType(){
-            localStorage.setItem('user_type', this.user.roles[0].name)
+            localStorage.setItem('user_type', this.user.roles[0].role_name)
+            localStorage.setItem('id', this.user.id)
+            localStorage.setItem('user_name', this.user.first_name + " " + this.user.last_name)
+            localStorage.setItem('email', this.user.email)
+            localStorage.setItem('company_id', this.user.user_information.company_number)
         }
     }
 }

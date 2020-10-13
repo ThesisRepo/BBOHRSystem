@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Employees;
 
 use Illuminate\Http\Request;
 use App\Eloquent\Implementations\UserEloquent;
+use App\Http\Controllers\Controller;
 
 class UserInformationController extends Controller
 {
@@ -11,20 +12,11 @@ class UserInformationController extends Controller
     protected $user;
 
     public function __construct(UserEloquent $user) {
-        $this->middleware('auth');
+        // $this->middleware(['auth', 'verify.employee']);  
         $this->user = $user;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        return $this->user->all();
-    }
-
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -33,7 +25,7 @@ class UserInformationController extends Controller
      */
     public function store(Request $request)
     {
-        $this->user->create($request->all());
+        return $this->user->create($request->all());
     }
 
     /**
@@ -44,7 +36,7 @@ class UserInformationController extends Controller
      */
     public function show($id)
     {
-        $this->user->find($id);
+        return $this->user->find($id);
     }
 
     /**
@@ -56,7 +48,7 @@ class UserInformationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->user->update($request->all(), $id);        
+        return $this->user->update($request->all(), $id);        
     }
 
     /**

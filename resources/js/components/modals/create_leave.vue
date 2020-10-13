@@ -1,18 +1,9 @@
 <template>
   <v-row justify="center">
-    <v-dialog
-      v-model="dialog"
-      persistent
-      max-width="600px"
-    >
+    <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          color="primary"
-          dark
-          v-bind="attrs"
-          v-on="on"
-        >
-          Make Request
+        <v-btn class="mx-2" fab dark small color="green" v-bind="attrs" v-on="on">
+          <v-icon dark> mdi-plus </v-icon>
         </v-btn>
       </template>
       <v-card>
@@ -22,10 +13,14 @@
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col
-                cols="12">
+              <v-col cols="12">
                 <v-select
-                  :items="['Sick Leave', 'Single Parent Leave', 'Vacation Leave', 'Other Leave']"
+                  :items="[
+                    'Sick Leave',
+                    'Single Parent Leave',
+                    'Vacation Leave',
+                    'Other Leave',
+                  ]"
                   label="Reason*"
                   required
                 ></v-select>
@@ -62,13 +57,13 @@
                   <v-date-picker
                     v-model="date"
                     no-title
-                    @input="menu1 = false"
+                    @input="menu2 = false"
                   ></v-date-picker>
                 </v-menu>
               </v-col>
               <v-col cols="12" sm="4">
                 <v-menu
-                  ref="menu1"
+                  ref="menu2"
                   v-model="menu1"
                   :close-on-content-click="false"
                   transition="scale-transition"
@@ -95,10 +90,14 @@
                   ></v-date-picker>
                 </v-menu>
               </v-col>
-              <v-col
-                cols="12">
+              <v-col cols="12">
                 <v-select
-                  :items="['Sick Leave', 'Single Parent Leave', 'Vacation Leave', 'Other Leave']"
+                  :items="[
+                    'Sick Leave',
+                    'Single Parent Leave',
+                    'Vacation Leave',
+                    'Other Leave',
+                  ]"
                   label="PRP in Charge*"
                   required
                 ></v-select>
@@ -114,18 +113,10 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="dialog = false"
-          >
+          <v-btn color="blue darken-1" text @click="dialog = false">
             Close
           </v-btn>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="dialog = false"
-          >
+          <v-btn color="blue darken-1" text @click="dialog = false">
             Save
           </v-btn>
         </v-card-actions>
@@ -134,9 +125,14 @@
   </v-row>
 </template>
 <script>
-  export default {
-    data: () => ({
-      dialog: false,
-    }),
-  }
+export default {
+  data: () => ({
+    dialog: false,
+    menu1: null,
+    date: null,
+  }),
+  methods: {
+    menu1() {},
+  },
+};
 </script>

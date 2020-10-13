@@ -1,11 +1,16 @@
 <template>
   <v-data-table :headers="headers" :items="desserts" class="elevation-1">
     <template v-slot:top>
-      <v-toolbar class="mb-2" color="blue darken-2" dark flat>
-        <v-toolbar-title class="col pa-3 py-4 secondary--text"
+    <v-toolbar
+          class="mb-2"
+          color="blue darken-1"
+          dark
+          flat
+        >
+        <v-toolbar-title class="col pa-3 py-4 white--text"
           >REQUESTS STATUS</v-toolbar-title
         >
-        </v-toolbar>
+    </v-toolbar>
         <v-dialog v-model="dialog" max-width="500px">
           <v-card>
             <v-card-text>
@@ -34,7 +39,6 @@
             </v-card-text>
           </v-card>
         </v-dialog>
-      </v-toolbar>
     </template>
 
     <template v-slot:no-data>

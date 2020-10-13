@@ -70,6 +70,11 @@ const router = new Router({
       name: "ManageUsers",
       component: ManageUsers
     }
+    // {
+    //   path: "/logout",
+    //   name: "Logout",
+    //   component: ManageUsers
+    // }
   ] 
 });
 

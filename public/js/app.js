@@ -1933,12 +1933,18 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   mounted: function mounted() {
-    console.log('dfd', this.user);
+    axios.get('http://localhost:8000/user_info/1').then(function (response) {
+      console.log('haha', response);
+    });
     this.setUserType();
   },
   methods: {
     setUserType: function setUserType() {
-      localStorage.setItem('user_type', this.user.roles[0].name);
+      localStorage.setItem('user_type', this.user.roles[0].role_name);
+      localStorage.setItem('id', this.user.id);
+      localStorage.setItem('user_name', this.user.first_name + " " + this.user.last_name);
+      localStorage.setItem('email', this.user.email);
+      localStorage.setItem('company_id', this.user.user_information.company_number);
     }
   }
 });
@@ -2787,6 +2793,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2980,118 +2990,78 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      user_type: localStorage.getItem("user_type"),
+      // employees: false,
+      // requests: true,
+      employees: localStorage.getItem("user_type") !== "emp" && localStorage.getItem("user_type") !== "finance mngr" ? false : true,
+      requests: localStorage.getItem("user_type") !== "emp" && localStorage.getItem("user_type") !== "finance mngr" ? true : false,
       dialog: false,
       dialogDelete: false,
       headers: [{
-        text: 'REASON',
-        align: 'start',
+        text: "REASON",
+        align: "start",
         sortable: false,
-        value: 'reason'
+        value: "reason"
       }, {
-        text: 'TOTAL DAY/S LEAVE',
-        value: 'total_days'
+        text: "TOTAL DAY/S LEAVE",
+        value: "total_days"
       }, {
-        text: 'START DATE',
-        value: 'start_date'
+        text: "START DATE",
+        value: "start_date"
       }, {
-        text: 'END DATE',
-        value: 'end_date'
+        text: "END DATE",
+        value: "end_date"
       }, {
-        text: 'PRP IN CHARGE',
-        value: 'prp_assigned'
+        text: "PRP IN CHARGE",
+        value: "prp_assigned"
       }, {
-        text: 'STATUS',
-        value: 'status'
+        text: "STATUS",
+        value: "status"
       }, {
-        text: 'ACTIONS',
-        value: 'actions',
+        text: "ACTIONS",
+        value: "actions",
         sortable: false
       }],
       desserts: [],
       editedIndex: -1,
       editedItem: {
-        reason: '',
+        reason: "",
         total_days: 0,
         start_date: 0,
         end_date: 0,
-        prp_assigned: '',
-        status: ''
+        prp_assigned: "",
+        status: ""
       },
       defaultItem: {
-        reason: '',
+        reason: "",
         total_days: 0,
         start_date: 0,
         end_date: 0,
-        prp_assigned: '',
-        status: ''
-      }
+        prp_assigned: "",
+        status: ""
+      },
+      items: ["Foo", "Bar", "Fizz", "Buzz"]
     };
   },
   components: {
     createLeave: _modals_create_leave_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
+  mounted: function mounted() {
+    console.log("----------testing------------", this.user_type, this.requests, this.employees);
+  },
   methods: {
     initialize: function initialize() {
       this.desserts = [{
-        reason: 'Wlay kwarta',
+        reason: "Wlay kwarta",
         total_days: 159,
         start_date: 6,
         end_date: 24,
-        prp_assigned: 'claire',
-        status: 'pending'
+        prp_assigned: "claire",
+        status: "pending"
       }];
     },
     editItem: function editItem(item) {
@@ -3609,15 +3579,63 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      dialog: false
+      user_name: localStorage.getItem("user_name"),
+      user_id: localStorage.getItem("id"),
+      user_email: localStorage.getItem("email"),
+      company_number: localStorage.getItem("company_id"),
+      dialog: false,
+      department: null,
+      position: null,
+      date_hired: null,
+      address: null,
+      status: null,
+      birthdate: null,
+      contact_number: null,
+      pag_ibig: null,
+      tin_number: null,
+      philhealth_num: null,
+      sss_num: null
     };
+  },
+  mounted: function mounted() {
+    this.getInfo();
   },
   components: {
     editProfile: _modals_edit_profile_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  methods: {
+    getInfo: function getInfo() {
+      var _this = this;
+
+      axios.get("http://localhost:8000/user_info/1").then(function (response) {
+        console.log(response);
+        _this.position = response.data.company_position;
+        _this.date_hired = response.data.date_hired;
+        _this.address = response.data.address;
+        _this.status = response.data.civil_status;
+        _this.birthdate = response.data.birthday;
+        _this.contact_number = response.data.contact_number;
+        _this.pag_ibig = response.data.pag_ibig_number;
+        _this.tin_number = response.data.tin_number;
+        _this.philhealth_num = response.data.philhealth_number;
+        _this.sss_num = response.data.sss_number;
+        console.log("-----------test-----------", _this.position, _this.date_hired);
+      })["catch"](function (e) {
+        console.log(e);
+      });
+    },
+    editProfile: function editProfile() {
+      this.userInfo = userInfo;
+    }
   }
 });
 
@@ -5109,20 +5127,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      dialog: false
+      dialog: false,
+      menu1: null,
+      date: null
     };
+  },
+  methods: {
+    menu1: function menu1() {}
   }
 });
 
@@ -5742,12 +5756,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       dialog: false
     };
-  }
+  },
+  methods: {}
 });
 
 /***/ }),
@@ -5833,6 +5849,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       user_type: localStorage.getItem('user_type'),
+      user_name: localStorage.getItem('user_name'),
       drawer: null,
       data: null,
       links: [{
@@ -5878,7 +5895,7 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         icon: "mdi-logout",
         text: "LogOut",
-        route: "/TravelAuthorization"
+        route: "/logout"
       }],
       employ: [{
         icon: "mdi-account",
@@ -5923,9 +5940,7 @@ __webpack_require__.r(__webpack_exports__);
       }]
     };
   },
-  mounted: function mounted() {
-    console.log(this.user_type);
-  },
+  mounted: function mounted() {},
   methods: {
     redirect: function redirect(route) {
       _router__WEBPACK_IMPORTED_MODULE_0__["default"].push(route)["catch"](function () {});
@@ -43483,12 +43498,12 @@ var render = function() {
               "v-toolbar",
               {
                 staticClass: "mb-2",
-                attrs: { color: "blue darken-2", dark: "", flat: "" }
+                attrs: { color: "blue darken-1", dark: "", flat: "" }
               },
               [
                 _c(
                   "v-toolbar-title",
-                  { staticClass: "col pa-3 py-4 secondary--text" },
+                  { staticClass: "col pa-3 py-4 white--text" },
                   [_vm._v("REQUESTS STATUS")]
                 )
               ],
@@ -43648,16 +43663,34 @@ var render = function() {
           return [
             _c(
               "v-toolbar",
-              { attrs: { flat: "" } },
+              {
+                staticClass: "mb-2",
+                attrs: { color: "blue darken-1", dark: "", flat: "" }
+              },
               [
-                _c("v-toolbar-title", [_vm._v("Leave Requests")]),
+                _c(
+                  "v-toolbar-title",
+                  { staticClass: "col pa-3 py-4 white--text" },
+                  [_vm._v("LEAVE REQUEST")]
+                ),
                 _vm._v(" "),
-                _c("v-divider", {
-                  staticClass: "mx-4",
-                  attrs: { inset: "", vertical: "" }
+                _c("v-text-field", {
+                  attrs: {
+                    clearable: "",
+                    flat: "",
+                    "solo-inverted": "",
+                    "hide-details": "",
+                    "prepend-inner-icon": "mdi-magnify",
+                    label: "Search"
+                  },
+                  model: {
+                    value: _vm.search,
+                    callback: function($$v) {
+                      _vm.search = $$v
+                    },
+                    expression: "search"
+                  }
                 }),
-                _vm._v(" "),
-                _c("v-spacer"),
                 _vm._v(" "),
                 _c(
                   "v-dialog",
@@ -43726,17 +43759,17 @@ var render = function() {
                                       },
                                       [
                                         _c("v-text-field", {
-                                          attrs: { label: "total_days" },
+                                          attrs: { label: "date" },
                                           model: {
-                                            value: _vm.editedItem.total_days,
+                                            value: _vm.editedItem.date,
                                             callback: function($$v) {
                                               _vm.$set(
                                                 _vm.editedItem,
-                                                "total_days",
+                                                "date",
                                                 $$v
                                               )
                                             },
-                                            expression: "editedItem.total_days"
+                                            expression: "editedItem.date"
                                           }
                                         })
                                       ],
@@ -43750,17 +43783,17 @@ var render = function() {
                                       },
                                       [
                                         _c("v-text-field", {
-                                          attrs: { label: "start_date" },
+                                          attrs: { label: "start_time" },
                                           model: {
-                                            value: _vm.editedItem.start_date,
+                                            value: _vm.editedItem.start_time,
                                             callback: function($$v) {
                                               _vm.$set(
                                                 _vm.editedItem,
-                                                "start_date",
+                                                "start_time",
                                                 $$v
                                               )
                                             },
-                                            expression: "editedItem.start_date"
+                                            expression: "editedItem.start_time"
                                           }
                                         })
                                       ],
@@ -43774,17 +43807,17 @@ var render = function() {
                                       },
                                       [
                                         _c("v-text-field", {
-                                          attrs: { label: "end_date" },
+                                          attrs: { label: "end_time" },
                                           model: {
-                                            value: _vm.editedItem.end_date,
+                                            value: _vm.editedItem.end_time,
                                             callback: function($$v) {
                                               _vm.$set(
                                                 _vm.editedItem,
-                                                "end_date",
+                                                "end_time",
                                                 $$v
                                               )
                                             },
-                                            expression: "editedItem.end_date"
+                                            expression: "editedItem.end_time"
                                           }
                                         })
                                       ],
@@ -43860,7 +43893,7 @@ var render = function() {
                                 attrs: { color: "blue darken-1", text: "" },
                                 on: { click: _vm.close }
                               },
-                              [_vm._v("\n              Cancel\n            ")]
+                              [_vm._v(" Cancel ")]
                             ),
                             _vm._v(" "),
                             _c(
@@ -43869,7 +43902,7 @@ var render = function() {
                                 attrs: { color: "blue darken-1", text: "" },
                                 on: { click: _vm.save }
                               },
-                              [_vm._v("\n              Save\n            ")]
+                              [_vm._v(" Save ")]
                             )
                           ],
                           1
@@ -43957,7 +43990,7 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v("\n      mdi-pencil\n    ")]
+              [_vm._v(" mdi-pencil ")]
             ),
             _vm._v(" "),
             _c(
@@ -43970,7 +44003,7 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v("\n      mdi-delete\n    ")]
+              [_vm._v(" mdi-delete ")]
             )
           ]
         }
@@ -43982,7 +44015,7 @@ var render = function() {
             _c(
               "v-btn",
               { attrs: { color: "primary" }, on: { click: _vm.initialize } },
-              [_vm._v("\n      Reset\n    ")]
+              [_vm._v(" Reset ")]
             )
           ]
         },
@@ -44449,10 +44482,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MyAccount.vue?vue&type=template&id=14f426f4&scoped=true&":
-/*!************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/MyAccount.vue?vue&type=template&id=14f426f4&scoped=true& ***!
-  \************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MyAccount.vue?vue&type=template&id=14f426f4&":
+/*!************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/MyAccount.vue?vue&type=template&id=14f426f4& ***!
+  \************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -44479,14 +44512,9 @@ var render = function() {
                 { staticClass: "mx-auto pa-2" },
                 [
                   _c("v-card-title", [
-                    _c(
-                      "span",
-                      {
-                        staticClass: "headline",
-                        attrs: { color: "blue lighten-3\n" }
-                      },
-                      [_vm._v("USER PROFILE")]
-                    )
+                    _c("span", { staticClass: "headline primary--text" }, [
+                      _vm._v("USER PROFILE")
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("v-divider"),
@@ -44500,7 +44528,7 @@ var render = function() {
                         [
                           _c("v-avatar", {
                             staticClass: "ml-15",
-                            attrs: { color: "grey darken-1", size: "190" }
+                            attrs: { color: "grey darken-1", size: "200" }
                           }),
                           _vm._v(" "),
                           _c(
@@ -44521,27 +44549,65 @@ var render = function() {
                         1
                       ),
                       _vm._v(" "),
-                      _c(
-                        "v-col",
-                        { attrs: { cols: "12", sm: "4", md: "4", pa: "3" } },
-                        [
-                          _c(
-                            "h1",
-                            { staticClass: "title-2 text-center mt-10 " },
-                            [_vm._v("Marion Jay Balugo")]
-                          ),
-                          _vm._v(" "),
-                          _c("h5", { staticClass: "title-2 text-center" }, [
+                      _c("v-col", [
+                        _c(
+                          "h1",
+                          {
+                            staticClass:
+                              "title-h3 text-md-h3 text-sm-h3 text-truncate mt-8"
+                          },
+                          [
                             _vm._v(
-                              "\n                Company Email: mbalugo@bbo.com\n              "
+                              "\n              " +
+                                _vm._s(_vm.user_name) +
+                                "\n            "
                             )
-                          ]),
-                          _vm._v(" "),
-                          _c("h6", { staticClass: "subtitle-2 text-center" }, [
-                            _vm._v("Id Number: 260197300")
-                          ])
-                        ]
-                      ),
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "h2",
+                          {
+                            staticClass:
+                              "title-h5 text-md-h5 text-sm-h5 text-truncate"
+                          },
+                          [
+                            _vm._v(
+                              "\n              PHP Developer\n            "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "h3",
+                          {
+                            staticClass:
+                              "text--primary text-caption text-sm-body-2 text-md-body-1"
+                          },
+                          [
+                            _vm._v(
+                              "\n              Company Email: " +
+                                _vm._s(_vm.user_email) +
+                                "\n            "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "span",
+                          {
+                            staticClass:
+                              "text--primary text-caption text-sm-body-2 text-md-body-1"
+                          },
+                          [
+                            _vm._v(
+                              "\n              Id Number: " +
+                                _vm._s(_vm.company_number) +
+                                "\n            "
+                            )
+                          ]
+                        )
+                      ]),
                       _vm._v(" "),
                       _c(
                         "v-col",
@@ -44592,10 +44658,16 @@ var render = function() {
                                 [
                                   _c("v-text-field", {
                                     attrs: {
-                                      value: "Web Integration",
                                       label: "Department",
                                       outlined: "",
                                       readonly: ""
+                                    },
+                                    model: {
+                                      value: _vm.department,
+                                      callback: function($$v) {
+                                        _vm.department = $$v
+                                      },
+                                      expression: "department"
                                     }
                                   })
                                 ],
@@ -44608,10 +44680,16 @@ var render = function() {
                                 [
                                   _c("v-text-field", {
                                     attrs: {
-                                      value: "Computer Engineer",
-                                      label: "Position",
+                                      label: "Type of Employee",
                                       outlined: "",
                                       readonly: ""
+                                    },
+                                    model: {
+                                      value: _vm.date_hired,
+                                      callback: function($$v) {
+                                        _vm.date_hired = $$v
+                                      },
+                                      expression: "date_hired"
                                     }
                                   })
                                 ],
@@ -44624,10 +44702,16 @@ var render = function() {
                                 [
                                   _c("v-text-field", {
                                     attrs: {
-                                      value: "07/10/2020",
                                       label: "Date Hired",
                                       outlined: "",
                                       readonly: ""
+                                    },
+                                    model: {
+                                      value: _vm.date_hired,
+                                      callback: function($$v) {
+                                        _vm.date_hired = $$v
+                                      },
+                                      expression: "date_hired"
                                     }
                                   })
                                 ],
@@ -44640,10 +44724,16 @@ var render = function() {
                                 [
                                   _c("v-text-field", {
                                     attrs: {
-                                      value: "Lapu-Lapu City",
                                       label: "Address",
                                       outlined: "",
                                       readonly: ""
+                                    },
+                                    model: {
+                                      value: _vm.address,
+                                      callback: function($$v) {
+                                        _vm.address = $$v
+                                      },
+                                      expression: "address"
                                     }
                                   })
                                 ],
@@ -44656,10 +44746,16 @@ var render = function() {
                                 [
                                   _c("v-text-field", {
                                     attrs: {
-                                      value: "Single",
                                       label: "Status",
                                       outlined: "",
                                       readonly: ""
+                                    },
+                                    model: {
+                                      value: _vm.status,
+                                      callback: function($$v) {
+                                        _vm.status = $$v
+                                      },
+                                      expression: "status"
                                     }
                                   })
                                 ],
@@ -44672,10 +44768,16 @@ var render = function() {
                                 [
                                   _c("v-text-field", {
                                     attrs: {
-                                      value: "December 24,1997",
                                       label: "Birthdate",
                                       outlined: "",
                                       readonly: ""
+                                    },
+                                    model: {
+                                      value: _vm.birthdate,
+                                      callback: function($$v) {
+                                        _vm.birthdate = $$v
+                                      },
+                                      expression: "birthdate"
                                     }
                                   })
                                 ],
@@ -44688,10 +44790,16 @@ var render = function() {
                                 [
                                   _c("v-text-field", {
                                     attrs: {
-                                      value: "09102957389",
                                       label: "Contact Number",
                                       outlined: "",
                                       readonly: ""
+                                    },
+                                    model: {
+                                      value: _vm.contact_number,
+                                      callback: function($$v) {
+                                        _vm.contact_number = $$v
+                                      },
+                                      expression: "contact_number"
                                     }
                                   })
                                 ],
@@ -44704,10 +44812,16 @@ var render = function() {
                                 [
                                   _c("v-text-field", {
                                     attrs: {
-                                      value: "4204223242",
                                       label: "PagIbig Number",
                                       outlined: "",
                                       readonly: ""
+                                    },
+                                    model: {
+                                      value: _vm.pag_ibig,
+                                      callback: function($$v) {
+                                        _vm.pag_ibig = $$v
+                                      },
+                                      expression: "pag_ibig"
                                     }
                                   })
                                 ],
@@ -44720,10 +44834,16 @@ var render = function() {
                                 [
                                   _c("v-text-field", {
                                     attrs: {
-                                      value: "4204223242",
                                       label: "Tin Number",
                                       outlined: "",
                                       readonly: ""
+                                    },
+                                    model: {
+                                      value: _vm.tin_number,
+                                      callback: function($$v) {
+                                        _vm.tin_number = $$v
+                                      },
+                                      expression: "tin_number"
                                     }
                                   })
                                 ],
@@ -44736,10 +44856,16 @@ var render = function() {
                                 [
                                   _c("v-text-field", {
                                     attrs: {
-                                      value: "4204223242",
                                       label: "PhilHealth Number",
                                       outlined: "",
                                       readonly: ""
+                                    },
+                                    model: {
+                                      value: _vm.philhealth_num,
+                                      callback: function($$v) {
+                                        _vm.philhealth_num = $$v
+                                      },
+                                      expression: "philhealth_num"
                                     }
                                   })
                                 ],
@@ -44752,10 +44878,16 @@ var render = function() {
                                 [
                                   _c("v-text-field", {
                                     attrs: {
-                                      value: "4204223242",
                                       label: "SSS Number",
                                       outlined: "",
                                       readonly: ""
+                                    },
+                                    model: {
+                                      value: _vm.sss_num,
+                                      callback: function($$v) {
+                                        _vm.sss_num = $$v
+                                      },
+                                      expression: "sss_num"
                                     }
                                   })
                                 ],
@@ -44786,7 +44918,7 @@ var render = function() {
                             }
                           }
                         },
-                        [_vm._v("\n              Cancel\n            ")]
+                        [_vm._v("\n            Cancel\n          ")]
                       ),
                       _vm._v(" "),
                       _c(
@@ -44799,7 +44931,7 @@ var render = function() {
                             }
                           }
                         },
-                        [_vm._v("\n              Update\n            ")]
+                        [_vm._v("\n            Update\n          ")]
                       )
                     ],
                     1
@@ -46964,14 +47096,27 @@ var render = function() {
                     "v-btn",
                     _vm._g(
                       _vm._b(
-                        { attrs: { color: "primary", dark: "" } },
+                        {
+                          staticClass: "mx-2",
+                          attrs: {
+                            fab: "",
+                            dark: "",
+                            small: "",
+                            color: "green"
+                          }
+                        },
                         "v-btn",
                         attrs,
                         false
                       ),
                       on
                     ),
-                    [_vm._v("\n        Make Request\n      ")]
+                    [
+                      _c("v-icon", { attrs: { dark: "" } }, [
+                        _vm._v(" mdi-plus ")
+                      ])
+                    ],
+                    1
                   )
                 ]
               }
@@ -47113,7 +47258,7 @@ var render = function() {
                                     attrs: { "no-title": "" },
                                     on: {
                                       input: function($event) {
-                                        _vm.menu1 = false
+                                        _vm.menu2 = false
                                       }
                                     },
                                     model: {
@@ -47138,7 +47283,7 @@ var render = function() {
                               _c(
                                 "v-menu",
                                 {
-                                  ref: "menu1",
+                                  ref: "menu2",
                                   attrs: {
                                     "close-on-content-click": false,
                                     transition: "scale-transition",
@@ -48629,7 +48774,14 @@ var render = function() {
                             { attrs: { cols: "12", sm: "6", md: "4" } },
                             [
                               _c("v-text-field", {
-                                attrs: { label: "Full Name*", required: "" }
+                                attrs: { label: "Full Name*", required: "" },
+                                model: {
+                                  value: _vm.userInfo.name,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.userInfo, "name", $$v)
+                                  },
+                                  expression: "userInfo.name"
+                                }
                               })
                             ],
                             1
@@ -48640,7 +48792,14 @@ var render = function() {
                             { attrs: { cols: "12", sm: "6", md: "4" } },
                             [
                               _c("v-text-field", {
-                                attrs: { label: "Position*", required: "" }
+                                attrs: { label: "Position*", required: "" },
+                                model: {
+                                  value: _vm.userInfo.position,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.userInfo, "position", $$v)
+                                  },
+                                  expression: "userInfo.position"
+                                }
                               })
                             ],
                             1
@@ -48651,7 +48810,14 @@ var render = function() {
                             { attrs: { cols: "12", sm: "6", md: "4" } },
                             [
                               _c("v-text-field", {
-                                attrs: { label: "Address*", required: "" }
+                                attrs: { label: "Address*", required: "" },
+                                model: {
+                                  value: _vm.userInfo.address,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.userInfo, "address", $$v)
+                                  },
+                                  expression: "userInfo.address"
+                                }
                               })
                             ],
                             1
@@ -48671,6 +48837,13 @@ var render = function() {
                                   ],
                                   label: "Status*",
                                   required: ""
+                                },
+                                model: {
+                                  value: _vm.userInfo.status,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.userInfo, "status", $$v)
+                                  },
+                                  expression: "userInfo.status"
                                 }
                               })
                             ],
@@ -48682,7 +48855,14 @@ var render = function() {
                             { attrs: { cols: "12", sm: "6", md: "4" } },
                             [
                               _c("v-text-field", {
-                                attrs: { label: "Contact No.*", required: "" }
+                                attrs: { label: "Contact No.*", required: "" },
+                                model: {
+                                  value: _vm.userInfo.contact_num,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.userInfo, "contact_num", $$v)
+                                  },
+                                  expression: "userInfo.contact_num"
+                                }
                               })
                             ],
                             1
@@ -48693,7 +48873,14 @@ var render = function() {
                             { attrs: { cols: "12", sm: "6", md: "4" } },
                             [
                               _c("v-text-field", {
-                                attrs: { label: "PagIbig No.*", required: "" }
+                                attrs: { label: "PagIbig No.*", required: "" },
+                                model: {
+                                  value: _vm.userInfo.pag_ibig,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.userInfo, "pag_ibig", $$v)
+                                  },
+                                  expression: "userInfo.pag_ibig"
+                                }
                               })
                             ],
                             1
@@ -48704,7 +48891,14 @@ var render = function() {
                             { attrs: { cols: "12", sm: "6", md: "4" } },
                             [
                               _c("v-text-field", {
-                                attrs: { label: "SSS No.*", required: "" }
+                                attrs: { label: "SSS No.*", required: "" },
+                                model: {
+                                  value: _vm.userInfo.sss_num,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.userInfo, "sss_num", $$v)
+                                  },
+                                  expression: "userInfo.sss_num"
+                                }
                               })
                             ],
                             1
@@ -48715,7 +48909,14 @@ var render = function() {
                             { attrs: { cols: "12", sm: "6", md: "4" } },
                             [
                               _c("v-text-field", {
-                                attrs: { label: "Tin No.*", required: "" }
+                                attrs: { label: "Tin No.*", required: "" },
+                                model: {
+                                  value: _vm.userInfo.tin_num,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.userInfo, "tin_num", $$v)
+                                  },
+                                  expression: "userInfo.tin_num"
+                                }
                               })
                             ],
                             1
@@ -48729,6 +48930,13 @@ var render = function() {
                                 attrs: {
                                   label: "PhilHealth No.*",
                                   required: ""
+                                },
+                                model: {
+                                  value: _vm.userInfo.philhealth,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.userInfo, "philhealth", $$v)
+                                  },
+                                  expression: "userInfo.philhealth"
                                 }
                               })
                             ],
@@ -48842,7 +49050,7 @@ var render = function() {
                   }),
                   _vm._v(" "),
                   _c("div", { staticStyle: { color: "white" } }, [
-                    _vm._v("Marion Jay Balugo")
+                    _vm._v(_vm._s(_vm.user_name))
                   ])
                 ],
                 1
@@ -48853,7 +49061,7 @@ var render = function() {
           _vm._v(" "),
           _c("v-divider"),
           _vm._v(" "),
-          _vm.user_type === "general mngr"
+          _vm.user_type === "general mngr" || _vm.user_type === "hr mngr"
             ? _c(
                 "v-list",
                 [
@@ -48865,7 +49073,7 @@ var render = function() {
                         "v-list-item",
                         {
                           key: index,
-                          attrs: { link: "" },
+                          attrs: { "px-0": "", link: "" },
                           on: {
                             click: function($event) {
                               return _vm.redirect(item.route)
@@ -48907,7 +49115,9 @@ var render = function() {
               )
             : _vm._e(),
           _vm._v(" "),
-          _vm.user_type === "emp"
+          _vm.user_type === "emp" ||
+          _vm.user_type === "finance mngr" ||
+          _vm.user_type === "prp emp"
             ? _c(
                 "v-list",
                 [
@@ -108444,15 +108654,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!*******************************************!*\
   !*** ./resources/js/components/Leave.vue ***!
   \*******************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Leave_vue_vue_type_template_id_355b93dc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Leave.vue?vue&type=template&id=355b93dc& */ "./resources/js/components/Leave.vue?vue&type=template&id=355b93dc&");
 /* harmony import */ var _Leave_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Leave.vue?vue&type=script&lang=js& */ "./resources/js/components/Leave.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Leave_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Leave_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -108482,7 +108691,7 @@ component.options.__file = "resources/js/components/Leave.vue"
 /*!********************************************************************!*\
   !*** ./resources/js/components/Leave.vue?vue&type=script&lang=js& ***!
   \********************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -108588,7 +108797,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _MyAccount_vue_vue_type_template_id_14f426f4_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MyAccount.vue?vue&type=template&id=14f426f4&scoped=true& */ "./resources/js/components/MyAccount.vue?vue&type=template&id=14f426f4&scoped=true&");
+/* harmony import */ var _MyAccount_vue_vue_type_template_id_14f426f4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MyAccount.vue?vue&type=template&id=14f426f4& */ "./resources/js/components/MyAccount.vue?vue&type=template&id=14f426f4&");
 /* harmony import */ var _MyAccount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MyAccount.vue?vue&type=script&lang=js& */ "./resources/js/components/MyAccount.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
@@ -108600,11 +108809,11 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _MyAccount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _MyAccount_vue_vue_type_template_id_14f426f4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _MyAccount_vue_vue_type_template_id_14f426f4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _MyAccount_vue_vue_type_template_id_14f426f4___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _MyAccount_vue_vue_type_template_id_14f426f4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  "14f426f4",
+  null,
   null
   
 )
@@ -108630,19 +108839,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/MyAccount.vue?vue&type=template&id=14f426f4&scoped=true&":
-/*!******************************************************************************************!*\
-  !*** ./resources/js/components/MyAccount.vue?vue&type=template&id=14f426f4&scoped=true& ***!
-  \******************************************************************************************/
+/***/ "./resources/js/components/MyAccount.vue?vue&type=template&id=14f426f4&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/MyAccount.vue?vue&type=template&id=14f426f4& ***!
+  \******************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MyAccount_vue_vue_type_template_id_14f426f4_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./MyAccount.vue?vue&type=template&id=14f426f4&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MyAccount.vue?vue&type=template&id=14f426f4&scoped=true&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MyAccount_vue_vue_type_template_id_14f426f4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MyAccount_vue_vue_type_template_id_14f426f4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./MyAccount.vue?vue&type=template&id=14f426f4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MyAccount.vue?vue&type=template&id=14f426f4&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MyAccount_vue_vue_type_template_id_14f426f4___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MyAccount_vue_vue_type_template_id_14f426f4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MyAccount_vue_vue_type_template_id_14f426f4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -108790,15 +108999,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!**************************************************!*\
   !*** ./resources/js/components/Shift_change.vue ***!
   \**************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Shift_change_vue_vue_type_template_id_2aec9378___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Shift_change.vue?vue&type=template&id=2aec9378& */ "./resources/js/components/Shift_change.vue?vue&type=template&id=2aec9378&");
 /* harmony import */ var _Shift_change_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Shift_change.vue?vue&type=script&lang=js& */ "./resources/js/components/Shift_change.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Shift_change_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Shift_change_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -108828,7 +109036,7 @@ component.options.__file = "resources/js/components/Shift_change.vue"
 /*!***************************************************************************!*\
   !*** ./resources/js/components/Shift_change.vue?vue&type=script&lang=js& ***!
   \***************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -109646,7 +109854,12 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]({
     path: "/ManageUsers",
     name: "ManageUsers",
     component: _components_ManageUsers_vue__WEBPACK_IMPORTED_MODULE_12__["default"]
-  }]
+  } // {
+  //   path: "/logout",
+  //   name: "Logout",
+  //   component: ManageUsers
+  // }
+  ]
 });
 /* harmony default export */ __webpack_exports__["default"] = (router);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/process/browser.js */ "./node_modules/process/browser.js")))
