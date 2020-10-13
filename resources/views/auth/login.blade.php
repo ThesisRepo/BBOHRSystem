@@ -6,9 +6,16 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Login') }}</div>
-
+               
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
+                        @error('invalid')
+                            <div style="width:100%;text-align:center">
+                            <span style="color:red;">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            </div>
+                        @enderror
                         @csrf
 
                         <div class="form-group row">
