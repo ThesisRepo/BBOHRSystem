@@ -12,15 +12,18 @@ class LeaveRequest extends Model
      * @var array
      */
     protected $fillable = [
+        'user_id',
+        'leave_type_id',
         'start_date',
         'end_date',
         'reason',
         'number_of_days',
-        'stage'
+        'approver_role_id',
+        'status_id'
     ];
 
     public function user() {
-        return $this->belongsTo(App\Models\User::class);
+        return $this->belongsTo(\App\Models\User::class);
     }
 
     public function leave_type() {
@@ -32,9 +35,9 @@ class LeaveRequest extends Model
     }
 
     public function approvers() {
-        return $this->morphToMany(App\Models\User::class, 'approved_request_records');
+        return $this->morphToMany(\App\Models\User::class, 'approved_request_records');
     }
     public function approver_role() {
-        return $this->belongsTo(App\Models\Role::class);
+        return $this->belongsTo(\App\Models\Role::class);
     }
 }
