@@ -54,7 +54,7 @@ class UserInformation extends Model
      * @return \Illuminate\Database\Eloquent\Relations\belongsTo
      */
     public function user() {
-        return belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -63,7 +63,7 @@ class UserInformation extends Model
      * @return \Illuminate\Database\Eloquent\Relations\belongsTo
      */
     public function department() {
-        return belongsTo(Department::class);
+        return $this->belongsTo(Department::class);
     }
 
 

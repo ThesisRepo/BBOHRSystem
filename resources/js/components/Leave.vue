@@ -15,6 +15,22 @@
           label="Search"
         ></v-text-field>
 
+    <v-data-table v-if="!requests && (user_type !== 'hr mngr' || user_type !== 'prp emp' || user_type !== 'general mngr')" :headers="headers" :items="desserts" class="elevation-3">
+      <template v-slot:top>
+      <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+        <v-toolbar-title class="col pa-3 py-4 white--text"
+          >LEAVE REQUEST</v-toolbar-title
+        >
+        <v-text-field
+          v-model="search"
+          clearable
+          flat
+          solo-inverted
+          hide-details
+          prepend-inner-icon="mdi-magnify"
+          label="Search"
+        ></v-text-field>
+
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on, attrs }">
             <createLeave></createLeave>
@@ -88,32 +104,23 @@
         </v-dialog>
       </v-toolbar>
     </template>
-    <template v-slot:item.actions="{ item }">
-      <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-      <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
-    </template>
-    <template v-slot:no-data>
-      <v-btn color="primary" @click="initialize"> Reset </v-btn>
-    </template>
-  </v-data-table>
+      <template v-slot:item.actions="{ item }">
+        <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
+        <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+      </template>
+      <template v-slot:no-data>
+        <v-btn color="primary" @click="initialize">Reset</v-btn>
+      </template>
+    </v-data-table>
+  </div>
 </template>
 <script>
 import createLeave from "./modals/create_leave.vue";
 export default {
   data: () => ({
     user_type: localStorage.getItem("user_type"),
-    // employees: false,
-    // requests: true,
-    employees:
-      localStorage.getItem("user_type") !== "emp" &&
-      localStorage.getItem("user_type") !== "finance mngr"
-        ? false
-        : true,
-    requests:
-      localStorage.getItem("user_type") !== "emp" &&
-      localStorage.getItem("user_type") !== "finance mngr"
-        ? true
-        : false,
+    employees: ( localStorage.getItem("user_type") !== 'emp' && localStorage.getItem('user_type') !== 'finance mngr' ) ? false : true,
+    requests: ( localStorage.getItem("user_type") !== 'emp' && localStorage.getItem('user_type') !== 'finance mngr' ) ? true : false,
     dialog: false,
     dialogDelete: false,
     headers: [

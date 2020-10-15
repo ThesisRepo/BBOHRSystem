@@ -12,20 +12,8 @@ class UserInformationController extends Controller
     protected $user;
 
     public function __construct(UserEloquent $user) {
-        // $this->middleware(['auth', 'verify.employee']);  
+        $this->middleware(['auth', 'verify.employee']);  
         $this->user = $user;
-    }
-
-    
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        return $this->user->create($request->all());
     }
 
     /**
@@ -36,7 +24,7 @@ class UserInformationController extends Controller
      */
     public function show($id)
     {
-        return $this->user->find($id);
+        return $this->user->findWith($id, 'userInformation.department');
     }
 
     /**
@@ -48,17 +36,18 @@ class UserInformationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return $this->user->update($request->all(), $id);        
+        $data = [
+            'address'=> $request->address,
+            'civil_status'=> $request->civil_status,
+            'contact_number'=> $request->contact_number,
+            'pag_ibig_number'=> $request->pag_ibig_number,
+            'sss_number'=> $request->sss_number,
+            'tin_number'=> $request->tin_number,
+            'philhealth_number'=> $request->philhealth_number
+        ];
+        
+        return $this->user->updateWithUserInfo($data, $id);        
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $this->user->delete($id);
-    }
+    
 }

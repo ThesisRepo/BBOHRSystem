@@ -14,11 +14,11 @@
         <v-card-text>
           <v-container v-if="datas !== null">
             <v-row>
-              <v-col cols="12" sm="6" md="6">
-                <v-text-field label="Position*" v-model="datas.company_position" required></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="6">
+              <v-col cols="12" sm="6" md="12">
                 <v-text-field label="Address*" v-model="datas.address" required></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field label="Contact No.*" v-model="datas.contact_number" required></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-select
@@ -28,10 +28,7 @@
                   required
                 ></v-select>
               </v-col>
-              <v-col cols="12" sm="6" md="6">
-                <v-text-field label="Contact No.*" v-model="datas.contact_number" required></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="6">
+              <v-col cols="12" sm="6" md="4">
                 <v-text-field label="PagIbig No.*" v-model="datas.pag_ibig_number" required></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
@@ -63,20 +60,18 @@ export default {
   props: ["datas"],
   methods: {
     update() {
-      // if (
-      //   this.datas.company_position === null &&
-      //   this.datas.address === null &&
-      //   this.datas.civil_status === null &&
-      //   this.datas.contact_number === null &&
-      //   this.datas.pag_ibig_number === null &&
-      //   this.datas.sss_number === null &&
-      //   this.datas.tin_number === null &&
-      //   this.datas.philhealth_number === null
-      // ) {
-      //   e.preventDefault();
-      // }
+      if (
+        this.datas.address === null &&
+        this.datas.civil_status === null &&
+        this.datas.contact_number === null &&
+        this.datas.pag_ibig_number === null &&
+        this.datas.sss_number === null &&
+        this.datas.tin_number === null &&
+        this.datas.philhealth_number === null
+      ) {
+        e.preventDefault();
+      }
       let params = {
-        company_position: this.datas.company_position,
         address: this.datas.address,
         civil_status: this.datas.civil_status,
         contact_number: this.datas.contact_number,

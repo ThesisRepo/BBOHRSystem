@@ -74,8 +74,9 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapUsersRoutes()
     {
         foreach (glob(base_path('routes/users/*.php')) as $file) {
+            $folder = explode('/', $file);
             Route::middleware('web')
-                ->namespace($this->namespace)
+                ->namespace($this->namespace . '\\' . explode('.', $folder[count($folder) - 1])[0] )
                 ->group($file);
         }
     }
