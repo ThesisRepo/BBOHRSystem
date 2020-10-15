@@ -6,15 +6,15 @@
   >
     <template v-slot:top>
       <v-toolbar
-        flat
-      >
-        <v-toolbar-title>Petty Cash Request</v-toolbar-title>
-        <v-divider
-          class="mx-4"
-          inset
-          vertical
-        ></v-divider>
-        <v-spacer></v-spacer>
+          class="mb-2"
+          color="blue darken-1"
+          dark
+          flat
+        >
+        <v-toolbar-title class="col pa-3 py-4 white--text"
+          >PETTY CASH REQUEST</v-toolbar-title
+        >
+    </v-toolbar>
         <v-dialog
           v-model="dialog"
           max-width="500px"
@@ -119,7 +119,6 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-      </v-toolbar>
     </template>
     <template v-slot:item.actions="{ item }">
       <v-icon
@@ -147,101 +146,101 @@
   </v-data-table>
 </template>
 <script>
-import createPetty from './modals/create_petty.vue'
-  export default {
-    data: () => ({
-      dialog: false,
-      dialogDelete: false,
-      headers: [
+import createPetty from "./modals/create_petty.vue";
+export default {
+  data: () => ({
+    dialog: false,
+    dialogDelete: false,
+    headers: [
+      {
+        text: "DESCRIPTION OF NEED",
+        align: "start",
+        sortable: false,
+        value: "description_need",
+      },
+      { text: "DATE", value: "date" },
+      { text: "DEPARTMENT", value: "department" },
+      { text: "TOTAL AMOUNT", value: "total_amount" },
+      { text: "PRP IN CHARGE", value: "prp_assigned" },
+      { text: "STATUS", value: "status" },
+      { text: "ACTIONS", value: "actions", sortable: false },
+    ],
+    desserts: [],
+    editedIndex: -1,
+    editedItem: {
+      description_need: "",
+      date: 0,
+      department: 0,
+      total_amount: 0,
+      prp_assigned: "",
+      status: "",
+    },
+    defaultItem: {
+      description_need: "",
+      date: 0,
+      department: 0,
+      total_amount: 0,
+      prp_assigned: "",
+      status: "",
+    },
+  }),
+  components: {
+    createPetty,
+  },
+  methods: {
+    initialize() {
+      this.desserts = [
         {
-          text: 'DESCRIPTION OF NEED',
-          align: 'start',
-          sortable: false,
-          value: 'description_need',
+          description_need: "Wlay kwarta",
+          date: 159,
+          department: 6,
+          total_amount: 24,
+          prp_assigned: "claire",
+          status: "pending",
         },
-        { text: 'DATE', value: 'date' },
-        { text: 'DEPARTMENT', value: 'department' },
-        { text: 'TOTAL AMOUNT', value: 'total_amount' },
-        { text: 'PRP IN CHARGE', value: 'prp_assigned' },
-        { text: 'STATUS', value: 'status' },
-        { text: 'ACTIONS', value: 'actions', sortable: false },
-      ],
-      desserts: [],
-      editedIndex: -1,
-      editedItem: {
-        description_need: '',
-        date: 0,
-        department: 0,
-        total_amount: 0,
-        prp_assigned: '',
-        status:''
-      },
-      defaultItem: {
-        description_need: '',
-        date: 0,
-        department: 0,
-        total_amount: 0,
-        prp_assigned: '',
-        status: ''
-      },
-    }),
-    components: {
-      createPetty
+      ];
     },
-    methods: {
-      initialize () {
-        this.desserts = [
-          {
-            description_need: 'Wlay kwarta',
-            date: 159,
-            department: 6,
-            total_amount: 24,
-            prp_assigned: 'claire',
-            status: 'pending'
-          }
-        ]
-      },
-      editItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
-      },
-
-      deleteItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialogDelete = true
-      },
-
-      deleteItemConfirm () {
-        this.desserts.splice(this.editedIndex, 1)
-        this.closeDelete()
-      },
-
-      close () {
-        this.dialog = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-
-      closeDelete () {
-        this.dialogDelete = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-
-      save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.desserts[this.editedIndex], this.editedItem)
-        } else {
-          this.desserts.push(this.editedItem)
-        }
-        this.close()
-      },
+    editItem(item) {
+      this.editedIndex = this.desserts.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
     },
-  }
+
+    deleteItem(item) {
+      this.editedIndex = this.desserts.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialogDelete = true;
+    },
+
+    deleteItemConfirm() {
+      this.desserts.splice(this.editedIndex, 1);
+      this.closeDelete();
+    },
+
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+
+    closeDelete() {
+      this.dialogDelete = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+
+    save() {
+      if (this.editedIndex > -1) {
+        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+      } else {
+        this.desserts.push(this.editedItem);
+      }
+      this.close();
+    },
+  },
+};
 </script>

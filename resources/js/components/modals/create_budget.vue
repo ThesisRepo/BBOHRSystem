@@ -1,17 +1,8 @@
 <template>
   <v-row justify="center">
-    <v-dialog
-      v-model="dialog"
-      persistent
-      max-width="600px"
-    >
+    <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          color="primary"
-          dark
-          v-bind="attrs"
-          v-on="on"
-        >
+        <v-btn color="primary" dark v-bind="attrs" v-on="on">
           Make Request
         </v-btn>
       </template>
@@ -22,85 +13,74 @@
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col cols="12">
-                <v-text-field
-                  label="Description of Need*"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="4">
+              <v-col cols="12" sm="6" md="6">
                 <v-menu
-                  ref="menu1"
-                  v-model="menu1"
+                  ref="menu"
+                  v-model="menu"
                   :close-on-content-click="false"
+                  :return-value.sync="date"
                   transition="scale-transition"
                   offset-y
-                  max-width="290px"
                   min-width="290px"
-                  margin-left="20px"
                 >
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
-                      v-model="dateFormatted"
-                      label="Date*"
-                      required
-                      persistent-hint
+                      v-model="date"
+                      label="Date Needed"
+                      readonly
                       v-bind="attrs"
-                      @blur="date = parseDate(dateFormatted)"
                       v-on="on"
                     ></v-text-field>
                   </template>
-                  <v-date-picker
-                    v-model="date"
-                    no-title
-                    @input="menu1 = false"
-                  ></v-date-picker>
+                  <v-date-picker v-model="date" no-title scrollable>
+                    <v-spacer></v-spacer>
+                    <v-btn text color="primary" @click="menu = false">
+                      Cancel
+                    </v-btn>
+                    <v-btn text color="primary" @click="$refs.menu.save(date)">
+                      OK
+                    </v-btn>
+                  </v-date-picker>
                 </v-menu>
               </v-col>
-              <v-col cols="12" sm="4">
+              <v-spacer></v-spacer>
+              <v-col cols="12" sm="6" md="6">
                 <v-text-field
                   label="Amount*"
                   type="number"
                   required
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" sm="4">
-                <v-text-field
-                  label="Details*"
-                  required
-                ></v-text-field>
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field label="Details*" required></v-text-field>
               </v-col>
-              <v-col
-                cols="12">
+              <v-col cols="12" sm="6" md="6">
                 <v-select
-                  :items="['Sick Leave', 'Single Parent Leave', 'Vacation Leave', 'Other Leave']"
-                  label="PRP IN CHARGE*"
+                  :items="[
+                    'Marion Jay Balugo',
+                    'Cherry Mae Herrera',
+                    'Marvie Cauyan',
+                    'Jessavel Toring',
+                  ]"
+                  label="PRP in charge*"
                   required
                 ></v-select>
               </v-col>
-              <!-- <v-col cols="12">
+              <v-col cols="12">
                 <v-text-field
-                  label="Status"
+                  label="Description of Need*"
+                  required
                 ></v-text-field>
-              </v-col> -->
+              </v-col>
             </v-row>
           </v-container>
-          <small>*indicates required field</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="dialog = false"
-          >
+          <v-btn color="blue darken-1" text @click="dialog = false">
             Close
           </v-btn>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="dialog = false"
-          >
+          <v-btn color="blue darken-1" text @click="dialog = false">
             Save
           </v-btn>
         </v-card-actions>
@@ -109,9 +89,9 @@
   </v-row>
 </template>
 <script>
-  export default {
-    data: () => ({
-      dialog: false,
-    }),
-  }
+export default {
+  data: () => ({
+    dialog: false,
+  }),
+};
 </script>

@@ -14,13 +14,13 @@
         <v-card-text>
           <v-container v-if="datas !== null">
             <v-row>
-              <v-col cols="12" sm="6" md="4">
+              <v-col cols="12" sm="6" md="6">
                 <v-text-field label="Position*" v-model="datas.company_position" required></v-text-field>
               </v-col>
-              <v-col cols="12" sm="6" md="4">
+              <v-col cols="12" sm="6" md="6">
                 <v-text-field label="Address*" v-model="datas.address" required></v-text-field>
               </v-col>
-              <v-col cols="12" sm="6" md="4">
+              <v-col cols="12" sm="6" md="6">
                 <v-select
                   :items="['single', 'Married', 'Widowed', 'Single-Parent']"
                   label="Status*"
@@ -28,19 +28,19 @@
                   required
                 ></v-select>
               </v-col>
-              <v-col cols="12" sm="6" md="4">
+              <v-col cols="12" sm="6" md="6">
                 <v-text-field label="Contact No.*" v-model="datas.contact_number" required></v-text-field>
               </v-col>
-              <v-col cols="12" sm="6" md="4">
+              <v-col cols="12" sm="6" md="6">
                 <v-text-field label="PagIbig No.*" v-model="datas.pag_ibig_number" required></v-text-field>
               </v-col>
-              <v-col cols="12" sm="6" md="4">
+              <v-col cols="12" sm="6" md="6">
                 <v-text-field label="SSS No.*" v-model="datas.sss_number" required></v-text-field>
               </v-col>
-              <v-col cols="12" sm="6" md="4">
+              <v-col cols="12" sm="6" md="6">
                 <v-text-field label="Tin No.*" v-model="datas.tin_number" required></v-text-field>
               </v-col>
-              <v-col cols="12" sm="6" md="4">
+              <v-col cols="12" sm="6" md="6">
                 <v-text-field label="PhilHealth No.*" v-model="datas.philhealth_number" required></v-text-field>
               </v-col>
             </v-row>

@@ -78,7 +78,6 @@ export default {
       { icon: "mdi-calendar-edit", text: "Leave Request", route: "/Leave" },
       { icon: "mdi-calendar-account", text: "Shift Change Request", route: "/ShiftChange" },
       { icon: "mdi-calendar-clock", text: "Overtime Request", route: "/Overtime" },
-      { icon: "mdi-calendar-multiple-check", text: "Actual Overtime Request", route: "/ActualOverTime" },
       { icon: "mdi-account-cash", text: "Petty Cash Request", route: "/PettyCash" },
       { icon: "mdi-account-cash-outline", text: "Budget Request", route: "/Budget" },
       { icon: "mdi-airplane", text: "Travel Authorization", route: "/TravelAuthorization" },
@@ -91,11 +90,10 @@ export default {
       { icon: "mdi-calendar-edit", text: "Leave Request", route: "/Leave" },
       { icon: "mdi-calendar-account", text: "Shift Change Request", route: "/ShiftChange" },
       { icon: "mdi-calendar-clock", text: "Overtime Request", route: "/Overtime" },
-      { icon: "mdi-calendar-multiple-check", text: "Actual Overtime Request", route: "/ActualOverTime" },
       { icon: "mdi-account-cash", text: "Petty Cash Request", route: "/PettyCash" },
       { icon: "mdi-account-cash-outline", text: "Budget Request", route: "/Budget" },
       { icon: "mdi-airplane", text: "Travel Authorization", route: "/TravelAuthorization" },
-      { icon: "mdi-logout", text: "LogOut", route: "/TravelAuthorization" }
+      { icon: "mdi-logout", text: "LogOut", route: "/logout" }
     ],
   }),
   mounted(){

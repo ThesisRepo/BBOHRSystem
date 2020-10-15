@@ -8,7 +8,7 @@
           </v-card-title>
           <v-divider></v-divider>
           <v-row>
-            <v-col cols="12" sm="4" md="4">
+            <v-col>
               <v-avatar
                 class="ml-15"
                 color="grey darken-1"
@@ -37,12 +37,8 @@
                 Id Number: {{ company_number }}
               </span>
             </v-col>
-            <v-col cols="12" sm="4" md="4" class="text-right">
-
-              <editProfile
-              :datas="datas">
-              </editProfile>
-
+            <v-col class="text-right">
+              <editProfile :datas="datas"> </editProfile>
             </v-col>
           </v-row>
         </v-card>
@@ -66,8 +62,8 @@
 
                 <v-col cols="12" sm="4" md="4">
                   <v-text-field
-                    v-model="date_hired"
-                    label="Type of Employee"
+                    v-model="employment_status"
+                    label="Employment Status"
                     outlined
                     readonly
                   ></v-text-field>
@@ -172,6 +168,7 @@ export default {
       company_number: localStorage.getItem("company_id"),
       dialog: false,
       department: null,
+      employment_status: null,
       position: null,
       date_hired: null,
       address: null,
@@ -183,7 +180,7 @@ export default {
       philhealth_num: null,
       sss_num: null,
       datas: [],
-    }
+    };
   },
   mounted() {
     this.getInfo();
@@ -193,24 +190,29 @@ export default {
   },
   methods: {
     getInfo() {
-      console.log('hi')
-      this.$axios.get('http://localhost:8000/user_info/' + this.user_id).then(response => {
-        this.datas = response.data.user_information
-        this.position = response.data.user_information.company_position
-        this.date_hired = response.data.user_information.date_hired
-        this.address = response.data.user_information.address
-        this.status = response.data.user_information.civil_status
-        this.birthdate = response.data.user_information.birthday
-        this.contact_number = response.data.user_information.contact_number
-        this.pag_ibig = response.data.user_information.pag_ibig_number
-        this.tin_number = response.data.user_information.tin_number
-        this.philhealth_num = response.data.user_information.philhealth_number
-        this.sss_num = response.data.user_information.sss_number    
-      })
-      .catch(e => {
-        console.log(e);
-      })
-    }
-  }
-}
+      console.log("hi");
+      this.$axios
+        .get("http://localhost:8000/user_info/" + this.user_id)
+        .then((response) => {
+          this.datas = response.data.user_information;
+          this.position = response.data.user_information.position;
+          this.department = response.data.user_information.department;
+          this.employment_status = response.data.user_information.employment_status;
+          this.date_hired = response.data.user_information.date_hired;
+          this.address = response.data.user_information.address;
+          this.status = response.data.user_information.civil_status;
+          this.birthdate = response.data.user_information.birthday;
+          this.contact_number = response.data.user_information.contact_number;
+          this.pag_ibig = response.data.user_information.pag_ibig_number;
+          this.tin_number = response.data.user_information.tin_number;
+          this.philhealth_num =
+            response.data.user_information.philhealth_number;
+          this.sss_num = response.data.user_information.sss_number;
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+  },
+};
 </script>

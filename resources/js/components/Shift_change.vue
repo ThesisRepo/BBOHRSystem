@@ -6,15 +6,15 @@
   >
     <template v-slot:top>
       <v-toolbar
-        flat
-      >
-        <v-toolbar-title>Shift Change Request</v-toolbar-title>
-        <v-divider
-          class="mx-4"
-          inset
-          vertical
-        ></v-divider>
-        <v-spacer></v-spacer>
+          class="mb-2"
+          color="blue darken-1"
+          dark
+          flat
+        >
+        <v-toolbar-title class="col pa-3 py-4 white--text"
+          >SHIFT CHANGE REQUEST</v-toolbar-title
+        >
+    </v-toolbar>
         <v-dialog
           v-model="dialog"
           max-width="500px"
