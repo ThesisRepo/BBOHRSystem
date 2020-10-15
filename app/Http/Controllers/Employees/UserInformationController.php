@@ -37,7 +37,6 @@ class UserInformationController extends Controller
     public function update(Request $request, $id)
     {
         $data = [
-            'company_position'=> $request->company_position,
             'address'=> $request->address,
             'civil_status'=> $request->civil_status,
             'contact_number'=> $request->contact_number,
