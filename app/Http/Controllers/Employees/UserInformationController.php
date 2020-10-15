@@ -47,7 +47,7 @@ class UserInformationController extends Controller
             'philhealth_number'=> $request->philhealth_number
         ];
         
-        return $this->user->updateWithUserInfo($data, $id);        
+        return response()->json($this->user->updateWithUserInfo($data, $id), 200);        
     }
 
     
