@@ -6,7 +6,6 @@ import Dashboard from "../components/Dashboard.vue";
 import Leave from "../components/Leave.vue";
 import ShiftChange from "../components/Shift_change.vue";
 import Overtime from "../components/Overtime.vue";
-import ActualOverTime from "../components/Actual_OT.vue";
 import PettyCash from "../components/Petty_Cash.vue";
 import Budget from "../components/Budget.vue";
 import TravelAuthorization from "../components/Travel_Authorization.vue";
@@ -44,11 +43,6 @@ const router = new Router({
       path: "/Overtime",
       name: "Overtime",
       component: Overtime
-    },
-    {
-      path: "/ActualOverTime",
-      name: "ActualOverTime",
-      component: ActualOverTime
     },
     {
       path: "/PettyCash",

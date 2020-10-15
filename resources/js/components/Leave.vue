@@ -198,8 +198,6 @@ import createLeave from "./modals/create_leave.vue";
 export default {
   data: () => ({
     user_type: localStorage.getItem("user_type"),
-    // employees: false,
-    // requests: true,
     employees: ( localStorage.getItem("user_type") !== 'emp' && localStorage.getItem('user_type') !== 'finance mngr' ) ? false : true,
     requests: ( localStorage.getItem("user_type") !== 'emp' && localStorage.getItem('user_type') !== 'finance mngr' ) ? true : false,
     dialog: false,

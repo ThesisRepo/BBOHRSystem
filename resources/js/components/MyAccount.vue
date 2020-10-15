@@ -23,7 +23,7 @@
                 {{ user_name }}
               </h1>
               <h2 class="title-h5 text-md-h5 text-sm-h5 text-truncate">
-                PHP Developer
+                {{ datas.company_position }}
               </h2>
 
               <h3
@@ -55,6 +55,14 @@
             <br />
             <v-container>
               <v-row>
+                <v-col cols="12" sm="4" md="12">
+                  <v-text-field
+                    v-model="address"
+                    label="Address"
+                    outlined
+                    readonly
+                  ></v-text-field>
+                </v-col>
                 <v-col cols="12" sm="4" md="4">
                   <v-text-field
                     label="Department"
@@ -63,11 +71,10 @@
                     v-model="department"
                   ></v-text-field>
                 </v-col>
-
                 <v-col cols="12" sm="4" md="4">
                   <v-text-field
-                    v-model="date_hired"
-                    label="Type of Employee"
+                    v-model="company_status"
+                    label="Employment Status"
                     outlined
                     readonly
                   ></v-text-field>
@@ -80,23 +87,15 @@
                     readonly
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="4" md="3">
-                  <v-text-field
-                    v-model="address"
-                    label="Address"
-                    outlined
-                    readonly
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="4" md="3">
+                <v-col cols="12" sm="4" md="4">
                   <v-text-field
                     v-model="status"
-                    label="Status"
+                    label="Civil Status"
                     outlined
                     readonly
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="4" md="3">
+                <v-col cols="12" sm="4" md="4">
                   <v-text-field
                     v-model="birthdate"
                     label="Birthdate"
@@ -104,7 +103,7 @@
                     readonly
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="4" md="3">
+                <v-col cols="12" sm="4" md="4">
                   <v-text-field
                     v-model="contact_number"
                     label="Contact Number"
@@ -147,15 +146,6 @@
               </v-row>
             </v-container>
           </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="dialog = false">
-              Cancel
-            </v-btn>
-            <v-btn color="blue darken-1" text @click="dialog = false">
-              Update
-            </v-btn>
-          </v-card-actions>
         </v-card>
       </v-col>
     </v-container>
@@ -173,6 +163,7 @@ export default {
       dialog: false,
       department: null,
       position: null,
+      company_status: null,
       date_hired: null,
       address: null,
       status: null,
@@ -189,7 +180,7 @@ export default {
     this.getInfo();
   },
   components: {
-    editProfile,
+    editProfile
   },
   methods: {
     getInfo() {
@@ -197,10 +188,11 @@ export default {
       this.$axios.get('http://localhost:8000/user_info/' + this.user_id).then(response => {
         console.log(response.data)
         this.datas = response.data.user_information
-        this.position = response.data.user_information.company_position
+        this.department = response.data.user_information.department.department_name
         this.date_hired = response.data.user_information.date_hired
         this.address = response.data.user_information.address
         this.status = response.data.user_information.civil_status
+        this.company_status = response.data.user_information.company_status
         this.birthdate = response.data.user_information.birthday
         this.contact_number = response.data.user_information.contact_number
         this.pag_ibig = response.data.user_information.pag_ibig_number
