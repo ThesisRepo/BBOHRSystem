@@ -23,14 +23,6 @@
                 ></v-select>
               </v-col>
               <v-col cols="12" sm="4">
-                <v-text-field
-                  label="Total Day/s of Leave*"
-                  type="number"
-                  v-model="number_of_leave"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="4">
                 <v-menu
                   :close-on-content-click="false"
                   transition="scale-transition"
@@ -82,11 +74,21 @@
                   ></v-date-picker>
                 </v-menu>
               </v-col>
+              <v-col cols="12" sm="4">
+                <v-text-field
+                  label="Total Day/s of Leave*"
+                  type="number"
+                  disabled
+                  v-model="differenceInDay"
+                  required
+                ></v-text-field>
+              </v-col>
               <v-col cols="12">
                 <v-select
-                  :items="['Sick Leave', 'Single Parent Leave', 'Vacation Leave', 'Other Leave']"
+                  :items="['Jocel Redotco Mendoza', 'Fenella Corinne Real Rosales', 'Cielo Fe Sasing', 'April Claire Chagas Podador', 'Nathaniel Cala Terdes', 'Carl Wyner Velasco Javier']"
                   label="PRP in Charge*"
                   v-model="prp_assigned"
+                  @click="differenceDates()"
                   required
                 ></v-select>
               </v-col>
@@ -97,13 +99,14 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-          <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
+          <v-btn color="blue darken-1" text @click="dialog = false, differenceDates()">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
   </v-row>
 </template>
 <script>
+import moment from 'moment'
 export default {
   data: () => ({
     dialog: false,
@@ -112,7 +115,8 @@ export default {
     number_of_leave: null,
     start_date: null,
     end_date: null,
-    prp_assigned: null
+    prp_assigned: null,
+    differenceInDay: null
   }),
   methods: {
     disabledDates(date) {
@@ -120,10 +124,16 @@ export default {
     },
     disabledDates2(date) {
       return date >  new Date(this.start_date).toISOString().substr(0, 10)
+      this.differenceDates()
     },
     differenceDates() {
-      var diff = this.end_date - this.start_date
-      console.log(diff)
+      let start = moment(String(this.start_date))
+      let end = moment(String(this.end_date))
+      let diff = (end.diff(start))
+      let differenceInDay = ((((diff/1000)/60)/60)/24)
+      console.log('-----------mini',  differenceInDay)
+      this.differenceInDay = differenceInDay
+      // return end - start
     },
     menu1() {}
   }
