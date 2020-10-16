@@ -29,17 +29,18 @@ $factory->define(User::class, function (Faker $faker) {
 });
 
 $factory->afterCreating(User::class, function ($user, $faker) {
-    $user->roles()->attach(5);
+    $user->roles()->attach(1);
 });
 
 $factory->afterCreating(User::class, function ($user, $faker) {
     $user->userInformation()->create([
         'department_id' => 1,
         'company_number' => $faker->randomNumber(6),
-        'position' => 'employee',
+        'company_position' => 'employee',
         'date_hired' => new Carbon('2016-01-23'),
         'contact_number' => $faker->phoneNumber,
-        'status' => 'regular',
+        'civil_status' => 'single',
+        'company_status' => 'regular',
         'birthday' => new Carbon('2016-01-23'),
         'address' => $faker->address,
         'tin_number' => $faker->randomNumber(6),

@@ -42,14 +42,13 @@ class LoginController extends Controller
      */
     public function authenticate(LoginRequest $request)
     {
-        
         $credentials = $request->only('email', 'password');
 
         if(Auth::attempt($credentials, $request->has('remember'))){
             return redirect()->intended('home');
         }
 
-        return redirect('login')->with('error', 'Opps! You have entered invalid credentials');
+        return redirect('login')->withInput($request->only('email', 'remember'))->withErrors(['invalid'=>'You have entered invalid credentials']);
     }
 
     /**

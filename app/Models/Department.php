@@ -8,7 +8,7 @@ class Department extends Model
 {
     protected $table = 'departments';
     protected $fillable = [
-        'name'
+        'department_name'
     ];
 
     /**

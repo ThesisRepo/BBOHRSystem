@@ -13,11 +13,11 @@ class DepartmentSeeder extends Seeder
     public function run()
     {
         if(!DB::table('departments')->count()) {
-            Department::create(['name' => 'Marketing']);
-            Department::create(['name' => 'HR']);
-            Department::create(['name' => 'Finance']);
-            Department::create(['name' => 'Mobile Development']);
-            Department::create(['name' => 'Web Development']);
+            Department::create(['department_name' => 'Marketing']);
+            Department::create(['department_name' => 'HR']);
+            Department::create(['department_name' => 'Finance']);
+            Department::create(['department_name' => 'Mobile Development']);
+            Department::create(['department_name' => 'Web Development']);
         }  
     }
 }

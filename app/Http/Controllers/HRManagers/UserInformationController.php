@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\HRManagers;
 
 use Illuminate\Http\Request;
-use App\Eloquent\Implementations\UserEloquent;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\RegisternRequest;
 
 class UserInformationController extends Controller
 {
@@ -11,7 +12,7 @@ class UserInformationController extends Controller
     protected $user;
 
     public function __construct(UserEloquent $user) {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'verify.manager.hr']);
         $this->user = $user;
     }
 
@@ -25,38 +26,23 @@ class UserInformationController extends Controller
         return $this->user->all();
     }
 
-    /**
+     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RegisternRequest $request)
     {
-        $this->user->create($request->all());
+        // login na ni diri
+        
+        return $this->user->create($request->all());
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $this->user->find($id);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function update(Request $request, $id)
     {
-        $this->user->update($request->all(), $id);        
+        // kani kay tanan na ma edit
+        return $this->user->updateWithUserInfo($request->all(), $id);        
     }
 
     /**
