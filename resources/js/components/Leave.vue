@@ -4,24 +4,21 @@
       <template v-slot:extension>
         <v-tabs
           fixed-tabs
-          v-if="user_type === 'hr mngr' || user_type === 'prp emp' || user_type === 'general mngr'"
+          v-if="user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.include('general mngr')"
         >
           <v-tabs-slider></v-tabs-slider>
           <v-tab @click="employees = false, requests = true">
-            <!-- <v-icon>mdi-phone</v-icon> -->
-            Employees Requests
+            My Requests
           </v-tab>
           <v-tab @click="requests = false, employees = true">
-            <!-- <v-icon>mdi-heart</v-icon> -->
-            My Requests
+            Employees Requests 
           </v-tab>
         </v-tabs>
       </template>
     </v-toolbar>
-    <v-data-table v-if="!employees" :headers="headers" :items="desserts" class="elevation-3">
+    <v-data-table v-if="employees" :headers="headers" :items="desserts" class="elevation-3">
       <template v-slot:top>
         <v-toolbar flat>
-          <!-- <v-toolbar-title>Employees Leave Request</v-toolbar-title> -->
           <v-col class="mt-8">
             <v-select :items="items" label="Month"></v-select>
           </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -37,9 +34,6 @@
             class="mx-5"
           ></v-text-field>
           <v-dialog v-model="dialog">
-            <!-- <template v-slot:activator="{ on, attrs }">
-                      <createLeave></createLeave>
-            </template>-->
             <v-card class="mt-5">
               <v-card-text>
                 <v-container>
@@ -94,7 +88,7 @@
       </template>
     </v-data-table>
 
-    <v-data-table v-if="!requests && (user_type !== 'hr mngr' || user_type !== 'prp emp' || user_type !== 'general mngr')" :headers="headers" :items="desserts" class="elevation-3">
+    <v-data-table v-if="requests && (!user_type.includes('hr mngr') || !user_type.includes('prp mngr') || !user_type.includes('prp emp'))" :headers="headers" :items="desserts" class="elevation-3">
       <template v-slot:top>
       <v-toolbar class="mb-2" color="blue darken-1" dark flat>
         <v-toolbar-title class="col pa-3 py-4 white--text"
@@ -109,11 +103,11 @@
           prepend-inner-icon="mdi-magnify"
           label="Search"
         ></v-text-field>
+            <createLeave></createLeave>
 
         <v-dialog v-model="dialog" max-width="500px">
-          <template v-slot:activator="{ on, attrs }">
-            <createLeave></createLeave>
-          </template>
+          <!-- <template v-slot:activator="{ on, attrs }">
+          </template> -->
           <v-card>
             <v-card-text>
               <v-container>
@@ -198,8 +192,10 @@ import createLeave from "./modals/create_leave.vue";
 export default {
   data: () => ({
     user_type: localStorage.getItem("user_type"),
-    employees: ( localStorage.getItem("user_type") !== 'emp' && localStorage.getItem('user_type') !== 'finance mngr' ) ? false : true,
-    requests: ( localStorage.getItem("user_type") !== 'emp' && localStorage.getItem('user_type') !== 'finance mngr' ) ? true : false,
+    employees: !(localStorage.getItem('user_type')).includes('finance mngr') ? false : true,
+    requests: !(localStorage.getItem('user_type')).includes('finance mngr') ? true : false,
+    // employees: ( localStorage.getItem("user_type") !== 'emp' && localStorage.getItem('user_type') !== 'finance mngr' ) ? false : true,
+    // requests: ( localStorage.getItem("user_type") !== 'emp' && localStorage.getItem('user_type') !== 'finance mngr' ) ? true : false,
     dialog: false,
     dialogDelete: false,
     headers: [
@@ -240,7 +236,7 @@ export default {
     createLeave
   },
   mounted(){
-    console.log('----------testing------------', this.user_type, this.requests, this.employees)
+    console.log('----------testing------hoids------wedgf', this.requests, this.employees)
   },
   methods: {
     initialize() {
