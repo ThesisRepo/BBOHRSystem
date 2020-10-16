@@ -1,5 +1,6 @@
 <template>
   <v-row justify="center">
+    <!-- <h1>hihasdfasdf</h1> -->
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
         <v-btn color="light blue darken-2" rounded outlined dark v-bind="attrs" v-on="on">
