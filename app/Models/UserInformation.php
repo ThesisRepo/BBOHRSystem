@@ -16,10 +16,11 @@ class UserInformation extends Model
     protected $fillable = [
         'company_number',
         'profile_url',
-        'position',
+        'company_position',
         'date_hired',
         'contact_number',
-        'status',
+        'civil_status',
+        'company_status',
         'birthday',
         'address',
         'tin_number',
@@ -53,7 +54,7 @@ class UserInformation extends Model
      * @return \Illuminate\Database\Eloquent\Relations\belongsTo
      */
     public function user() {
-        return belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -62,7 +63,7 @@ class UserInformation extends Model
      * @return \Illuminate\Database\Eloquent\Relations\belongsTo
      */
     public function department() {
-        return belongsTo(Department::class);
+        return $this->belongsTo(Department::class);
     }
 
 

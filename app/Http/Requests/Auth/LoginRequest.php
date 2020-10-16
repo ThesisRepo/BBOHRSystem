@@ -12,8 +12,8 @@ class LoginRequest extends AuthBaseRequest
     public function rules()
     {
         return [
-            'email' => 'bail|required|string|email',
-            'password' => 'required|string'
+            'email' => $this->email,
+            'password' => $this->password
         ];
     }
 }

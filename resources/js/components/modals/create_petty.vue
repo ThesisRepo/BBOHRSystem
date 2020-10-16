@@ -30,36 +30,33 @@
               </v-col>
               <v-col cols="12" sm="4">
                 <v-menu
-                  ref="menu1"
-                  v-model="menu1"
                   :close-on-content-click="false"
                   transition="scale-transition"
                   offset-y
-                  max-width="290px"
                   min-width="290px"
-                  margin-left="20px"
                 >
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
-                      v-model="dateFormatted"
-                      label="Date*"
-                      required
-                      persistent-hint
+                      v-model="date"
+                      label="Date"
+                      prepend-icon="mdi-calendar"
+                      readonly
                       v-bind="attrs"
-                      @blur="date = parseDate(dateFormatted)"
                       v-on="on"
                     ></v-text-field>
                   </template>
                   <v-date-picker
                     v-model="date"
+                    :allowed-dates="disabledDates"
                     no-title
-                    @input="menu1 = false"
+                    scrollable
+                    color="primary"
                   ></v-date-picker>
                 </v-menu>
               </v-col>
               <v-col cols="12" sm="4">
                 <v-select
-                  :items="['Sick Leave', 'Single Parent Leave', 'Vacation Leave', 'Other Leave']"
+                  :items="['Accounting', 'CS', 'Marketing', 'Mobile', 'PHP']"
                   label="Department*"
                   required
                 ></v-select>
@@ -70,14 +67,6 @@
                   type="number"
                   required
                 ></v-text-field>
-              </v-col>
-              <v-col
-                cols="12">
-                <v-select
-                  :items="['Sick Leave', 'Single Parent Leave', 'Vacation Leave', 'Other Leave']"
-                  label="PRP in Charge*"
-                  required
-                ></v-select>
               </v-col>
               <!-- <v-col cols="12">
                 <v-text-field
@@ -114,5 +103,10 @@
     data: () => ({
       dialog: false,
     }),
+    methods: {
+      disabledDates(date) {
+        return date >  new Date().toISOString().substr(0, 10)
+      }
+    }
   }
 </script>

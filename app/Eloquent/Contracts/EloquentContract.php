@@ -20,6 +20,10 @@ interface EloquentContract {
    */
   public function find($id);
 
+  public function findOrFail( $id);
+
+  public function findWith( $id, $relationship);
+
   /**
    * @param array $data
    * @param int $id
@@ -31,5 +35,8 @@ interface EloquentContract {
    * @param int $id
    * deletes data for matching id in db
    */
-  public function delete($id);
+  public function deleteWhere($column, $id);
+
+  public function setModel( $model);
+
 } 

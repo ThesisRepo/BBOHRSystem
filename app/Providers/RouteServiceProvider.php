@@ -39,7 +39,7 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
-        //
+        $this->mapUsersRoutes(); 
     }
 
     /**
@@ -69,5 +69,15 @@ class RouteServiceProvider extends ServiceProvider
              ->middleware('api')
              ->namespace($this->namespace)
              ->group(base_path('routes/api.php'));
+    }
+
+    protected function mapUsersRoutes()
+    {
+        foreach (glob(base_path('routes/users/*.php')) as $file) {
+            $folder = explode('/', $file);
+            Route::middleware('web')
+                ->namespace($this->namespace . '\\' . explode('.', $folder[count($folder) - 1])[0] )
+                ->group($file);
+        }
     }
 }

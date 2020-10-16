@@ -58,13 +58,13 @@ class CreateGenManAcc extends Command
      */
     public function handle()
     {
-        if(!$this->user->isRoleExisting(1)) {
+        if(!$this->user->isRoleExisting(5)) {
             $this->setRegisterValues();
             try {
                 DB::beginTransaction();
 
                 $this->setModel($this->user);
-                $this->createSuperAdmin(1, $this->firstname, $this->lastname, $this->email, $this->pwd);
+                $this->createSuperAdmin(5, $this->firstname, $this->lastname, $this->email, $this->pwd);
 
                 DB::commit();
                 $this->info('General Manager Account created for '.$this->firstname . ' ' . $this->lastname);
