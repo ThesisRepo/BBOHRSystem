@@ -5,11 +5,16 @@
     class="elevation-1"
   >
     <template v-slot:top>
-      <v-toolbar class="mb-2" color="blue darken-1" dark flat>
-        <v-toolbar-title class="col pa-3 py-4 white--text"
-          >TRAVEL AUTHORIZATION</v-toolbar-title
-        >
-      </v-toolbar>
+      <v-toolbar
+        flat
+      >
+        <v-toolbar-title>Travel Authorization</v-toolbar-title>
+        <v-divider
+          class="mx-4"
+          inset
+          vertical
+        ></v-divider>
+        <v-spacer></v-spacer>
         <v-dialog
           v-model="dialog"
           max-width="500px"
@@ -162,109 +167,104 @@
   </v-data-table>
 </template>
 <script>
-import createTravel from "./modals/create_travel.vue";
-export default {
-  data: () => ({
-    dialog: false,
-    dialogDelete: false,
-    headers: [
-      {
-        text: "DESTINATION",
-        align: "start",
-        sortable: false,
-        value: "destination",
-      },
-      { text: "START DATE", value: "start_date" },
-      { text: "END DATE", value: "end_date" },
-      { text: "EMERGENCY CONTACT", value: "emergency_contact" },
-      { text: "EMPLOYEE TO COVER", value: "employee_cover" },
-      { text: "DETAILS", value: "details" },
-      { text: "PRP IN CHARGE", value: "prp_assigned" },
-      { text: "STATUS", value: "status" },
-      { text: "ACTIONS", value: "actions", sortable: false },
-    ],
-    desserts: [],
-    editedIndex: -1,
-    editedItem: {
-      destination: "",
-      start_date: "",
-      end_date: 0,
-      emergency_contact: 0,
-      employee_cover: 0,
-      details: "",
-      prp_assigned: "",
-      status: "",
-    },
-    defaultItem: {
-      destination: "",
-      start_date: "",
-      end_date: 0,
-      emergency_contact: 0,
-      employee_cover: 0,
-      details: "",
-      prp_assigned: "",
-      status: "",
-    },
-  }),
-  components: {
-    createTravel,
-  },
-  methods: {
-    initialize() {
-      this.desserts = [
+import createTravel from './modals/create_travel.vue'
+  export default {
+    data: () => ({
+      dialog: false,
+      dialogDelete: false,
+      headers: [
         {
-          destination: "Cebu",
-          start_date: "Wlay kwarta",
-          end_date: 159,
-          emergency_contact: 6,
-          employee_cover: 24,
-          details: "going home",
-          prp_assigned: "Claire",
-          status: "pending",
+          text: 'DESTINATION',
+          align: 'start',
+          sortable: false,
+          value: 'destination',
         },
-      ];
+        { text: 'START DATE', value: 'start_date' },
+        { text: 'END DATE', value: 'end_date' },
+        { text: 'EMERGENCY CONTACT', value: 'emergency_contact' },
+        { text: 'EMPLOYEE TO COVER', value: 'employee_cover' },
+        { text: 'DETAILS', value: 'details' },
+        { text: 'PRP IN CHARGE', value: 'prp_assigned' },
+        { text: 'STATUS', value: 'status' },
+        { text: 'ACTIONS', value: 'actions', sortable: false },
+      ],
+      desserts: [],
+      editedIndex: -1,
+      editedItem: {
+        destination: '',
+        start_date: '',
+        end_date: 0,
+        emergency_contact: 0,
+        employee_cover: 0,
+        details: '',
+        prp_assigned: '',
+        status:''
+      },
+      defaultItem: {
+        destination: '',
+        start_date: '',
+        end_date: 0,
+        emergency_contact: 0,
+        employee_cover: 0,
+        details: '',
+        prp_assigned: '',
+        status: ''
+      },
+    }),
+    components: {
+      createTravel
     },
-    editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialog = true;
+    methods: {
+      initialize () {
+        this.desserts = [
+          {
+            destination: 'Cebu',
+            start_date: 'Wlay kwarta',
+            end_date: 159,
+            emergency_contact: 6,
+            employee_cover: 24,
+            details: 'going home',
+            prp_assigned: 'Claire',
+            status: 'pending'
+          }
+        ]
+      },
+      editItem (item) {
+        this.editedIndex = this.desserts.indexOf(item)
+        this.editedItem = Object.assign({}, item)
+        this.dialog = true
+      },
+      deleteItem (item) {
+        this.editedIndex = this.desserts.indexOf(item)
+        this.editedItem = Object.assign({}, item)
+        this.dialogDelete = true
+      },
+      deleteItemConfirm () {
+        this.desserts.splice(this.editedIndex, 1)
+        this.closeDelete()
+      },
+      close () {
+        this.dialog = false
+        this.$nextTick(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
+      },
+      closeDelete () {
+        this.dialogDelete = false
+        this.$nextTick(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
+      },
+      save () {
+        if (this.editedIndex > -1) {
+          Object.assign(this.desserts[this.editedIndex], this.editedItem)
+        } else {
+          this.desserts.push(this.editedItem)
+        }
+        this.close()
+      },
     },
-
-    deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialogDelete = true;
-    },
-
-    deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1);
-      this.closeDelete();
-    },
-
-    close() {
-      this.dialog = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
-
-    closeDelete() {
-      this.dialogDelete = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
-
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
-      } else {
-        this.desserts.push(this.editedItem);
-      }
-      this.close();
-    },
-  },
-};
+  }
 </script>

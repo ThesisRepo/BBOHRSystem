@@ -244,18 +244,15 @@ export default {
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
-
     deleteItem(item) {
       this.editedIndex = this.desserts.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
-
     deleteItemConfirm() {
       this.desserts.splice(this.editedIndex, 1);
       this.closeDelete();
     },
-
     close() {
       this.dialog = false;
       this.$nextTick(() => {
@@ -263,7 +260,6 @@ export default {
         this.editedIndex = -1;
       });
     },
-
     closeDelete() {
       this.dialogDelete = false;
       this.$nextTick(() => {
@@ -271,7 +267,6 @@ export default {
         this.editedIndex = -1;
       });
     },
-
     save() {
       if (this.editedIndex > -1) {
         Object.assign(this.desserts[this.editedIndex], this.editedItem);

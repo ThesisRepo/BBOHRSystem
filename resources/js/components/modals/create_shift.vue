@@ -17,7 +17,6 @@
               <v-col cols="12" sm="6">
                 <v-menu
                   :close-on-content-click="false"
-                  :return-value.sync="date"
                   transition="scale-transition"
                   offset-y
                   min-width="290px"
@@ -42,7 +41,6 @@
                   ></v-date-picker>
                 </v-menu>
               </v-col>
-              <v-spacer></v-spacer>
               <v-col cols="12" sm="6">
                 <v-select
                   :items="['8 - 5pm', '9 - 6pm', '2 - 11pm']"
@@ -59,6 +57,7 @@
               </v-col>
             </v-row>
           </v-container>
+          <small>*indicates required field</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>

@@ -25,7 +25,6 @@
               <v-col cols="12" sm="4">
                 <v-menu
                   :close-on-content-click="false"
-                  :return-value.sync="date"
                   transition="scale-transition"
                   offset-y
                   min-width="290px"
@@ -49,11 +48,9 @@
                   ></v-date-picker>
                 </v-menu>
               </v-col>
-              <v-spacer></v-spacer>
-              <v-col cols="12" sm="6" md="6">
+              <v-col cols="12" sm="4">
                 <v-menu
                   :close-on-content-click="false"
-                  :return-value.sync="date"
                   transition="scale-transition"
                   offset-y
                   min-width="290px"
@@ -97,6 +94,7 @@
               </v-col>
             </v-row>
           </v-container>
+          <small>*indicates required field</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
