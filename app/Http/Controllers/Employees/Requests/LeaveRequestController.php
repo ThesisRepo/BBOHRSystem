@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Eloquent\Implementations\Requests\LeaveRequestEloquent;
 use App\Eloquent\Implementations\RequestDependencies\LeaveTypeEloquent;
 use App\Eloquent\Implementations\UserEloquent;
-
 use App\Eloquent\Implementations\RoleEloquent;
 
 class LeaveRequestController extends RequestBaseController

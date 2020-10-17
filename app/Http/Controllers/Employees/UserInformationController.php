@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Employees;
 use Illuminate\Http\Request;
 use App\Eloquent\Implementations\UserEloquent;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 
 class UserInformationController extends Controller
 {
@@ -49,5 +50,7 @@ class UserInformationController extends Controller
         return response()->json($this->user->updateWithUserInfo($data, $id), 200);        
     }
 
-    
+    public function getAllPrp() {
+        return response()->json($this->user->getPrp()->toArray(), 200); 
+    } 
 }
