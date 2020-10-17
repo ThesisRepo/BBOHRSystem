@@ -1,10 +1,11 @@
 <template>
   <v-row justify="center">
+    <!-- <h1>hihasdfasdf</h1> -->
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
         <v-btn color="light blue darken-2" rounded outlined dark v-bind="attrs" v-on="on">
           <v-icon>mdi-plus</v-icon>
-          <v-toolbar-title>Make Request</v-toolbar-title>
+          <v-toolbar-title style="font-size: 16px">Make Request</v-toolbar-title>
         </v-btn>
       </template>
       <v-card>

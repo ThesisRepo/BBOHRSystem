@@ -4,60 +4,84 @@
       <template v-slot:extension>
         <v-tabs
           fixed-tabs
-          v-if="user_type === 'hr mngr' || user_type === 'prp emp' || user_type === 'general mngr'"
+          v-if="
+            user_type.includes('hr mngr') ||
+            user_type.includes('prp emp') ||
+            user_type.include('general mngr')
+          "
         >
           <v-tabs-slider></v-tabs-slider>
-          <v-tab @click="employees = false, requests = true">
-            Employees Requests
-          </v-tab>
-          <v-tab @click="requests = false, employees = true">
+          <v-tab @click="(employees = false), (requests = true)">
             My Requests
+          </v-tab>
+          <v-tab @click="(requests = false), (employees = true)">
+            Employees Requests
           </v-tab>
         </v-tabs>
       </template>
     </v-toolbar>
-    <v-data-table v-if="!employees" :headers="headers" :items="desserts" class="elevation-3">
+    <v-data-table
+      v-if="employees"
+      :headers="headers"
+      :items="desserts"
+      class="elevation-3"
+    >
       <template v-slot:top>
         <v-toolbar flat>
           <v-col class="mt-8">
-            <v-select :items="items" label="Month"></v-select>
-          </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <v-select :items="items" label="Month"></v-select> </v-col
+          >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <v-btn depressed color="primary">SUMMARY</v-btn>
           <v-divider class="mx-4" vertical></v-divider>
           <v-spacer></v-spacer>
           <v-text-field
             v-model="search"
-            v-icon="mdi-magnify"
+            v-icon="mdi - magnify"
             label="Search"
             single-line
             hide-details
             class="mx-5"
           ></v-text-field>
           <v-dialog v-model="dialog">
-            <!-- <template v-slot:activator="{ on, attrs }">
-                      <createLeave></createLeave>
-            </template>-->
             <v-card class="mt-5">
               <v-card-text>
                 <v-container>
                   <v-row>
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.reason" label="reason"></v-text-field>
+                      <v-text-field
+                        v-model="editedItem.reason"
+                        label="reason"
+                      ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.total_days" label="total_days"></v-text-field>
+                      <v-text-field
+                        v-model="editedItem.total_days"
+                        label="total_days"
+                      ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.start_date" label="start_date"></v-text-field>
+                      <v-text-field
+                        v-model="editedItem.start_date"
+                        label="start_date"
+                      ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.end_date" label="end_date"></v-text-field>
+                      <v-text-field
+                        v-model="editedItem.end_date"
+                        label="end_date"
+                      ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.prp_assigned" label="prp_assigned"></v-text-field>
+                      <v-text-field
+                        v-model="editedItem.prp_assigned"
+                        label="prp_assigned"
+                      ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.status" label="status"></v-text-field>
+                      <v-text-field
+                        v-model="editedItem.status"
+                        label="status"
+                      ></v-text-field>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -71,11 +95,17 @@
           </v-dialog>
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
-              <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
+              <v-card-title class="headline"
+                >Are you sure you want to delete this item?</v-card-title
+              >
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-                <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
+                <v-btn color="blue darken-1" text @click="closeDelete"
+                  >Cancel</v-btn
+                >
+                <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+                  >OK</v-btn
+                >
                 <v-spacer></v-spacer>
               </v-card-actions>
             </v-card>
@@ -91,95 +121,109 @@
       </template>
     </v-data-table>
 
-    <v-data-table v-if="!requests && (user_type !== 'hr mngr' || user_type !== 'prp emp' || user_type !== 'general mngr')" :headers="headers" :items="desserts" class="elevation-3">
+    <v-data-table
+      v-if="
+        requests &&
+        (!user_type.includes('hr mngr') ||
+          !user_type.includes('prp mngr') ||
+          !user_type.includes('prp emp'))
+      "
+      :headers="headers"
+      :items="desserts"
+      class="elevation-3"
+    >
       <template v-slot:top>
-      <v-toolbar class="mb-2" color="blue darken-1" dark flat>
-        <v-toolbar-title class="col pa-3 py-4 white--text"
-          >LEAVE REQUEST</v-toolbar-title
-        >
-        <v-text-field
-          v-model="search"
-          clearable
-          flat
-          solo-inverted
-          hide-details
-          prepend-inner-icon="mdi-magnify"
-          label="Search"
-        ></v-text-field>
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+          <v-toolbar-title
+            class="col pa-3 py-4 white--text"
+            style="font-size:16px" 
+            >LEAVE REQUEST</v-toolbar-title
+          >
+          <v-text-field
+            v-model="search"
+            clearable
+            flat
+            solo-inverted
+            hide-details
+            prepend-inner-icon="mdi-magnify"
+            label="Search"
+          ></v-text-field>
+          <createLeave></createLeave>
 
-        <v-dialog v-model="dialog" max-width="500px">
-          <template v-slot:activator="{ on, attrs }">
-            <createLeave></createLeave>
-          </template>
-          <v-card>
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.reason"
-                      label="reason"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.date"
-                      label="date"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.start_time"
-                      label="start_time"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.end_time"
-                      label="end_time"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.prp_assigned"
-                      label="prp_assigned"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.status"
-                      label="status"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-              <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-        <v-dialog v-model="dialogDelete" max-width="500px">
-          <v-card>
-            <v-card-title class="headline"
-              >Are you sure you want to delete this item?</v-card-title
-            >
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete"
-                >Cancel</v-btn
+          <v-dialog v-model="dialog" max-width="500px">
+            <!-- <template v-slot:activator="{ on, attrs }">
+          </template> -->
+            <v-card>
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.reason"
+                        label="reason"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.date"
+                        label="date"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.start_time"
+                        label="start_time"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.end_time"
+                        label="end_time"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.prp_assigned"
+                        label="prp_assigned"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.status"
+                        label="status"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="close">
+                  Cancel
+                </v-btn>
+                <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <v-dialog v-model="dialogDelete" max-width="500px">
+            <v-card>
+              <v-card-title class="headline"
+                >Are you sure you want to delete this item?</v-card-title
               >
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                >OK</v-btn
-              >
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-toolbar>
-    </template>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="closeDelete"
+                  >Cancel</v-btn
+                >
+                <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+                  >OK</v-btn
+                >
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-toolbar>
+      </template>
       <template v-slot:item.actions="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
         <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
@@ -195,8 +239,14 @@ import createLeave from "./modals/create_leave.vue";
 export default {
   data: () => ({
     user_type: localStorage.getItem("user_type"),
-    employees: ( localStorage.getItem("user_type") !== 'emp' && localStorage.getItem('user_type') !== 'finance mngr' ) ? false : true,
-    requests: ( localStorage.getItem("user_type") !== 'emp' && localStorage.getItem('user_type') !== 'finance mngr' ) ? true : false,
+    employees: !localStorage.getItem("user_type").includes("finance mngr")
+      ? false
+      : true,
+    requests: !localStorage.getItem("user_type").includes("finance mngr")
+      ? true
+      : false,
+    // employees: ( localStorage.getItem("user_type") !== 'emp' && localStorage.getItem('user_type') !== 'finance mngr' ) ? false : true,
+    // requests: ( localStorage.getItem("user_type") !== 'emp' && localStorage.getItem('user_type') !== 'finance mngr' ) ? true : false,
     dialog: false,
     dialogDelete: false,
     headers: [
@@ -204,14 +254,14 @@ export default {
         text: "REASON",
         align: "start",
         sortable: false,
-        value: "reason"
+        value: "reason",
       },
       { text: "TOTAL DAY/S LEAVE", value: "total_days" },
       { text: "START DATE", value: "start_date" },
       { text: "END DATE", value: "end_date" },
       { text: "PRP IN CHARGE", value: "prp_assigned" },
       { text: "STATUS", value: "status" },
-      { text: "ACTIONS", value: "actions", sortable: false }
+      { text: "ACTIONS", value: "actions", sortable: false },
     ],
     desserts: [],
     editedIndex: -1,
@@ -221,7 +271,7 @@ export default {
       start_date: 0,
       end_date: 0,
       prp_assigned: "",
-      status: ""
+      status: "",
     },
     defaultItem: {
       reason: "",
@@ -229,15 +279,19 @@ export default {
       start_date: 0,
       end_date: 0,
       prp_assigned: "",
-      status: ""
+      status: "",
     },
-    items: ["Foo", "Bar", "Fizz", "Buzz"]
+    items: ["Foo", "Bar", "Fizz", "Buzz"],
   }),
   components: {
-    createLeave
+    createLeave,
   },
-  mounted(){
-    console.log('----------testing------------', this.user_type, this.requests, this.employees)
+  mounted() {
+    console.log(
+      "----------testing------hoids------wedgf",
+      this.requests,
+      this.employees
+    );
   },
   methods: {
     initialize() {
@@ -248,8 +302,8 @@ export default {
           start_date: 6,
           end_date: 24,
           prp_assigned: "claire",
-          status: "pending"
-        }
+          status: "pending",
+        },
       ];
     },
     editItem(item) {
@@ -292,7 +346,7 @@ export default {
         this.desserts.push(this.editedItem);
       }
       this.close();
-    }
-  }
+    },
+  },
 };
 </script>

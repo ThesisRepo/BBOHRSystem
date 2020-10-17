@@ -31,6 +31,7 @@ class EloquentImplementation implements EloquentContract {
    * populates db
    */
   public function create( array $data) {
+    // dd($data);
     return $this->model->create($data);
   }
 
@@ -40,7 +41,7 @@ class EloquentImplementation implements EloquentContract {
    * find the matching value of id
    */
   public function find( $id) {
-    return $this->find( $id);
+    return $this->model->find( $id);
   }
 
   /**
@@ -53,7 +54,7 @@ class EloquentImplementation implements EloquentContract {
   }
 
   public function findWith( $id, $relationship) {
-    return $this->with( $relationship)->find( $id);
+    return $this->with( $relationship)->find($id);
   }
   /**
    * @param array $data
@@ -61,15 +62,19 @@ class EloquentImplementation implements EloquentContract {
    * updates data for matching id in db
    */
   public function update(array $data, $id){
-    return $this->findOrFail($id)->pdate($data);
+    return $this->findOrFail($id)->update($data);
   }
 
   /**
    * @param int $id
    * deletes data for matching id in db
    */
-  public function delete($id){
-    return $this->where('id', $id)->delete();
+  public function deleteWhere($column,$id){
+    return $this->where($column, $id)->delete();
+  }
+
+  public function getWhere($column, $id){
+    return $this->where($column, $id)->get();
   }
 
   /**
@@ -81,6 +86,10 @@ class EloquentImplementation implements EloquentContract {
   public function setModel( $model) {
     $this->model = $model;
     return $this;
+  }
+
+  public function where($column, $id){
+    return $this->model->where($column, $id);
   }
 
   /**

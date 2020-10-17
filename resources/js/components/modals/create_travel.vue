@@ -2,8 +2,16 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="primary" dark v-bind="attrs" v-on="on">
-          Make Request
+        <v-btn
+          color="light blue darken-2"
+          rounded
+          outlined
+          dark
+          v-bind="attrs"
+          v-on="on"
+        >
+          <v-icon>mdi-plus</v-icon>
+          <v-toolbar-title style="font-size: 16px">Make Request</v-toolbar-title>
         </v-btn>
       </template>
       <v-card>

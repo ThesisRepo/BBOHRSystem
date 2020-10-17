@@ -7,7 +7,7 @@
           dark
           flat
         >
-        <v-toolbar-title class="col pa-3 py-4 white--text"
+        <v-toolbar-title class="col pa-3 py-4 white--text" style="font-size:16px"
           >REQUESTS STATUS</v-toolbar-title
         >
     </v-toolbar>

@@ -94,7 +94,7 @@
     <v-data-table v-if="!requests && (user_type !== 'hr mngr' || user_type !== 'prp emp' || user_type !== 'general mngr')" :headers="headers" :items="desserts" class="elevation-3">
       <template v-slot:top>
       <v-toolbar class="mb-2" color="blue darken-1" dark flat>
-        <v-toolbar-title class="col pa-3 py-4 white--text"
+        <v-toolbar-title class="col pa-3 py-4 white--text"  style="font-size:16px "
           >OVERTIME REQUEST</v-toolbar-title
         >
         <v-text-field

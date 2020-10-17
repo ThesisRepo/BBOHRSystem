@@ -25,7 +25,14 @@ export default {
     },
     methods: {
         setUserType(){
-            localStorage.setItem('user_type', this.user.roles[0].role_name)
+            var roleList=[]
+            this.user.roles.forEach(element => {
+                console.log(element.role_name)
+                roleList.push(element.role_name)
+                // element.role_name
+            });
+            console.log(this.user.roles)
+            localStorage.setItem('user_type', roleList)
             localStorage.setItem('id', this.user.id)
             localStorage.setItem('user_name', this.user.first_name + " " + this.user.last_name)
             localStorage.setItem('email', this.user.email)

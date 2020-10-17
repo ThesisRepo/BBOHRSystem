@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Status extends Model
 {
-
+    protected $table = 'status';
     /**
      * Attribute that is mass assignable
      *
