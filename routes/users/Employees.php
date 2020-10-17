@@ -39,7 +39,6 @@ Route::get('leave_type','Dependencies\LeaveTypeController@index')->name('leave_t
 
 // -- SHIFT CHANGE REQUEST
 
-
 // add shift change request
 Route::post('shift_change_request','Requests\ShiftChangeRequestController@store')->name('shift_change_request.store');
 
@@ -55,7 +54,6 @@ Route::delete('shift_change_request/{id}','Requests\ShiftChangeRequestController
 
 // -- OVERTIME REQUEST
 
-
 // add overtime request
 Route::post('overtime_request','Requests\OvertimeRequestController@store')->name('overtime_request.store');
 
@@ -67,3 +65,24 @@ Route::post('overtime_request/{id}','Requests\OvertimeRequestController@update')
 
 // delete overtime request
 Route::delete('overtime_request/{id}','Requests\OvertimeRequestController@delete')->name('overtime_request.delete');
+
+
+// -- Department
+
+//get all departments
+Route::get('departments','DepartmentController@index')->name('departments.retrieve');
+
+
+// -- PETTY CASH REQUEST
+
+// add petty cash request
+Route::post('petty_cash_request','Requests\PettyCashRequestController@store')->name('petty_cash_request.store');
+
+// retrieve all petty cash request of a user
+Route::get('petty_cash_request/{id}','Requests\PettyCashRequestController@show')->name('petty_cash_request.find');
+
+// update petty cash request
+Route::post('petty_cash_request/{id}','Requests\PettyCashRequestController@update')->name('petty_cash_request.update');
+
+// delete petty cash request
+Route::delete('petty_cash_request/{id}','Requests\PettyCashRequestController@delete')->name('petty_cash_request.delete');

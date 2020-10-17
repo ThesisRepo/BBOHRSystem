@@ -50,4 +50,8 @@ class Role extends Model
     public function overtime_requests() {
         return $this->hasMany(Requests\OvertimeRequest::class);
     }
+
+    public function petty_cash_requests() {
+        return $this->hasMany(Requests\PettyCashRequest::class);
+    }
 }
