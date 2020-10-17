@@ -79,7 +79,7 @@ class EloquentImplementation implements EloquentContract {
   public function getWhereWith($column, $id, $relationship){
     return $this->with($relationship)->where($column, $id)->get();
   }
-
+  
   /**
    * @param string $model
    * creates a model

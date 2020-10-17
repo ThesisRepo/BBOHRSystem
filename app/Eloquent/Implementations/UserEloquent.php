@@ -22,4 +22,10 @@ class UserEloquent extends EloquentImplementation {
     public function updateWithUserInfo($data, $id){
        return  $this->model->findorFail($id)->userInformation()->update($data);
     }
+
+    public function getPrp() {
+      return $this->model->whereHas('roles', function($q){
+        $q->where('role_id', 2);
+      })->get();
+    }
 }
