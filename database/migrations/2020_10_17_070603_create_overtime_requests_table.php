@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateShiftChangeRequestsTable extends Migration
+class CreateOvertimeRequestsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateShiftChangeRequestsTable extends Migration
      */
     public function up()
     {
-        Schema::create('shift_change_requests', function (Blueprint $table) {
+        Schema::create('overtime_requests', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->UnsignedBigInteger('user_id');
             $table->string('reason');
-            $table->date('shift_date');
-            $table->string('shift_time');
+            $table->date('date');
+            $table->time('start_time');
+            $table->time('end_time');
             $table->UnsignedBigInteger('approver_role_id');
             $table->UnsignedBigInteger('status_id')->default(1);
             $table->timestamps();
@@ -35,6 +36,6 @@ class CreateShiftChangeRequestsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shift_change_requests');
+        Schema::dropIfExists('overtime_requests');
     }
 }

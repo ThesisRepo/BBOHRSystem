@@ -88,4 +88,12 @@ class User extends Authenticatable implements MustVerifyEmail
     public function approved_shift_change_equests() {
         return $this->morphByMany(Requests\ShiftChangeRequest::class, 'approved_request_records');
     }
+
+    public function overtime_requests() {
+        return $this->hasMany(Requests\OvertimeRequest::class);
+    }
+
+    public function approved_overtime_requests() {
+        return $this->morphByMany(Requests\OvertimeRequest::class, 'approved_request_records');
+    }
 }
