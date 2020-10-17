@@ -96,4 +96,12 @@ class User extends Authenticatable implements MustVerifyEmail
     public function approved_overtime_requests() {
         return $this->morphByMany(Requests\OvertimeRequest::class, 'approved_request_records');
     }
+
+    public function petty_cash_requests() {
+        return $this->hasMany(Requests\PettyCashRequest::class);
+    }
+
+    public function approved_petty_cash_requests() {
+        return $this->morphByMany(Requests\PettyCashRequest::class, 'approved_request_records');
+    }
 }

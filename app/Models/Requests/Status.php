@@ -28,4 +28,8 @@ class Status extends Model
         return $this->hasMany(OvertimeRequest::class);
     }
 
+    public function petty_cash_requests() {
+        return $this->hasMany(PettyCashRequest::class);
+    }
+
 }

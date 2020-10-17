@@ -49,9 +49,11 @@ class RequestBaseController extends Controller
     public function getMaxRoles(){
         return $this->max_role;
     }
+    public function findDepartment($id) {
+        return $this->user->findWith($id, 'userInformation')->userInformation->department_id;
+    }
 
     public function nextApproverId($id) {
-
         $this->setMaxRoles($this->getRoles($id));
 
         if($this->request_name == 'petty_cash_request' || $this->request_name == 'petty_cash_request' && $this->max_role != 2) {
