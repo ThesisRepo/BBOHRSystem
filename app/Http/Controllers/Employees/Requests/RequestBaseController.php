@@ -19,7 +19,11 @@ class RequestBaseController extends Controller
     protected $user;
 
     protected $status;
-    
+
+    private $max_role;
+
+    private $request_name;
+
     public function __construct(RoleEloquent $role, LeaveTypeEloquent $leave_type, UserEloquent $user ) {
 
         $this->middleware(['auth']);  
@@ -31,25 +35,54 @@ class RequestBaseController extends Controller
     public function getRoles($id) {
         return $this->user->findWith($id, 'roles')->roles;
     }
-    public function nextApproverId($id, $request_name) {
-        $max_role = 0;
-        $data = $this->getRoles($id);
 
-        foreach( $data as  $datum) {
-            $max_role = $datum->id > $max_role ? $datum->id : $max_role;
+    public function setMaxRoles($roleArr) {
+        foreach( $roleArr as  $datum) {
+            $this->max_role = $datum->id > $this->max_role ? $datum->id : $this->max_role;
         }
-        
-        if($request_name == 'petty_cash_request' || $request_name == 'petty_cash_request') {
-            if($max_role == 3 || $max_role == 1) {
-                $max_role ++;
-            }else if($max_role == 4) {
-                $max_role --;
-            }
-        }else {
-            $max_role ++;
-        }
-        return $max_role;
     }
 
+    public function setRequestName($request_name) {
+        $this->request_name = $request_name;
+    }
+
+    public function getMaxRoles(){
+        return $this->max_role;
+    }
+
+    public function nextApproverId($id, $request_name) {
+
+        $this->setMaxRoles($this->getRoles($id));
+
+        if($this->request_name == 'petty_cash_request' || $this->request_name == 'petty_cash_request' && $this->max_role != 2) {
+            if($this->max_role == 4) {
+                $this->max_role --;
+            }else {
+                $this->max_role += 2;
+            }
+        }else {
+            $this->max_role ++;
+        }
+        return $this->max_role;
+    }
+
+    public function isEditable($data) {
+        if($data->status_id == 1) {
+            $this->setMaxRoles($this->getRoles($data->user_id));
+            $approver_role_id = $data->approver_role_id;
+            $status_id = $data->status_id;
+            if($this->request_name == 'petty_cash_request' || $this->request_name == 'petty_cash_request' && $this->max_role != 2) {
+                if($this->max_role == 4) {
+                    return $approver_role_id == $this->max_role - 1;
+                }else {
+                    return $approver_role_id == $this->max_role + 2;
+                }
+            }else{
+                return $approver_role_id == $this->max_role + 1;
+            }
+        }else{
+            return $approver_role_id == $this->max_role + 1;
+        }
+    }
 
 }
