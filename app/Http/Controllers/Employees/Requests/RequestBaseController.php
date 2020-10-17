@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Eloquent\Implementations\RoleEloquent;
 use App\Eloquent\Implementations\RequestDependencies\LeaveTypeEloquent;
 use App\Eloquent\Implementations\UserEloquent;
-
+use App\Eloquent\Implementations\Requests\EloquentRequestImplementation;
 
 class RequestBaseController extends Controller
 {
@@ -22,11 +22,14 @@ class RequestBaseController extends Controller
 
     private $request_name;
 
-    public function __construct(RoleEloquent $role, UserEloquent $user ) {
+    private $model;
+
+    public function __construct(RoleEloquent $role, UserEloquent $user, EloquentRequestImplementation $model) {
 
         $this->middleware(['auth']);  
         $this->role = $role;
         $this->user = $user;
+        $this->model = $model;
 
     }
     public function getRoles($id) {
@@ -82,4 +85,24 @@ class RequestBaseController extends Controller
         }
     }
 
+    public function updateRequest($editable, $data, $id, $prp_assigned_id) {
+        if($this->isEditable($editable)){
+            return response()->json($this->model->updateRequest($data, $id, $prp_assigned_id), 200);
+        }else{
+            return response()->json([], 400);
+        }
+    }
+
+    public function storeRequest($data, $prp_assigned_id) {
+        return $this->model->createRequest($data, $prp_assigned_id);
+    }
+
+    public function showRequest($column, $id, $relationship) {
+        return $this->model->getWhereWith($column, $id, $relationship);
+    }
+
+    public function deleteRequest($column, $id) {
+        return $this->model->deleteWhere('user_id', $id);
+
+    }
 }

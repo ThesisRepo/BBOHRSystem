@@ -19,12 +19,12 @@ class ShiftChangeRequestController extends RequestBaseController
 
         $this->middleware(['auth', 'verify.employee']);  
         $this->shift_change_request = $shift_change_request;
-        parent::__construct($role ,$user);
+        parent::__construct($role ,$user, $shift_change_request);
         parent::setRequestName('shift_change_request');
     }
 
     public function show( $id) {
-        return $this->shift_change_request->getWhereWith('user_id', $id, ['approver_role', 'status']);
+        return $this->showRequest('user_id', $id, ['approver_role', 'status']);
     }
     
     public function store(Request $request) {
@@ -35,9 +35,25 @@ class ShiftChangeRequestController extends RequestBaseController
             'reason'=> $request->reason,
             'shift_date'=> $request->shift_date,
             'shift_time'=> $request->shift_time,
-            'approver_role_id'=> $this->nextApproverId($request->user_id),
+            'approver_role_id'=> $this->nextApproverId($request->user_id ),
             'status_id'=> 1
         ];
-        return $this->shift_change_request->createRequest($requestData, $prp_assigned_id);
-    }   
+        return $this->storeRequest($requestData, $prp_assigned_id);
+    }
+    
+    public function update(Request $request, $id) {
+
+        $current_shift_change_request = $this->shift_change_request->find($id);
+        $prp_assigned_id = $request->prp_assigned_id;
+        $requestData = [
+            'reason'=> $request->reason,
+            'shift_date'=> $request->shift_date,
+            'shift_time'=> $request->shift_time,
+        ];
+        return $this->updateRequest($current_shift_change_request, $requestData, $id, $prp_assigned_id);
+    }
+
+    public function delete( $id) {
+        return $this->deleteRequest('user_id', $id);
+    }
 }
