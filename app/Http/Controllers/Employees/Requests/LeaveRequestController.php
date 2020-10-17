@@ -63,6 +63,6 @@ class LeaveRequestController extends RequestBaseController
     }
 
     public function delete( $id) {
-        return $this->deleteRequest('user_id', $id);
+        return $this->deleteRequest($id);
     }
 }

@@ -94,15 +94,15 @@ class RequestBaseController extends Controller
     }
 
     public function storeRequest($data, $prp_assigned_id) {
-        return $this->model->createRequest($data, $prp_assigned_id);
+        return response()->json($this->model->createRequest($data, $prp_assigned_id), 200);
     }
 
     public function showRequest($column, $id, $relationship) {
-        return $this->model->getWhereWith($column, $id, $relationship);
+        return response()->json($this->model->getWhereWith($column, $id, $relationship), 200);
     }
 
-    public function deleteRequest($column, $id) {
-        return $this->model->deleteWhere('user_id', $id);
+    public function deleteRequest($id) {
+        return response()->json($this->model->delete($id), 200);
 
     }
 }

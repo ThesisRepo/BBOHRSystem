@@ -64,6 +64,9 @@ class EloquentImplementation implements EloquentContract {
     return $this->findOrFail($id)->update($data);
   }
 
+  public function delete($id){
+    return $this->findOrFail($id)->delete();
+  }
   /**
    * @param int $id
    * deletes data for matching id in db
