@@ -45,3 +45,9 @@ Route::post('shift_change_request','Requests\ShiftChangeRequestController@store'
 
 // retrieve all shift change request of a user
 Route::get('shift_change_request/{id}','Requests\ShiftChangeRequestController@show')->name('shift_change_request.find');
+
+// update change request
+Route::post('shift_change_request/{id}','Requests\ShiftChangeRequestController@update')->name('shift_change_request.update');
+
+// delete change request
+Route::delete('shift_change_request/{id}','Requests\ShiftChangeRequestController@delete')->name('shift_change_request.delete');
