@@ -20,7 +20,26 @@ export default {
         // dashboard
     },
     mounted(){
-        this.setUserType()
+        this.setUserType();
+        // var params = {
+        //     leave_type_id:1,
+        //     start_date: '2020-10-10',
+        //     end_date: '2020-10-10',
+        //     number_of_days: 7
+        // };
+        
+        this.$axios
+        .get(
+          "http://localhost:8000/leave_request/4"
+        )
+        .then(response => {
+          if (response.data === 1) {
+            this.$parent.$parent.getInfo()
+            this.dialog = false
+          } else {      
+            this.$parent.$parent.getInfo()
+          }
+        })
     },
     methods: {
         setUserType(){

@@ -34,7 +34,6 @@ class EloquentImplementation implements EloquentContract {
     // dd($data);
     return $this->model->create($data);
   }
-
   /**
    * @param int $id
    * 
@@ -54,7 +53,7 @@ class EloquentImplementation implements EloquentContract {
   }
 
   public function findWith( $id, $relationship) {
-    return $this->with( $relationship)->find($id);
+    return $this->model->with( $relationship)->find($id);
   }
   /**
    * @param array $data
@@ -75,6 +74,10 @@ class EloquentImplementation implements EloquentContract {
 
   public function getWhere($column, $id){
     return $this->where($column, $id)->get();
+  }
+
+  public function getWhereWith($column, $id, $relationship){
+    return $this->with($relationship)->where($column, $id)->get();
   }
 
   /**

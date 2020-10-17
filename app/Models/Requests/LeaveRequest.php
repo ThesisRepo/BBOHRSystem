@@ -16,7 +16,6 @@ class LeaveRequest extends Model
         'leave_type_id',
         'start_date',
         'end_date',
-        'reason',
         'number_of_days',
         'approver_role_id',
         'status_id'
