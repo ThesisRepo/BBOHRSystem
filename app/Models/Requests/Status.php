@@ -23,4 +23,9 @@ class Status extends Model
     public function shift_change_requests() {
         return $this->hasMany(ShiftChangeRequest::class);
     }
+
+    public function overtime_requests() {
+        return $this->hasMany(OvertimeRequest::class);
+    }
+
 }

@@ -46,4 +46,8 @@ class Role extends Model
     public function shift_change_requests() {
         return $this->hasMany(Requests\ShiftChangeRequest::class);
     }
+
+    public function overtime_requests() {
+        return $this->hasMany(Requests\OvertimeRequest::class);
+    }
 }

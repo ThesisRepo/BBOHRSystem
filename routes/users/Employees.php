@@ -51,3 +51,19 @@ Route::post('shift_change_request/{id}','Requests\ShiftChangeRequestController@u
 
 // delete change request
 Route::delete('shift_change_request/{id}','Requests\ShiftChangeRequestController@delete')->name('shift_change_request.delete');
+
+
+// -- OVERTIME REQUEST
+
+
+// add overtime request
+Route::post('overtime_request','Requests\OvertimeRequestController@store')->name('overtime_request.store');
+
+// retrieve all overtime request of a user
+Route::get('overtime_request/{id}','Requests\OvertimeRequestController@show')->name('overtime_request.find');
+
+// update overtime request
+Route::post('overtime_request/{id}','Requests\OvertimeRequestController@update')->name('overtime_request.update');
+
+// delete overtime request
+Route::delete('overtime_request/{id}','Requests\OvertimeRequestController@delete')->name('overtime_request.delete');
