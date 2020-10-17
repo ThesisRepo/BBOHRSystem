@@ -19,4 +19,8 @@ class Status extends Model
     public function leave_requests() {
         return $this->hasMany(LeaveRequest::class);
     }
+
+    public function shift_change_requests() {
+        return $this->hasMany(ShiftChangeRequest::class);
+    }
 }

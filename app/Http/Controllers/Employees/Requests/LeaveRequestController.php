@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Employees\Requests;
 
 use Illuminate\Http\Request;
 use App\Eloquent\Implementations\Requests\LeaveRequestEloquent;
-use App\Eloquent\Implementations\RequestDependencies\LeaveTypeEloquent;
 use App\Eloquent\Implementations\UserEloquent;
 use App\Eloquent\Implementations\RoleEloquent;
 
@@ -16,13 +15,12 @@ class LeaveRequestController extends RequestBaseController
     public function __construct(
         LeaveRequestEloquent $leave_request,
         RoleEloquent $role, 
-        LeaveTypeEloquent $leave_type,
         UserEloquent $user
     ) {
 
         $this->middleware(['auth', 'verify.employee']);  
         $this->leave_request = $leave_request;
-        parent::__construct($role, $leave_type, $user);
+        parent::__construct($role,$user);
         parent::setRequestName('leave_request');
     }
     
@@ -68,7 +66,7 @@ class LeaveRequestController extends RequestBaseController
     }
 
     public function show( $id) {
-        return $this->leave_request->getWhereWith('user_id', $id, ['leave_type', 'status']);
+        return $this->leave_request->getWhereWith('user_id', $id, ['leave_type', 'status', 'approver_role']);
     }
 
     // public function delete( $id) {
