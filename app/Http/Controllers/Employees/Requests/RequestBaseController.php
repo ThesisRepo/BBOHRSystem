@@ -13,8 +13,6 @@ class RequestBaseController extends Controller
 {
 
     protected $role;
-    
-    protected $leave_type;
 
     protected $user;
 
@@ -24,11 +22,10 @@ class RequestBaseController extends Controller
 
     private $request_name;
 
-    public function __construct(RoleEloquent $role, LeaveTypeEloquent $leave_type, UserEloquent $user ) {
+    public function __construct(RoleEloquent $role, UserEloquent $user ) {
 
         $this->middleware(['auth']);  
         $this->role = $role;
-        $this->leave_type = $leave_type;
         $this->user = $user;
 
     }
@@ -50,7 +47,7 @@ class RequestBaseController extends Controller
         return $this->max_role;
     }
 
-    public function nextApproverId($id, $request_name) {
+    public function nextApproverId($id) {
 
         $this->setMaxRoles($this->getRoles($id));
 
