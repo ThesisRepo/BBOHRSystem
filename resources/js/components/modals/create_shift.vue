@@ -11,7 +11,9 @@
           v-on="on"
         >
           <v-icon>mdi-plus</v-icon>
-          <v-toolbar-title style="font-size: 16px">Make Request</v-toolbar-title>
+          <v-toolbar-title style="font-size: 16px"
+            >Make Request</v-toolbar-title
+          >
         </v-btn>
       </template>
       <v-card>
@@ -74,7 +76,6 @@
               </v-col>
             </v-row>
           </v-container>
-          <small>*indicates required field</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>

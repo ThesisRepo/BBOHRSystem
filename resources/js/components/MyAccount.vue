@@ -2,28 +2,66 @@
   <v-row>
     <v-container cols="4">
       <v-col>
-        <v-card class="mx-auto pa-2" >
+        <v-card class="mx-auto pa-2">
           <v-card-title>
             <span class="headline primary--text">USER PROFILE</span>
           </v-card-title>
           <v-divider></v-divider>
           <v-row>
             <v-col>
-              <v-avatar class="ml-15" color="grey darken-1" size="200"></v-avatar>
-              <v-col>
-                <v-btn color="primary" class="ml-16">Change Profile</v-btn>
+              <v-avatar
+                v-if="img_url === null"
+                class="ml-15"
+                color="grey darken-1"
+                size="200"
+              ></v-avatar>
+              <v-img
+                :src="img_url"
+                v-else
+                max-width="200px"
+                min-height="200px"
+                class="ml-15"
+              >
+              </v-img>
+              <v-col class="ml-15">
+               <v-btn 
+                margin
+                color="primary"
+                class="text-none"
+                round
+                depressed
+                :loading="isSelecting"
+                @click="onButtonClick"
+              
+              >CHANGE PROFILE</v-btn>
+                
+              <input
+                ref="uploader"
+                class="d-none"
+                type="file"
+                accept="image/*"
+                @change="onFileChanged"
+              >
+                <changeProfile></changeProfile>
               </v-col>
             </v-col>
             <v-col>
-              <h1 class="title-h3 text-md-h3 text-sm-h3 text-truncate mt-8">{{ user_name }}</h1>
-              <h2 class="title-h5 text-md-h5 text-sm-h5 text-truncate">{{ datas.company_position }}</h2>
+              <h1 class="title-h3 text-md-h3 text-sm-h3 text-truncate mt-8">
+                {{ user_name }}
+              </h1>
+              <h2 class="title-h5 text-md-h5 text-sm-h5 text-truncate">
+                {{ datas.company_position }}
+              </h2>
 
               <h3
                 class="text--primary text-caption text-sm-body-2 text-md-body-1"
-              >Company Email: {{ user_email }}</h3>
+              >
+                Company Email: {{ user_email }}
+              </h3>
               <span
                 class="text--primary text-caption text-sm-body-2 text-md-body-1"
-              >Id Number: {{ company_number }}</span>
+                >Id Number: {{ company_number }}</span
+              >
             </v-col>
             <v-col class="text-right">
               <editProfile :datas="datas"></editProfile>
@@ -36,15 +74,25 @@
       <v-col>
         <v-card>
           <v-card-text>
-            <br>
+            <br />
             <v-container>
               <v-row>
                 <v-col cols="12" sm="4" md="12">
-                  <v-text-field v-model="address" label="Address" outlined readonly></v-text-field>
+                  <v-text-field
+                    v-model="address"
+                    label="Address"
+                    outlined
+                    readonly
+                  ></v-text-field>
                 </v-col>
 
                 <v-col cols="12" sm="4" md="4">
-                  <v-text-field label="Department" outlined readonly v-model="department"></v-text-field>
+                  <v-text-field
+                    label="Department"
+                    outlined
+                    readonly
+                    v-model="department"
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4" md="4">
                   <v-text-field
@@ -55,22 +103,52 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4" md="4">
-                  <v-text-field v-model="date_hired" label="Date Hired" outlined readonly></v-text-field>
+                  <v-text-field
+                    v-model="date_hired"
+                    label="Date Hired"
+                    outlined
+                    readonly
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4" md="4">
-                  <v-text-field v-model="status" label="Civil Status" outlined readonly></v-text-field>
+                  <v-text-field
+                    v-model="status"
+                    label="Civil Status"
+                    outlined
+                    readonly
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4" md="4">
-                  <v-text-field v-model="birthdate" label="Birthdate" outlined readonly></v-text-field>
+                  <v-text-field
+                    v-model="birthdate"
+                    label="Birthdate"
+                    outlined
+                    readonly
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4" md="4">
-                  <v-text-field v-model="contact_number" label="Contact Number" outlined readonly></v-text-field>
+                  <v-text-field
+                    v-model="contact_number"
+                    label="Contact Number"
+                    outlined
+                    readonly
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3">
-                  <v-text-field v-model="pag_ibig" label="PagIbig Number" outlined readonly></v-text-field>
+                  <v-text-field
+                    v-model="pag_ibig"
+                    label="PagIbig Number"
+                    outlined
+                    readonly
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3">
-                  <v-text-field v-model="tin_number" label="Tin Number" outlined readonly></v-text-field>
+                  <v-text-field
+                    v-model="tin_number"
+                    label="Tin Number"
+                    outlined
+                    readonly
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3">
                   <v-text-field
@@ -81,7 +159,12 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3">
-                  <v-text-field v-model="sss_num" label="SSS Number" outlined readonly></v-text-field>
+                  <v-text-field
+                    v-model="sss_num"
+                    label="SSS Number"
+                    outlined
+                    readonly
+                  ></v-text-field>
                 </v-col>
               </v-row>
             </v-container>
@@ -114,21 +197,26 @@ export default {
       tin_number: null,
       philhealth_num: null,
       sss_num: null,
-      datas: []
+      datas: [],
+      errorDialog: null,
+      errorText: "",
+      uploadFieldName: "file",
+      maxSize: 1024,
+      img_url: null,
     };
   },
   mounted() {
     this.getInfo();
   },
   components: {
-    editProfile
+    editProfile,
   },
   methods: {
     getInfo() {
       console.log("hi");
       this.$axios
         .get("http://localhost:8000/user_info/" + this.user_id)
-        .then(response => {
+        .then((response) => {
           console.log(response.data);
           this.datas = response.data.user_information;
           this.department =
@@ -144,11 +232,27 @@ export default {
           this.philhealth_num =
             response.data.user_information.philhealth_number;
           this.sss_num = response.data.user_information.sss_number;
+          
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
-    }
+    },
+    // onFileChange(e) {
+    //   this.img_url = URL.createObjectURL(e.target.files[0]);
+    // },
+     onButtonClick() {
+      this.isSelecting = true
+      window.addEventListener('focus', () => {
+        this.isSelecting = false
+      }, { once: true })
+
+      this.$refs.uploader.click()
+    },
+    onFileChanged(e) {
+      this.selectedFile = e.target.files[0] 
+      this.img_url = URL.createObjectURL(e.target.files[0]);
+    },
   }
 };
 </script>
