@@ -1,5 +1,6 @@
 <template>
     <v-app id="sample">
+        <!-- <h1>{{user}}</h1> -->
         <v-main>
             <sidebar id="sidebar"></sidebar>
             <v-container class="container" fluid>
@@ -66,4 +67,5 @@ v-main {
 #sidebar{
     position:absolute;
 }
+
 </style>

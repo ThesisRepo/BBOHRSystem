@@ -1,10 +1,16 @@
 <template>
   <v-data-table :headers="headers" :items="desserts" class="elevation-1">
     <template v-slot:top>
-      <v-toolbar flat>
-        <v-toolbar-title class="col pa-3 py-4 primary--text"
+    <v-toolbar
+          class="mb-2"
+          color="blue darken-1"
+          dark
+          flat
+        >
+        <v-toolbar-title class="col pa-3 py-4 white--text" style="font-size:16px"
           >REQUESTS STATUS</v-toolbar-title
         >
+    </v-toolbar>
         <v-dialog v-model="dialog" max-width="500px">
           <v-card>
             <v-card-text>
@@ -33,7 +39,6 @@
             </v-card-text>
           </v-card>
         </v-dialog>
-      </v-toolbar>
     </template>
 
     <template v-slot:no-data>
@@ -50,31 +55,31 @@ export default {
       {
         text: "DATE",
         align: "start",
-        value: "date"
+        value: "date",
       },
       { text: "TYPE OF REQUEST", value: "type_request" },
-      { text: "STATUS", value: "status" }
+      { text: "STATUS", value: "status" },
     ],
     desserts: [],
     editedIndex: -1,
     editedItem: {
       date: "",
       type_request: "",
-      status: ""
+      status: "",
     },
     defaultItem: {
       date: "",
       type_request: "",
-      status: ""
+      status: "",
     },
   }),
   methods: {
     initialize() {
       this.desserts = [
         {
-            date: "September 8, 2020",
-            type_request: "Leave Request",
-            status: "Pending in HR"
+          date: "September 8, 2020",
+          type_request: "Leave Request",
+          status: "Pending in HR",
         },
       ];
     },
