@@ -2,9 +2,18 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="light blue darken-2" rounded outlined dark v-bind="attrs" v-on="on">
+        <v-btn
+          color="light blue darken-2"
+          rounded
+          outlined
+          dark
+          v-bind="attrs"
+          v-on="on"
+        >
           <v-icon>mdi-plus</v-icon>
-          <v-toolbar-title>Make Request</v-toolbar-title>
+          <v-toolbar-title style="font-size: 16px"
+            >Make Request</v-toolbar-title
+          >
         </v-btn>
       </template>
       <v-card>
@@ -16,7 +25,18 @@
             <v-row>
               <v-col cols="12">
                 <v-select
+<<<<<<< HEAD
                   :items="leaveType"
+=======
+                  :items="[
+                    'Sick Leave',
+                    'Solo Parent Leave',
+                    'Vacation Leave',
+                    'Emergency Leave',
+                    'Paternity Leave',
+                    'Maternity Leave',
+                  ]"
+>>>>>>> 21482c97c58969dea7675a51e44d5bbb74b30d84
                   label="Reason*"
                   v-model="selectedLeaveType"
                   item-text="name"
@@ -86,7 +106,14 @@
               </v-col>
               <v-col cols="12">
                 <v-select
-                  :items="['Jocel Redotco Mendoza', 'Fenella Corinne Real Rosales', 'Cielo Fe Sasing', 'April Claire Chagas Podador', 'Nathaniel Cala Terdes', 'Carl Wyner Velasco Javier']"
+                  :items="[
+                    'Jocel Redotco Mendoza',
+                    'Fenella Corinne Real Rosales',
+                    'Cielo Fe Sasing',
+                    'April Claire Chagas Podador',
+                    'Nathaniel Cala Terdes',
+                    'Carl Wyner Velasco Javier',
+                  ]"
                   label="PRP in Charge*"
                   v-model="prp_assigned"
                   @click="differenceDates()"
@@ -95,20 +122,32 @@
               </v-col>
             </v-row>
           </v-container>
-          <small>*indicates required field</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
+<<<<<<< HEAD
           <v-btn color="blue darken-1" text @click="hideModal()">Close</v-btn>
           <v-btn color="blue darken-1" text @click="dialog = false, createRequest()">Save</v-btn>
+=======
+          <v-btn color="blue darken-1" text @click="dialog = false"
+            >Close</v-btn
+          >
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="(dialog = false), differenceDates()"
+            >Save</v-btn
+          >
+>>>>>>> 21482c97c58969dea7675a51e44d5bbb74b30d84
         </v-card-actions>
       </v-card>
     </v-dialog>
   </v-row>
 </template>
 <script>
-import moment from 'moment'
+import moment from "moment";
 export default {
+<<<<<<< HEAD
   data() {
     return {
       selectedLeaveType: null, 
@@ -132,18 +171,31 @@ export default {
   mounted() {
     this.retrieve()
   },
+=======
+  data: () => ({
+    dialog: false,
+    menu1: null,
+    reason: null,
+    number_of_leave: null,
+    start_date: null,
+    end_date: null,
+    prp_assigned: null,
+    differenceInDay: null,
+  }),
+>>>>>>> 21482c97c58969dea7675a51e44d5bbb74b30d84
   methods: {
     hideModal(){
       this.dialog = false
     },
     disabledDates(date) {
-      return date >  new Date().toISOString().substr(0, 10)
+      return date > new Date().toISOString().substr(0, 10);
     },
     disabledDates2(date) {
-      return date >  new Date(this.start_date).toISOString().substr(0, 10)
-      this.differenceDates()
+      return date > new Date(this.start_date).toISOString().substr(0, 10);
+      this.differenceDates();
     },
     differenceDates() {
+<<<<<<< HEAD
       let start = moment(String(this.start_date))
       let end = moment(String(this.end_date))
       let diff = (end.diff(start))
@@ -180,4 +232,17 @@ export default {
     }
   }
 }
+=======
+      let start = moment(String(this.start_date));
+      let end = moment(String(this.end_date));
+      let diff = end.diff(start);
+      let differenceInDay = diff / 1000 / 60 / 60 / 24;
+      console.log("-----------mini", differenceInDay);
+      this.differenceInDay = differenceInDay;
+      // return end - start
+    },
+    menu1() {},
+  },
+};
+>>>>>>> 21482c97c58969dea7675a51e44d5bbb74b30d84
 </script>

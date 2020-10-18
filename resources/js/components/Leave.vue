@@ -3,6 +3,8 @@
     <v-toolbar flat>
       <template v-slot:extension>
         <v-tabs
+          dark
+          background-color="primary"
           fixed-tabs
           v-if="user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr')"
         >
@@ -18,7 +20,7 @@
     </v-toolbar>
     <v-data-table v-if="employees" :headers="headers" :items="request" class="elevation-3">
       <template v-slot:top>
-        <v-toolbar flat>
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-col class="mt-8">
             <v-select :items="month" label="Month"></v-select>
           </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
