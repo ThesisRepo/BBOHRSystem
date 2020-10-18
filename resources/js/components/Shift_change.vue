@@ -237,6 +237,8 @@ export default {
       : false,
     dialog: false,
     dialogDelete: false,
+    search: null,
+    start_date: null,
     headers: [
       {
         text: "REASON",

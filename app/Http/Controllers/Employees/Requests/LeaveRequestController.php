@@ -31,6 +31,7 @@ class LeaveRequestController extends RequestBaseController
     public function store(Request $request) {
 
         $prp_assigned_id = $request->prp_assigned_id;
+        // dd($prp_assigned_id);
         $requestData = [
             'user_id'=> $request->user_id,
             'leave_type_id'=> $request->leave_type_id,
@@ -45,14 +46,13 @@ class LeaveRequestController extends RequestBaseController
     }
 
     public function update(Request $request, $id) {
-
+        
         $current_leave_request = $this->leave_request->find($id);
         $prp_assigned_id = $request->prp_assigned_id;
         $requestData = [
             'leave_type_id'=> $request->leave_type_id,
             'start_date'=> $request->start_date,
             'end_date'=> $request->end_date,
-            'reason'=> $request->reason,
             'number_of_days'=> $request->number_of_days
         ];
         return $this->updateRequest($current_leave_request, $requestData, $id, $prp_assigned_id);        

@@ -85,21 +85,34 @@
         <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
         <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
       </template>
+      <!-- <template v-slot:no-data>
+        <v-btn color="primary" @click="initialize">Reset</v-btn>
+      </template> -->
     </v-data-table>
 
     <!-- Edit Modal -->
-    <v-dialog v-model="dialog">
+    <v-dialog v-model="dialog" persistent max-width="600px">
       <v-card class="mt-5">
+        <v-card-title>
+          <span class="headline">Leave Request Form</span>
+        </v-card-title>
         <v-card-text>
           <v-container>
             <v-row>
               <v-col cols="12" sm="6" md="6">
-                <v-text-field v-model="editedItem.selectedLeaveType" label="selectedLeaveType"></v-text-field>
+                <v-select
+                  :items="leaveType"
+                  label="Type of Leave"
+                  v-model="editedItem.selectedLeaveType"
+                  item-text="name"
+                  item-value="value"
+                  required
+                ></v-select>
               </v-col>
               <v-col cols="12" sm="6" md="6">
-                <v-text-field v-model="editedItem.total_days" label="total_days"></v-text-field>
+                <v-text-field v-model="editedItem.total_days" label="Total Day/s"></v-text-field>
               </v-col>
-              <v-col cols="12" sm="6" md="4">
+              <v-col cols="12" sm="6" md="6">
                 <v-menu
                   :close-on-content-click="false"
                   transition="scale-transition"
@@ -125,7 +138,7 @@
                   ></v-date-picker>
                 </v-menu>
               </v-col>
-              <v-col cols="12" sm="6" md="4">
+              <v-col cols="12" sm="6" md="6">
                 <v-menu
                   :close-on-content-click="false"
                   transition="scale-transition"
@@ -151,9 +164,9 @@
                   ></v-date-picker>
                 </v-menu>
               </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field v-model="editedItem.prp_assigned" label="prp_assigned"></v-text-field>
-              </v-col>
+              <!-- <v-col cols="12" sm="6" md="4">
+                <v-text-field v-model="editedItem.prp_assigned" label="Approver "></v-text-field>
+              </v-col> -->
             </v-row>
           </v-container>
         </v-card-text>
@@ -164,7 +177,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <!-- //Delete Modal -->
+    <!-- Delete Modal -->
     <v-dialog v-model="dialogDelete" max-width="500px">
       <v-card>
         <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
@@ -221,12 +234,12 @@ export default {
         text: "TYPE OF LEAVE",
         align: "start",
         sortable: false,
-        value: "leave_type_id"
+        value: "leave_type.leave_name"
       },
       { text: "TOTAL DAY/S LEAVE", value: "number_of_days" },
       { text: "START DATE", value: "start_date" },
       { text: "END DATE", value: "end_date" },
-      { text: "APPROVER", value: "leave_type_id" },
+      { text: "APPROVER", value: "approver_role.role_name" },
       { text: "STATUS", value: "status_id" },
       { text: "ACTIONS", value: "actions", sortable: false }
     ],
@@ -237,18 +250,21 @@ export default {
       selectedLeaveType: 0,
       total_days: 0,
       start_date: 0,
-      end_date: 0,
-      prp_assigned: 0
+      end_date: 0
     },
     defaultItem: {
       selectedLeaveType: 0,
       total_days: 0,
       start_date: 0,
-      end_date: 0,
-      prp_assigned: 1
+      end_date: 0
     },
-    datas: [],
-    month: ["Foo", "Bar", "Fizz", "Buzz"]
+    month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    leaveType: [{value:1, name:'Sick Leave'}, 
+      {value: 2, name:'Solo Parent Leave'}, 
+      {value: 3, name:'Vacation Leave'}, 
+      {value: 4, name:'Emergency Leave'}, 
+      {value: 5, name:'Paternity Leave'},
+      {value: 6, name:'Maternity Leave'}]
   }),
   components: {
     createLeave
@@ -260,20 +276,15 @@ export default {
     retrieve(){
       this.$axios.get("http://localhost:8000/leave_request/" + this.user_id).then(response => {
         this.request = response.data
-        this.datas = response.data
-        console.log('here na mi', response.data)
+        console.log('here na mi', this.request)
       })
       .catch(e => {
         console.log(e);
       })
     },
-    // editRequest() {
-    //   this.$refs.edit.showDialog()
-    // },
-    //might delete later
 
     editItem(item) {
-      console.log('samokkkkkkkkkkkkk', item)
+      this.editedItem.id = item.id
       this.editedIndex = this.request.indexOf(item)
       this.editedItem.selectedLeaveType = item.leave_type_id
       this.editedItem.total_days = item.number_of_days
@@ -284,15 +295,17 @@ export default {
 
     save() {
       let params = {
+        id: this.editedItem.id,
         leave_type_id: this.editedItem.selectedLeaveType,
         number_of_days: this.editedItem.total_days,
         start_date: this.editedItem.start_date,
-        end_date: this.editedItem.end_date
+        end_date: this.editedItem.end_date,
+        prp_assigned_id: 1
       }
-      this.$axios.post('http://localhost:8000/leave_request', params).then(response=>{
-        console.log('hi', params)
+      this.$axios.post('http://localhost:8000/leave_request/' + this.user_id, params).then(response=>{
+        this.retrieve()
       })
-      this.close();
+      this.dialog = false;
     },
 
     disabledDates(date) {
@@ -313,38 +326,18 @@ export default {
       this.differenceInDay = differenceInDay
     },
 
-    deleteRequest(id) {
-      this.$axios.post('http://localhost:8000/leave_request', + this.id).then(response=>{
-        console.log('hi', params)
-      })
-    },
-
     deleteItem(item) {
       this.editedIndex = this.request.indexOf(item);
-      this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
-      this.request.splice(this.editedIndex, 1);
-      this.closeDelete();
-    },
-
-    close() {
-      this.dialog = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
-
-    closeDelete() {
-      this.dialogDelete = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
+      this.$axios.delete('http://localhost:8000/leave_request/' + this.user_id).then(response=>{
+        console.log('successfully deleted')
+        this.request.splice(this.editedIndex, 1);
+        this.dialogDelete = false;
+      })
     }
   }
-};
+}
 </script>
