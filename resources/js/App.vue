@@ -22,24 +22,24 @@ export default {
     },
     mounted(){
         this.setUserType();
-        // var params = {
-        //     leave_type_id:1,
-        //     start_date: '2020-10-10',
-        //     end_date: '2020-10-10',
-        //     number_of_days: 7
-        // };
+        var params = {
+            prp_assigned_id:5,
+            user_id:4,
+            reason:'hdfddaman',
+            shift_date: '2020-10-10',
+            shift_time: '7-8pm',
+        };
         
         this.$axios
         .get(
-          "http://localhost:8000/leave_request/4"
-        )
+          "http://localhost:8000/shift_change_request/4")
         .then(response => {
-          if (response.data === 1) {
-            this.$parent.$parent.getInfo()
-            this.dialog = false
-          } else {      
-            this.$parent.$parent.getInfo()
-          }
+        //   if (response.data === 1) {
+        //     this.$parent.$parent.getInfo()
+        //     this.dialog = false
+        //   } else {      
+        //     this.$parent.$parent.getInfo()
+        //   }
         })
     },
     methods: {

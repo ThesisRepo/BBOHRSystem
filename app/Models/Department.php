@@ -19,4 +19,8 @@ class Department extends Model
     public function user_informations(){
         return hasMany(UserInformation::class);
     }
+
+    public function petty_cash_request(){
+        return hasMany(Requests\PettyCashRequest::class);
+    }
 }
