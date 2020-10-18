@@ -190,6 +190,8 @@ export default {
     requests: ( localStorage.getItem("user_type") !== 'emp' && localStorage.getItem('user_type') !== 'finance mngr' ) ? true : false,
     dialog: false,
     dialogDelete: false,
+    search: null,
+    start_date: null,
     headers: [
       {
         text: "REASON",

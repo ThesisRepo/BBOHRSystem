@@ -1,6 +1,5 @@
 <template>
   <v-row justify="center">
-    <!-- <h1>hihasdfasdf</h1> -->
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
         <v-btn color="light blue darken-2" rounded outlined dark v-bind="attrs" v-on="on">
@@ -17,9 +16,11 @@
             <v-row>
               <v-col cols="12">
                 <v-select
-                  :items="['Sick Leave', 'Solo Parent Leave', 'Vacation Leave', 'Emergency Leave', 'Paternity Leave', 'Maternity Leave']"
+                  :items="leaveType"
                   label="Reason*"
-                  v-model="reason"
+                  v-model="selectedLeaveType"
+                  item-text="name"
+                  item-value="value"
                   required
                 ></v-select>
               </v-col>
@@ -79,8 +80,7 @@
                 <v-text-field
                   label="Total Day/s of Leave*"
                   type="number"
-                  disabled
-                  v-model="differenceInDay"
+                  v-model="number_of_leave"
                   required
                 ></v-text-field>
               </v-col>
@@ -99,8 +99,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-          <v-btn color="blue darken-1" text @click="dialog = false, differenceDates()">Save</v-btn>
+          <v-btn color="blue darken-1" text @click="hideModal()">Close</v-btn>
+          <v-btn color="blue darken-1" text @click="dialog = false, createRequest()">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -109,17 +109,33 @@
 <script>
 import moment from 'moment'
 export default {
-  data: () => ({
-    dialog: false,
-    menu1: null,
-    reason: null,
-    number_of_leave: null,
-    start_date: null,
-    end_date: null,
-    prp_assigned: null,
-    differenceInDay: null
-  }),
+  data() {
+    return {
+      selectedLeaveType: null, 
+      leaveType: [{value:1, name:'Sick Leave'}, 
+      {value: 2, name:'Solo Parent Leave'}, 
+      {value: 3, name:'Vacation Leave'}, 
+      {value: 4, name:'Emergency Leave'}, 
+      {value: 5, name:'Paternity Leave'},
+      {value: 6, name:'Maternity Leave'}],
+      dialog: false,
+      request: [],
+      reason: null,
+      number_of_leave: null,
+      start_date: null,
+      end_date: null,
+      prp_assigned: null,
+      differenceInDay: null,
+      user_id: localStorage.getItem("id")
+    }
+  },
+  mounted() {
+    this.retrieve()
+  },
   methods: {
+    hideModal(){
+      this.dialog = false
+    },
     disabledDates(date) {
       return date >  new Date().toISOString().substr(0, 10)
     },
@@ -132,11 +148,36 @@ export default {
       let end = moment(String(this.end_date))
       let diff = (end.diff(start))
       let differenceInDay = ((((diff/1000)/60)/60)/24)
-      console.log('-----------mini',  differenceInDay)
+      console.log('-----------difference',  differenceInDay)
       this.differenceInDay = differenceInDay
-      // return end - start
     },
-    menu1() {}
+    retrieve(){
+      this.$axios.get("http://localhost:8000/leave_request/" + this.user_id).then(response => {
+      })
+      .catch(e => {
+        console.log(e);
+      })
+    },
+    createRequest(){
+      let params = {
+        user_id: this.user_id,
+        leave_type_id: this.selectedLeaveType,
+        start_date: this.start_date,
+        end_date: this.end_date,
+        number_of_days: this.number_of_leave,
+        prp_assigned_id: 1
+      }
+      this.$axios.post("http://localhost:8000/leave_request", params).then(res =>{
+        console.log('Successfully Added')
+        this.retrieve()
+        // this.$axios.get("http://localhost:8000/leave_request/" + this.user_id).then(response => {
+        //   console.log('hi', response.data)
+        // })
+        // .catch(e => {
+        //   console.log(e);
+        // })
+      })
+    }
   }
-};
+}
 </script>
