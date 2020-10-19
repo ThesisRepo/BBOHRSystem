@@ -233,14 +233,12 @@ export default {
             response.data.user_information.philhealth_number;
           this.sss_num = response.data.user_information.sss_number;
           
+          
         })
         .catch((e) => {
           console.log(e);
         });
     },
-    // onFileChange(e) {
-    //   this.img_url = URL.createObjectURL(e.target.files[0]);
-    // },
      onButtonClick() {
       this.isSelecting = true
       window.addEventListener('focus', () => {
@@ -252,6 +250,27 @@ export default {
     onFileChanged(e) {
       this.selectedFile = e.target.files[0] 
       this.img_url = URL.createObjectURL(e.target.files[0]);
+      
+
+      const config = {
+        header: { 'content-type': 'multipart/form-data'}
+      }
+      let formData = new FormData();
+      formData.append('image',this.selectedFile)
+     let param = {
+       id:this.user_id,
+
+     }
+
+      console.log(this.selectedFile,"this is url");
+       this.$axios
+        .post("http://localhost:8000/changePP",formData,param).then( response =>{
+          console.log("sud")
+          console.log(response.data)
+
+
+        })
+
     },
   }
 };
