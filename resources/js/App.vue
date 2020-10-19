@@ -21,26 +21,26 @@ export default {
         // dashboard
     },
     mounted(){
-        this.setUserType();
-        var params = {
-            prp_assigned_id:5,
-            user_id:4,
-            reason:'hdfddaman',
-            shift_date: '2020-10-10',
-            shift_time: '7-8pm',
-        };
+        this.setUserType()
+        // var params = {
+        //     prp_assigned_id:5,
+        //     user_id:4,
+        //     reason:'hdfddaman',
+        //     shift_date: '2020-10-10',
+        //     shift_time: '7-8pm',
+        // };
         
-        this.$axios
-        .get(
-          "http://localhost:8000/shift_change_request/4")
-        .then(response => {
+        // this.$axios
+        // .get(
+        //   "http://localhost:8000/shift_change_request/4")
+        // .then(response => {
         //   if (response.data === 1) {
         //     this.$parent.$parent.getInfo()
         //     this.dialog = false
         //   } else {      
         //     this.$parent.$parent.getInfo()
         //   }
-        })
+        // })
     },
     methods: {
         setUserType(){
