@@ -28,7 +28,7 @@
                 margin
                 color="primary"
                 class="text-none"
-                round
+                rounded
                 depressed
                 :loading="isSelecting"
                 @click="onButtonClick"

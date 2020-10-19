@@ -244,7 +244,7 @@ export default {
       { text: "ACTIONS", value: "actions", sortable: false }
     ],
     request: [],
-    editedIndex: -1,
+    editedIndex: null,
     editedItem: {
       id: null,
       selectedLeaveType: 0,
@@ -302,7 +302,8 @@ export default {
         end_date: this.editedItem.end_date,
         prp_assigned_id: 1
       }
-      this.$axios.post('http://localhost:8000/leave_request/' + this.user_id, params).then(response=>{
+      console.log('params', params, this.editedItem.id)      
+      this.$axios.post('http://localhost:8000/leave_request/' + this.editedItem.id, params).then(response=>{
         this.retrieve()
       })
       this.dialog = false;
@@ -322,21 +323,27 @@ export default {
       let end = moment(String(this.end_date))
       let diff = (end.diff(start))
       let differenceInDay = ((((diff/1000)/60)/60)/24)
-      console.log('-----------mini',  differenceInDay)
+      console.log('-----------diff',  differenceInDay)
       this.differenceInDay = differenceInDay
     },
 
     deleteItem(item) {
-      this.editedIndex = this.request.indexOf(item);
+      this.id = item.id
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
-      this.$axios.delete('http://localhost:8000/leave_request/' + this.user_id).then(response=>{
-        console.log('successfully deleted')
-        this.request.splice(this.editedIndex, 1);
-        this.dialogDelete = false;
+      this.$axios.delete('http://localhost:8000/leave_request/' + this.id).then(response=>{
+        console.log('Successfully deleted')
+        this.retrieve()
+        this.dialogDelete = false
       })
+    },
+    close(){
+      this.dialog = false
+    },
+    closeDelete(){
+      this.dialogDelete = false
     }
   }
 }

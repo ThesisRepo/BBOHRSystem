@@ -12,7 +12,7 @@ class OvertimeRequestController extends RequestBaseController
     protected $overtime_request;
 
     public function __construct(
-        ShiftChangeRequestEloquent $overtime_request,
+        OvertimeRequestEloquent $overtime_request,
         RoleEloquent $role,
         UserEloquent $user
     ) {
