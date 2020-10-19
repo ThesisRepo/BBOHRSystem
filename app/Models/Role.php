@@ -42,4 +42,16 @@ class Role extends Model
     public function leave_requests() {
         return $this->hasMany(Requests\LeaveRequest::class);
     }
+
+    public function shift_change_requests() {
+        return $this->hasMany(Requests\ShiftChangeRequest::class);
+    }
+
+    public function overtime_requests() {
+        return $this->hasMany(Requests\OvertimeRequest::class);
+    }
+
+    public function petty_cash_requests() {
+        return $this->hasMany(Requests\PettyCashRequest::class);
+    }
 }

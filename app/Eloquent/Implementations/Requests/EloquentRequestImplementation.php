@@ -12,27 +12,29 @@ class EloquentRequestImplementation extends EloquentImplementation {
     parent::__construct($model);
   }
 
-  public function createRequest( array $data, $prp_assigned_id) {
-  try {
-    DB::beginTransaction();
-    User::find($data->user_id)->update(['prp_assigned'=> $prp_assigned_id]);
-    parent::create($data);
-    DB::commit();
-  } catch (\Exception $e) {
-    DB::rollback();
+  public function createRequest($data, $prp_assigned_id) {
+    try {
+      DB::beginTransaction();
+      User::find($data['user_id'])->update(['prp_assigned'=> $prp_assigned_id]);
+      $created = parent::create($data);
+      DB::commit();
+      return $created;
+    } catch (\Exception $e) {
+      DB::rollback();
+      return $e;
+    }
   }
-    return $this->model->create($data);
-  }
-  public function updateRequest(array $data, $id, $prp_assigned_id){
+  public function updateRequest($data, $id, $prp_assigned_id){
     try {
       DB::beginTransaction();
       $user_id = parent::findWith($id, 'user')->user->id;
       User::find($user_id)->update(['prp_assigned'=>$prp_assigned_id]);
-      parent::update($data, $id);
+      $created = parent::update($data, $id);
       DB::commit();
+      return $created;
     } catch (\Exception $e) {
-      dd($e);
       DB::rollback();
+      return $e;
     }
   }
 }
