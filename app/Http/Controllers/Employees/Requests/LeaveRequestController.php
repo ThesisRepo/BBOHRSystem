@@ -30,31 +30,37 @@ class LeaveRequestController extends RequestBaseController
 
     public function store(Request $request) {
 
-        $prp_assigned_id = $request->prp_assigned_id;
+        $prp_assigned_id =  $this->setPrpId($request->prp_assigned_id);
+
         $requestData = [
             'user_id'=> $request->user_id,
             'leave_type_id'=> $request->leave_type_id,
+            'department_id'=> $this->getDepartmentId($request->user_id),
             'start_date'=> $request->start_date,
             'end_date'=> $request->end_date,
             'number_of_days'=> $request->number_of_days,
             'approver_role_id'=> $this->nextApproverId($request->user_id),
             'status_id'=> 1
         ];
+
         return $this->storeRequest($requestData, $prp_assigned_id);
 
     }
 
     public function update(Request $request, $id) {
 
-        $current_leave_request = $this->leave_request->find($id);
-        $prp_assigned_id = $request->prp_assigned_id;
+        $current_leave_request = $this->leave_request->findWith($id,'user');
+        $user_id = $current_leave_request->user->id;
+        $prp_assigned_id = $this->setPrpId($request->prp_assigned_id);
+        
         $requestData = [
             'leave_type_id'=> $request->leave_type_id,
+            'department_id'=> $this->getDepartmentId($user_id),
             'start_date'=> $request->start_date,
             'end_date'=> $request->end_date,
-            'reason'=> $request->reason,
             'number_of_days'=> $request->number_of_days
         ];
+        
         return $this->updateRequest($current_leave_request, $requestData, $id, $prp_assigned_id);        
     }
 

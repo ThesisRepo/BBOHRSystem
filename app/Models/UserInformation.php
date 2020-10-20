@@ -14,6 +14,9 @@ class UserInformation extends Model
      * @var array
      */
     protected $fillable = [
+        'department_id',
+        'shift_time_id',
+        'gender',
         'company_number',
         'profile_url',
         'company_position',
@@ -66,5 +69,7 @@ class UserInformation extends Model
         return $this->belongsTo(Department::class);
     }
 
-
+    public function shift_time() {
+        return $this->belongsTo(ShiftTime::class);
+    }
 }

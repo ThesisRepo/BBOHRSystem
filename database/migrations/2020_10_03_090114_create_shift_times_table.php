@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLeaveTypesTable extends Migration
+class CreateShiftTimesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateLeaveTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('leave_types', function (Blueprint $table) {
+        Schema::create('shift_times', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('leave_type_name');
+            $table->string('shift_time_name');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ class CreateLeaveTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('leave_types');
+        Schema::dropIfExists('shift_times');
     }
 }

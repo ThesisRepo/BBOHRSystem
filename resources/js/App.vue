@@ -21,17 +21,18 @@ export default {
     },
     mounted(){
         this.setUserType();
-        var params = {
-            prp_assigned_id:5,
-            user_id:4,
-            reason:'hdfddaman',
-            shift_date: '2020-10-10',
-            shift_time: '7-8pm',
-        };
         
+        var params = {
+            user_id: 4,
+            prp_assigned_id:2,
+            reason: 'there \' a reason',
+            shift_date: '2020-10-10',
+            shift_time: '2pm-7pm'
+        };
+
         this.$axios
-        .get(
-          "http://localhost:8000/shift_change_request/4")
+        .post(
+          "http://localhost:8000/shift_change_request/3", params)
         .then(response => {
         //   if (response.data === 1) {
         //     this.$parent.$parent.getInfo()
