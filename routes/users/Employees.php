@@ -28,7 +28,7 @@ Route::post('leave_request','Requests\LeaveRequestController@store')->name('leav
 // get all leave request that belongs to user
 Route::get('leave_request/{id}','Requests\LeaveRequestController@show')->name('leave_request.find');
 
-// update leave request
+// update leave request   
 Route::post('leave_request/{id}','Requests\LeaveRequestController@update')->name('leave_request.update');
 
 // delete leave request
@@ -90,3 +90,18 @@ Route::post('petty_cash_request/{id}','Requests\PettyCashRequestController@updat
 
 // delete petty cash request
 Route::delete('petty_cash_request/{id}','Requests\PettyCashRequestController@delete')->name('petty_cash_request.delete');
+
+
+// -- BUDGET REQUEST
+
+// add budget request
+Route::post('budget_request','Requests\BudgetRequestController@store')->name('budget_request.store');
+
+// retrieve all budget request of a user
+Route::get('budget_request/{id}','Requests\BudgetRequestController@show')->name('budget_request.find');
+
+// update budget request
+Route::post('budget_request/{id}','Requests\BudgetRequestController@update')->name('budget_request.update');
+
+// delete budget request
+Route::delete('budget_request/{id}','Requests\BudgetRequestController@delete')->name('budget_request.delete');

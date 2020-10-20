@@ -16,6 +16,7 @@ class CreateShiftChangeRequestsTable extends Migration
         Schema::create('shift_change_requests', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->UnsignedBigInteger('user_id');
+            $table->UnsignedBigInteger('department_id');
             $table->string('reason');
             $table->date('shift_date');
             $table->string('shift_time');
@@ -23,6 +24,7 @@ class CreateShiftChangeRequestsTable extends Migration
             $table->UnsignedBigInteger('status_id')->default(1);
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
             $table->foreign('approver_role_id')->references('id')->on('roles')->onDelete('cascade');            
             $table->foreign('status_id')->references('id')->on('status')->onDelete('cascade');
         });
