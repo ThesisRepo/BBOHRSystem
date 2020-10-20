@@ -12,7 +12,7 @@ class LeaveType extends Model
      * @var array
      */
     protected $fillable = [
-        'leave_name'
+        'leave_type_name'
     ];
     public function leave_request() {
         return $this->hasMany(LeaveRequest::class);
