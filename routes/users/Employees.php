@@ -15,6 +15,10 @@ Route::post('user_info/{id}','UserInformationController@update')->name('user_inf
 //get all prps
 Route::get('prp','UserInformationController@getAllPrp')->name('user_info.findPrp');
 
+//edit pp
+Route::post('update_profile_img/{id}','UserInformationController@updateProfileImg')->name('user_info.update_profile_img');
+
+
 
 // -- LEAVE REQUEST
 

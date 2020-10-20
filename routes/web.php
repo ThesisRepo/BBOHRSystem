@@ -45,4 +45,4 @@ Route::group(
 
 Route::get('/', function () {
     return redirect()->route('login');
-});
+}); 

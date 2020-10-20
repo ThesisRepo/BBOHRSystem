@@ -282,7 +282,6 @@ export default {
         console.log(e);
       })
     },
-
     editItem(item) {
       this.editedItem.id = item.id
       this.editedIndex = this.request.indexOf(item)
@@ -292,7 +291,6 @@ export default {
       this.editedItem.end_date = item.end_date
       this.dialog = true;
     },
-
     save() {
       let params = {
         id: this.editedItem.id,
@@ -307,16 +305,13 @@ export default {
       })
       this.dialog = false;
     },
-
     disabledDates(date) {
       return date >  new Date().toISOString().substr(0, 10)
     },
-
     disabledDates2(date) {
       return date >  new Date(this.start_date).toISOString().substr(0, 10)
       this.differenceDates()
     },
-
     differenceDates() {
       let start = moment(String(this.start_date))
       let end = moment(String(this.end_date))
@@ -325,18 +320,22 @@ export default {
       console.log('-----------mini',  differenceInDay)
       this.differenceInDay = differenceInDay
     },
-
     deleteItem(item) {
       this.editedIndex = this.request.indexOf(item);
       this.dialogDelete = true;
     },
-
     deleteItemConfirm() {
       this.$axios.delete('http://localhost:8000/leave_request/' + this.user_id).then(response=>{
         console.log('successfully deleted')
         this.request.splice(this.editedIndex, 1);
         this.dialogDelete = false;
       })
+    },
+    close(){
+      this.dialog = false
+    },
+    closeDelete(){
+      this.dialogDelete = false
     }
   }
 }

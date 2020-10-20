@@ -10,19 +10,24 @@
           <v-row>
             <v-col>
               <v-avatar
-                v-if="img_url === null"
+                v-if="profile_url === null"
                 class="ml-15"
                 color="grey darken-1"
                 size="200"
               ></v-avatar>
-              <v-img
-                :src="img_url"
-                v-else
-                max-width="200px"
-                min-height="200px"
+              <v-avatar v-else 
                 class="ml-15"
-              >
-              </v-img>
+                color="grey darken-1"
+                size="200">
+                <img
+                :src="profile_url"
+               
+                max-width="100%"
+                max-height="100%"
+              
+                id ="profile"
+              ></v-avatar>
+              
               <v-col class="ml-15">
                <v-btn 
                 margin
@@ -198,11 +203,7 @@ export default {
       philhealth_num: null,
       sss_num: null,
       datas: [],
-      errorDialog: null,
-      errorText: "",
-      uploadFieldName: "file",
-      maxSize: 1024,
-      img_url: null,
+      profile_url: null,
     };
   },
   mounted() {
@@ -225,6 +226,7 @@ export default {
           this.address = response.data.user_information.address;
           this.status = response.data.user_information.civil_status;
           this.company_status = response.data.user_information.company_status;
+          this.profile_url = response.data.user_information.profile_url;
           this.birthdate = response.data.user_information.birthday;
           this.contact_number = response.data.user_information.contact_number;
           this.pag_ibig = response.data.user_information.pag_ibig_number;
@@ -233,14 +235,12 @@ export default {
             response.data.user_information.philhealth_number;
           this.sss_num = response.data.user_information.sss_number;
           
+          
         })
         .catch((e) => {
           console.log(e);
         });
     },
-    // onFileChange(e) {
-    //   this.img_url = URL.createObjectURL(e.target.files[0]);
-    // },
      onButtonClick() {
       this.isSelecting = true
       window.addEventListener('focus', () => {
@@ -251,7 +251,26 @@ export default {
     },
     onFileChanged(e) {
       this.selectedFile = e.target.files[0] 
-      this.img_url = URL.createObjectURL(e.target.files[0]);
+      this.profile_url = URL.createObjectURL(e.target.files[0]);
+      
+
+      const config = {
+        header: { 'content-type': 'multipart/form-data'}
+      }
+      let formData = new FormData();
+      formData.append('image',this.selectedFile)
+     let param = {
+       id:this.user_id,
+
+     }
+
+      console.log(this.user_id,"this is url");
+       this.$axios
+        .post("http://localhost:8000/update_profile_img/" + this.user_id,formData).then( response =>{
+          console.log("sud")
+          console.log(response.data)
+        })
+
     },
   }
 };
