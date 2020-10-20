@@ -19,4 +19,16 @@ class Department extends Model
     public function user_informations(){
         return hasMany(UserInformation::class);
     }
+
+    public function leave_requests(){
+        return hasMany(Requests\LeaveRequest::class);
+    }
+
+    public function shift_change_request(){
+        return hasMany(Requests\ShiftChangeRequest::class);
+    }
+
+    public function petty_cash_request(){
+        return hasMany(Requests\PettyCashRequest::class);
+    }
 }

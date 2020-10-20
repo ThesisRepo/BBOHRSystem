@@ -38,12 +38,11 @@
   </v-app>
 </template>
 <style>
-v-app-bar{
+v-app-bar {
   overflow: hidden !important;
 }
-
-.v-list-item__title{
- font-size: 15px;
+.v-list-item__title {
+  font-size: 15px;
 }
 </style>
 
@@ -64,7 +63,7 @@ export default {
       { icon: "mdi-account-cash", text: "Petty Cash Request", route: "/PettyCash" },
       { icon: "mdi-account-cash-outline", text: "Budget Request", route: "/Budget" },
       { icon: "mdi-airplane", text: "Travel Authorization", route: "/TravelAuthorization" },
-      { icon: "mdi-logout", text: "LogOut", route: "/TravelAuthorization" }
+      { icon: "mdi-logout", text: "LogOut", route: "/logout" }
     ],
   }),
   mounted(){
