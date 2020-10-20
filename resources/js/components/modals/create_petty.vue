@@ -1,18 +1,17 @@
 <template>
   <v-row justify="center">
-    <v-dialog
-      v-model="dialog"
-      persistent
-      max-width="600px"
-    >
+    <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
         <v-btn
-          color="primary"
+          color="light blue darken-2"
+          rounded
+          outlined
           dark
           v-bind="attrs"
           v-on="on"
         >
-          Make Request
+          <v-icon>mdi-plus</v-icon>
+          <v-toolbar-title style="font-size: 16px">Make Request</v-toolbar-title>
         </v-btn>
       </template>
       <v-card>
@@ -79,18 +78,10 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="dialog = false"
-          >
+          <v-btn color="blue darken-1" text @click="dialog = false">
             Close
           </v-btn>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="dialog = false"
-          >
+          <v-btn color="blue darken-1" text @click="dialog = false">
             Save
           </v-btn>
         </v-card-actions>
@@ -99,14 +90,14 @@
   </v-row>
 </template>
 <script>
-  export default {
-    data: () => ({
-      dialog: false,
-    }),
-    methods: {
-      disabledDates(date) {
-        return date >  new Date().toISOString().substr(0, 10)
-      }
-    }
-  }
+export default {
+  data: () => ({
+    dialog: false,
+  }),
+  methods: {
+    disabledDates(date) {
+      return date > new Date().toISOString().substr(0, 10);
+    },
+  },
+};
 </script>

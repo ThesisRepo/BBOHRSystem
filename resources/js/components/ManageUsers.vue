@@ -5,16 +5,21 @@
     class="elevation-1"
   >
     <template v-slot:top>
-      <v-toolbar
-        flat
-      >
-        <v-toolbar-title>Manage Users</v-toolbar-title>
-        <v-divider
-          class="mx-4"
-          inset
-          vertical
-        ></v-divider>
-        <v-spacer></v-spacer>
+     <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+        <v-toolbar-title 
+         class="col pa-3 py-4 white--text"
+         style="font-size:16px ">MANAGE USER</v-toolbar-title>
+        <v-text-field
+          v-model="search"
+          clearable
+          flat
+          solo-inverted
+          hide-details
+          prepend-inner-icon="mdi-magnify"
+          label="Search"
+        ></v-text-field>
+  
+    
         <v-dialog
           v-model="dialog"
           max-width="500px"

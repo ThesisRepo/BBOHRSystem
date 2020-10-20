@@ -8,14 +8,41 @@
           </v-card-title>
           <v-divider></v-divider>
           <v-row>
-            <v-col cols="12" sm="4" md="4">
+            <v-col>
               <v-avatar
+                v-if="img_url === null"
                 class="ml-15"
                 color="grey darken-1"
                 size="200"
               ></v-avatar>
-              <v-col>
-                <v-btn color="primary" class="ml-16"> Change Profile </v-btn>
+              <v-img
+                :src="img_url"
+                v-else
+                max-width="200px"
+                min-height="200px"
+                class="ml-15"
+              >
+              </v-img>
+              <v-col class="ml-15">
+               <v-btn 
+                margin
+                color="primary"
+                class="text-none"
+                round
+                depressed
+                :loading="isSelecting"
+                @click="onButtonClick"
+              
+              >CHANGE PROFILE</v-btn>
+                
+              <input
+                ref="uploader"
+                class="d-none"
+                type="file"
+                accept="image/*"
+                @change="onFileChanged"
+              >
+                <changeProfile></changeProfile>
               </v-col>
             </v-col>
             <v-col>
@@ -33,16 +60,11 @@
               </h3>
               <span
                 class="text--primary text-caption text-sm-body-2 text-md-body-1"
+                >Id Number: {{ company_number }}</span
               >
-                Id Number: {{ company_number }}
-              </span>
             </v-col>
-            <v-col cols="12" sm="4" md="4" class="text-right">
-
-              <editProfile
-              :datas="datas">
-              </editProfile>
-
+            <v-col class="text-right">
+              <editProfile :datas="datas"></editProfile>
             </v-col>
           </v-row>
         </v-card>
@@ -63,6 +85,7 @@
                     readonly
                   ></v-text-field>
                 </v-col>
+
                 <v-col cols="12" sm="4" md="4">
                   <v-text-field
                     label="Department"
@@ -162,6 +185,7 @@ export default {
       company_number: localStorage.getItem("company_id"),
       dialog: false,
       department: null,
+      employment_status: null,
       position: null,
       company_status: null,
       date_hired: null,
@@ -174,36 +198,61 @@ export default {
       philhealth_num: null,
       sss_num: null,
       datas: [],
-    }
+      errorDialog: null,
+      errorText: "",
+      uploadFieldName: "file",
+      maxSize: 1024,
+      img_url: null,
+    };
   },
   mounted() {
     this.getInfo();
   },
   components: {
-    editProfile
+    editProfile,
   },
   methods: {
     getInfo() {
-      console.log('hi')
-      this.$axios.get('http://localhost:8000/user_info/' + this.user_id).then(response => {
-        console.log(response.data)
-        this.datas = response.data.user_information
-        this.department = response.data.user_information.department.department_name
-        this.date_hired = response.data.user_information.date_hired
-        this.address = response.data.user_information.address
-        this.status = response.data.user_information.civil_status
-        this.company_status = response.data.user_information.company_status
-        this.birthdate = response.data.user_information.birthday
-        this.contact_number = response.data.user_information.contact_number
-        this.pag_ibig = response.data.user_information.pag_ibig_number
-        this.tin_number = response.data.user_information.tin_number
-        this.philhealth_num = response.data.user_information.philhealth_number
-        this.sss_num = response.data.user_information.sss_number    
-      })
-      .catch(e => {
-        console.log(e);
-      })
-    }
+      console.log("hi");
+      this.$axios
+        .get("http://localhost:8000/user_info/" + this.user_id)
+        .then((response) => {
+          console.log(response.data);
+          this.datas = response.data.user_information;
+          this.department =
+            response.data.user_information.department.department_name;
+          this.date_hired = response.data.user_information.date_hired;
+          this.address = response.data.user_information.address;
+          this.status = response.data.user_information.civil_status;
+          this.company_status = response.data.user_information.company_status;
+          this.birthdate = response.data.user_information.birthday;
+          this.contact_number = response.data.user_information.contact_number;
+          this.pag_ibig = response.data.user_information.pag_ibig_number;
+          this.tin_number = response.data.user_information.tin_number;
+          this.philhealth_num =
+            response.data.user_information.philhealth_number;
+          this.sss_num = response.data.user_information.sss_number;
+          
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+    // onFileChange(e) {
+    //   this.img_url = URL.createObjectURL(e.target.files[0]);
+    // },
+     onButtonClick() {
+      this.isSelecting = true
+      window.addEventListener('focus', () => {
+        this.isSelecting = false
+      }, { once: true })
+
+      this.$refs.uploader.click()
+    },
+    onFileChanged(e) {
+      this.selectedFile = e.target.files[0] 
+      this.img_url = URL.createObjectURL(e.target.files[0]);
+    },
   }
-}
+};
 </script>
