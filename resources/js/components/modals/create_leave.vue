@@ -25,9 +25,6 @@
             <v-row>
               <v-col cols="12">
                 <v-select
-<<<<<<< HEAD
-                  :items="leaveType"
-=======
                   :items="[
                     'Sick Leave',
                     'Solo Parent Leave',
@@ -36,7 +33,6 @@
                     'Paternity Leave',
                     'Maternity Leave',
                   ]"
->>>>>>> 21482c97c58969dea7675a51e44d5bbb74b30d84
                   label="Reason*"
                   v-model="selectedLeaveType"
                   item-text="name"
@@ -125,10 +121,6 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-<<<<<<< HEAD
-          <v-btn color="blue darken-1" text @click="hideModal()">Close</v-btn>
-          <v-btn color="blue darken-1" text @click="dialog = false, createRequest()">Save</v-btn>
-=======
           <v-btn color="blue darken-1" text @click="dialog = false"
             >Close</v-btn
           >
@@ -138,7 +130,6 @@
             @click="(dialog = false), differenceDates()"
             >Save</v-btn
           >
->>>>>>> 21482c97c58969dea7675a51e44d5bbb74b30d84
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -147,31 +138,6 @@
 <script>
 import moment from "moment";
 export default {
-<<<<<<< HEAD
-  data() {
-    return {
-      selectedLeaveType: null, 
-      leaveType: [{value:1, name:'Sick Leave'}, 
-      {value: 2, name:'Solo Parent Leave'}, 
-      {value: 3, name:'Vacation Leave'}, 
-      {value: 4, name:'Emergency Leave'}, 
-      {value: 5, name:'Paternity Leave'},
-      {value: 6, name:'Maternity Leave'}],
-      dialog: false,
-      request: [],
-      reason: null,
-      number_of_leave: null,
-      start_date: null,
-      end_date: null,
-      prp_assigned: null,
-      differenceInDay: null,
-      user_id: localStorage.getItem("id")
-    }
-  },
-  mounted() {
-    this.retrieve()
-  },
-=======
   data: () => ({
     dialog: false,
     menu1: null,
@@ -182,7 +148,6 @@ export default {
     prp_assigned: null,
     differenceInDay: null,
   }),
->>>>>>> 21482c97c58969dea7675a51e44d5bbb74b30d84
   methods: {
     hideModal(){
       this.dialog = false
@@ -195,44 +160,6 @@ export default {
       this.differenceDates();
     },
     differenceDates() {
-<<<<<<< HEAD
-      let start = moment(String(this.start_date))
-      let end = moment(String(this.end_date))
-      let diff = (end.diff(start))
-      let differenceInDay = ((((diff/1000)/60)/60)/24)
-      console.log('-----------difference',  differenceInDay)
-      this.differenceInDay = differenceInDay
-    },
-    retrieve(){
-      this.$axios.get("http://localhost:8000/leave_request/" + this.user_id).then(response => {
-      })
-      .catch(e => {
-        console.log(e);
-      })
-    },
-    createRequest(){
-      let params = {
-        user_id: this.user_id,
-        leave_type_id: this.selectedLeaveType,
-        start_date: this.start_date,
-        end_date: this.end_date,
-        number_of_days: this.number_of_leave,
-        prp_assigned_id: 1
-      }
-      this.$axios.post("http://localhost:8000/leave_request", params).then(res =>{
-        console.log('Successfully Added')
-        this.retrieve()
-        // this.$axios.get("http://localhost:8000/leave_request/" + this.user_id).then(response => {
-        //   console.log('hi', response.data)
-        // })
-        // .catch(e => {
-        //   console.log(e);
-        // })
-      })
-    }
-  }
-}
-=======
       let start = moment(String(this.start_date));
       let end = moment(String(this.end_date));
       let diff = end.diff(start);
@@ -244,5 +171,4 @@ export default {
     menu1() {},
   },
 };
->>>>>>> 21482c97c58969dea7675a51e44d5bbb74b30d84
 </script>
