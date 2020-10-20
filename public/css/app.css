@@ -10909,4 +10909,9 @@ a.text-dark:focus {
     border-color: #dee2e6;
   }
 }
+img {
+  display: block;
+  margin-left:auto;
+  margin-right:auto;
+}
 
