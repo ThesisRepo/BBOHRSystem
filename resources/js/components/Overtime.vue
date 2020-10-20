@@ -10,11 +10,9 @@
         >
           <v-tabs-slider></v-tabs-slider>
           <v-tab @click="employees = false, requests = true">
-            <!-- <v-icon>mdi-phone</v-icon> -->
             Employees Requests
           </v-tab>
           <v-tab @click="requests = false, employees = true">
-            <!-- <v-icon>mdi-heart</v-icon> -->
             My Requests
           </v-tab>
         </v-tabs>

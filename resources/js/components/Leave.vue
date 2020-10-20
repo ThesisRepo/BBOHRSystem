@@ -98,6 +98,7 @@
         </v-card-title>
         <v-card-text>
           <v-container>
+            <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
             <v-row>
               <v-col cols="12" sm="6" md="6">
                 <v-select
@@ -110,11 +111,16 @@
                 ></v-select>
               </v-col>
               <v-col cols="12" sm="6" md="6">
-                <v-text-field v-model="editedItem.total_days" label="Total Day/s"></v-text-field>
+                <v-text-field
+                  label="Total Day/s of Leave*"
+                  type="text"
+                  v-model="total_days"
+                  disabled
+                ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-menu
-                  :close-on-content-click="false"
+                  :close-on-content-click="true"
                   transition="scale-transition"
                   offset-y
                   min-width="290px"
@@ -135,12 +141,14 @@
                     no-title
                     scrollable
                     color="primary"
+                    @change="changeDate()"
                   ></v-date-picker>
                 </v-menu>
               </v-col>
               <v-col cols="12" sm="6" md="6">
+                <span v-if="error1" style="color: red; font-style: italic">End date must be higher than start date!</span>
                 <v-menu
-                  :close-on-content-click="false"
+                  :close-on-content-click="true"
                   transition="scale-transition"
                   offset-y
                   min-width="290px"
@@ -153,14 +161,16 @@
                       readonly
                       v-bind="attrs"
                       v-on="on"
+                      :disabled="disable"
                     ></v-text-field>
                   </template>
                   <v-date-picker
-                    v-model="start_date"
+                    v-model="end_date"
                     :allowed-dates="disabledDates2"
                     no-title
                     scrollable
                     color="primary"
+                    @change="changeDate()"
                   ></v-date-picker>
                 </v-menu>
               </v-col>
@@ -226,8 +236,12 @@ export default {
     employees: !(localStorage.getItem('user_type')).includes('finance mngr') ? false : true,
     requests: !(localStorage.getItem('user_type')).includes('finance mngr') ? true : false,
     dialog: false,
+    error: false,
+    error1: false,
+    disable: true,
     dialogDelete: false,
     start_date: null,
+    error: false,
     search: null,
     headers: [
       {
@@ -245,18 +259,13 @@ export default {
     ],
     request: [],
     editedIndex: null,
+    total_days: null,
     editedItem: {
       id: null,
-      selectedLeaveType: 0,
-      total_days: 0,
-      start_date: 0,
-      end_date: 0
-    },
-    defaultItem: {
-      selectedLeaveType: 0,
-      total_days: 0,
-      start_date: 0,
-      end_date: 0
+      selectedLeaveType: null,
+      total_days: null,
+      start_date: null,
+      end_date: null
     },
     month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
     leaveType: [{value:1, name:'Sick Leave'}, 
@@ -273,6 +282,25 @@ export default {
     this.retrieve()
   },
   methods: {
+    changeDate(){
+      console.log('gawas')
+      if(this.start_date !== null && this.start_date !== ''){
+        let start = moment(String(this.start_date))
+        let end = moment(String(this.end_date))
+        if(end >= start){
+          let diff = (end.diff(start))
+          let differenceInDay = ((((diff/1000)/60)/60)/24)
+          this.total_days = differenceInDay
+          this.total_days_with_text = differenceInDay + ' days of leave'
+          this.error1 = false
+        }else{
+          this.error1 = true
+        }
+        this.disable = false
+      }else{
+        this.disable = true
+      }
+    },
     retrieve(){
       this.$axios.get("http://localhost:8000/leave_request/" + this.user_id).then(response => {
         this.request = response.data
@@ -294,19 +322,25 @@ export default {
     },
 
     save() {
-      let params = {
-        id: this.editedItem.id,
-        leave_type_id: this.editedItem.selectedLeaveType,
-        number_of_days: this.editedItem.total_days,
-        start_date: this.editedItem.start_date,
-        end_date: this.editedItem.end_date,
-        prp_assigned_id: 1
+      if(this.editedItem.selectedLeaveType !== null && this.editedItem.total_days !== null
+      && this.editedItem.start_date !== null && this.editedItem.end_date !== null && this.editedItem.selectedLeaveType !== '' && this.editedItem.total_days !== ''
+      && this.editedItem.start_date !== '' && this.editedItem.end_date !== '') {
+        let params = {
+          id: this.editedItem.id,
+          leave_type_id: this.editedItem.selectedLeaveType,
+          number_of_days: this.editedItem.total_days,
+          start_date: this.editedItem.start_date,
+          end_date: this.editedItem.end_date,
+          prp_assigned_id: 1
+        }
+        console.log('params', params, this.editedItem.id)      
+        this.$axios.post('http://localhost:8000/leave_request/' + this.editedItem.id, params).then(response=>{
+          this.retrieve()
+        })
+        this.dialog = false
+      }else{
+        this.error = true
       }
-      console.log('params', params, this.editedItem.id)      
-      this.$axios.post('http://localhost:8000/leave_request/' + this.editedItem.id, params).then(response=>{
-        this.retrieve()
-      })
-      this.dialog = false;
     },
 
     disabledDates(date) {
@@ -315,17 +349,17 @@ export default {
 
     disabledDates2(date) {
       return date >  new Date(this.start_date).toISOString().substr(0, 10)
-      this.differenceDates()
+      this.differenceDates();
     },
 
-    differenceDates() {
-      let start = moment(String(this.start_date))
-      let end = moment(String(this.end_date))
-      let diff = (end.diff(start))
-      let differenceInDay = ((((diff/1000)/60)/60)/24)
-      console.log('-----------diff',  differenceInDay)
-      this.differenceInDay = differenceInDay
-    },
+    // differenceDates() {
+    //   let start = moment(String(this.start_date))
+    //   let end = moment(String(this.end_date))
+    //   let diff = (end.diff(start))
+    //   let differenceInDay = ((((diff/1000)/60)/60)/24)
+    //   console.log('-----------diff',  differenceInDay)
+    //   this.differenceInDay = differenceInDay
+    // },
 
     deleteItem(item) {
       this.id = item.id
