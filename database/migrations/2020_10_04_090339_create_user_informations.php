@@ -17,6 +17,8 @@ class CreateUserInformations extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->index();
             $table->unsignedBigInteger('department_id')->nullable();
+            $table->unsignedBigInteger('shift_time_id')->nullable();
+            $table->string('gender')->nullable();
             $table->string('company_number')->nullable();
             $table->string('profile_url')->nullable();  
             $table->string('company_position')->nullable();
@@ -33,6 +35,7 @@ class CreateUserInformations extends Migration
             $table->integer('allowed_leave_number')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
+            $table->foreign('shift_time_id')->references('id')->on('shift_times')->onDelete('cascade');
             $table->timestamps();
         });
     }

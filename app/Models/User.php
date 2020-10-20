@@ -104,4 +104,8 @@ class User extends Authenticatable implements MustVerifyEmail
     public function approved_petty_cash_requests() {
         return $this->morphByMany(Requests\PettyCashRequest::class, 'approved_request_records');
     }
+
+    public function budget_requests() {
+        return $this->hasMany(Requests\PettyCashRequest::class);
+    }
 }

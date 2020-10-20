@@ -65,7 +65,17 @@ class RequestBaseController extends Controller
         }else {
             $this->max_role ++;
         }
-        return $this->max_role;
+        return $this->max_role; 
+    }
+
+    public function getDepartmentId($id) {
+        return $this->user->findWith($id, 'userInformation.department')->userInformation->department->id;
+    }
+
+    public function setPrpId($id) {
+
+        return $id > 0 ? $id : 0;
+
     }
 
     public function isEditable($data) {
@@ -89,14 +99,22 @@ class RequestBaseController extends Controller
 
     public function updateRequest($editable, $data, $id, $prp_assigned_id) {
         if($this->isEditable($editable)){
-            return response()->json($this->model->updateRequest($data, $id, $prp_assigned_id), 200);
+            if($prp_assigned_id) {
+                return response()->json($this->model->updateRequest($data, $id, $prp_assigned_id), 200);
+            }else {
+                return response()->json($this->model->update($data, $id), 200);
+            }
         }else{
-            return response()->json([], 400);
+            return response()->json([], 404);
         }
     }
 
     public function storeRequest($data, $prp_assigned_id) {
-        return response()->json($this->model->createRequest($data, $prp_assigned_id), 200);
+        if($prp_assigned_id) {
+            return response()->json($this->model->createRequest($data, $prp_assigned_id), 200);
+        }else {
+            return response()->json($this->model->create($data), 200);
+        }
     }
 
     public function showRequest($column, $id, $relationship) {

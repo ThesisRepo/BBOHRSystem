@@ -14,6 +14,7 @@ class LeaveRequest extends Model
     protected $fillable = [
         'user_id',
         'leave_type_id',
+        'department_id',
         'start_date',
         'end_date',
         'number_of_days',
@@ -27,6 +28,10 @@ class LeaveRequest extends Model
 
     public function leave_type() {
         return $this->belongsTo(LeaveType::class);
+    }
+
+    public function department() {
+        return $this->belongsTo(\App\Models\Department::class);
     }
 
     public function status() {

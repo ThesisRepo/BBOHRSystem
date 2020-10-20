@@ -1904,70 +1904,9 @@ module.exports = {
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/App.vue?vue&type=script&lang=js& ***!
   \***************************************************************************************************************************************************/
 /*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuetify */ "./node_modules/vuetify/dist/vuetify.js");
-/* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vuetify__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _modules_sidebar_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/sidebar.vue */ "./resources/js/modules/sidebar.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: "app",
-  props: ['user'],
-  components: {
-    sidebar: _modules_sidebar_vue__WEBPACK_IMPORTED_MODULE_1__["default"] // dashboard
-
-  },
-  mounted: function mounted() {
-    this.setUserType(); // var params = {
-    //     prp_assigned_id:5,
-    //     user_id:4,
-    //     reason:'hdfddaman',
-    //     shift_date: '2020-10-10',
-    //     shift_time: '7-8pm',
-    // };
-    // this.$axios
-    // .get(
-    //   "http://localhost:8000/shift_change_request/4")
-    // .then(response => {
-    //   if (response.data === 1) {
-    //     this.$parent.$parent.getInfo()
-    //     this.dialog = false
-    //   } else {      
-    //     this.$parent.$parent.getInfo()
-    //   }
-    // })
-  },
-  methods: {
-    setUserType: function setUserType() {
-      var roleList = [];
-      this.user.roles.forEach(function (element) {
-        console.log(element.role_name);
-        roleList.push(element.role_name); // element.role_name
-      });
-      console.log(this.user.roles);
-      localStorage.setItem('user_type', roleList);
-      localStorage.setItem('id', this.user.id);
-      localStorage.setItem('user_name', this.user.first_name + " " + this.user.last_name);
-      localStorage.setItem('email', this.user.email);
-      localStorage.setItem('company_id', this.user.user_information.company_number);
-    }
-  }
-});
+throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nSyntaxError: C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\resources\\js\\App.vue: Unexpected token, expected \",\" (46:11)\n\n\u001b[0m \u001b[90m 44 | \u001b[39m        \u001b[90m// })\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 45 | \u001b[39m    }\u001b[33m,\u001b[39m\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 46 | \u001b[39m    methods\u001b[33m:\u001b[39m {\u001b[0m\n\u001b[0m \u001b[90m    | \u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 47 | \u001b[39m        setUserType(){\u001b[0m\n\u001b[0m \u001b[90m 48 | \u001b[39m            \u001b[36mvar\u001b[39m roleList\u001b[33m=\u001b[39m[]\u001b[0m\n\u001b[0m \u001b[90m 49 | \u001b[39m            \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39muser\u001b[33m.\u001b[39mroles\u001b[33m.\u001b[39mforEach(element \u001b[33m=>\u001b[39m {\u001b[0m\n    at Parser._raise (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:766:17)\n    at Parser.raiseWithData (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:759:17)\n    at Parser.raise (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:753:17)\n    at Parser.unexpected (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:8966:16)\n    at Parser.expect (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:8952:28)\n    at Parser.parseCallExpressionArguments (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:10033:14)\n    at Parser.parseCoverCallAndAsyncArrowHead (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9960:29)\n    at Parser.parseSubscript (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9896:19)\n    at Parser.parseSubscripts (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9867:19)\n    at Parser.parseExprSubscripts (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9850:17)\n    at Parser.parseUpdate (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9824:21)\n    at Parser.parseMaybeUnary (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9813:17)\n    at Parser.parseExprOps (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9683:23)\n    at Parser.parseMaybeConditional (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9657:23)\n    at Parser.parseMaybeAssign (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9620:21)\n    at Parser.parseExpressionBase (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9564:23)\n    at allowInAnd (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9558:39)\n    at Parser.allowInAnd (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:11296:16)\n    at Parser.parseExpression (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9558:17)\n    at Parser.parseStatementContent (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:11561:23)\n    at Parser.parseStatement (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:11430:17)\n    at Parser.parseBlockOrModuleBlockBody (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:12012:25)\n    at Parser.parseBlockBody (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:11998:10)\n    at Parser.parseBlock (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:11982:10)\n    at Parser.parseFunctionBody (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:10962:24)\n    at Parser.parseFunctionBodyAndFinish (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:10945:10)\n    at Parser.parseMethod (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:10882:10)\n    at Parser.parseObjectMethod (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:10807:19)\n    at Parser.parseObjPropValue (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:10840:23)\n    at Parser.parsePropertyDefinition (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:10771:10)\n    at Parser.parseObjectLike (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:10664:25)\n    at Parser.parseExprAtom (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:10198:23)\n    at Parser.parseExprSubscripts (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9844:23)\n    at Parser.parseUpdate (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9824:21)\n    at Parser.parseMaybeUnary (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9813:17)\n    at Parser.parseExprOps (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9683:23)");
 
 /***/ }),
 
@@ -5165,7 +5104,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! exports provided: default */
 /***/ (function(module, exports) {
 
-throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nSyntaxError: C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\resources\\js\\components\\modals\\create_leave.vue: Unexpected token (150:0)\n\n\u001b[0m \u001b[90m 148 | \u001b[39m\u001b[36mimport\u001b[39m moment from \u001b[32m\"moment\"\u001b[39m\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 149 | \u001b[39m\u001b[36mexport\u001b[39m \u001b[36mdefault\u001b[39m {\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 150 | \u001b[39m\u001b[33m<<\u001b[39m\u001b[33m<<\u001b[39m\u001b[33m<<\u001b[39m\u001b[33m<\u001b[39m \u001b[33mHEAD\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m     | \u001b[39m\u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 151 | \u001b[39m  data() {\u001b[0m\n\u001b[0m \u001b[90m 152 | \u001b[39m    \u001b[36mreturn\u001b[39m {\u001b[0m\n\u001b[0m \u001b[90m 153 | \u001b[39m      selectedLeaveType\u001b[33m:\u001b[39m \u001b[36mnull\u001b[39m\u001b[33m,\u001b[39m \u001b[0m\n    at Parser._raise (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:766:17)\n    at Parser.raiseWithData (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:759:17)\n    at Parser.raise (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:753:17)\n    at Parser.unexpected (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:8966:16)\n    at Parser.parseIdentifierName (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:11085:18)\n    at Parser.parseIdentifier (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:11058:23)\n    at Parser.parseMaybePrivateName (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:10363:19)\n    at Parser.parsePropertyName (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:10853:155)\n    at Parser.parsePropertyDefinition (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:10747:22)\n    at Parser.parseObjectLike (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:10664:25)\n    at Parser.parseExprAtom (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:10198:23)\n    at Parser.parseExprSubscripts (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9844:23)\n    at Parser.parseUpdate (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9824:21)\n    at Parser.parseMaybeUnary (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9813:17)\n    at Parser.parseExprOps (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9683:23)\n    at Parser.parseMaybeConditional (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9657:23)\n    at Parser.parseMaybeAssign (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9620:21)\n    at allowInAnd (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9586:39)\n    at Parser.allowInAnd (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:11296:16)\n    at Parser.parseMaybeAssignAllowIn (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9586:17)\n    at Parser.parseExportDefaultExpression (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:12619:24)\n    at Parser.parseExport (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:12529:31)\n    at Parser.parseStatementContent (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:11536:27)\n    at Parser.parseStatement (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:11430:17)\n    at Parser.parseBlockOrModuleBlockBody (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:12012:25)\n    at Parser.parseBlockBody (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:11998:10)\n    at Parser.parseTopLevel (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:11361:10)\n    at Parser.parse (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:13044:10)\n    at parse (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:13097:38)\n    at parser (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\core\\lib\\parser\\index.js:54:34)\n    at parser.next (<anonymous>)\n    at normalizeFile (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\core\\lib\\transformation\\normalize-file.js:99:38)\n    at normalizeFile.next (<anonymous>)\n    at run (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\core\\lib\\transformation\\index.js:31:50)\n    at run.next (<anonymous>)\n    at Function.transform (C:\\Users\\capstonestudent\\Documents\\Thesis PN2020-B\\herrera\\BBOHRSystem\\node_modules\\@babel\\core\\lib\\transform.js:27:41)");
+throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nSyntaxError: C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\resources\\js\\components\\modals\\create_leave.vue: Unexpected token (150:0)\n\n\u001b[0m \u001b[90m 148 | \u001b[39m\u001b[36mimport\u001b[39m moment from \u001b[32m\"moment\"\u001b[39m\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 149 | \u001b[39m\u001b[36mexport\u001b[39m \u001b[36mdefault\u001b[39m {\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 150 | \u001b[39m\u001b[33m<<\u001b[39m\u001b[33m<<\u001b[39m\u001b[33m<<\u001b[39m\u001b[33m<\u001b[39m \u001b[33mHEAD\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m     | \u001b[39m\u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 151 | \u001b[39m  data() {\u001b[0m\n\u001b[0m \u001b[90m 152 | \u001b[39m    \u001b[36mreturn\u001b[39m {\u001b[0m\n\u001b[0m \u001b[90m 153 | \u001b[39m      selectedLeaveType\u001b[33m:\u001b[39m \u001b[36mnull\u001b[39m\u001b[33m,\u001b[39m \u001b[0m\n    at Parser._raise (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:766:17)\n    at Parser.raiseWithData (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:759:17)\n    at Parser.raise (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:753:17)\n    at Parser.unexpected (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:8966:16)\n    at Parser.parseIdentifierName (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:11085:18)\n    at Parser.parseIdentifier (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:11058:23)\n    at Parser.parseMaybePrivateName (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:10363:19)\n    at Parser.parsePropertyName (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:10853:155)\n    at Parser.parsePropertyDefinition (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:10747:22)\n    at Parser.parseObjectLike (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:10664:25)\n    at Parser.parseExprAtom (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:10198:23)\n    at Parser.parseExprSubscripts (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9844:23)\n    at Parser.parseUpdate (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9824:21)\n    at Parser.parseMaybeUnary (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9813:17)\n    at Parser.parseExprOps (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9683:23)\n    at Parser.parseMaybeConditional (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9657:23)\n    at Parser.parseMaybeAssign (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9620:21)\n    at allowInAnd (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9586:39)\n    at Parser.allowInAnd (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:11296:16)\n    at Parser.parseMaybeAssignAllowIn (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:9586:17)\n    at Parser.parseExportDefaultExpression (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:12619:24)\n    at Parser.parseExport (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:12529:31)\n    at Parser.parseStatementContent (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:11536:27)\n    at Parser.parseStatement (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:11430:17)\n    at Parser.parseBlockOrModuleBlockBody (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:12012:25)\n    at Parser.parseBlockBody (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:11998:10)\n    at Parser.parseTopLevel (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:11361:10)\n    at Parser.parse (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:13044:10)\n    at parse (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\parser\\lib\\index.js:13097:38)\n    at parser (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\core\\lib\\parser\\index.js:54:34)\n    at parser.next (<anonymous>)\n    at normalizeFile (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\core\\lib\\transformation\\normalize-file.js:99:38)\n    at normalizeFile.next (<anonymous>)\n    at run (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\core\\lib\\transformation\\index.js:31:50)\n    at run.next (<anonymous>)\n    at Function.transform (C:\\Users\\2ndyrGroupC\\Desktop\\Projects\\BBOHRSystem\\node_modules\\@babel\\core\\lib\\transform.js:27:41)");
 
 /***/ }),
 
@@ -5622,129 +5561,6 @@ __webpack_require__.r(__webpack_exports__);
       }); // .catch(error => {
       //   this.dialog = false;
       // });
-    }
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/modules/sidebar.vue?vue&type=script&lang=js&":
-/*!***************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/modules/sidebar.vue?vue&type=script&lang=js& ***!
-  \***************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../router */ "./resources/js/router/index.js");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      user_type: localStorage.getItem('user_type'),
-      user_name: localStorage.getItem('user_name'),
-      drawer: null,
-      data: null,
-      employ: [{
-        icon: "mdi-account",
-        text: "My Account",
-        route: "/MyAccount"
-      }, {
-        icon: "mdi-apps",
-        text: "Dashboard",
-        route: "/Dashboard"
-      }, {
-        icon: "mdi-calendar-edit",
-        text: "Leave Request",
-        route: "/Leave"
-      }, {
-        icon: "mdi-calendar-account",
-        text: "Shift Change Request",
-        route: "/ShiftChange"
-      }, {
-        icon: "mdi-calendar-clock",
-        text: "Overtime Request",
-        route: "/Overtime"
-      }, {
-        icon: "mdi-account-cash",
-        text: "Petty Cash Request",
-        route: "/PettyCash"
-      }, {
-        icon: "mdi-account-cash-outline",
-        text: "Budget Request",
-        route: "/Budget"
-      }, {
-        icon: "mdi-airplane",
-        text: "Travel Authorization",
-        route: "/TravelAuthorization"
-      }, {
-        icon: "mdi-logout",
-        text: "LogOut",
-        route: "/logout"
-      }]
-    };
-  },
-  mounted: function mounted() {
-    if (this.user_type.includes('general mngr') || this.user_type.includes('hr mngr')) {
-      this.employ.splice(this.employ.length - 1, 0, {
-        icon: "mdi-account-group",
-        text: "Manage Users",
-        route: "/ManageUsers"
-      });
-    }
-  },
-  methods: {
-    redirect: function redirect(route) {
-      _router__WEBPACK_IMPORTED_MODULE_0__["default"].push(route)["catch"](function () {});
     }
   }
 });
@@ -10184,25 +10000,6 @@ exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader
 
 // module
 exports.push([module.i, "\nv-main {\r\n    background-color: black;\n}\n#sidebar{\r\n    position:absolute;\n}\r\n\r\n", ""]);
-
-// exports
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/modules/sidebar.vue?vue&type=style&index=0&lang=css&":
-/*!**********************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/modules/sidebar.vue?vue&type=style&index=0&lang=css& ***!
-  \**********************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\nv-app-bar {\r\n  overflow: hidden !important;\n}\n.v-list-item__title {\r\n  font-size: 15px;\n}\r\n", ""]);
 
 // exports
 
@@ -41398,36 +41195,6 @@ if(false) {}
 
 /***/ }),
 
-/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/modules/sidebar.vue?vue&type=style&index=0&lang=css&":
-/*!**************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/modules/sidebar.vue?vue&type=style&index=0&lang=css& ***!
-  \**************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-var content = __webpack_require__(/*! !../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./sidebar.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/modules/sidebar.vue?vue&type=style&index=0&lang=css&");
-
-if(typeof content === 'string') content = [[module.i, content, '']];
-
-var transform;
-var insertInto;
-
-
-
-var options = {"hmr":true}
-
-options.transform = transform
-options.insertInto = undefined;
-
-var update = __webpack_require__(/*! ../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
-
-if(content.locals) module.exports = content.locals;
-
-if(false) {}
-
-/***/ }),
-
 /***/ "./node_modules/style-loader/lib/addStyles.js":
 /*!****************************************************!*\
   !*** ./node_modules/style-loader/lib/addStyles.js ***!
@@ -50988,154 +50755,6 @@ var render = function() {
             ],
             1
           )
-        ],
-        1
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/modules/sidebar.vue?vue&type=template&id=4690ea74&":
-/*!*******************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/modules/sidebar.vue?vue&type=template&id=4690ea74& ***!
-  \*******************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "v-app",
-    { attrs: { id: "inspire" } },
-    [
-      _c(
-        "v-navigation-drawer",
-        {
-          attrs: { app: "", color: "light-blue darken-4" },
-          model: {
-            value: _vm.drawer,
-            callback: function($$v) {
-              _vm.drawer = $$v
-            },
-            expression: "drawer"
-          }
-        },
-        [
-          _c(
-            "center",
-            [
-              _c(
-                "v-sheet",
-                {
-                  staticClass: "pa-5",
-                  attrs: { color: "light-blue darken-4" }
-                },
-                [
-                  _c("v-avatar", {
-                    staticClass: "mb-10",
-                    attrs: { color: "grey darken-1", size: "64" }
-                  }),
-                  _vm._v(" "),
-                  _c("div", { staticStyle: { color: "white" } }, [
-                    _vm._v(_vm._s(_vm.user_name))
-                  ])
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c("v-divider"),
-          _vm._v(" "),
-          _vm.user_type.includes("emp") ||
-          _vm.user_type.includes("finance mngr") ||
-          _vm.user_type.includes("prp emp")
-            ? _c(
-                "v-list",
-                [
-                  _c(
-                    "v-list-item-group",
-                    { attrs: { "active-class": "sky blue blue--text" } },
-                    _vm._l(_vm.employ, function(item, index) {
-                      return _c(
-                        "v-list-item",
-                        {
-                          key: index,
-                          attrs: { link: "" },
-                          on: {
-                            click: function($event) {
-                              return _vm.redirect(item.route)
-                            }
-                          }
-                        },
-                        [
-                          _c(
-                            "v-list-item-icon",
-                            [
-                              _c(
-                                "v-icon",
-                                { attrs: { color: "white darken-2" } },
-                                [_vm._v(_vm._s(item.icon))]
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-list-item-content",
-                            [
-                              _c(
-                                "v-list-item-title",
-                                { staticClass: "white--text lighten-1--text" },
-                                [_vm._v(_vm._s(item.text))]
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      )
-                    }),
-                    1
-                  )
-                ],
-                1
-              )
-            : _vm._e()
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-app-bar",
-        { attrs: { app: "", fixed: "", color: "light-blue darken-4" } },
-        [
-          _c("v-app-bar-nav-icon", {
-            attrs: { color: "white darken-2" },
-            on: {
-              click: function($event) {
-                _vm.drawer = !_vm.drawer
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("v-toolbar-title", { staticStyle: { color: "white" } }, [
-            _vm._v(" BBO ")
-          ])
         ],
         1
       )
@@ -111424,93 +111043,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/modules/sidebar.vue":
-/*!******************************************!*\
-  !*** ./resources/js/modules/sidebar.vue ***!
-  \******************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _sidebar_vue_vue_type_template_id_4690ea74___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./sidebar.vue?vue&type=template&id=4690ea74& */ "./resources/js/modules/sidebar.vue?vue&type=template&id=4690ea74&");
-/* harmony import */ var _sidebar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./sidebar.vue?vue&type=script&lang=js& */ "./resources/js/modules/sidebar.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _sidebar_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./sidebar.vue?vue&type=style&index=0&lang=css& */ "./resources/js/modules/sidebar.vue?vue&type=style&index=0&lang=css&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
-  _sidebar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _sidebar_vue_vue_type_template_id_4690ea74___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _sidebar_vue_vue_type_template_id_4690ea74___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/modules/sidebar.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/modules/sidebar.vue?vue&type=script&lang=js&":
-/*!*******************************************************************!*\
-  !*** ./resources/js/modules/sidebar.vue?vue&type=script&lang=js& ***!
-  \*******************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_sidebar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./sidebar.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/modules/sidebar.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_sidebar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/modules/sidebar.vue?vue&type=style&index=0&lang=css&":
-/*!***************************************************************************!*\
-  !*** ./resources/js/modules/sidebar.vue?vue&type=style&index=0&lang=css& ***!
-  \***************************************************************************/
-/*! no static exports found */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_sidebar_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader!../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./sidebar.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/modules/sidebar.vue?vue&type=style&index=0&lang=css&");
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_sidebar_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_sidebar_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_sidebar_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_sidebar_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_sidebar_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
-
-/***/ }),
-
-/***/ "./resources/js/modules/sidebar.vue?vue&type=template&id=4690ea74&":
-/*!*************************************************************************!*\
-  !*** ./resources/js/modules/sidebar.vue?vue&type=template&id=4690ea74& ***!
-  \*************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_sidebar_vue_vue_type_template_id_4690ea74___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./sidebar.vue?vue&type=template&id=4690ea74& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/modules/sidebar.vue?vue&type=template&id=4690ea74&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_sidebar_vue_vue_type_template_id_4690ea74___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_sidebar_vue_vue_type_template_id_4690ea74___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
 /***/ "./resources/js/router/index.js":
 /*!**************************************!*\
   !*** ./resources/js/router/index.js ***!
@@ -111617,8 +111149,8 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\capstonestudent\Documents\Thesis PN2020-B\herrera\BBOHRSystem\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\capstonestudent\Documents\Thesis PN2020-B\herrera\BBOHRSystem\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\2ndyrGroupC\Desktop\Projects\BBOHRSystem\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\2ndyrGroupC\Desktop\Projects\BBOHRSystem\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
