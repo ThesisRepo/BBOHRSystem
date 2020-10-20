@@ -16,7 +16,7 @@ Route::post('user_info/{id}','UserInformationController@update')->name('user_inf
 Route::get('prp','UserInformationController@getAllPrp')->name('user_info.findPrp');
 
 //edit pp
-Route::post('changePP','UserInformationController@updatePP')->name('user_info.update');
+Route::post('update_profile_img/{id}','UserInformationController@updateProfileImg')->name('user_info.update_profile_img');
 
 
 

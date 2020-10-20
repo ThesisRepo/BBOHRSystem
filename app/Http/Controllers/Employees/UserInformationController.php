@@ -49,25 +49,18 @@ class UserInformationController extends Controller
         
         return response()->json($this->user->updateWithUserInfo($data, $id), 200);        
     }
-    public function updatePP(Request $request){
+    public function updateProfileImg($id,Request $request){
 
         $formData = $request->get('formData');
-        $id = $request->get('id');
-
+        // dd($request ->toArray());
         $imageName = time().'.'.$request->image->getClientOriginalExtension();
         $request->image->move(public_path('images'),$imageName);
         $image = 'images/'.$imageName;
       
-        // return response()->json($this->user->updateWithUserInfo($data, $id), 200);   
-        
         $data = [
             'profile_url' => $image
         ];
-              return response()->json($this->user->updateWithUserInfo($data, $id), 200);   
-
-
-
-
+              return response()->json($this->user->updateWithUserInfo($data, $id), 200);
     }
 
     public function getAllPrp() {
