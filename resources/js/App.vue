@@ -1,5 +1,6 @@
 <template>
     <v-app id="sample">
+        <!-- <h1>{{user}}</h1> -->
         <v-main>
             <sidebar id="sidebar"></sidebar>
             <v-container class="container" fluid>
@@ -21,30 +22,36 @@ export default {
     },
     mounted(){
         this.setUserType();
+        // var params = {
+        //     prp_assigned_id:5,
+        //     user_id:4,
+        //     reason:'hdfddaman',
+        //     shift_date: '2020-10-10',
+        //     shift_time: '7-8pm',
+        // };
         
-        var params = {
-            user_id: 4,
-            prp_assigned_id:2,
-            reason: 'there \' a reason',
-            shift_date: '2020-10-10',
-            shift_time: '2pm-7pm'
-        };
-
-        this.$axios
-        .post(
-          "http://localhost:8000/shift_change_request/3", params)
-        .then(response => {
+        // this.$axios
+        // .get(
+        //   "http://localhost:8000/shift_change_request/4")
+        // .then(response => {
         //   if (response.data === 1) {
         //     this.$parent.$parent.getInfo()
         //     this.dialog = false
         //   } else {      
         //     this.$parent.$parent.getInfo()
         //   }
-        })
+        // })
     },
     methods: {
         setUserType(){
-            localStorage.setItem('user_type', this.user.roles[0].role_name)
+            var roleList=[]
+            this.user.roles.forEach(element => {
+                console.log(element.role_name)
+                roleList.push(element.role_name)
+                // element.role_name
+            });
+            console.log(this.user.roles)
+            localStorage.setItem('user_type', roleList)
             localStorage.setItem('id', this.user.id)
             localStorage.setItem('user_name', this.user.first_name + " " + this.user.last_name)
             localStorage.setItem('email', this.user.email)
@@ -60,4 +67,5 @@ v-main {
 #sidebar{
     position:absolute;
 }
+
 </style>
