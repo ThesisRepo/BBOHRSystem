@@ -197,6 +197,7 @@ export default {
     },
     retrieve(){
       this.$axios.get("http://localhost:8000/leave_request/" + this.user_id).then(response => {
+        console.log(response.data);
       })
       .catch(e => {
         console.log(e);

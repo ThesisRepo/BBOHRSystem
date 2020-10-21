@@ -5,6 +5,8 @@ namespace App\Http\Controllers\HRManagers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisternRequest;
+use App\Eloquent\Implementations\UserEloquent;
+
 
 class UserInformationController extends Controller
 {

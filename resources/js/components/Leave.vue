@@ -316,7 +316,6 @@ export default {
         console.log(e);
       })
     },
-
     editItem(item) {
       this.editedItem.id = item.id
       this.editedIndex = this.request.indexOf(item)
@@ -327,7 +326,6 @@ export default {
       this.editedItem.end_date = item.end_date
       this.dialog = true;
     },
-
     save() {
       if(this.editedItem.selectedLeaveType !== null && this.editedItem.total_days !== null
       && this.editedItem.start_date !== null && this.editedItem.end_date !== null && this.editedItem.selectedLeaveType !== '' && this.editedItem.total_days !== ''
@@ -349,11 +347,9 @@ export default {
         this.error = true
       }
     },
-
     disabledDates(date) {
       return date >  new Date().toISOString().substr(0, 10)
     },
-
     disabledDates2(date) {
       return date >  new Date(this.editedItem.start_date).toISOString().substr(0, 10)
       this.differenceDates();
@@ -372,7 +368,6 @@ export default {
       this.id = item.id
       this.dialogDelete = true;
     },
-
     deleteItemConfirm() {
       this.$axios.delete('http://localhost:8000/leave_request/' + this.id).then(response=>{
         console.log('Successfully deleted')

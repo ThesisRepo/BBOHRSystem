@@ -21,7 +21,7 @@ export default {
         // dashboard
     },
     mounted(){
-        this.setUserType()
+        this.setUserType();
         // var params = {
         //     prp_assigned_id:5,
         //     user_id:4,

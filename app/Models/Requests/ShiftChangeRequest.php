@@ -8,6 +8,7 @@ class ShiftChangeRequest extends Model
 {
     protected $fillable = [ 
         'user_id',
+        'department_id',
         'reason',
         'shift_date',
         'shift_time',
@@ -21,6 +22,10 @@ class ShiftChangeRequest extends Model
 
     public function status() {
         return $this->belongsTo(Status::class);
+    }
+    
+    public function department() {
+        return $this->belongsTo(\App\Models\Department::class);
     }
 
     public function approvers() {
