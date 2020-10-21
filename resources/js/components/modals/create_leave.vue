@@ -25,18 +25,7 @@
             <v-row>
               <v-col cols="12">
                 <v-select
-<<<<<<< HEAD
-                  :items="[
-                    'Sick Leave',
-                    'Solo Parent Leave',
-                    'Vacation Leave',
-                    'Emergency Leave',
-                    'Paternity Leave',
-                    'Maternity Leave',
-                  ]"
-=======
                   :items="leaveType"
->>>>>>> master
                   label="Reason*"
                   v-model="selectedLeaveType"
                   item-text="name"
@@ -125,20 +114,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-<<<<<<< HEAD
-          <v-btn color="blue darken-1" text @click="dialog = false"
-            >Close</v-btn
-          >
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="(dialog = false), differenceDates()"
-            >Save</v-btn
-          >
-=======
           <v-btn color="blue darken-1" text @click="hideModal()">Close</v-btn>
           <v-btn color="blue darken-1" text @click="dialog = false, createRequest()">Save</v-btn>
->>>>>>> master
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -147,18 +124,6 @@
 <script>
 import moment from "moment";
 export default {
-<<<<<<< HEAD
-  data: () => ({
-    dialog: false,
-    menu1: null,
-    reason: null,
-    number_of_leave: null,
-    start_date: null,
-    end_date: null,
-    prp_assigned: null,
-    differenceInDay: null,
-  }),
-=======
   data() {
     return {
       selectedLeaveType: null, 
@@ -182,7 +147,6 @@ export default {
   mounted() {
     this.retrieve()
   },
->>>>>>> master
   methods: {
     hideModal(){
       this.dialog = false
@@ -195,19 +159,6 @@ export default {
       this.differenceDates();
     },
     differenceDates() {
-<<<<<<< HEAD
-      let start = moment(String(this.start_date));
-      let end = moment(String(this.end_date));
-      let diff = end.diff(start);
-      let differenceInDay = diff / 1000 / 60 / 60 / 24;
-      console.log("-----------mini", differenceInDay);
-      this.differenceInDay = differenceInDay;
-      // return end - start
-    },
-    menu1() {},
-  },
-};
-=======
       let start = moment(String(this.start_date))
       let end = moment(String(this.end_date))
       let diff = (end.diff(start))
@@ -245,5 +196,4 @@ export default {
     }
   }
 }
->>>>>>> master
 </script>
