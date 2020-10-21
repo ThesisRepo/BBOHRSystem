@@ -98,6 +98,7 @@
         </v-card-title>
         <v-card-text>
           <v-container>
+            <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
             <v-row>
               <v-col cols="12" sm="6" md="6">
                 <v-select
@@ -110,11 +111,17 @@
                 ></v-select>
               </v-col>
               <v-col cols="12" sm="6" md="6">
-                <v-text-field v-model="editedItem.total_days" label="Total Day/s"></v-text-field>
+                <v-text-field
+                  label="Total Day/s of Leave*"
+                  type="text"
+                  v-model="total_days_with_text"
+                  disabled
+                ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
+                <span v-if="error2" style="color: red; font-style: italic">Start date must not be higher than End date!</span>
                 <v-menu
-                  :close-on-content-click="false"
+                  :close-on-content-click="true"
                   transition="scale-transition"
                   offset-y
                   min-width="290px"
@@ -130,17 +137,19 @@
                     ></v-text-field>
                   </template>
                   <v-date-picker
-                    v-model="start_date"
+                    v-model="editedItem.start_date"
                     :allowed-dates="disabledDates"
                     no-title
                     scrollable
                     color="primary"
+                    @change="changeDate()"
                   ></v-date-picker>
                 </v-menu>
               </v-col>
               <v-col cols="12" sm="6" md="6">
+                <span v-if="error1" style="color: red; font-style: italic">End date must be higher than start date!</span>
                 <v-menu
-                  :close-on-content-click="false"
+                  :close-on-content-click="true"
                   transition="scale-transition"
                   offset-y
                   min-width="290px"
@@ -153,14 +162,16 @@
                       readonly
                       v-bind="attrs"
                       v-on="on"
+                      :disabled="disable"
                     ></v-text-field>
                   </template>
                   <v-date-picker
-                    v-model="start_date"
+                    v-model="editedItem.end_date"
                     :allowed-dates="disabledDates2"
                     no-title
                     scrollable
                     color="primary"
+                    @change="changeDate()"
                   ></v-date-picker>
                 </v-menu>
               </v-col>
@@ -219,6 +230,7 @@
 </template>
 <script>
 import createLeave from "./modals/create_leave.vue";
+import moment from "moment";
 export default {
   data: () => ({
     user_type: localStorage.getItem("user_type"),
@@ -226,6 +238,11 @@ export default {
     employees: !(localStorage.getItem('user_type')).includes('finance mngr') ? false : true,
     requests: !(localStorage.getItem('user_type')).includes('finance mngr') ? true : false,
     dialog: false,
+    error: false,
+    error1: false,
+    error2: false,
+    disable: false,
+    end_date: null,
     dialogDelete: false,
     start_date: null,
     search: null,
@@ -244,19 +261,15 @@ export default {
       { text: "ACTIONS", value: "actions", sortable: false }
     ],
     request: [],
-    editedIndex: -1,
+    editedIndex: null,
+    total_days: null,
+    total_days_with_text: null,
     editedItem: {
       id: null,
-      selectedLeaveType: 0,
-      total_days: 0,
-      start_date: 0,
-      end_date: 0
-    },
-    defaultItem: {
-      selectedLeaveType: 0,
-      total_days: 0,
-      start_date: 0,
-      end_date: 0
+      selectedLeaveType: null,
+      total_days: null,
+      start_date: null,
+      end_date: null
     },
     month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
     leaveType: [{value:1, name:'Sick Leave'}, 
@@ -273,6 +286,27 @@ export default {
     this.retrieve()
   },
   methods: {
+    changeDate(){
+      console.log(this.editedItem.start_date)
+      if(this.editedItem.start_date !== null && this.editedItem.start_date !== ''){
+        let start = moment(String(this.editedItem.start_date))
+        let end = moment(String(this.editedItem.end_date))
+        if(end >= start){
+          let diff = (end.diff(start))
+          let differenceInDay = ((((diff/1000)/60)/60)/24)
+          this.editedItem.total_days = differenceInDay
+          this.total_days_with_text = differenceInDay + ' days of leave'
+          this.error1 = false
+          this.error2 = false
+        }else{
+          this.error1 = true
+          this.error2 = true
+        }
+        this.disable = false
+      }else{
+        this.disable = true
+      }
+    },
     retrieve(){
       this.$axios.get("http://localhost:8000/leave_request/" + this.user_id).then(response => {
         this.request = response.data
@@ -287,48 +321,58 @@ export default {
       this.editedIndex = this.request.indexOf(item)
       this.editedItem.selectedLeaveType = item.leave_type_id
       this.editedItem.total_days = item.number_of_days
+      this.total_days_with_text = item.number_of_days + ' days of leave'
       this.editedItem.start_date = item.start_date
       this.editedItem.end_date = item.end_date
       this.dialog = true;
     },
     save() {
-      let params = {
-        id: this.editedItem.id,
-        leave_type_id: this.editedItem.selectedLeaveType,
-        number_of_days: this.editedItem.total_days,
-        start_date: this.editedItem.start_date,
-        end_date: this.editedItem.end_date,
-        prp_assigned_id: 1
+      if(this.editedItem.selectedLeaveType !== null && this.editedItem.total_days !== null
+      && this.editedItem.start_date !== null && this.editedItem.end_date !== null && this.editedItem.selectedLeaveType !== '' && this.editedItem.total_days !== ''
+      && this.editedItem.start_date !== '' && this.editedItem.end_date !== '' && this.error2 === false) {
+        let params = {
+          id: this.editedItem.id,
+          leave_type_id: this.editedItem.selectedLeaveType,
+          number_of_days: this.editedItem.total_days,
+          start_date: this.editedItem.start_date,
+          end_date: this.editedItem.end_date,
+          prp_assigned_id: 1
+        }
+        console.log('params', params, this.editedItem.id)      
+        this.$axios.post('http://localhost:8000/leave_request/' + this.editedItem.id, params).then(response=>{
+          this.retrieve()
+        })
+        this.dialog = false
+      }else{
+        this.error = true
       }
-      this.$axios.post('http://localhost:8000/leave_request/' + this.user_id, params).then(response=>{
-        this.retrieve()
-      })
-      this.dialog = false;
     },
     disabledDates(date) {
       return date >  new Date().toISOString().substr(0, 10)
     },
     disabledDates2(date) {
-      return date >  new Date(this.start_date).toISOString().substr(0, 10)
-      this.differenceDates()
+      return date >  new Date(this.editedItem.start_date).toISOString().substr(0, 10)
+      this.differenceDates();
     },
-    differenceDates() {
-      let start = moment(String(this.start_date))
-      let end = moment(String(this.end_date))
-      let diff = (end.diff(start))
-      let differenceInDay = ((((diff/1000)/60)/60)/24)
-      console.log('-----------mini',  differenceInDay)
-      this.differenceInDay = differenceInDay
-    },
+
+    // differenceDates() {
+    //   let start = moment(String(this.start_date))
+    //   let end = moment(String(this.end_date))
+    //   let diff = (end.diff(start))
+    //   let differenceInDay = ((((diff/1000)/60)/60)/24)
+    //   console.log('-----------diff',  differenceInDay)
+    //   this.differenceInDay = differenceInDay
+    // },
+
     deleteItem(item) {
-      this.editedIndex = this.request.indexOf(item);
+      this.id = item.id
       this.dialogDelete = true;
     },
     deleteItemConfirm() {
-      this.$axios.delete('http://localhost:8000/leave_request/' + this.user_id).then(response=>{
-        console.log('successfully deleted')
-        this.request.splice(this.editedIndex, 1);
-        this.dialogDelete = false;
+      this.$axios.delete('http://localhost:8000/leave_request/' + this.id).then(response=>{
+        console.log('Successfully deleted')
+        this.retrieve()
+        this.dialogDelete = false
       })
     },
     close(){

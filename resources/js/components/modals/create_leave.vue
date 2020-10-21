@@ -9,6 +9,7 @@
           dark
           v-bind="attrs"
           v-on="on"
+          @click="removeData()"
         >
           <v-icon>mdi-plus</v-icon>
           <v-toolbar-title style="font-size: 16px"
@@ -22,6 +23,7 @@
         </v-card-title>
         <v-card-text>
           <v-container>
+            <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
             <v-row>
               <v-col cols="12">
                 <v-select
@@ -35,7 +37,7 @@
               </v-col>
               <v-col cols="12" sm="4">
                 <v-menu
-                  :close-on-content-click="false"
+                  :close-on-content-click="true"
                   transition="scale-transition"
                   offset-y
                   min-width="290px"
@@ -56,12 +58,14 @@
                     no-title
                     scrollable
                     color="primary"
+                    @change="changeDate()"
                   ></v-date-picker>
                 </v-menu>
               </v-col>
               <v-col cols="12" sm="4">
+                <span v-if="error1" style="color: red; font-style: italic">End date must be higher than start date!</span>
                 <v-menu
-                  :close-on-content-click="false"
+                  :close-on-content-click="true"
                   transition="scale-transition"
                   offset-y
                   min-width="290px"
@@ -74,6 +78,7 @@
                       readonly
                       v-bind="attrs"
                       v-on="on"
+                      :disabled="disable"
                     ></v-text-field>
                   </template>
                   <v-date-picker
@@ -82,15 +87,16 @@
                     no-title
                     color="primary"
                     scrollable
+                    @change="changeDate()"
                   ></v-date-picker>
                 </v-menu>
               </v-col>
               <v-col cols="12" sm="4">
                 <v-text-field
                   label="Total Day/s of Leave*"
-                  type="number"
-                  v-model="number_of_leave"
-                  required
+                  type="text"
+                  v-model="total_days_with_text"
+                  disabled
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
@@ -102,9 +108,9 @@
                     'April Claire Chagas Podador',
                     'Nathaniel Cala Terdes',
                     'Carl Wyner Velasco Javier',
-                  ]"
+                  ]" 
                   label="PRP in Charge*"
-                  v-model="prp_assigned"
+                  v-model="prp_assigned_id"
                   @click="differenceDates()"
                   required
                 ></v-select>
@@ -115,7 +121,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="hideModal()">Close</v-btn>
-          <v-btn color="blue darken-1" text @click="dialog = false, createRequest()">Save</v-btn>
+          <v-btn color="blue darken-1" text @click="createRequest()">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -126,7 +132,10 @@ import moment from "moment";
 export default {
   data() {
     return {
-      selectedLeaveType: null, 
+      selectedLeaveType: null,
+      error: false,
+      error1: false,
+      disable: true,
       leaveType: [{value:1, name:'Sick Leave'}, 
       {value: 2, name:'Solo Parent Leave'}, 
       {value: 3, name:'Vacation Leave'}, 
@@ -136,10 +145,11 @@ export default {
       dialog: false,
       request: [],
       reason: null,
-      number_of_leave: null,
+      total_days: null,
+      total_days_with_text: null,
       start_date: null,
       end_date: null,
-      prp_assigned: null,
+      prp_assigned_id: null,
       differenceInDay: null,
       user_id: localStorage.getItem("id")
     }
@@ -148,6 +158,25 @@ export default {
     this.retrieve()
   },
   methods: {
+    changeDate(){
+      console.log('gawas')
+      if(this.start_date !== null && this.start_date !== ''){
+        let start = moment(String(this.start_date))
+        let end = moment(String(this.end_date))
+        if(end >= start){
+          let diff = (end.diff(start))
+          let differenceInDay = ((((diff/1000)/60)/60)/24)
+          this.total_days = differenceInDay
+          this.total_days_with_text = differenceInDay + ' days of leave'
+          this.error1 = false
+        }else{
+          this.error1 = true
+        }
+        this.disable = false
+      }else{
+        this.disable = true
+      }
+    },
     hideModal(){
       this.dialog = false
     },
@@ -168,30 +197,38 @@ export default {
     },
     retrieve(){
       this.$axios.get("http://localhost:8000/leave_request/" + this.user_id).then(response => {
+        console.log(response.data);
       })
       .catch(e => {
         console.log(e);
       })
     },
     createRequest(){
+      if(this.selectedLeaveType !== null && this.total_days !== null
+      && this.start_date !== null && this.end_date !== null) {
       let params = {
         user_id: this.user_id,
         leave_type_id: this.selectedLeaveType,
         start_date: this.start_date,
         end_date: this.end_date,
-        number_of_days: this.number_of_leave,
+        number_of_days: this.total_days,
         prp_assigned_id: 1
       }
       this.$axios.post("http://localhost:8000/leave_request", params).then(res =>{
         console.log('Successfully Added')
         this.retrieve()
-        // this.$axios.get("http://localhost:8000/leave_request/" + this.user_id).then(response => {
-        //   console.log('hi', response.data)
-        // })
-        // .catch(e => {
-        //   console.log(e);
-        // })
+        this.dialog = false
       })
+    }else {
+      this.error = true
+      this.dialog = true
+      }
+    },
+    removeData(){
+      this.selectedLeaveType = null,
+      this.total_days = null,
+      this.start_date = null,
+      this.end_date = null
     }
   }
 }
