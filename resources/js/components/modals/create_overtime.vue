@@ -22,7 +22,7 @@
           <v-container>
             <v-row>
               <v-col cols="12">
-                <v-text-field label="Reason*" required></v-text-field>
+                <v-text-field label="Reason*" v-model="reason" required></v-text-field>
               </v-col>
               <v-col cols="12" sm="4">
                 <v-menu
@@ -33,7 +33,7 @@
                 >
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
-                      v-model="date"
+                      v-model="overtime_date"
                       label="Date"
                       prepend-icon="mdi-calendar"
                       readonly
@@ -42,7 +42,7 @@
                     ></v-text-field>
                   </template>
                   <v-date-picker
-                    v-model="date"
+                    v-model="overtime_date"
                     :allowed-dates="disabledDates"
                     no-title
                     scrollable
@@ -53,6 +53,7 @@
               <v-col cols="12" sm="4">
                 <v-text-field
                   label="Start Time*"
+                  v-model="start_time"
                   type="time"
                   required
                 ></v-text-field>
@@ -60,6 +61,7 @@
               <v-col cols="12" sm="4">
                 <v-text-field
                   label="End Time*"
+                  v-model="end_time"
                   type="time"
                   required
                 ></v-text-field>
@@ -104,11 +106,38 @@
 export default {
   data: () => ({
     dialog: false,
+    overtime_date: null,
+    start_time: null,
+    end_time: null,
+    prp_assigned_id: null,
+    reason: null,
+    user_id: localStorage.getItem("id")
   }),
   methods: {
     disabledDates(date) {
       return date > new Date().toISOString().substr(0, 10);
     },
-  },
-};
+    createShift(){
+      let parameter = {
+        user_id: this.user_id,
+        date: this.overtime_date,
+        start_time: this.start_time,
+        end_time: this.end_time,
+        reason: this.reason,
+        prp_assigned_id: 1
+      }
+      this.$axios.post("http://localhost:8000/overtime_request", parameter).then(res =>{
+        console.log('Successfully Added', res.data)
+        this.retrieve()
+      })
+    },
+    retrieve(){
+      this.$axios.post("http://localhost:8000/overtime_request/" + this.user_id).then(response =>{
+      })
+      .catch(e => {
+        console.log(e);
+      })
+    }
+  }
+}
 </script>
