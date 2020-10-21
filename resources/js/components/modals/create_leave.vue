@@ -214,8 +214,9 @@ export default {
         number_of_days: this.total_days,
         prp_assigned_id: 1
       }
+      console.log('asdf', params)
       this.$axios.post("http://localhost:8000/leave_request", params).then(res =>{
-        console.log('Successfully Added')
+        console.log('Successfully Added', res.data)
         this.retrieve()
         this.dialog = false
       })
