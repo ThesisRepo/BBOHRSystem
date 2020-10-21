@@ -12,7 +12,7 @@ class OvertimeRequestController extends RequestBaseController
     protected $overtime_request;
 
     public function __construct(
-        ShiftChangeRequestEloquent $overtime_request,
+        OvertimeRequestEloquent $overtime_request,
         RoleEloquent $role,
         UserEloquent $user
     ) {
@@ -28,7 +28,6 @@ class OvertimeRequestController extends RequestBaseController
     }
     
     public function store(Request $request) {
-
         $prp_assigned_id = $request->prp_assigned_id;
         $requestData = [
             'user_id'=> $request->user_id,
