@@ -92,6 +92,12 @@ Route::get('departments','DepartmentController@index')->name('departments.retrie
 
 // -- PETTY CASH REQUEST
 
+// prp_assigned_id:5,
+// user_id:4,
+// description_need:'hdfddaman',
+// date: '2020-10-10',
+// total_amount: '10000'
+
 // add petty cash request
 Route::post('petty_cash_request','Requests\PettyCashRequestController@store')->name('petty_cash_request.store');
 
@@ -106,6 +112,13 @@ Route::delete('petty_cash_request/{id}','Requests\PettyCashRequestController@del
 
 
 // -- BUDGET REQUEST
+
+// prp_assigned_id:5,
+// user_id:4,
+// description_need:'hdfddaman',
+// date: '2020-10-10',
+// total_amount: '10000',
+// details: 'what are you talking aoub'
 
 // add budget request
 Route::post('budget_request','Requests\BudgetRequestController@store')->name('budget_request.store');
