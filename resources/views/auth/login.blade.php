@@ -6,7 +6,7 @@
         <div class="col-md-8">
             <div class="card" >
                 <a href="https://locahost:8000">
-                    <img src="http://localhost:8000/img/logoCircle.png" width="100"  alt="logo">
+                    <img src="http://localhost:8000/img/logoCircle.png" width="100" alt="logo">
                 </a>
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
@@ -44,33 +44,32 @@
                         </div>
                         <div class="form-row">
                             <div class="col-md-10 col-3 mx-auto">
-                                <button type="submit" class="btn btn-primary mb-2">
+                                <button type="submit" class="btn btn-primary btn-block">
                                     {{ __('Login') }}
                                 </button>
                             </div>
                         </div>
 
-                        <div class="form-row">  
-                            <div class="col-md-6">
-                                <div class="form-check">
-                                    <div class="col-xs-8 col-sm-4 mx-auto">
-                                        <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="remember">
-                                            {{ __('Remember Me') }}
-                                        </label>
+                        <div class="form-row" id="form ">
+                            <div class="col-md-10 col-3 mx-auto"> 
+                                <div class="form-check" >
+                                    <!-- <div class="col-md-12 bg-light text-left"> -->
+                                    <div class="left" >
+                                            <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="remember">
+                                                {{ __('Remember Me') }}
+                                            </label>
                                     </div>
                                 </div>
-                                <div class="col text-right">
+                                <div class="right">
                                     @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="/forget-password">
-                                        Forgot Your Password?
-                                    </a>
+                                        <a class="btn btn-link" href="/forget-password">
+                                            Forgot Your Password ?
+                                        </a>
                                     @endif
                                 </div>
                             </div>
                         </div>
-
-                        
                     </form>
                 </div>      
             </div>
