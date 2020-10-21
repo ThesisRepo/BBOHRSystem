@@ -23,7 +23,7 @@
         </v-card-title>
         <v-card-text>
           <v-container>
-            <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
+            <span v-if="error" style="color: red; font-style: normal">All data are required!</span>
             <v-row>
               <v-col cols="12">
                 <v-select
