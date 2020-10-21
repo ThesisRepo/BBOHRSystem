@@ -24,6 +24,7 @@
               <v-col cols="12">
                 <v-text-field
                   label="Description of Need*"
+                  v-model="description_need"
                   required
                 ></v-text-field>
               </v-col>
@@ -55,8 +56,11 @@
               </v-col>
               <v-col cols="12" sm="4">
                 <v-select
-                  :items="['Accounting', 'CS', 'Marketing', 'Mobile', 'PHP']"
+                  :items="departments"
                   label="Department*"
+                  v-model="department"
+                  item-text="name"
+                  item-value="value"
                   required
                 ></v-select>
               </v-col>
@@ -67,11 +71,27 @@
                   required
                 ></v-text-field>
               </v-col>
-              <!-- <v-col cols="12">
+              <v-col cols="12" sm="4">
                 <v-text-field
-                  label="Status"
+                  label="Details*"
+                  v-model="details"
+                  required
                 ></v-text-field>
-              </v-col> -->
+              </v-col>
+             <v-col cols="12">
+                <v-select
+                :items="[
+                  'Jocel Redotco Mendoza',
+                  'Fenella Corinne Real Rosales',
+                  'Cielo Fe Sasing',
+                  'April Claire Chagas Podador',
+                  'Nathaniel Cala Terdes',
+                  'Carl Wyner Velasco Javier',
+                ]"
+                label="PRP in Charge*"
+                required
+              ></v-select>
+              </v-col>
             </v-row>
           </v-container>
           <small>*indicates required field</small>
@@ -93,11 +113,44 @@
 export default {
   data: () => ({
     dialog: false,
+    departments: [{value:1, name:'Marketing'}, 
+      {value: 2, name:'CS'}, 
+      {value: 3, name:'Apps'}, 
+      {value: 4, name:'PHP'}, 
+      {value: 5, name:'Accounting'},
+      {value: 6, name:'Admin'}],
+      date: null,
+      details: null,
+      department: null,
+      description_need: null,
+      total_amount: null
   }),
   methods: {
     disabledDates(date) {
       return date > new Date().toISOString().substr(0, 10);
     },
-  },
-};
+    createPetty(){
+      let parameter = {
+        user_id: this.user_id,
+        date: this.date,
+        description_need: this.description_need,
+        details: this.details,
+        department_id: this.department,
+        total_amount: this.total_amount,
+        prp_assigned_id: 1
+      }
+      this.$axios.post("http://localhost:8000/petty_cash_request", parameter).then(res =>{
+        console.log('Successfully Added', res.data)
+        this.retrieve()
+      })
+    },
+    retrieve(){
+      this.$axios.post("http://localhost:8000/petty_cash_request/" + this.user_id).then(response =>{
+      })
+      .catch(e => {
+        console.log(e);
+      })
+    }
+  }
+}
 </script>
