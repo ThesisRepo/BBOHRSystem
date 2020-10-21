@@ -28,7 +28,6 @@ class OvertimeRequestController extends RequestBaseController
     }
     
     public function store(Request $request) {
-
         $prp_assigned_id = $request->prp_assigned_id;
         $requestData = [
             'user_id'=> $request->user_id,
