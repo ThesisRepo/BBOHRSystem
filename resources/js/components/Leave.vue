@@ -114,11 +114,12 @@
                 <v-text-field
                   label="Total Day/s of Leave*"
                   type="text"
-                  v-model="total_days"
+                  v-model="total_days_with_text"
                   disabled
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
+                <span v-if="error2" style="color: red; font-style: italic">Start date must not be higher than End date!</span>
                 <v-menu
                   :close-on-content-click="true"
                   transition="scale-transition"
@@ -136,7 +137,7 @@
                     ></v-text-field>
                   </template>
                   <v-date-picker
-                    v-model="start_date"
+                    v-model="editedItem.start_date"
                     :allowed-dates="disabledDates"
                     no-title
                     scrollable
@@ -165,7 +166,7 @@
                     ></v-text-field>
                   </template>
                   <v-date-picker
-                    v-model="end_date"
+                    v-model="editedItem.end_date"
                     :allowed-dates="disabledDates2"
                     no-title
                     scrollable
@@ -229,6 +230,7 @@
 </template>
 <script>
 import createLeave from "./modals/create_leave.vue";
+import moment from "moment";
 export default {
   data: () => ({
     user_type: localStorage.getItem("user_type"),
@@ -238,10 +240,11 @@ export default {
     dialog: false,
     error: false,
     error1: false,
-    disable: true,
+    error2: false,
+    disable: false,
+    end_date: null,
     dialogDelete: false,
     start_date: null,
-    error: false,
     search: null,
     headers: [
       {
@@ -260,6 +263,7 @@ export default {
     request: [],
     editedIndex: null,
     total_days: null,
+    total_days_with_text: null,
     editedItem: {
       id: null,
       selectedLeaveType: null,
@@ -283,18 +287,20 @@ export default {
   },
   methods: {
     changeDate(){
-      console.log('gawas')
-      if(this.start_date !== null && this.start_date !== ''){
-        let start = moment(String(this.start_date))
-        let end = moment(String(this.end_date))
+      console.log(this.editedItem.start_date)
+      if(this.editedItem.start_date !== null && this.editedItem.start_date !== ''){
+        let start = moment(String(this.editedItem.start_date))
+        let end = moment(String(this.editedItem.end_date))
         if(end >= start){
           let diff = (end.diff(start))
           let differenceInDay = ((((diff/1000)/60)/60)/24)
-          this.total_days = differenceInDay
+          this.editedItem.total_days = differenceInDay
           this.total_days_with_text = differenceInDay + ' days of leave'
           this.error1 = false
+          this.error2 = false
         }else{
           this.error1 = true
+          this.error2 = true
         }
         this.disable = false
       }else{
@@ -316,6 +322,7 @@ export default {
       this.editedIndex = this.request.indexOf(item)
       this.editedItem.selectedLeaveType = item.leave_type_id
       this.editedItem.total_days = item.number_of_days
+      this.total_days_with_text = item.number_of_days + ' days of leave'
       this.editedItem.start_date = item.start_date
       this.editedItem.end_date = item.end_date
       this.dialog = true;
@@ -324,7 +331,7 @@ export default {
     save() {
       if(this.editedItem.selectedLeaveType !== null && this.editedItem.total_days !== null
       && this.editedItem.start_date !== null && this.editedItem.end_date !== null && this.editedItem.selectedLeaveType !== '' && this.editedItem.total_days !== ''
-      && this.editedItem.start_date !== '' && this.editedItem.end_date !== '') {
+      && this.editedItem.start_date !== '' && this.editedItem.end_date !== '' && this.error2 === false) {
         let params = {
           id: this.editedItem.id,
           leave_type_id: this.editedItem.selectedLeaveType,
@@ -348,7 +355,7 @@ export default {
     },
 
     disabledDates2(date) {
-      return date >  new Date(this.start_date).toISOString().substr(0, 10)
+      return date >  new Date(this.editedItem.start_date).toISOString().substr(0, 10)
       this.differenceDates();
     },
 

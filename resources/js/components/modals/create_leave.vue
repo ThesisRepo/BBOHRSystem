@@ -132,7 +132,7 @@ import moment from "moment";
 export default {
   data() {
     return {
-      selectedLeaveType: null, 
+      selectedLeaveType: null,
       error: false,
       error1: false,
       disable: true,
