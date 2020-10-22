@@ -22,6 +22,7 @@
         </v-card-title>
         <v-card-text>
           <v-container>
+            <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
             <v-row>
               <v-col cols="12">
                 <v-text-field label="Reason*" v-model="reason" required></v-text-field>
@@ -97,11 +98,12 @@
 export default {
   data: () => ({
     dialog: false,
+    error: false,
     shift_date: null,
     shift_time: null,
-    shiftTime: [{value:1, time:'8 - 5pm'}, 
-    {value: 2, time:'9 - 6pm'}, 
-    {value: 3, time:'2 - 11pm'}],
+    shiftTime: [{value:1, time:'8am-5pm'}, 
+    {value: 2, time:'9am-6pm'}, 
+    {value: 3, time:'2pm-11pm'}],
     prp_assigned_id: null,
     reason: null,
     user_id: localStorage.getItem("id")
@@ -110,18 +112,27 @@ export default {
     disabledDates(date) {
       return date > new Date().toISOString().substr(0, 10);
     },
+    hideModal(){
+      this.dialog = false
+    },
     createShift(){
-      let parameter = {
-        user_id: this.user_id,
-        shift_date: this.shift_date,
-        shift_time: this.shift_time,
-        reason: this.reason,
-        prp_assigned_id: 1
+      if(this.shift_date !== null && this.shift_time !== null && this.reason !== null && this.reason !== ''){
+        let parameter = {
+          user_id: this.user_id,
+          shift_date: this.shift_date,
+          shift_time: this.shift_time,
+          reason: this.reason,
+          prp_assigned_id: 1
+        }
+        this.$axios.post("http://localhost:8000/shift_change_request", parameter).then(res =>{
+          console.log('Successfully Added', res.data)
+          this.retrieve()
+          this.dialog = false
+        })
+      }else{
+        this.error = true
+        this.dialog = true
       }
-      this.$axios.post("http://localhost:8000/shift_change_request", parameter).then(res =>{
-        console.log('Successfully Added', res.data)
-        this.retrieve()
-      })
     },
     retrieve(){
       this.$axios.post("http://localhost:8000/shift_change_request/" + this.user_id).then(response =>{

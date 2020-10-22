@@ -125,6 +125,7 @@
         </v-card-title>
         <v-card-text>
           <v-container>
+            <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
             <v-row>
               <v-col cols="12" sm="6" md="12">
                 <v-text-field
@@ -260,6 +261,7 @@ export default {
     dialog: false,
     dialogDelete: false,
     search: null,
+    error: false,
     shift_date: null,
     reason: null,
     shift_time: null,
@@ -270,9 +272,9 @@ export default {
         value: "reason",
       },
       { text: "SHIFT DATE", value: "shift_date" },
-      { text: "SHIFT TIME", value: "shift_time_id" },
+      { text: "SHIFT TIME", value: "shift_times.shift_time_name" },
       { text: "APPROVER", value: "approver_role.role_name"},
-      { text: "STATUS", value: "status_id" },
+      { text: "STATUS", value: "status.status_name" },
       { text: "ACTIONS", value: "actions", sortable: false },
     ],
     shifts: [],
@@ -318,18 +320,23 @@ export default {
     },
 
     save() {
-      let params = {
-        id: this.editedItem.id,
-        shift_time: this.editedItem.shift_time,
-        shift_date: this.editedItem.shift_date,
-        reason: this.editedItem.reason,
-        prp_assigned_id: 1
+      if(this.editedItem.shift_time !== null && this.editedItem.shift_time !== '' && this.editedItem.shift_date !== null && this.shift_date !== '' &&
+      this.editedItem.reason !== null && this.editedItem.reason !== ''){
+        let params = {
+          id: this.editedItem.id,
+          shift_time: this.editedItem.shift_time,
+          shift_date: this.editedItem.shift_date,
+          reason: this.editedItem.reason,
+          prp_assigned_id: 1
+        }
+        console.log('params', params, this.editedItem.id)      
+        this.$axios.post('http://localhost:8000/shift_change_request/' + this.editedItem.id, params).then(response=>{
+          this.retrieve()
+        })
+        this.dialog = false;
+      }else{
+        this.error = true;
       }
-      console.log('params', params, this.editedItem.id)      
-      this.$axios.post('http://localhost:8000/shift_change_request/' + this.editedItem.id, params).then(response=>{
-        this.retrieve()
-      })
-      this.dialog = false;
     },
 
     deleteItem(item) {
