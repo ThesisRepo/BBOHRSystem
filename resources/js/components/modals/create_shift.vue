@@ -9,6 +9,7 @@
           dark
           v-bind="attrs"
           v-on="on"
+          @click="removeData()"
         >
           <v-icon>mdi-plus</v-icon>
           <v-toolbar-title style="font-size: 16px"
@@ -22,13 +23,14 @@
         </v-card-title>
         <v-card-text>
           <v-container>
+            <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
             <v-row>
               <v-col cols="12">
                 <v-text-field label="Reason*" v-model="reason" required></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
                 <v-menu
-                  :close-on-content-click="false"
+                  :close-on-content-click="true"
                   transition="scale-transition"
                   offset-y
                   min-width="290px"
@@ -55,10 +57,10 @@
               </v-col>
               <v-col cols="12" sm="6">
                 <v-select
-                  :items="shiftTime"
+                  :items="this.sTime"
                   label="Shift Time*"
-                  item-text="time"
-                  item-value="value"
+                  item-text="shift_time_name"
+                  item-value="id"
                   v-model="shift_time"
                   required
                 ></v-select>
@@ -96,38 +98,62 @@
 export default {
   data: () => ({
     dialog: false,
+    error: false,
+    sTime: null,
     shift_date: null,
-    shift_time: null, 
-    shiftTime: [{value:1, time:'8 - 5pm'}, 
-    {value: 2, time:'9 - 6pm'}, 
-    {value: 3, time:'2 - 11pm'}],
+    shift_time: null,
+    shiftTime: [{value:1, time:'8am-5pm'}, 
+    {value: 2, time:'9am-6pm'}, 
+    {value: 3, time:'2pm-11pm'}],
     prp_assigned_id: null,
     reason: null,
     user_id: localStorage.getItem("id")
   }),
+  mounted(){
+    this.getShift()
+  },
   methods: {
     disabledDates(date) {
       return date > new Date().toISOString().substr(0, 10);
     },
+    hideModal(){
+      this.dialog = false
+    },
     createShift(){
-      let parameter = {
-        user_id: this.user_id,
-        shift_date: this.shift_date,
-        shift_time_id: this.shift_time,
-        reason: this.reason,
-        prp_assigned_id: 1
+      if(this.shift_date !== null && this.shift_time !== null && this.reason !== null && this.reason !== ''){
+        let parameter = {
+          user_id: this.user_id,
+          shift_date: this.shift_date,
+          shift_time_id: this.shift_time,
+          reason: this.reason,
+          prp_assigned_id: 1
+        }
+        console.log(parameter)
+        this.$axios.post("http://localhost:8000/shift_change_request", parameter).then(res =>{
+          console.log('Successfully Added', res.data)
+          this.$axios.post("http://localhost:8000/shift_change_request/" + this.user_id).then(response =>{
+            console.log('retrieve', response)
+          })
+          .catch(e => {
+            console.log(e);
+          })
+          this.dialog = false
+        })
+      }else{
+        this.error = true
+        this.dialog = true
       }
-      this.$axios.post("http://localhost:8000/shift_change_request", parameter).then(res =>{
-        console.log('Successfully Added', res.data)
-        this.retrieve()
+    },
+    getShift(){
+      this.$axios.get("http://localhost:8000/shift_time").then(response => {
+        console.log('hi', response)
+        this.sTime = response.data
       })
     },
-    retrieve(){
-      this.$axios.post("http://localhost:8000/shift_change_request/" + this.user_id).then(response =>{
-      })
-      .catch(e => {
-        console.log(e);
-      })
+    removeData(){
+      this.reason = null,
+      this.shift_time = null,
+      this.shift_date = null
     }
   }
 }
