@@ -193,20 +193,16 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
     <!-- DeleteModal -->
     <v-dialog v-model="dialogDelete" max-width="500px">
       <v-card>
         <v-card-title class="headline"
-          >Are you sure you want to delete this item?</v-card-title
-        >
+          >Are you sure you want to delete this item?</v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="closeDelete"
-            >Cancel</v-btn
-          >
-          <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-            >OK</v-btn
-          >
+          <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
+          <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -271,7 +267,6 @@ export default {
       {
         text: "REASON",
         align: "start",
-        sortable: false,
         value: "reason",
       },
       { text: "SHIFT DATE", value: "shift_date" },
@@ -283,14 +278,9 @@ export default {
     shifts: [],
     editedIndex: null,
     editedItem: {
-      reason: "",
-      shift_date: 0,
-      shift_time: 0
-    },
-    defaultItem: {
-      reason: "",
-      shift_date: 0,
-      shift_time: 0
+      reason: null,
+      shift_date: null,
+      shift_time: null
     },
     start_date: null,
     month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
@@ -321,16 +311,18 @@ export default {
     editItem(item) {
       this.editedItem.id = item.id
       this.editedIndex = this.shifts.indexOf(item)
-      this.editedItem.shift_time = item.shift_time_id
+      this.editedItem.shift_time = item.shift_time
       this.editedItem.shift_date = item.shift_date
+      this.editedItem.reason = item.reason
       this.dialog = true;
     },
 
     save() {
       let params = {
         id: this.editedItem.id,
-        shift_time_id: this.editedItem.shift_time,
+        shift_time: this.editedItem.shift_time,
         shift_date: this.editedItem.shift_date,
+        reason: this.editedItem.reason,
         prp_assigned_id: 1
       }
       console.log('params', params, this.editedItem.id)      

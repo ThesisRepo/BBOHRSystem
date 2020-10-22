@@ -54,6 +54,7 @@
                 </v-menu>
               </v-col>
               <v-col cols="12" sm="6">
+                <!-- <v-text-field label="Shift Time*" v-model="shift_time" required></v-text-field> -->
                 <v-select
                   :items="shiftTime"
                   label="Shift Time*"
@@ -97,7 +98,7 @@ export default {
   data: () => ({
     dialog: false,
     shift_date: null,
-    shift_time: null, 
+    shift_time: null,
     shiftTime: [{value:1, time:'8 - 5pm'}, 
     {value: 2, time:'9 - 6pm'}, 
     {value: 3, time:'2 - 11pm'}],
@@ -113,7 +114,7 @@ export default {
       let parameter = {
         user_id: this.user_id,
         shift_date: this.shift_date,
-        shift_time_id: this.shift_time,
+        shift_time: this.shift_time,
         reason: this.reason,
         prp_assigned_id: 1
       }
