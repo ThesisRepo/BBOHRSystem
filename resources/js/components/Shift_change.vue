@@ -162,11 +162,11 @@
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-select
-                  :items="shiftTime"
+                  :items="this.sTime"
                   label="Shift Time*"
-                  item-text="time"
-                  item-value="value"
-                  v-model="shift_time"
+                  item-text="shift_time_name"
+                  item-value="id"
+                  v-model="editedItem.shift_time"
                   required
                 ></v-select>
               </v-col>
@@ -261,6 +261,7 @@ export default {
     dialog: false,
     dialogDelete: false,
     search: null,
+    sTime: null,
     error: false,
     shift_date: null,
     reason: null,
@@ -272,7 +273,7 @@ export default {
         value: "reason",
       },
       { text: "SHIFT DATE", value: "shift_date" },
-      { text: "SHIFT TIME", value: "shift_times.shift_time_name" },
+      { text: "SHIFT TIME", value: "shift_time.shift_time_name" },
       { text: "APPROVER", value: "approver_role.role_name"},
       { text: "STATUS", value: "status.status_name" },
       { text: "ACTIONS", value: "actions", sortable: false },
@@ -295,6 +296,7 @@ export default {
   },
   mounted() {
     this.retrieve()
+    this.getShift()
   },
   methods: {
     disabledDates(date) {
@@ -356,6 +358,12 @@ export default {
     },
     closeDelete(){
       this.dialogDelete = false
+    },
+    getShift(){
+      this.$axios.get("http://localhost:8000/shift_time").then(response => {
+        console.log('hi', response)
+        this.sTime = response.data
+      })
     }
   }
 }
