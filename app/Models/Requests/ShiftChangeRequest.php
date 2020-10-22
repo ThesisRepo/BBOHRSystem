@@ -11,7 +11,7 @@ class ShiftChangeRequest extends Model
         'department_id',
         'reason',
         'shift_date',
-        'shift_time',
+        'shift_time_id',
         'approver_role_id',
         'status_id'
     ];
@@ -33,5 +33,9 @@ class ShiftChangeRequest extends Model
     }
     public function approver_role() {
         return $this->belongsTo(\App\Models\Role::class);
+    }
+
+    public function shift_time() {
+        return $this->belongsTo(\App\Models\ShiftTime::class);
     }
 }
