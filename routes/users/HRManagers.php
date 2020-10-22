@@ -1,3 +1,3 @@
 <?php
 
-Route::post('user_info','UserInformationController@store')->name('user_info.store');
+Route::post('hr/user_info','UserInformationController@store')->name('user_info.store');
