@@ -24,7 +24,7 @@ class ShiftChangeRequestController extends RequestBaseController
     }
 
     public function show( $id) {
-        return $this->showRequest('user_id', $id, ['approver_role', 'status']);
+        return $this->showRequest('user_id', $id, ['approver_role', 'status', 'shift_time']);
     }
     
     public function store(Request $request) {
@@ -40,11 +40,10 @@ class ShiftChangeRequestController extends RequestBaseController
             'department_id'=> $this->getDepartmentId($request->user_id),
             'reason'=> $request->reason,
             'shift_date'=> $request->shift_date,
-            'shift_time'=> $request->shift_time,
+            'shift_time_id'=> $request->shift_time_id,
             'approver_role_id'=> $this->nextApproverId($request->user_id ),
             'status_id'=> 1
         ];
-
         return $this->storeRequest($requestData, $prp_assigned_id);
     }
     
@@ -62,7 +61,7 @@ class ShiftChangeRequestController extends RequestBaseController
             'department_id'=> $this->getDepartmentId($user_id),
             'reason'=> $request->reason,
             'shift_date'=> $request->shift_date,
-            'shift_time'=> $request->shift_time,
+            'shift_time_id'=> $request->shift_time_id,
         ];
 
         return $this->updateRequest($current_shift_change_request, $requestData, $id, $prp_assigned_id);
@@ -76,13 +75,11 @@ class ShiftChangeRequestController extends RequestBaseController
     }
 
     public function isEqualShiftTime($data) {
-
         $shift_time = $this->user->findWith($data->user_id, 'userInformation.shift_time')->userInformation->shift_time;
 
         if(!$shift_time) {
             return false;
         }
-
         return $shift_time->shift_time_name == $data-> $shift_time;
 
     }

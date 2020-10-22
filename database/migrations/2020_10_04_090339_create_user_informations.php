@@ -20,7 +20,7 @@ class CreateUserInformations extends Migration
             $table->unsignedBigInteger('shift_time_id')->nullable();
             $table->string('gender')->nullable();
             $table->string('company_number')->nullable();
-            $table->string('profile_url', 80);  
+            $table->string('profile_url', 80)->nullable();  
             $table->string('company_position')->nullable();
             $table->date('date_hired')->nullable();
             $table->string('contact_number')->nullable();

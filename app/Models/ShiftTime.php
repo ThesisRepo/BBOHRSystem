@@ -13,4 +13,8 @@ class ShiftTime extends Model
     public function user_informations() {
         return $this->hasMany(UserInformation::class);
     }
+
+    public function shift_change_request() {
+        return $this->hasMany(ShiftChangeRequest::class);
+    }
 }
