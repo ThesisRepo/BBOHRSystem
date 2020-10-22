@@ -9,6 +9,7 @@
           dark
           v-bind="attrs"
           v-on="on"
+          @click="removeData()"
         >
           <v-icon>mdi-plus</v-icon>
           <v-toolbar-title style="font-size: 16px">Make Request</v-toolbar-title>
@@ -20,6 +21,7 @@
         </v-card-title>
         <v-card-text>
           <v-container>
+            <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
             <v-row>
               <v-col cols="12">
                 <v-text-field
@@ -113,36 +115,44 @@
 export default {
   data: () => ({
     dialog: false,
-    departments: [{value:1, name:'Marketing'}, 
-      {value: 2, name:'CS'}, 
-      {value: 3, name:'Apps'}, 
-      {value: 4, name:'PHP'}, 
-      {value: 5, name:'Accounting'},
-      {value: 6, name:'Admin'}],
-      date: null,
-      details: null,
-      department: null,
-      description_need: null,
-      total_amount: null
+    error: false,
+    departments: [{value:1, name:this.user_department}],
+    date: null,
+    details: null,
+    department: null,
+    description_need: null,
+    total_amount: null,
+    user_department: localStorage.getItem("user_department"),
+    user_id: localStorage.getItem("id")
   }),
+  mounted(){
+  },
   methods: {
     disabledDates(date) {
       return date > new Date().toISOString().substr(0, 10);
     },
     createPetty(){
-      let parameter = {
-        user_id: this.user_id,
-        date: this.date,
-        description_need: this.description_need,
-        details: this.details,
-        department_id: this.department,
-        total_amount: this.total_amount,
-        prp_assigned_id: 1
+      if(this.date !== null && this.description_need !== null && this.details !== null && this.department !== null &&
+      this.total_amount !== null && this.date !== '' && this.description_need !== '' && this.details !== '' && this.department !== '' &&
+      this.total_amount !== ''){
+        let parameter = {
+          user_id: this.user_id,
+          date: this.date,
+          description_need: this.description_need,
+          details: this.details,
+          department_id: this.department,
+          total_amount: this.total_amount,
+          prp_assigned_id: 1
+        }
+        this.$axios.post("http://localhost:8000/petty_cash_request", parameter).then(res =>{
+          console.log('Successfully Added', res.data)
+          this.retrieve()
+        })
+        this.dialog = false
+      }else{
+        this.error = true
+        this.dialog = true
       }
-      this.$axios.post("http://localhost:8000/petty_cash_request", parameter).then(res =>{
-        console.log('Successfully Added', res.data)
-        this.retrieve()
-      })
     },
     retrieve(){
       this.$axios.post("http://localhost:8000/petty_cash_request/" + this.user_id).then(response =>{
@@ -150,6 +160,11 @@ export default {
       .catch(e => {
         console.log(e);
       })
+    },
+    removeData(){
+      this.reason = null,
+      this.shift_time = null,
+      this.shift_date = null
     }
   }
 }

@@ -50,7 +50,8 @@ export default {
                 roleList.push(element.role_name)
                 // element.role_name
             });
-            console.log(this.user.roles)
+            console.log(this.user)
+            localStorage.setItem('department_name', this.user.user_information.department.department_name)
             localStorage.setItem('user_type', roleList)
             localStorage.setItem('id', this.user.id)
             localStorage.setItem('user_name', this.user.first_name + " " + this.user.last_name)
