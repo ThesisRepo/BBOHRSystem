@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Models\ShiftTime;
+use App\Models\Requests\ShiftTime;
 
 class ShiftTimeSeeder extends Seeder
 {

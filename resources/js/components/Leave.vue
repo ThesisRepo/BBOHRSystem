@@ -250,18 +250,18 @@ export default {
       {
         text: "TYPE OF LEAVE",
         align: "start",
-        sortable: false,
-        value: "leave_type.leave_name"
+        value: "leave_type.leave_type_name"
       },
       { text: "TOTAL DAY/S LEAVE", value: "number_of_days" },
       { text: "START DATE", value: "start_date" },
       { text: "END DATE", value: "end_date" },
       { text: "APPROVER", value: "approver_role.role_name" },
-      { text: "STATUS", value: "status_id" },
+      { text: "STATUS", value: "status.status_name" },
       { text: "ACTIONS", value: "actions", sortable: false }
     ],
     request: [],
     editedIndex: null,
+    prp: null,
     total_days: null,
     total_days_with_text: null,
     editedItem: {
@@ -306,6 +306,12 @@ export default {
       }else{
         this.disable = true
       }
+    },
+    getAllPrp(){
+      this.$axios.get("http://localhost:8000/prp").then(response => {
+        this.prp = response.data
+        console.log(this.prp)
+      })
     },
     retrieve(){
       this.$axios.get("http://localhost:8000/leave_request/" + this.user_id).then(response => {

@@ -36,6 +36,6 @@ class ShiftChangeRequest extends Model
     }
 
     public function shift_time() {
-        return $this->belongsTo(\App\Models\ShiftTime::class);
+        return $this->belongsTo(\App\Models\Requests\ShiftTime::class);
     }
 }
