@@ -30,9 +30,9 @@
                   required
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" sm="4">
+              <v-col cols="12" sm="6">
                 <v-menu
-                  :close-on-content-click="false"
+                  :close-on-content-click="true"
                   transition="scale-transition"
                   offset-y
                   min-width="290px"
@@ -56,27 +56,11 @@
                   ></v-date-picker>
                 </v-menu>
               </v-col>
-              <v-col cols="12" sm="4">
-                <v-select
-                  :items="departments"
-                  label="Department*"
-                  v-model="department"
-                  item-text="name"
-                  item-value="value"
-                  required
-                ></v-select>
-              </v-col>
-              <v-col cols="12" sm="4">
+              <v-col cols="12" sm="6">
                 <v-text-field
                   label="Total Amount*"
                   type="number"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="4">
-                <v-text-field
-                  label="Details*"
-                  v-model="details"
+                  v-model="total_amount"
                   required
                 ></v-text-field>
               </v-col>
@@ -91,6 +75,7 @@
                   'Carl Wyner Velasco Javier',
                 ]"
                 label="PRP in Charge*"
+                v-model="prp_assigned_id"
                 required
               ></v-select>
               </v-col>
@@ -103,7 +88,7 @@
           <v-btn color="blue darken-1" text @click="dialog = false">
             Close
           </v-btn>
-          <v-btn color="blue darken-1" text @click="dialog = false">
+          <v-btn color="blue darken-1" text @click="createPetty()">
             Save
           </v-btn>
         </v-card-actions>
@@ -116,9 +101,8 @@ export default {
   data: () => ({
     dialog: false,
     error: false,
-    departments: [{value:1, name:this.user_department}],
+    prp_assigned_id: null,
     date: null,
-    details: null,
     department: null,
     description_need: null,
     total_amount: null,
@@ -132,21 +116,20 @@ export default {
       return date > new Date().toISOString().substr(0, 10);
     },
     createPetty(){
-      if(this.date !== null && this.description_need !== null && this.details !== null && this.department !== null &&
-      this.total_amount !== null && this.date !== '' && this.description_need !== '' && this.details !== '' && this.department !== '' &&
+      if(this.date !== null && this.description_need !== null &&
+      this.total_amount !== null && this.date !== '' && this.description_need !== '' &&
       this.total_amount !== ''){
         let parameter = {
           user_id: this.user_id,
           date: this.date,
           description_need: this.description_need,
-          details: this.details,
-          department_id: this.department,
+          department_id: this.user_department,
           total_amount: this.total_amount,
           prp_assigned_id: 1
         }
         this.$axios.post("http://localhost:8000/petty_cash_request", parameter).then(res =>{
           console.log('Successfully Added', res.data)
-          this.retrieve()
+          this.$parent.$parent.$parent.$parent.$parent.retrieve()
         })
         this.dialog = false
       }else{
@@ -154,17 +137,10 @@ export default {
         this.dialog = true
       }
     },
-    retrieve(){
-      this.$axios.post("http://localhost:8000/petty_cash_request/" + this.user_id).then(response =>{
-      })
-      .catch(e => {
-        console.log(e);
-      })
-    },
     removeData(){
-      this.reason = null,
-      this.shift_time = null,
-      this.shift_date = null
+      this.date = null,
+      this.description_need = null,
+      this.total_amount = null
     }
   }
 }
