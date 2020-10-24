@@ -1,6 +1,19 @@
 
 @extends('layouts.app')
-
+@section('style')
+<style>
+.container{
+    color:'red'; 
+    font-size:10px;  
+}
+@media (min-width: 768px) {
+    .text-md-right {
+        text-align: right !important;
+        color: red;
+    }
+}
+</style>
+@endsection('style')
 @section('content')
 
 <div class="container">

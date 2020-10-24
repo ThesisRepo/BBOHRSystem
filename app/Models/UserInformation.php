@@ -70,6 +70,6 @@ class UserInformation extends Model
     }
 
     public function shift_time() {
-        return $this->belongsTo(ShiftTime::class);
+        return $this->belongsTo(Requests\ShiftTime::class);
     }
 }

@@ -42,7 +42,6 @@ class LeaveRequestController extends RequestBaseController
             'approver_role_id'=> $this->nextApproverId($request->user_id),
             'status_id'=> 1
         ];
-
         return $this->storeRequest($requestData, $prp_assigned_id);
 
     }

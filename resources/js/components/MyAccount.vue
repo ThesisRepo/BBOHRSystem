@@ -257,13 +257,11 @@ export default {
                 },
                 { once: true }
             );
-
             this.$refs.uploader.click();
         },
         onFileChanged(e) {
             this.selectedFile = e.target.files[0];
             this.profile_url = URL.createObjectURL(e.target.files[0]);
-
             const config = {
                 header: { "content-type": "multipart/form-data" }
             };
@@ -272,7 +270,6 @@ export default {
             let param = {
                 id: this.user_id
             };
-
             console.log(this.user_id, "this is url");
             this.$axios
                 .post(

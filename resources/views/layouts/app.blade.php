@@ -20,6 +20,10 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/form.css') }}" rel="stylesheet">
 </head>
+@yield('style')
+<style>
+
+</style>
 <body>
     <div id="app">
         @guest

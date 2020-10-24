@@ -134,6 +134,7 @@ export default {
     return {
       selectedLeaveType: null,
       error: false,
+      // request: null,
       error1: false,
       disable: true,
       leaveType: [{value:1, name:'Sick Leave'}, 
@@ -154,8 +155,8 @@ export default {
       user_id: localStorage.getItem("id")
     }
   },
+  // props: ['request'],
   mounted() {
-    this.retrieve()
   },
   methods: {
     changeDate(){
@@ -195,14 +196,6 @@ export default {
       console.log('-----------difference',  differenceInDay)
       this.differenceInDay = differenceInDay
     },
-    retrieve(){
-      this.$axios.get("http://localhost:8000/leave_request/" + this.user_id).then(response => {
-        console.log(response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      })
-    },
     createRequest(){
       if(this.selectedLeaveType !== null && this.total_days !== null
       && this.start_date !== null && this.end_date !== null) {
@@ -214,9 +207,11 @@ export default {
         number_of_days: this.total_days,
         prp_assigned_id: 1
       }
+      console.log('hi', this.$parent)
       this.$axios.post("http://localhost:8000/leave_request", params).then(res =>{
         console.log('Successfully Added')
-        this.retrieve()
+        // this.request = response.data
+        this.$parent.$parent.$parent.$parent.$parent.retrieve()
         this.dialog = false
       })
     }else {
@@ -227,8 +222,10 @@ export default {
     removeData(){
       this.selectedLeaveType = null,
       this.total_days = null,
+      this.total_days_with_text = null,
       this.start_date = null,
       this.end_date = null
+      this.changeDate()
     }
   }
 }
