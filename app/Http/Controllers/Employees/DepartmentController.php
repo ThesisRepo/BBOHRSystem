@@ -12,7 +12,7 @@ class DepartmentController extends Controller
     protected $department;
 
     public function __construct(
-        LeaveTypeEloquent $department
+        DepartmentEloquent $department
     ) {
 
         $this->middleware(['auth', 'verify.employee']);  

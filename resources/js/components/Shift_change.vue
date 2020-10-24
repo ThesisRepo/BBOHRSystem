@@ -135,7 +135,7 @@
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-menu
-                  :close-on-content-click="false"
+                  :close-on-content-click="true"
                   transition="scale-transition"
                   offset-y
                   min-width="290px"
@@ -152,7 +152,7 @@
                     ></v-text-field>
                   </template>
                   <v-date-picker
-                    v-model="shift_date"
+                    v-model="editedItem.shift_date"
                     :allowed-dates="disabledDates"
                     no-title
                     scrollable
@@ -170,18 +170,6 @@
                   required
                 ></v-select>
               </v-col>
-              <!-- <v-col cols="12" sm="6" md="6">
-                <v-text-field
-                  v-model="editedItem.prp_assigned_id"
-                  label="Approver"
-                ></v-text-field>
-              </v-col> -->
-              <!-- <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  v-model="editedItem.status"
-                  label="status"
-                ></v-text-field>
-              </v-col> -->
             </v-row>
           </v-container>
         </v-card-text>
@@ -315,18 +303,19 @@ export default {
     editItem(item) {
       this.editedItem.id = item.id
       this.editedIndex = this.shifts.indexOf(item)
-      this.editedItem.shift_time = item.shift_time
+      this.editedItem.shift_time = item.shift_time_id
       this.editedItem.shift_date = item.shift_date
       this.editedItem.reason = item.reason
       this.dialog = true;
+      console.log(item)
     },
 
     save() {
       if(this.editedItem.shift_time !== null && this.editedItem.shift_time !== '' && this.editedItem.shift_date !== null && this.shift_date !== '' &&
       this.editedItem.reason !== null && this.editedItem.reason !== ''){
         let params = {
-          id: this.editedItem.id,
-          shift_time: this.editedItem.shift_time,
+          user_id: this.user_id,
+          shift_time_id: this.editedItem.shift_time,
           shift_date: this.editedItem.shift_date,
           reason: this.editedItem.reason,
           prp_assigned_id: 1

@@ -53,7 +53,7 @@
                       <v-text-field v-model="editedItem.department" label="Department"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.total_amount" label="Total Amount"></v-text-field>
+                      <v-text-field v-model="editedItem.total_amount" type="number" label="Total Amount"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field v-model="editedItem.prp_assigned_id" label="Approver"></v-text-field>
@@ -91,54 +91,61 @@
     </v-data-table>
     
     <!-- Employee Edit Modal -->
-    <v-dialog v-model="dialog" max-width="500px">
-        <v-card>
+    <v-dialog v-model="dialog" persistent max-width="600px">
+      <v-card class="mt-5">
+        <v-card-title>
+          <span class="headline">Petty Cash Request Form</span>
+        </v-card-title>
         <v-card-text>
           <v-container>
+            <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
             <v-row>
-              <v-col cols="12" sm="6" md="4">
+              <v-col cols="12" sm="6" md="12">
                 <v-text-field
                   v-model="editedItem.description_need"
                   label="Description of Need"
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  v-model="editedItem.date"
-                  label="Date"
-                ></v-text-field>
+              <v-col cols="12" sm="6" md="6">
+                <v-menu
+                  :close-on-content-click="true"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="editedItem.date"
+                      label="Date"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="editedItem.date"
+                    :allowed-dates="disabledDates"
+                    no-title
+                    scrollable
+                    color="primary"
+                  ></v-date-picker>
+                </v-menu>
               </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  v-model="editedItem.details"
-                  label="Details"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  v-model="editedItem.department"
-                  label="department"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
+              <v-col cols="12" sm="6" md="6">
                 <v-text-field
                   v-model="editedItem.total_amount"
+                  type="number"
                   label="Total Amount"
                 ></v-text-field>
               </v-col>
-              <!-- <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  v-model="editedItem.status"
-                  label="status"
-                ></v-text-field>
-              </v-col> -->
             </v-row>
           </v-container>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-          <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+          <v-btn color="blue darken-1" text @click="save()"> Save </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -146,17 +153,11 @@
     <!-- Employee DeleteModal -->
     <v-dialog v-model="dialogDelete" max-width="500px">
       <v-card>
-        <v-card-title class="headline"
-          >Are you sure you want to delete this item?</v-card-title
-        >
+        <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="closeDelete"
-            >Cancel</v-btn
-          >
-          <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-            >OK</v-btn
-          >
+          <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
+          <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -194,13 +195,12 @@ import createPetty from "./modals/create_petty.vue";
 export default {
   data: () => ({
     user_type: localStorage.getItem("user_type"),
-    employees: !localStorage.getItem("user_type").includes("finance mngr")
-     ? false
-     : true,
-    requests: !localStorage.getItem("user_type").includes("finance mngr") 
-     ? true 
-     : false,
+    user_id: localStorage.getItem("id"),
+    user_department: localStorage.getItem("user_department"),
+    employees: !localStorage.getItem("user_type").includes("finance mngr") ? false : true,
+    requests: !localStorage.getItem("user_type").includes("finance mngr") ? true : false,
     dialog: false,
+    error: false,
     dialogDelete: false,
     headers: [
       {
@@ -209,34 +209,21 @@ export default {
         sortable: false,
         value: "description_need"
       },
-      { text: "DETAILS", value: "details" },
-      { text: "DATE", value: "date_needed" },
-      { text: "DEPARTMENT", value: "department" },
+      { text: "DATE", value: "date" },
+      { text: "DEPARTMENT", value: "department.department_name" },
       { text: "TOTAL AMOUNT", value: "total_amount" },
       { text: "APPROVER", value: "approver_role.role_name" },
-      { text: "STATUS", value: "status_id" },
+      { text: "STATUS", value: "status.status_name" },
       { text: "ACTIONS", value: "actions", sortable: false }
     ],
     petty: [],
     search: null,
     editedIndex: 1,
     editedItem: {
-      description_need: "",
-      date: 0,
-      department: 0,
-      total_amount: 0,
-      details: "",
-      prp_assigned_id: "",
-      status: ""
-    },
-    defaultItem: {
-      description_need: "",
-      date: 0,
-      department: 0,
-      total_amount: 0,
-      details: "",
-      prp_assigned_id: "",
-      status: ""
+      description_need: null,
+      date: null,
+      total_amount: null,
+      details: null
     },
     month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
   }),
@@ -244,7 +231,6 @@ export default {
     createPetty
   },
   mounted(){
-    console.log('----------testing------------', this.user_type, this.requests, this.employees)
     this.retrieve()
   },
   methods: {
@@ -252,9 +238,10 @@ export default {
       return date >  new Date().toISOString().substr(0, 10)
     },
     retrieve(){
+      console.log('retrieve', this.user_id)
       this.$axios.get("http://localhost:8000/petty_cash_request/" + this.user_id).then(response => {
+        console.log('asjdflkaslkflkasjdf', response)
         this.petty = response.data
-        console.log('here na mi', this.petty)
       })
       .catch(e => {
         console.log(e);
@@ -263,27 +250,33 @@ export default {
 
     editItem(item) {
       this.editedItem.id = item.id
-      this.editedIndex = this.overtime.indexOf(item)
+      this.editedIndex = this.petty.indexOf(item)
       this.editedItem.description_need = item.description_need
       this.editedItem.date = item.date
-      this.editedItem.department_id = item.department
       this.editedItem.total_amount = item.total_amount
       this.dialog = true;
     },
 
     save() {
-      let params = {
-        id: this.editedItem.id,
-        date: this.editedItem.date,
-        department: this.editedItem.department_id,
-        total_amount: this.editedItem.total_amount,
-        prp_assigned_id: 1
+      if(this.date !== null && this.description_need !== null &&
+      this.total_amount !== null && this.date !== '' && this.description_need !== ''  &&
+      this.total_amount !== ''){
+        let params = {
+          id: this.editedItem.id,
+          description_need: this.editedItem.description_need,
+          date: this.editedItem.date,
+          department: this.user_department,
+          total_amount: this.editedItem.total_amount,
+          prp_assigned_id: 1
+        }
+        console.log('here', params)
+        this.$axios.post('http://localhost:8000/petty_cash_request/' + this.editedItem.id, params).then(response=>{
+          this.retrieve()
+        })
+        this.dialog = false;
+      }else{
+        this.error = true;
       }
-      console.log('params', params, this.editedItem.id)      
-      this.$axios.post('http://localhost:8000/petty_cash_request/' + this.editedItem.id, params).then(response=>{
-        this.retrieve()
-      })
-      this.dialog = false;
     },
 
     deleteItem(item) {

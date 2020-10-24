@@ -24,7 +24,7 @@ class PettyCashRequestController extends RequestBaseController
     }
 
     public function show( $id) {
-        return $this->showRequest('user_id', $id, ['approver_role', 'status', 'user.userInformation']);
+        return $this->showRequest('user_id', $id, ['approver_role', 'status', 'user.userInformation', 'department']);
     }
     
     public function store(Request $request) {

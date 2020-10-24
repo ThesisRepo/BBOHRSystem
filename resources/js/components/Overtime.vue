@@ -89,14 +89,13 @@
 
     <!-- EditModal -->
       <v-dialog v-model="dialog" max-width="500px">
-          <!-- <template v-slot:activator="{ on, attrs }">         
-          </template> -->
         <v-card>
           <v-card-title>
             <span class="headline">Overtime Request Form</span>
           </v-card-title>
           <v-card-text>
             <v-container>
+            <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
               <v-row>
                 <v-col cols="12" sm="6" md="6">
                   <v-text-field
@@ -144,18 +143,6 @@
                     label="End Time"
                   ></v-text-field>
                 </v-col>
-                <!-- <v-col cols="12" sm="6" md="4">
-                  <v-text-field
-                    v-model="editedItem.prp_assigned_id"
-                    label="Approver"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field
-                    v-model="editedItem.status"
-                    label="Status"
-                  ></v-text-field>
-                </v-col> -->
               </v-row>
             </v-container>
           </v-card-text>
@@ -223,6 +210,7 @@ export default {
         ? true
         : false,
       dialog: false,
+      error: false,
       search: null,
       overtime_date: null,
       dialogDelete: false,
@@ -230,14 +218,13 @@ export default {
       {
         text: "REASON",
         align: "start",
-        sortable: false,
         value: "reason"
       },
       { text: "OVERTIME DATE", value: "date" },
       { text: "START TIME", value: "start_time" },
       { text: "END TIME", value: "end_time" },
       { text: "APPROVER", value: "approver_role.role_name"},
-      { text: "STATUS", value: "status_id" },
+      { text: "STATUS", value: "status.status_name" },
       { text: "ACTIONS", value: "actions", sortable: false }
     ],
     overtime: [],
@@ -246,20 +233,10 @@ export default {
     end_time: null,
     editedIndex: null,
     editedItem: {
-      reason: "",
-      overtime_date: 0,
-      start_time: 0,
-      end_time: 0,
-      prp_assigned_id: "",
-      status: ""
-    },
-    defaultItem: {
-      reason: "",
-      overtime_date: 0,
-      start_time: 0,
-      end_time: 0,
-      prp_assigned_id: "",
-      status: ""
+      reason: null,
+      overtime_date: null,
+      start_time: null,
+      end_time: null
     },
     month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
   }),
@@ -282,7 +259,6 @@ export default {
         console.log(e);
       })
     },
-
     editItem(item) {
       this.editedItem.id = item.id
       this.editedIndex = this.overtime.indexOf(item)
@@ -292,20 +268,25 @@ export default {
       this.editedItem.end_time = item.end_time
       this.dialog = true;
     },
-
     save() {
-      let params = {
-        id: this.editedItem.id,
-        date: this.editedItem.overtime_date,
-        start_time: this.editedItem.start_time,
-        end_time: this.editedItem.end_time,
-        prp_assigned_id: 1
+      if(this.editedItem.date !== null && this.editedItem.date !== '' && this.editedItem.start_time !== null && this.editedItem.start_time !== '' &&
+      this.editedItem.end_time !== null && this.editedItem.end_time !== '' && this.editedItem.reason !== null && this.editedItem.reason !== ''){
+        let params = {
+          id: this.editedItem.id,
+          date: this.editedItem.overtime_date,
+          start_time: this.editedItem.start_time,
+          end_time: this.editedItem.end_time,
+          reason: this.editedItem.reason,
+          prp_assigned_id: 1
+        }
+        console.log('params', params, this.editedItem.id)      
+        this.$axios.post('http://localhost:8000/overtime_request/' + this.editedItem.id, params).then(response=>{
+          this.retrieve()
+        })
+        this.dialog = false;
+      }else{
+        this.error = true;
       }
-      console.log('params', params, this.editedItem.id)      
-      this.$axios.post('http://localhost:8000/overtime_request/' + this.editedItem.id, params).then(response=>{
-        this.retrieve()
-      })
-      this.dialog = false;
     },
 
     deleteItem(item) {

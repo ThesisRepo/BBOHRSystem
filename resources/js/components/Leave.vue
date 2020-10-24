@@ -85,9 +85,6 @@
         <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
         <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
       </template>
-      <!-- <template v-slot:no-data>
-        <v-btn color="primary" @click="initialize">Reset</v-btn>
-      </template> -->
     </v-data-table>
 
     <!-- Edit Modal -->
@@ -175,9 +172,6 @@
                   ></v-date-picker>
                 </v-menu>
               </v-col>
-              <!-- <v-col cols="12" sm="6" md="4">
-                <v-text-field v-model="editedItem.prp_assigned" label="Approver "></v-text-field>
-              </v-col> -->
             </v-row>
           </v-container>
         </v-card-text>
@@ -217,7 +211,10 @@
           label="Search"
         ></v-text-field>
 
-        <createLeave></createLeave>
+        <createLeave
+        :request="request"
+        ref="leave"
+        ></createLeave>
 
       </v-toolbar>
     </template>
@@ -360,15 +357,6 @@ export default {
       return date >  new Date(this.editedItem.start_date).toISOString().substr(0, 10)
       this.differenceDates();
     },
-
-    // differenceDates() {
-    //   let start = moment(String(this.start_date))
-    //   let end = moment(String(this.end_date))
-    //   let diff = (end.diff(start))
-    //   let differenceInDay = ((((diff/1000)/60)/60)/24)
-    //   console.log('-----------diff',  differenceInDay)
-    //   this.differenceInDay = differenceInDay
-    // },
 
     deleteItem(item) {
       this.id = item.id
