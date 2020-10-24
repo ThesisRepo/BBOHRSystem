@@ -366,5 +366,4 @@ export default {
       this.dialogDelete = false
     }
   }
-}
 </script>
