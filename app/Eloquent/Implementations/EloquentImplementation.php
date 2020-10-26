@@ -83,6 +83,9 @@ class EloquentImplementation implements EloquentContract {
     return $this->with($relationship)->where($column, $id)->get();
   }
   
+  public function whereWith($column, $id, $relationship){
+    return $this->with($relationship)->where($column, $id);
+  }
   /**
    * @param string $model
    * creates a model
@@ -105,6 +108,8 @@ class EloquentImplementation implements EloquentContract {
    * @return App\Eloquent\Implementations\EloquentImplementation
    */
   public function with( $relationship) {
+
     return $this->model->with( $relationship);
+
   }
 }
