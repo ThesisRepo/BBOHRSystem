@@ -55,7 +55,6 @@ class ApproverRequestService
                 $max_role_id ++;    
                 if(!$this->request_type == 'budget_request' || !$this->request_type == 'petty_cash_request') {
                     $max_role_id ++;
-                    dd($max_role_id);                  
                 }
                 return $max_role_id; 
                 break;
