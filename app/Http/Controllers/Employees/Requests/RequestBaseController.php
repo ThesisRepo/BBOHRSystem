@@ -35,7 +35,7 @@ class RequestBaseController extends Controller
     public function getRoles($id) {
         return $this->user->findWith($id, 'roles')->roles;
     }
-
+    //can also be found in RequestsService
     public function setMaxRoles($roleArr) {
         foreach( $roleArr as  $datum) {
             $this->max_role = $datum->id > $this->max_role ? $datum->id : $this->max_role;
@@ -54,7 +54,7 @@ class RequestBaseController extends Controller
     }
 
     public function nextApproverId($id) {
-        $this->setMaxRoles($this->getRoles($id));
+        $this->setMaxRoles($this->getRoles($idid));
 
         if($this->request_name == 'petty_cash_request' || $this->request_name == 'budget_request' && $this->max_role != 2) {
             if($this->max_role == 4) {
