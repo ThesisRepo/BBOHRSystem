@@ -52,9 +52,10 @@ class ApproverRequestService
         switch($max_role_id){
             case 2:
 
-                $max_role_id ++;
+                $max_role_id ++;    
                 if(!$this->request_type == 'budget_request' || !$this->request_type == 'petty_cash_request') {
-                    return $max_role_id ++;                    
+                    $max_role_id ++;
+                    dd($max_role_id);                  
                 }
                 return $max_role_id; 
                 break;

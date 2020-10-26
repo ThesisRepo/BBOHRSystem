@@ -69,23 +69,23 @@ class EloquentRequestImplementation extends EloquentImplementation {
     
   }
 
-  public function approveRequest($id, $data, $approver) {
+  public function approveRequest($id, $data, $current_request, $approver) {
 
-        return $this->requestFeedback($id, $data, $approver);
-
-  }
-
-  public function disapproveRequest($id, $data, $approver) {
-
-    return $this->requestFeedback($id, $data, $approver);
+        return $this->requestFeedback($id, $data, $current_request, $approver);
 
   }
 
-  public function requestFeedback($id, $data, $approver) {
+  public function disapproveRequest($id, $data, $current_request, $approver) {
+
+    return $this->requestFeedback($id, $data, $current_request, $approver);
+
+  }
+
+  public function requestFeedback($id, $data, $current_request, $approver) {
     
     try {
       DB::beginTransaction();
-        $request = $this->find($id);
+        $request = $current_request;
         $request->update($data);
         if(!$request->approvers()->where('recordable_id',$id)->where('user_id',$approver->id)->get()->toArray()){
           $request->approvers()->save($approver);
