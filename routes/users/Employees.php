@@ -18,6 +18,12 @@ Route::get('prp/{user_id}','UserInformationController@getAllPrp')->name('user_in
 //update prp
 Route::post('prp/{user_id}','UserInformationController@updatePrp')->name('user_info.update.prp');
 
+//get all Finance
+Route::get('finance/{user_id}','UserInformationController@getAllFinance')->name('user_info.find.finance');
+
+//update Finance
+Route::post('finance/{user_id}','UserInformationController@updateFinance')->name('user_info.update.finance');
+
 //edit profile pic
 Route::post('update_profile_img/{id}','UserInformationController@updateProfileImg')->name('user_info.update_profile_img');
 
