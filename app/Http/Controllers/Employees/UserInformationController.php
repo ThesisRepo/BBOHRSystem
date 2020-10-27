@@ -104,4 +104,13 @@ class UserInformationController extends Controller
 
         return  $res;
     }
+
+    public function updateFinance($user_id, Request $request) {
+        $data = [
+            'finance_mngr_assigned'=> $request->finance_mngr_assigned
+        ];
+        $res = response()->json($this->user->find($user_id)->update($data), 200);
+
+        return  $res;
+    }
 }

@@ -16,7 +16,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password','prp_assigned'
+        'first_name', 'last_name', 'email', 'password','prp_assigned', 'finance_mngr_assigned'
     ];
 
     /**
@@ -62,6 +62,19 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function assignedPrp() {
         return $this->belongsTo(__CLASS__, 'prp_assigned');
+    }
+
+    public function subordinatesFinance() {
+        return $this->hasMany(__CLASS__, 'finance_mngr_assigned');
+    }
+
+    /**
+     * relationship of a pr and their subordinates
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\belongsTo
+     */
+    public function assignedFinance() {
+        return $this->belongsTo(__CLASS__, 'finance_mngr_assigned');
     }
 
     /**
