@@ -159,7 +159,7 @@ export default {
   },
   methods: {
     changeDate(){
-      console.log('gawas')
+      // console.log('gawas')
       if(this.start_date !== null && this.start_date !== ''){
         let start = moment(String(this.start_date))
         let end = moment(String(this.end_date))
@@ -192,7 +192,7 @@ export default {
       let end = moment(String(this.end_date))
       let diff = (end.diff(start))
       let differenceInDay = ((((diff/1000)/60)/60)/24)
-      console.log('-----------difference',  differenceInDay)
+      // console.log('-----------difference',  differenceInDay)
       this.differenceInDay = differenceInDay
     },
     createRequest(){

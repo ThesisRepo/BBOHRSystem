@@ -79,7 +79,7 @@ class UserInformationController extends Controller
 
         $user = $this->user->findWith($id, ['userInformation','roles']);
         $max_role = $this->user_service->getMaxRoles($user->roles);
-        if($max_role != 1){
+        if($max_role == 1){
             $res = response()->json($this->user->getPrp($user)->toArray(), 200);
         }else {
             $res = response()->json($this->user->getHR()->toArray(), 200);

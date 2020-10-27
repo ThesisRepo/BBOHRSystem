@@ -22,11 +22,11 @@
             <v-row>
              <v-col cols="12">
                 <v-select
-                  :items="this.prp"
+                  :items="prp"
                   label="Prp Assign"
-                  v-model="selectPrp"
-                  :item-text="prp => prp.first_name +'  '+ prp.last_name"
+                  :item-text="prp => prp.first_name + ' ' + prp.last_name"
                   item-value="id"
+                  v-model="selectPrp"
                   required
                 ></v-select>
               </v-col>
@@ -58,16 +58,19 @@ export default {
   }),
   mounted(){
     this.getAllPrp()
+    this.selectPrp = localStorage.getItem("prp_assign")
+    console.log(this.selectPrp)
   },
   methods: {
     update(){
-      if(this.selectPrp === null && this.selectPrp === ''){
+      if(this.selectPrp !== null && this.selectPrp !== ''){
         let parameter = {
-          prp_assigned_id: 1 //selectPrp
+          prp_assigned_id: this.selectPrp
         }
-        this.$axios.post("http://localhost:8000/petty_cash_request", parameter).then(res =>{
-          console.log('Successfully Added', res.data)
-          // this.$parent.$parent.$parent.$parent.$parent.retrieve()
+        console.log(parameter)
+        this.$axios.post("http://localhost:8000/prp/" + this.user_id, parameter).then(res =>{
+          console.log('Successfully Updated', res.data)
+          this.$parent.$parent.$parent.$parent.$parent.getInfo()
         })
         this.dialog = false
       }else{
@@ -76,10 +79,17 @@ export default {
       }
     },
     removeData(){
-      this.selectPrp = null
+      this.getAllPrp()
+      this.prp.forEach(element => {
+        if(element.first_name + ' ' + element.last_name === localStorage.getItem("prp_assign")){
+          console.log(element.id)
+          this.selectPrp = element.id
+        }
+      });
     },
     getAllPrp(){
-      this.$axios.get("http://localhost:8000/prp").then(response => {
+      this.$axios.get("http://localhost:8000/prp/" + this.user_id).then(response => {
+        console.log(response.data)
         this.prp = response.data
       })
     }
