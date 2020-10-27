@@ -102,9 +102,9 @@ export default {
     sTime: null,
     shift_date: null,
     shift_time: null,
-    shiftTime: [{value:1, time:'8am-5pm'}, 
-    {value: 2, time:'9am-6pm'}, 
-    {value: 3, time:'2pm-11pm'}],
+    // shiftTime: [{value:1, time:'8am-5pm'}, 
+    // {value: 2, time:'9am-6pm'}, 
+    // {value: 3, time:'2pm-11pm'}],
     prp_assigned_id: null,
     reason: null,
     user_id: localStorage.getItem("id")

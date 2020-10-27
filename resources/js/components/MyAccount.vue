@@ -33,7 +33,7 @@
                                     margin
                                     color="primary"
                                     class="text-none"
-                                    round
+                                    rounded
                                     depressed
                                     :loading="isSelecting"
                                     @click="onButtonClick"
@@ -47,7 +47,6 @@
                                     accept="image/*"
                                     @change="onFileChanged"
                                 />
-                                <changeProfile></changeProfile>
                             </v-col>
                         </v-col>
                         <v-col>
@@ -67,9 +66,13 @@
                             >
                                 Company Email: {{ user_email }}
                             </h3>
+                            <h4
+                                class="text--primary text-caption text-sm-body-2 text-md-body-1"
+                                >Id Number: {{ company_number }}</h4
+                            >
                             <span
                                 class="text--primary text-caption text-sm-body-2 text-md-body-1"
-                                >Id Number: {{ company_number }}</span
+                                >Prp Assigned: {{ prp_assign }} <updatePrp></updatePrp></span
                             >
                         </v-col>
                         <v-col class="text-right">
@@ -186,10 +189,12 @@
 </template>
 <script>
 import editProfile from "./modals/edit_profile.vue";
+import updatePrp from "./modals/edit_prp.vue";
 export default {
     data() {
         return {
             user_name: localStorage.getItem("user_name"),
+            prp_assign: localStorage.getItem("prp_assign"),
             user_id: localStorage.getItem("id"),
             user_email: localStorage.getItem("email"),
             company_number: localStorage.getItem("company_id"),
@@ -207,23 +212,24 @@ export default {
             tin_number: null,
             philhealth_num: null,
             sss_num: null,
+            prp: null,
             datas: [],
-            profile_url: null
+            profile_url: null,
+            isSelecting: false
         };
     },
     mounted() {
-        this.getInfo();
+        this.getInfo()
     },
     components: {
-        editProfile
+        editProfile,
+        updatePrp
     },
     methods: {
         getInfo() {
-            console.log("hi");
             this.$axios
                 .get("http://localhost:8000/user_info/" + this.user_id)
                 .then(response => {
-                    console.log(response.data);
                     this.datas = response.data.user_information;
                     this.department =
                         response.data.user_information.department.department_name;
@@ -270,15 +276,12 @@ export default {
             let param = {
                 id: this.user_id
             };
-            console.log(this.user_id, "this is url");
             this.$axios
                 .post(
                     "http://localhost:8000/update_profile_img/" + this.user_id,
                     formData
                 )
                 .then(response => {
-                    console.log("sud");
-                    console.log(response.data);
                 });
         }
     }

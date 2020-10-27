@@ -304,16 +304,16 @@ export default {
         this.disable = true
       }
     },
-    getAllPrp(){
-      this.$axios.get("http://localhost:8000/prp").then(response => {
-        this.prp = response.data
-        console.log(this.prp)
-      })
-    },
+    // getAllPrp(){
+    //   this.$axios.get("http://localhost:8000/prp").then(response => {
+    //     this.prp = response.data
+    //     console.log(this.prp)
+    //   })
+    // },
     retrieve(){
       this.$axios.get("http://localhost:8000/leave_request/" + this.user_id).then(response => {
         this.request = response.data
-        console.log('here na mi', this.request)
+        // console.log('here na mi', this.request)
       })
       .catch(e => {
         console.log(e);
@@ -341,7 +341,7 @@ export default {
           end_date: this.editedItem.end_date,
           prp_assigned_id: 1
         }
-        console.log('params', params, this.editedItem.id)      
+        // console.log('params', params, this.editedItem.id)      
         this.$axios.post('http://localhost:8000/leave_request/' + this.editedItem.id, params).then(response=>{
           this.retrieve()
         })

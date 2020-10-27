@@ -64,9 +64,7 @@ class UserInformationController extends Controller
             return response()->json($result, 200);
 
         }else {
-
             return response()->json([], 404);
-
         }
     }
 

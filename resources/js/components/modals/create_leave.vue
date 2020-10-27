@@ -155,7 +155,6 @@ export default {
       user_id: localStorage.getItem("id")
     }
   },
-  // props: ['request'],
   mounted() {
   },
   methods: {

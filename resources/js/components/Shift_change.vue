@@ -275,9 +275,9 @@ export default {
     },
     start_date: null,
     month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-    shiftTime: [{value:1, time:'8 - 5pm'}, 
-    {value: 2, time:'9 - 6pm'}, 
-    {value: 3, time:'2 - 11pm'}],
+    // shiftTime: [{value:1, time:'8 - 5pm'}, 
+    // {value: 2, time:'9 - 6pm'}, 
+    // {value: 3, time:'2 - 11pm'}],
   }),
   components: {
     createShift,

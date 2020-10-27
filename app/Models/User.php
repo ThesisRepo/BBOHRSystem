@@ -61,7 +61,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @return \Illuminate\Database\Eloquent\Relations\belongsTo
      */
     public function assignedPrp() {
-        return $this->belongsTo('__CLASS__', 'prp_assigned');
+        return $this->belongsTo(__CLASS__, 'prp_assigned');
     }
 
     /**

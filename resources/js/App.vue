@@ -46,11 +46,13 @@ export default {
         setUserType(){
             var roleList=[]
             this.user.roles.forEach(element => {
-                console.log(element.role_name)
+                // console.log(element.role_name)
                 roleList.push(element.role_name)
                 // element.role_name
             });
-            console.log(this.user)
+            // console.log(this.user.user_information.profile_url)
+            localStorage.setItem('user_pic', this.user.user_information.profile_url)
+            localStorage.setItem('prp_assign', this.user.assigned_prp.first_name + ' ' + this.user.assigned_prp.last_name)
             localStorage.setItem('user_department', this.user.user_information.department.department_name)
             localStorage.setItem('user_type', roleList)
             localStorage.setItem('id', this.user.id)

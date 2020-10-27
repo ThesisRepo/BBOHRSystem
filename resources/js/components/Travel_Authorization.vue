@@ -306,8 +306,8 @@ export default {
     },
     retrieve(){
       this.$axios.get("http://localhost:8000/leave_request/" + this.user_id).then(response => {
-        this.request = response.data
-        console.log('here na mi', this.request)
+        this.travel = response.data
+        console.log('here na mi', this.travel)
       })
       .catch(e => {
         console.log(e);
