@@ -6,15 +6,22 @@ use Illuminate\Http\Request;
 use App\Eloquent\Implementations\UserEloquent;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\UserService;
 
 class UserInformationController extends Controller
 {
 
     protected $user;
 
-    public function __construct(UserEloquent $user) {
+    protected $user_service;
+
+    public function __construct(
+            UserEloquent $user,
+            UserService $user_service
+        ) {
         $this->middleware(['auth', 'verify.employee']);  
         $this->user = $user;
+        $this->user_service = $user_service;
     }
 
     /**
@@ -70,7 +77,31 @@ class UserInformationController extends Controller
         }
     }
 
-    public function getAllPrp() {
-        return response()->json($this->user->getPrp()->toArray(), 200); 
-    } 
+    public function getAllPrp($id) {
+
+        $user = $this->user->findWith($id, ['userInformation','roles']);
+        $max_role = $this->user_service->getMaxRoles($user->roles);
+        if($max_role != 1){
+            $res = response()->json($this->user->getPrp($user)->toArray(), 200);
+        }else {
+            $res = response()->json($this->user->getHR()->toArray(), 200);
+        }
+        return $res;
+    }
+    
+    public function getAllFinance() {
+
+        $res = response()->json($this->user->getFinance()->toArray(), 200);
+        
+        return $res;
+    }
+
+    public function updatePrp($user_id, Request $request) {
+        $data = [
+            'prp_assigned'=> $request->prp_assigned_id
+        ];
+        $res = response()->json($this->user->find($user_id)->update($data), 200);
+
+        return  $res;
+    }
 }

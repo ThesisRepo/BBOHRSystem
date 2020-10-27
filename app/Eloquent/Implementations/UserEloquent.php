@@ -23,13 +23,40 @@ class UserEloquent extends EloquentImplementation {
        return  $this->model->findorFail($id)->userInformation()->update($data);
     }
 
-    public function getPrp() {
-      return $this->model->whereHas('roles', function($q){
-        $q->where('role_id', 2);
-      })->get();
+    public function getPrp($user) {
+
+      $res = $this->model->where('id','!=',$user->id)
+      ->whereHas('roles', function($q){
+        $q->whereIn('role_id', [2]);
+      })
+      ->whereHas('userInformation', function($q) use($user){
+        $q->where('department_id', $user->userInformation->department_id);
+      })
+      ->get();
+
+      return $res;
+
     }
 
-  // get all requests for prp
+    public function getHR() {
+      
+      $res = $this->model->whereHas('roles', function($q){
+        $q->whereIn('role_id', [4]);
+      })->get();
+      
+      return $res;
+
+    }
+
+    public function getFinance() {
+      
+      $res = $this->model->whereHas('roles', function($q){
+        $q->whereIn('role_id', [3]);
+      })->get();
+
+      return $res;
+
+    }
 
   public function getAllFeedbackedRequests($user_id, $relationship) {
 
