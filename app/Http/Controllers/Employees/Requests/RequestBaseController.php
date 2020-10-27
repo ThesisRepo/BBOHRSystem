@@ -35,7 +35,7 @@ class RequestBaseController extends Controller
     public function getRoles($id) {
         return $this->user->findWith($id, 'roles')->roles;
     }
-
+    //can also be found in RequestsService
     public function setMaxRoles($roleArr) {
         foreach( $roleArr as  $datum) {
             $this->max_role = $datum->id > $this->max_role ? $datum->id : $this->max_role;
