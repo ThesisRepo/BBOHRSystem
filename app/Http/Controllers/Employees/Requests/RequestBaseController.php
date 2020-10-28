@@ -20,7 +20,7 @@ class RequestBaseController extends Controller
 
     private $max_role;
 
-    private $request_name;
+    public $request_name;
 
     private $model;
 
