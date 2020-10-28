@@ -25,5 +25,13 @@ class UserService
 
      return $max_role;
 
- }
+    }
+
+    public function getFullName($id) {
+
+        $user = $this->user->find($id);
+        $full_name = $user->first_name . ' ' . $user->last_name;
+        
+        return $full_name;
+    }
 }

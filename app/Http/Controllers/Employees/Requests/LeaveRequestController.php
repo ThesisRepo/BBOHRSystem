@@ -6,20 +6,31 @@ use Illuminate\Http\Request;
 use App\Eloquent\Implementations\Requests\LeaveRequestEloquent;
 use App\Eloquent\Implementations\UserEloquent;
 use App\Eloquent\Implementations\RoleEloquent;
+use App\Services\UserRequestService;
+use App\Services\UserService;
 
 class LeaveRequestController extends RequestBaseController
 {
 
     protected $leave_request;
 
+    protected $user_request_service;
+    
+    protected $user_service;
+
     public function __construct(
         LeaveRequestEloquent $leave_request,
         RoleEloquent $role, 
-        UserEloquent $user
+        UserEloquent $user,
+        UserRequestService $user_request_service,
+        UserService $user_service
+
     ) {
 
         $this->middleware(['auth', 'verify.employee']);  
         $this->leave_request = $leave_request;
+        $this->user_request_service = $user_request_service;
+        $this->user_service = $user_service;
         parent::__construct($role,$user, $leave_request);
         parent::setRequestName('leave_request');
     }
@@ -42,7 +53,10 @@ class LeaveRequestController extends RequestBaseController
             'approver_role_id'=> $this->nextApproverId($request->user_id),
             'status_id'=> 1
         ];
-        return $this->storeRequest($requestData, $prp_assigned_id);
+        $employee_name = $this->user_service->getFullName($request->user_id);
+        $res = $this->storeRequest($requestData, $prp_assigned_id);
+        $this->user_request_service->notifyNewRequest('added', $employee_name, $this->request_name);
+        return $res;
 
     }
 
