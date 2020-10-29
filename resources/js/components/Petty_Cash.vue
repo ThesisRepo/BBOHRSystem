@@ -179,7 +179,12 @@
           prepend-inner-icon="mdi-magnify"
           label="Search"
         ></v-text-field>
-         <createPetty></createPetty>
+
+        <createPetty
+        v-if="user_finance !== 'No Finance assign'"
+        ></createPetty>
+
+        <h4 v-if="user_finance === 'No Finance assign'">bolbol</h4>
 
       </v-toolbar>
     </template>
@@ -196,6 +201,7 @@ export default {
   data: () => ({
     user_type: localStorage.getItem("user_type"),
     user_id: localStorage.getItem("id"),
+    user_finance: localStorage.setItem('user_finance'),
     user_department: localStorage.getItem("user_department"),
     employees: !localStorage.getItem("user_type").includes("finance mngr") ? false : true,
     requests: !localStorage.getItem("user_type").includes("finance mngr") ? true : false,
@@ -238,9 +244,7 @@ export default {
       return date >  new Date().toISOString().substr(0, 10)
     },
     retrieve(){
-      console.log('retrieve', this.user_id)
       this.$axios.get("http://localhost:8000/petty_cash_request/" + this.user_id).then(response => {
-        console.log('asjdflkaslkflkasjdf', response)
         this.petty = response.data
       })
       .catch(e => {
@@ -267,13 +271,12 @@ export default {
           date: this.editedItem.date,
           department: this.user_department,
           total_amount: this.editedItem.total_amount,
-          prp_assigned_id: 1
+          finance_mngr_assigned: user_finance
         }
-        console.log('here', params)
         this.$axios.post('http://localhost:8000/petty_cash_request/' + this.editedItem.id, params).then(response=>{
           this.retrieve()
+          this.dialog = false
         })
-        this.dialog = false;
       }else{
         this.error = true;
       }

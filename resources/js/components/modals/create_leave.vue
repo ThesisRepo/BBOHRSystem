@@ -99,22 +99,6 @@
                   disabled
                 ></v-text-field>
               </v-col>
-              <v-col cols="12">
-                <v-select
-                  :items="[
-                    'Jocel Redotco Mendoza',
-                    'Fenella Corinne Real Rosales',
-                    'Cielo Fe Sasing',
-                    'April Claire Chagas Podador',
-                    'Nathaniel Cala Terdes',
-                    'Carl Wyner Velasco Javier',
-                  ]" 
-                  label="PRP in Charge*"
-                  v-model="prp_assigned_id"
-                  @click="differenceDates()"
-                  required
-                ></v-select>
-              </v-col>
             </v-row>
           </v-container>
         </v-card-text>
@@ -134,7 +118,7 @@ export default {
     return {
       selectedLeaveType: null,
       error: false,
-      // request: null,
+      prp_assigned_id: localStorage.getItem("assigned_prp_id"),
       error1: false,
       disable: true,
       leaveType: [{value:1, name:'Sick Leave'}, 
@@ -144,13 +128,11 @@ export default {
       {value: 5, name:'Paternity Leave'},
       {value: 6, name:'Maternity Leave'}],
       dialog: false,
-      request: [],
       reason: null,
       total_days: null,
       total_days_with_text: null,
       start_date: null,
       end_date: null,
-      prp_assigned_id: null,
       differenceInDay: null,
       user_id: localStorage.getItem("id")
     }
@@ -159,7 +141,6 @@ export default {
   },
   methods: {
     changeDate(){
-      // console.log('gawas')
       if(this.start_date !== null && this.start_date !== ''){
         let start = moment(String(this.start_date))
         let end = moment(String(this.end_date))
@@ -192,7 +173,6 @@ export default {
       let end = moment(String(this.end_date))
       let diff = (end.diff(start))
       let differenceInDay = ((((diff/1000)/60)/60)/24)
-      // console.log('-----------difference',  differenceInDay)
       this.differenceInDay = differenceInDay
     },
     createRequest(){
@@ -204,12 +184,10 @@ export default {
         start_date: this.start_date,
         end_date: this.end_date,
         number_of_days: this.total_days,
-        prp_assigned_id: 1
+        prp_assigned_id: this.prp_assigned_id
       }
-      console.log('hi', this.$parent)
       this.$axios.post("http://localhost:8000/leave_request", params).then(res =>{
         console.log('Successfully Added')
-        // this.request = response.data
         this.$parent.$parent.$parent.$parent.$parent.retrieve()
         this.dialog = false
       })

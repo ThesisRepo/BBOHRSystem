@@ -74,6 +74,10 @@
                                 class="text--primary text-caption text-sm-body-2 text-md-body-1"
                                 >Prp Assigned: {{ prp_assign }} <updatePrp></updatePrp></span
                             >
+                            <span
+                                class="text--primary text-caption text-sm-body-2 text-md-body-1"
+                                >Finance Assigned: {{ user_finance }} <updateFinance></updateFinance></span
+                            >
                         </v-col>
                         <v-col class="text-right">
                             <editProfile :datas="datas"></editProfile>
@@ -190,12 +194,14 @@
 <script>
 import editProfile from "./modals/edit_profile.vue";
 import updatePrp from "./modals/edit_prp.vue";
+import updateFinance from "./modals/edit_finance.vue";
 export default {
     data() {
         return {
             user_name: localStorage.getItem("user_name"),
             prp_assign: localStorage.getItem("prp_assign"),
             user_id: localStorage.getItem("id"),
+            user_finance: localStorage.getItem("user_finance"),
             user_email: localStorage.getItem("email"),
             company_number: localStorage.getItem("company_id"),
             dialog: false,
@@ -223,13 +229,16 @@ export default {
     },
     components: {
         editProfile,
-        updatePrp
+        updatePrp,
+        updateFinance
     },
     methods: {
         getInfo() {
             this.$axios
                 .get("http://localhost:8000/user_info/" + this.user_id)
                 .then(response => {
+                    this.prp_assign = localStorage.getItem("prp_assign")
+                    this.user_finance = localStorage.getItem('user_finance')
                     this.datas = response.data.user_information;
                     this.department =
                         response.data.user_information.department.department_name;

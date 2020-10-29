@@ -208,7 +208,13 @@
             prepend-inner-icon="mdi-magnify"
             label="Search"
           ></v-text-field>
-          <createTravel></createTravel>
+
+          <createTravel
+          v-if="prp_assigned_id !== 'No Prp assign'"
+          ></createTravel>
+
+        <h4 v-if="prp_assigned_id === 'No Prp assign'">bolbol</h4>
+
         </v-toolbar>
       </template>
       <template v-slot:item.actions="{ item }">
@@ -223,6 +229,7 @@ import createTravel from "./modals/create_travel.vue";
 export default {
   data: () => ({
     user_type: localStorage.getItem("user_type"),
+    prp_assigned_id: localStorage.getItem("assigned_prp_id"),
     employees: !localStorage.getItem("user_type").includes("finance mngr")
       ? false
       : true,
@@ -307,7 +314,6 @@ export default {
     retrieve(){
       this.$axios.get("http://localhost:8000/leave_request/" + this.user_id).then(response => {
         this.travel = response.data
-        console.log('here na mi', this.travel)
       })
       .catch(e => {
         console.log(e);
@@ -331,7 +337,7 @@ export default {
           number_of_days: this.editedItem.total_days,
           start_date: this.editedItem.start_date,
           end_date: this.editedItem.end_date,
-          prp_assigned_id: 1
+          prp_assigned_id: prp_assigned_id
         }
         console.log('params', params, this.editedItem.id)      
         this.$axios.post('http://localhost:8000/leave_request/' + this.editedItem.id, params).then(response=>{

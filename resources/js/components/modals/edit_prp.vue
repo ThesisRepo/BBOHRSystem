@@ -59,7 +59,6 @@ export default {
   mounted(){
     this.getAllPrp()
     this.selectPrp = localStorage.getItem("prp_assign")
-    console.log(this.selectPrp)
   },
   methods: {
     update(){
@@ -67,9 +66,7 @@ export default {
         let parameter = {
           prp_assigned_id: this.selectPrp
         }
-        console.log(parameter)
         this.$axios.post("http://localhost:8000/prp/" + this.user_id, parameter).then(res =>{
-          console.log('Successfully Updated', res.data)
           this.$parent.$parent.$parent.$parent.$parent.getInfo()
         })
         this.dialog = false
@@ -82,14 +79,12 @@ export default {
       this.getAllPrp()
       this.prp.forEach(element => {
         if(element.first_name + ' ' + element.last_name === localStorage.getItem("prp_assign")){
-          console.log(element.id)
           this.selectPrp = element.id
         }
       });
     },
     getAllPrp(){
       this.$axios.get("http://localhost:8000/prp/" + this.user_id).then(response => {
-        console.log(response.data)
         this.prp = response.data
       })
     }
