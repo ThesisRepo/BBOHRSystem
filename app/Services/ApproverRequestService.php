@@ -19,7 +19,7 @@ class ApproverRequestService
 
     private $request_name;
 
-    private $request_type;
+    protected $request_type;
 
     public function __construct(RoleEloquent $role, UserEloquent $user) {
         $this->role = $role;

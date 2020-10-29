@@ -20,19 +20,18 @@ export default {
         sidebar
         // dashboard
     },
+    created() {
+      this.listenForChanges();
+    },
     mounted(){
         this.setUserType();
-        // var params = {
-        //     prp_assigned_id:5,
-        //     user_id:4,
-        //     reason:'hdfddaman',
-        //     shift_date: '2020-10-10',
-        //     shift_time: '7-8pm',
+        // var params = {  
+        //     finance_mngr_assigned:3
         // };
         
         // this.$axios
-        // .get(
-        //   "http://localhost:8000/shift_change_request/4")
+        // .post(
+        //   "http://localhost:8000/leave_request/", params)
         // .then(response => {
         //   if (response.data === 1) {
         //     this.$parent.$parent.getInfo()
@@ -60,6 +59,28 @@ export default {
             localStorage.setItem('user_name', this.user.first_name + " " + this.user.last_name)
             localStorage.setItem('email', this.user.email)
             localStorage.setItem('company_id', this.user.user_information.company_number)
+        },
+        listenForChanges() {
+        console.log('listening');
+        Echo.channel('newrequest')
+          .listen('NewRequest', post => {
+            if (! ('Notification' in window)) {
+              alert('Web Notification is not supported');
+              return;
+            }
+            console.log('res', post);
+            Notification.requestPermission( permission => {
+              let notification = new Notification('New post alert!', {
+                body: 'post.title', // content for the alert
+                icon: "https://pusher.com/static_logos/320x320.png" // optional image url
+              });
+
+              // link to page on clicking the notification
+              notification.onclick = () => {
+                window.open(window.location.href);
+              };
+            });
+          })
         }
     }
 }

@@ -103,7 +103,7 @@ class UserInformationController extends Controller
         return  $res;
     }
 
-    public function updateFinance($user_id, Request $request) {
+    public function updateFinance($user_id, Request $request) { 
         $data = [
             'finance_mngr_assigned'=> $request->finance_mngr_assigned
         ];

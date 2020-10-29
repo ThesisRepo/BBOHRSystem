@@ -59,7 +59,7 @@ class UserEloquent extends EloquentImplementation {
     }
 
   public function getAllFeedbackedRequests($user_id, $relationship) {
-
+    
     return $this->findWith($user_id, $relationship);
 
   }
@@ -67,14 +67,14 @@ class UserEloquent extends EloquentImplementation {
   // get all approved requests for prp
 
   public function getAllApprovedRequest($user_id, $relationship, $isFinal = false) {
-    
+
     if($isFinal) {
 
       return $this->getFeedbackRequest($user_id, $relationship, 2);
 
     }
 
-    return $this->getFeedbackRequest($user_id, $relationship, 0);
+    return $this->getFeedbackRequest($user_id, $relationship, 1);
 
   }
 
@@ -90,7 +90,7 @@ class UserEloquent extends EloquentImplementation {
   public function getFeedbackRequest($user_id, $relationship, $status_id) {
     return $this->findWith($user_id, [
       $relationship => function($q) use($status_id){
-        $q->where('status_id', $status_id);
+        return $q->with(['user', 'status', 'approver_role', 'department', 'leave_type'])->where('status_id', $status_id);
       }
     ]);
   }
