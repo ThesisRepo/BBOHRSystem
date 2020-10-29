@@ -39,7 +39,7 @@ class LeaveRequestController extends RequestBaseController
     public function getAllApprovedRequest($user_id){
 
         $res = $this->getBaseAllApprovedRequest($user_id, 'feedbacked_leave_requests');
-
+        
         return $res;
     
     }
@@ -54,8 +54,8 @@ class LeaveRequestController extends RequestBaseController
 
     public function requestFeedback($id, Request $request){
 
-        $res =requestBaseFeedback($id, $request);
-
+        $res = $this->requestBaseFeedback($id, $request);
+        
         return $res;
         
     }
