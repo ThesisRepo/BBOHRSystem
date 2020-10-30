@@ -256,8 +256,12 @@ export default {
     createLeave
   },
   mounted(){
-    this.retrieve()
-    this.retrievePendingPrp()
+    if(this.user_type.includes('hr mngr') || this.user_type.includes('prp emp') || this.user_type.includes('general mngr')){
+      this.retrievePendingPrp()
+      this.retrieve()
+    }else{
+      this.retrieve()
+    }
   },
   methods: {
     changeDate(){
@@ -290,7 +294,6 @@ export default {
     },
     retrievePendingPrp(){
       this.$axios.get("http://localhost:8000/prp/leave_request/pending/" + this.user_id).then(response => {
-        console.log(response.data)
         this.prpPending = response.data
       })
       .catch(e => {
