@@ -93,7 +93,7 @@ export default {
   data: () => ({
     dialog: false,
     error: false,
-    prp_assigned_id: null,
+    user_finance: localStorage.getItem("user_finance"),
     date: null,
     department: null,
     description_need: null,
@@ -117,13 +117,12 @@ export default {
             department_id: this.user_department,
             details: this.details,
             total_amount: this.total_amount,
-            prp_assigned_id: 1
+            finance_mngr_assigned: user_finance
           }
           this.$axios.post("http://localhost:8000/budget_request", parameter).then(res =>{
-            console.log('Successfully Added', res.data)
             this.$parent.$parent.$parent.$parent.$parent.retrieve()
+            this.dialog = false
           })
-          this.dialog = false
         }else{
           this.error = true
           this.dialog = true

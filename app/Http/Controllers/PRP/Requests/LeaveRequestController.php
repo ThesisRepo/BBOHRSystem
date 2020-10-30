@@ -22,7 +22,7 @@ class LeaveRequestController extends RequestBaseController
     
     public function getPendingRequest($id){
 
-        $res = $this->getBasePendingRequest($id);
+        $res = $this->getBasePendingRequest($id, ['leave_type', 'status','approver_role', 'user']);
 
         return $res;
 

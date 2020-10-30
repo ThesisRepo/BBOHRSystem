@@ -22,7 +22,7 @@ class ShiftChangeRequestController extends RequestBaseController
     
     public function getPendingRequest($id){
 
-        $res = $this->getBasePendingRequest($id);
+        $res = $this->getBasePendingRequest($id,['user', 'status', 'approver_role', 'shift_time']);
 
         return $res;
 

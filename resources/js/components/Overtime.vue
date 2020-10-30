@@ -183,7 +183,11 @@
           label="Search"
         ></v-text-field>
 
-        <createOvertime></createOvertime>
+        <createOvertime
+        v-if="prp_assigned_id !== 'No Prp assign'"
+        ></createOvertime>
+
+        <h4 v-if="prp_assigned_id === 'No Prp assign'">bolbol</h4>
 
       </v-toolbar>
     </template>
@@ -191,9 +195,6 @@
         <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
         <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
       </template>
-      <!-- <template v-slot:no-data>
-        <v-btn color="primary" @click="initialize">Reset</v-btn>
-      </template> -->
     </v-data-table>
   </div>
 </template>
@@ -203,6 +204,7 @@ export default {
   data: () => ({
     user_type: localStorage.getItem("user_type"),
     user_id: localStorage.getItem("id"),
+    prp_assigned_id: localStorage.getItem("assigned_prp_id"),
     employees: !localStorage.getItem("user_type").includes("finance mngr")
         ? false
         : true,
@@ -253,7 +255,6 @@ export default {
     retrieve(){
       this.$axios.get("http://localhost:8000/overtime_request/" + this.user_id).then(response => {
         this.overtime = response.data
-        console.log('here na mi', this.overtime)
       })
       .catch(e => {
         console.log(e);

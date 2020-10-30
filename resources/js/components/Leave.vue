@@ -18,7 +18,8 @@
         </v-tabs>
       </template>
     </v-toolbar>
-    <v-data-table v-if="employees" :headers="headers" :items="request" class="elevation-3">
+    <!-- //Pending Requests -->
+    <v-data-table v-if="employees" :headers="headersEmp" :items="prpPending" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-col class="mt-8">
@@ -29,13 +30,12 @@
           <v-spacer></v-spacer>
           <v-text-field
             v-model="search"
-            v-icon="mdi-magnify"
             label="Search"
             single-line
             hide-details
             class="mx-5"
           ></v-text-field>
-          <v-dialog v-model="dialog">
+          <!-- <v-dialog v-model="dialog">
             <v-card class="mt-5">
               <v-card-text>
                 <v-container>
@@ -52,12 +52,6 @@
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field v-model="editedItem.end_date" label="End Date"></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.prp_assigned" label="Approver"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.status" label="Status"></v-text-field>
-                    </v-col>
                   </v-row>
                 </v-container>
               </v-card-text>
@@ -67,8 +61,9 @@
                 <v-btn color="blue darken-1" text @click="save()">Save</v-btn>
               </v-card-actions>
             </v-card>
-          </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="500px">
+          </v-dialog> -->
+          <!-- Delete Modal -->
+          <!-- <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
               <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
               <v-card-actions>
@@ -78,14 +73,18 @@
                 <v-spacer></v-spacer>
               </v-card-actions>
             </v-card>
-          </v-dialog>
+          </v-dialog> -->
         </v-toolbar>
       </template>
+      <template v-slot:item.status.status_name="{ item }">
+        <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name}}</v-chip>
+      </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-        <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+        <v-icon small class="mr-2" @click="editItem(item)">mdi-check-decagram</v-icon>
+        <v-icon small @click="deleteItem(item)">mdi-close-circle</v-icon>
       </template>
     </v-data-table>
+    <!-- End of Table -->
 
     <!-- Edit Modal -->
     <v-dialog v-model="dialog" persistent max-width="600px">
@@ -212,9 +211,10 @@
         ></v-text-field>
 
         <createLeave
-        :request="request"
-        ref="leave"
+        v-if="prp_assigned_id !== 'No Prp assign'"
         ></createLeave>
+
+        <h4 v-if="prp_assigned_id === 'No Prp assign'">bolbol</h4>
 
       </v-toolbar>
     </template>
@@ -232,6 +232,7 @@ export default {
   data: () => ({
     user_type: localStorage.getItem("user_type"),
     user_id: localStorage.getItem("id"),
+    prp_assigned_id: localStorage.getItem("assigned_prp_id"),
     employees: !(localStorage.getItem('user_type')).includes('finance mngr') ? false : true,
     requests: !(localStorage.getItem('user_type')).includes('finance mngr') ? true : false,
     dialog: false,
@@ -256,7 +257,18 @@ export default {
       { text: "STATUS", value: "status.status_name" },
       { text: "ACTIONS", value: "actions", sortable: false }
     ],
+    headersEmp: [
+      { text: "REQUESTER", align: "start", value: "user.first_name" },
+      { text: "TYPE OF LEAVE", value: "leave_type.leave_type_name" },
+      { text: "TOTAL DAY/S LEAVE", value: "number_of_days" },
+      { text: "START DATE", value: "start_date" },
+      { text: "END DATE", value: "end_date" },
+      { text: "APPROVER", value: "approver_role.role_name" },
+      { text: "STATUS", value: "status.status_name" },
+      { text: "ACTIONS", value: "actions", sortable: false }
+    ],
     request: [],
+    prpPending: [],
     editedIndex: null,
     prp: null,
     total_days: null,
@@ -281,10 +293,10 @@ export default {
   },
   mounted(){
     this.retrieve()
+    this.retrievePendingPrp()
   },
   methods: {
     changeDate(){
-      console.log(this.editedItem.start_date)
       if(this.editedItem.start_date !== null && this.editedItem.start_date !== ''){
         let start = moment(String(this.editedItem.start_date))
         let end = moment(String(this.editedItem.end_date))
@@ -304,16 +316,18 @@ export default {
         this.disable = true
       }
     },
-    getAllPrp(){
-      this.$axios.get("http://localhost:8000/prp").then(response => {
-        this.prp = response.data
-        console.log(this.prp)
-      })
-    },
     retrieve(){
       this.$axios.get("http://localhost:8000/leave_request/" + this.user_id).then(response => {
         this.request = response.data
-        console.log('here na mi', this.request)
+      })
+      .catch(e => {
+        console.log(e);
+      })
+    },
+    retrievePendingPrp(){
+      this.$axios.get("http://localhost:8000/prp/leave_request/pending/" + this.user_id).then(response => {
+        console.log(response.data)
+        this.prpPending = response.data
       })
       .catch(e => {
         console.log(e);
@@ -339,9 +353,8 @@ export default {
           number_of_days: this.editedItem.total_days,
           start_date: this.editedItem.start_date,
           end_date: this.editedItem.end_date,
-          prp_assigned_id: 1
-        }
-        console.log('params', params, this.editedItem.id)      
+          prp_assigned_id: this.prp_assigned_id
+        }   
         this.$axios.post('http://localhost:8000/leave_request/' + this.editedItem.id, params).then(response=>{
           this.retrieve()
         })
@@ -374,7 +387,12 @@ export default {
     },
     closeDelete(){
       this.dialogDelete = false
-    }
+    },
+    getColor(status) {
+      if (status === 'pending') return '#ffa500'
+      else if (status === 'approved') return 'green'
+      else return 'red'
+    },
   }
 }
 </script>

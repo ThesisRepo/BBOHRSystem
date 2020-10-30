@@ -14,10 +14,10 @@
         >
           <v-tabs-slider></v-tabs-slider>
           <v-tab @click="(employees = false), (requests = true)">
-            Employees Requests
+            My Requests
           </v-tab>
           <v-tab @click="(requests = false), (employees = true)">
-            My Requests
+            Employees Requests
           </v-tab>
         </v-tabs>
       </template>
@@ -25,7 +25,7 @@
     <v-data-table
       v-if="employees"
       :headers="headers"
-      :items="shifts"
+      :items="shiftPending"
       class="elevation-3"
     >
       <template v-slot:top>
@@ -38,7 +38,6 @@
           <v-spacer></v-spacer>
           <v-text-field
             v-model="search"
-            v-icon="mdi - magnify"
             label="Search"
             single-line
             hide-details
@@ -109,11 +108,8 @@
         </v-toolbar>
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-        <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
-      </template>
-      <template v-slot:no-data>
-        <v-btn color="primary" @click="initialize">Reset</v-btn>
+        <v-icon small class="mr-2" @click="editItem(item)">mdi-check-decagram</v-icon>
+        <v-icon small @click="deleteItem(item)">mdi-close-circle</v-icon>
       </template>
     </v-data-table>
 
@@ -162,7 +158,7 @@
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-select
-                  :items="this.sTime"
+                  :items="sTime"
                   label="Shift Time*"
                   item-text="shift_time_name"
                   item-value="id"
@@ -224,9 +220,16 @@
             prepend-inner-icon="mdi-magnify"
             label="Search"
           ></v-text-field>
-          <createShift></createShift>
+
+          <createShift
+          v-if="prp_assigned_id !== 'No Prp assign'"
+          ></createShift>
+          
+          <h4 v-if="prp_assigned_id === 'No Prp assign'">bolbol</h4>
+
         </v-toolbar>
       </template>
+      
       <template v-slot:item.actions="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
         <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
@@ -240,6 +243,7 @@ export default {
   data: () => ({
     user_type: localStorage.getItem("user_type"),
     user_id: localStorage.getItem("id"),
+    prp_assigned_id: localStorage.getItem("assigned_prp_id"),
     employees: !localStorage.getItem("user_type").includes("finance mngr")
       ? false
       : true,
@@ -267,6 +271,7 @@ export default {
       { text: "ACTIONS", value: "actions", sortable: false },
     ],
     shifts: [],
+    shiftPending: [],
     editedIndex: null,
     editedItem: {
       reason: null,
@@ -275,16 +280,17 @@ export default {
     },
     start_date: null,
     month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-    shiftTime: [{value:1, time:'8 - 5pm'}, 
-    {value: 2, time:'9 - 6pm'}, 
-    {value: 3, time:'2 - 11pm'}],
+    // shiftTime: [{value:1, time:'8 - 5pm'}, 
+    // {value: 2, time:'9 - 6pm'}, 
+    // {value: 3, time:'2 - 11pm'}],
   }),
   components: {
     createShift,
   },
   mounted() {
     this.retrieve()
-    this.getShift()
+    // console.log(this.retrieveShift(), 'imhere')
+    this.retrieveShift()
   },
   methods: {
     disabledDates(date) {
@@ -293,7 +299,15 @@ export default {
     retrieve(){
       this.$axios.get("http://localhost:8000/shift_change_request/" + this.user_id).then(response => {
         this.shifts = response.data
-        console.log('here na mi', this.shifts)
+      })
+      .catch(e => {
+        console.log(e);
+      })
+    },
+    retrieveShift(){
+      this.$axios.get("http://localhost:8000/prp/shift_change_request/pending/" + this.user_id).then(response => {
+        console.log('hello', response.data)
+        this.shiftPending = response.data
       })
       .catch(e => {
         console.log(e);
@@ -307,7 +321,6 @@ export default {
       this.editedItem.shift_date = item.shift_date
       this.editedItem.reason = item.reason
       this.dialog = true;
-      console.log(item)
     },
 
     save() {
@@ -319,8 +332,7 @@ export default {
           shift_date: this.editedItem.shift_date,
           reason: this.editedItem.reason,
           prp_assigned_id: 1
-        }
-        console.log('params', params, this.editedItem.id)      
+        }   
         this.$axios.post('http://localhost:8000/shift_change_request/' + this.editedItem.id, params).then(response=>{
           this.retrieve()
         })
@@ -350,7 +362,6 @@ export default {
     },
     getShift(){
       this.$axios.get("http://localhost:8000/shift_time").then(response => {
-        console.log('hi', response)
         this.sTime = response.data
       })
     }
