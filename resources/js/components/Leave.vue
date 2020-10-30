@@ -20,14 +20,6 @@
     </v-toolbar>
     <!-- //Pending Requests -->
     <v-data-table v-if="employees" :headers="headersEmp" :items="prpPending" class="elevation-3">
-      <template v-slot:item.status="{ item }">
-        <v-chip
-          :color="getColor(item.status)"
-          dark
-        >
-          {{ item.status }}
-        </v-chip>
-      </template>
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-col class="mt-8">
@@ -43,7 +35,7 @@
             hide-details
             class="mx-5"
           ></v-text-field>
-          <v-dialog v-model="dialog">
+          <!-- <v-dialog v-model="dialog">
             <v-card class="mt-5">
               <v-card-text>
                 <v-container>
@@ -69,9 +61,9 @@
                 <v-btn color="blue darken-1" text @click="save()">Save</v-btn>
               </v-card-actions>
             </v-card>
-          </v-dialog>
+          </v-dialog> -->
           <!-- Delete Modal -->
-          <v-dialog v-model="dialogDelete" max-width="500px">
+          <!-- <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
               <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
               <v-card-actions>
@@ -81,8 +73,11 @@
                 <v-spacer></v-spacer>
               </v-card-actions>
             </v-card>
-          </v-dialog>
+          </v-dialog> -->
         </v-toolbar>
+      </template>
+      <template v-slot:item.status.status_name="{ item }">
+        <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name}}</v-chip>
       </template>
       <template v-slot:item.actions="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)">mdi-check-decagram</v-icon>
@@ -393,8 +388,8 @@ export default {
     closeDelete(){
       this.dialogDelete = false
     },
-    getColor (status) {
-      if (status === 'pending') return 'orange'
+    getColor(status) {
+      if (status === 'pending') return '#ffa500'
       else if (status === 'approved') return 'green'
       else return 'red'
     },
