@@ -45,20 +45,19 @@ class EloquentRequestImplementation extends EloquentImplementation {
 
   }
   
-  public function getPendingRequestForApprover($user_id, $max_role_id) {
-
-    $res = $this->whereWith('status_id',1, ['leave_type', 'status','approver_role', 'user'])->where('approver_role_id', $max_role_id)
+  public function getPendingRequestForApprover($user_id, $max_role_id, $relationship) {
+    // ['leave_type', 'status','approver_role', 'user']
+    $res = $this->whereWith('status_id',1, $relationship)->where('approver_role_id', $max_role_id)
       ->whereHas('user', function($query) use($user_id){
         return $query->where('prp_assigned',$user_id);
       })->get();
-    dd($res->toArray());
     return $res;
 
   }
 
-  public function getPendingRequestForApproverAdmin($user_id, $max_role_id) {
+  public function getPendingRequestForApproverAdmin($user_id, $max_role_id, $relationship) {
 
-    $res = $this->whereWith('status_id',1, ['leave_type', 'status','approver_role', 'user'])->where('approver_role_id', $max_role_id)
+    $res = $this->whereWith('status_id',1, $relationship)->where('approver_role_id', $max_role_id)
       ->whereHas('user', function($query) use($user_id){
         return $query->where('prp_assigned',$user_id);
       })->orWhereHas('user.assignedPrp.roles', function($query) use($max_role_id) {

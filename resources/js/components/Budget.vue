@@ -81,6 +81,9 @@
           </v-dialog>
         </v-toolbar>
       </template>
+      <template v-slot:item.status.status_name="{ item }">
+        <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name}}</v-chip>
+      </template>
       <template v-slot:item.actions="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
         <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
@@ -174,8 +177,17 @@
             prepend-inner-icon="mdi-magnify"
             label="Search"
           ></v-text-field>
-          <createBudget></createBudget>
+
+          <createBudget
+          v-if="user_finance !== 'No Finance assign'"
+          ></createBudget>
+
+        <h4 v-if="user_finance === 'No Finance assign'">bolbol</h4>
+
         </v-toolbar>
+      </template>
+      <template v-slot:item.status.status_name="{ item }">
+        <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name}}</v-chip>
       </template>
       <template v-slot:item.actions="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
@@ -190,6 +202,7 @@ export default {
   data: () => ({
     user_type: localStorage.getItem("user_type"),
     user_department: localStorage.getItem("user_department"),
+    user_finance: localStorage.getItem('user_finance'),
     user_id: localStorage.getItem("id"),
     employees: !localStorage.getItem("user_type").includes("finance mngr")
       ? false
@@ -251,11 +264,9 @@ export default {
       return date > new Date().toISOString().substr(0, 10);
     },
     retrieve() {
-      console.log("retrieve", this.user_id);
       this.$axios
         .get("http://localhost:8000/budget_request/" + this.user_id)
         .then(response => {
-          console.log("asjdflkaslkflkasjdf", response);
           this.budget = response.data;
         })
         .catch(e => {
@@ -291,7 +302,7 @@ export default {
           department: this.user_department,
           details: this.editedItem.details,
           total_amount: this.editedItem.total_amount,
-          prp_assigned_id: 1
+          finance_mngr_assigned: user_finance
         };
         console.log("here", params);
         this.$axios
@@ -327,6 +338,11 @@ export default {
     },
     closeDelete() {
       this.dialogDelete = false;
+    },
+    getColor(status) {
+      if (status === 'pending') return '#ffa500'
+      else if (status === 'approved') return 'green'
+      else return 'red'
     }
   }
 };

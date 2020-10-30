@@ -24,14 +24,14 @@ class RequestBaseController extends Controller
         $this->request_service->setRequestType($request_type);
     }
     
-    public function getBasePendingRequest($id){
-
+    public function getBasePendingRequest($id, $relationship){
+        
         $user = $this->request_service->getUserRoles($id);
         $max_role = $this->request_service->getMaxRoles($user->roles);
         if($max_role == 2){
-            $res = $this->model->getPendingRequestForApprover($id, $max_role);
+            $res = $this->model->getPendingRequestForApprover($id, $max_role, $relationship);
         }else {
-            $res = $this->model->getPendingRequestForApproverAdmin($id, $max_role);            
+            $res = $this->model->getPendingRequestForApproverAdmin($id, $max_role, $relationship);            
         }
 
         return $res;
