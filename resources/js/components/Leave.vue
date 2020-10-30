@@ -41,10 +41,34 @@
         <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name}}</v-chip>
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)">mdi-check-decagram</v-icon>
-        <v-icon small @click="deleteItem(item)">mdi-close-circle</v-icon>
+        <v-icon small class="mr-2" @click="approveModal(item)">mdi-check-decagram</v-icon>
+        <v-icon small @click="disapproveModal(item)">mdi-close-circle</v-icon>
       </template>
     </v-data-table>
+
+    <v-dialog v-model="dialogConfirm" max-width="500px">
+      <v-card>
+        <v-card-title class="headline">Are you sure you want to approve?</v-card-title>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="closeApprove">Cancel</v-btn>
+          <v-btn color="blue darken-1" text @click="approve">OK</v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="dialogDisapprove" max-width="500px">
+      <v-card>
+        <v-card-title class="headline">Are you sure you want to reject?</v-card-title>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="closeReject">Cancel</v-btn>
+          <v-btn color="blue darken-1" text @click="disapprove">OK</v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <!-- End of Table -->
 
     <!-- Edit Modal -->
@@ -206,6 +230,8 @@ export default {
     disable: false,
     end_date: null,
     dialogDelete: false,
+    dialogConfirm: false,
+    dialogDisapprove: false,
     start_date: null,
     search: null,
     headers: [
@@ -359,6 +385,34 @@ export default {
       if (status === 'pending') return '#ffa500'
       else if (status === 'approved') return 'green'
       else return 'red'
+    },
+    approveModal(item){
+      this.id = item.id
+      this.dialogConfirm = true
+    },
+    disapproveModal(item){
+      this.id = item.id
+      this.dialogDisapprove  = true
+    },
+    closeApprove(){
+      this.dialogConfirm = false
+    },
+    closeReject(){
+      this.dialogDisapprove = false
+    },
+    approve(){
+      let parameter = {
+        user_id: this.user_id,
+        status_id: 1
+      }
+      this.$axios.post('http://localhost:8000/prp/leave_request/feedback/' + this.id, parameter).then(response=>{
+        console.log('Approve', response.data)
+        this.retrievePendingPrp()
+        this.closeApprove()
+      })
+    },
+    disapprove(){
+
     }
   }
 }
