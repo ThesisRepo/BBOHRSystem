@@ -192,11 +192,11 @@ class RequestBaseController extends Controller
     }
 
     public function deleteRequest($id) {
-
+        
+        $prp_assigned_id = $this->model->findWith($id, 'user')->user->prp_assigned;
         $res = response()->json($this->model->delete($id), 200);
-
-        $employee_name = $this->getFullName($data->user_id);
-        $this->notifyNewRequest('added', $employee_name, $prp_assigned_id, $this->request_name);
+        $employee_name = $this->getFullName($prp_assigned_id);
+        $this->notifyNewRequest('deleted', $employee_name, $prp_assigned_id, $this->request_name);
 
         return $res;
 
