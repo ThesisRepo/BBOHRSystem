@@ -77,7 +77,7 @@ export default {
   methods: {
     redirect(route) {
       ROUTER.push(route).catch(() => {});
-    },
+    }
   },
 };
 </script> 

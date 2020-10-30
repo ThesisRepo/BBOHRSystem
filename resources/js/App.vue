@@ -20,9 +20,9 @@ export default {
         sidebar
         // dashboard
     },
-    created() {
-      this.listenForChanges();
-    },
+    // created() {
+    //   this.listenForChanges();
+    // },
     mounted(){
         this.setUserType();
         // var params = {  
@@ -82,6 +82,17 @@ export default {
             });
           })
         }
+        // deaunthenticate(){
+        //     console.log('logging out')
+        //     localStorage.removeItem('usertoken')
+        //     localStorage.removeItem('account_id')
+        //     localStorage.removeItem('google_code')
+        //     localStorage.removeItem('google_scope')
+        //     this.setUserType(null)
+        //     let vue = new Vue()
+        //     vue.APIRequest('authenticate/invalidate')
+        //     ROUTER.go('/')
+        // },
     }
 }
 </script>  

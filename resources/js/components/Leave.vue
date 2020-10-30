@@ -19,7 +19,15 @@
       </template>
     </v-toolbar>
     <!-- //Pending Requests -->
-    <v-data-table v-if="employees" :headers="headers" :items="prpPending" class="elevation-3">
+    <v-data-table v-if="employees" :headers="headersEmp" :items="prpPending" class="elevation-3">
+      <template v-slot:item.status="{ item }">
+        <v-chip
+          :color="getColor(item.status)"
+          dark
+        >
+          {{ item.status }}
+        </v-chip>
+      </template>
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-col class="mt-8">
@@ -254,6 +262,16 @@ export default {
       { text: "STATUS", value: "status.status_name" },
       { text: "ACTIONS", value: "actions", sortable: false }
     ],
+    headersEmp: [
+      { text: "REQUESTER", align: "start", value: "user.first_name" },
+      { text: "TYPE OF LEAVE", value: "leave_type.leave_type_name" },
+      { text: "TOTAL DAY/S LEAVE", value: "number_of_days" },
+      { text: "START DATE", value: "start_date" },
+      { text: "END DATE", value: "end_date" },
+      { text: "APPROVER", value: "approver_role.role_name" },
+      { text: "STATUS", value: "status.status_name" },
+      { text: "ACTIONS", value: "actions", sortable: false }
+    ],
     request: [],
     prpPending: [],
     editedIndex: null,
@@ -313,6 +331,7 @@ export default {
     },
     retrievePendingPrp(){
       this.$axios.get("http://localhost:8000/prp/leave_request/pending/" + this.user_id).then(response => {
+        console.log(response.data)
         this.prpPending = response.data
       })
       .catch(e => {
@@ -373,7 +392,12 @@ export default {
     },
     closeDelete(){
       this.dialogDelete = false
-    }
+    },
+    getColor (status) {
+      if (status === 'pending') return 'orange'
+      else if (status === 'approved') return 'green'
+      else return 'red'
+    },
   }
 }
 </script>

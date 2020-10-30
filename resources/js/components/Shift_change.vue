@@ -289,7 +289,8 @@ export default {
   },
   mounted() {
     this.retrieve()
-    this.getShift()
+    // console.log(this.retrieveShift(), 'imhere')
+    this.retrieveShift()
   },
   methods: {
     disabledDates(date) {
@@ -303,8 +304,9 @@ export default {
         console.log(e);
       })
     },
-    retrieve(){
+    retrieveShift(){
       this.$axios.get("http://localhost:8000/prp/shift_change_request/pending/" + this.user_id).then(response => {
+        console.log('hello', response.data)
         this.shiftPending = response.data
       })
       .catch(e => {
