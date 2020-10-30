@@ -20,11 +20,12 @@ export default {
         sidebar
         // dashboard
     },
-    // created() {
-    //   this.listenForChanges();
-    // },
-    mounted(){
+    created() {
         this.setUserType();
+        this.listenForChanges();
+    },
+    mounted(){
+        
         // var params = {  
         //     finance_mngr_assigned:3
         // };
@@ -62,16 +63,16 @@ export default {
         },
         listenForChanges() {
         console.log('listening');
-        Echo.channel('newrequest')
-          .listen('NewRequest', post => {
+        Echo.private('newrequest.' + 1)
+          .listen('NewRequest', notif => {
             if (! ('Notification' in window)) {
               alert('Web Notification is not supported');
               return;
             }
-            console.log('res', post);
+            console.log('res', notif);
             Notification.requestPermission( permission => {
-              let notification = new Notification('New post alert!', {
-                body: 'post.title', // content for the alert
+              let notification = new Notification('New Notificaion from BBO Request Management!', {
+                body: notif.message, // content for the alert
                 icon: "https://pusher.com/static_logos/320x320.png" // optional image url
               });
 
