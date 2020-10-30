@@ -81,6 +81,9 @@
           </v-dialog>
         </v-toolbar>
       </template>
+      <template v-slot:item.status.status_name="{ item }">
+        <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name}}</v-chip>
+      </template>
       <template v-slot:item.actions="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
         <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
@@ -183,6 +186,9 @@
 
         </v-toolbar>
       </template>
+      <template v-slot:item.status.status_name="{ item }">
+        <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name}}</v-chip>
+      </template>
       <template v-slot:item.actions="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
         <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
@@ -196,7 +202,7 @@ export default {
   data: () => ({
     user_type: localStorage.getItem("user_type"),
     user_department: localStorage.getItem("user_department"),
-    user_finance: localStorage.setItem('user_finance'),
+    user_finance: localStorage.getItem('user_finance'),
     user_id: localStorage.getItem("id"),
     employees: !localStorage.getItem("user_type").includes("finance mngr")
       ? false
@@ -332,6 +338,11 @@ export default {
     },
     closeDelete() {
       this.dialogDelete = false;
+    },
+    getColor(status) {
+      if (status === 'pending') return '#ffa500'
+      else if (status === 'approved') return 'green'
+      else return 'red'
     }
   }
 };

@@ -64,21 +64,6 @@
                   required
                 ></v-text-field>
               </v-col>
-             <v-col cols="12">
-                <v-select
-                :items="[
-                  'Jocel Redotco Mendoza',
-                  'Fenella Corinne Real Rosales',
-                  'Cielo Fe Sasing',
-                  'April Claire Chagas Podador',
-                  'Nathaniel Cala Terdes',
-                  'Carl Wyner Velasco Javier',
-                ]"
-                label="PRP in Charge*"
-                v-model="prp_assigned_id"
-                required
-              ></v-select>
-              </v-col>
             </v-row>
           </v-container>
           <small>*indicates required field</small>
