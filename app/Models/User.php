@@ -94,6 +94,10 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->morphedByMany(Requests\LeaveRequest::class, 'recordable');
     }
 
+    public function recorded_leave_requests() {
+        return $this->morphedByMany(Requests\LeaveRequest::class, 'requestable');
+    }
+
     public function shift_change_requests() {
         return $this->hasMany(Requests\ShiftChangeRequest::class);
     }
@@ -101,6 +105,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function feedbacked_shift_change_requests() {
         return $this->morphedByMany(Requests\ShiftChangeRequest::class, 'recordable');
     }
+
 
     public function overtime_requests() {
         return $this->hasMany(Requests\OvertimeRequest::class);

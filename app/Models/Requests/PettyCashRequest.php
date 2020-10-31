@@ -27,6 +27,11 @@ class PettyCashRequest extends Model
     public function approvers() {
         return $this->morphToMany(\App\Models\User::class, 'approved_request_records');
     }
+
+    public function request() {
+        return $this->morphMany(\App\Models\Requestable::class, 'requestable')->withTimestamps();
+    }
+    
     public function approver_role() {
         return $this->belongsTo(\App\Models\Role::class);
     }

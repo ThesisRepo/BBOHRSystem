@@ -25,22 +25,23 @@ export default {
         // this.listenForChanges();
     },
     mounted(){
+        console.log(this.user);
+        var params = {  
+            user_id:1,
+            status_id:3,
+        };
         
-        // var params = {  
-        //     finance_mngr_assigned:3
-        // };
-        
-        // this.$axios
-        // .post(
-        //   "http://localhost:8000/leave_request/", params)
-        // .then(response => {
-        //   if (response.data === 1) {
-        //     this.$parent.$parent.getInfo()
-        //     this.dialog = false
-        //   } else {      
-        //     this.$parent.$parent.getInfo()
-        //   }
-        // })
+        this.$axios
+        .post(
+          "http://localhost:8000/prp/leave_request/feedback/38", params)
+        .then(response => {
+          if (response.data === 1) {
+            this.$parent.$parent.getInfo()
+            this.dialog = false
+          } else {      
+            this.$parent.$parent.getInfo()
+          }
+        })
     },
     methods: {
         setUserType(){
