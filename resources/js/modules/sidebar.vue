@@ -3,7 +3,9 @@
     <v-navigation-drawer v-model="drawer" app color="light-blue darken-4">
       <center>
         <v-sheet color="light-blue darken-4" class="pa-5">
-          <v-avatar class="mb-10" color="grey darken-1" size="64"></v-avatar>
+          <v-avatar class="mb-10" color="grey darken-1" size="64">
+            <img :src="user_pic" alt="profile pic">
+          </v-avatar>
           <div style="color:white">{{ user_name }}</div>
         </v-sheet>
       </center>
@@ -58,6 +60,7 @@ v-app-bar {
 import ROUTER from "../router";
 export default {
   data: () => ({
+    user_pic: localStorage.getItem('user_pic'),
     user_type: localStorage.getItem('user_type'),
     user_name: localStorage.getItem('user_name'),
     drawer: null,

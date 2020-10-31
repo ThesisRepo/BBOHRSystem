@@ -13,11 +13,26 @@ Route::get('user_info/{id}','UserInformationController@show')->name('user_info.f
 Route::post('user_info/{id}','UserInformationController@update')->name('user_info.update');
 
 //get all prps
-Route::get('prp','UserInformationController@getAllPrp')->name('user_info.findPrp');
+Route::get('prp/{user_id}','UserInformationController@getAllPrp')->name('user_info.find.prp');
+
+//update prp
+Route::post('prp/{user_id}','UserInformationController@updatePrp')->name('user_info.update.prp');
+
+//get all Finance
+Route::get('finance/{user_id}','UserInformationController@getAllFinance')->name('user_info.find.finance');
+
+//update Finance
+Route::post('finance/{user_id}','UserInformationController@updateFinance')->name('user_info.update.finance');
 
 //edit profile pic
 Route::post('update_profile_img/{id}','UserInformationController@updateProfileImg')->name('user_info.update_profile_img');
 
+// get count of pending request 
+Route::get('user_info/pending_requests/count/{user_id}','UserInformationController@getAllPendingRequests')->name('user_info.find.finance');
+
+
+// get count of approved request 
+Route::get('user_info/approved_requests/count/{user_id}','UserInformationController@getAllApprovedRequests')->name('user_info.find.finance');
 
 
 // -- LEAVE REQUEST
@@ -151,3 +166,6 @@ Route::post('travel_auth_request/{id}','Requests\TravelAuthRequestController@upd
 
 // delete travel authorization request
 Route::delete('travel_auth_request/{id}','Requests\TravelAuthRequestController@delete')->name('travel_auth_request.delete');
+
+// submit multiple file
+// Route::post('submit_multiple_files/{id}','UserInformationController@updateProfileImg')->name('user_info.update_profile_img');

@@ -65,21 +65,6 @@
                   required
                 ></v-select>
               </v-col>
-              <v-col cols="12">
-                <v-select
-                  :items="[
-                    'Jocel Redotco Mendoza',
-                    'Fenella Corinne Real Rosales',
-                    'Cielo Fe Sasing',
-                    'April Claire Chagas Podador',
-                    'Nathaniel Cala Terdes',
-                    'Carl Wyner Velasco Javier',
-                  ]"
-                  label="PRP in Charge*"
-                  v-model="prp_assigned_id"
-                  required
-                ></v-select>
-              </v-col>
             </v-row>
           </v-container>
         </v-card-text>
@@ -102,11 +87,8 @@ export default {
     sTime: null,
     shift_date: null,
     shift_time: null,
-    shiftTime: [{value:1, time:'8am-5pm'}, 
-    {value: 2, time:'9am-6pm'}, 
-    {value: 3, time:'2pm-11pm'}],
-    prp_assigned_id: null,
     reason: null,
+    prp_assigned_id: localStorage.getItem("assigned_prp_id"),
     user_id: localStorage.getItem("id")
   }),
   mounted(){
@@ -126,14 +108,14 @@ export default {
           shift_date: this.shift_date,
           shift_time_id: this.shift_time,
           reason: this.reason,
-          prp_assigned_id: 1
+          prp_assigned_id: this.prp_assigned_id
         }
         console.log(parameter)
         this.$axios.post("http://localhost:8000/shift_change_request", parameter).then(res =>{
           console.log('Successfully Added', res.data)
           this.$parent.$parent.$parent.$parent.$parent.retrieve()
+          this.dialog = false
         })
-        this.dialog = false
       }else{
         this.error = true
         this.dialog = true

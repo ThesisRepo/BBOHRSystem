@@ -14,7 +14,7 @@
         </v-tabs>
       </template>
     </v-toolbar>
-    <v-data-table v-if="employees" :headers="headers" :items="budget" class="elevation-3">
+    <v-data-table v-if="employees" :headers="headers" :items="budget" :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-col class="mt-8">
@@ -81,6 +81,9 @@
           </v-dialog>
         </v-toolbar>
       </template>
+      <template v-slot:item.status.status_name="{ item }">
+        <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name}}</v-chip>
+      </template>
       <template v-slot:item.actions="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
         <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
@@ -93,6 +96,7 @@
         <v-card-title>
           <span class="headline">Budget Request Form</span>
         </v-card-title>
+        <v-divider></v-divider>
         <v-card-text>
           <v-container>
             <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
@@ -127,10 +131,10 @@
                 </v-menu>
               </v-col>
               <v-col cols="12" sm="6" md="6">
-                <v-text-field v-model="editedItem.total_amount" type="number" label="Total Amount"></v-text-field>
+                <v-text-field v-model="editedItem.total_amount" type="number" label="Total Amount" prepend-icon=" mdi-calculator"></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="12">
-                <v-text-field v-model="editedItem.details" label="Details"></v-text-field>
+                <v-text-field v-model="editedItem.details" label="Details" prepend-icon=" mdi-file-document"></v-text-field>
               </v-col>
             </v-row>
           </v-container>
@@ -160,6 +164,7 @@
       v-if="requests && (!user_type.includes('hr mngr') || !user_type.includes('prp emp') || user_type.includes('prp emp'))"
       :headers="headers"
       :items="budget"
+      :search="search"
       class="elevation-3"
     >
       <template v-slot:top>
@@ -174,8 +179,17 @@
             prepend-inner-icon="mdi-magnify"
             label="Search"
           ></v-text-field>
-          <createBudget></createBudget>
+
+          <createBudget
+          v-if="user_finance !== 'No Finance assign'"
+          ></createBudget>
+
+        <h4 v-if="user_finance === 'No Finance assign'">bolbol</h4>
+
         </v-toolbar>
+      </template>
+      <template v-slot:item.status.status_name="{ item }">
+        <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name}}</v-chip>
       </template>
       <template v-slot:item.actions="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
@@ -190,6 +204,7 @@ export default {
   data: () => ({
     user_type: localStorage.getItem("user_type"),
     user_department: localStorage.getItem("user_department"),
+    user_finance: localStorage.getItem('user_finance'),
     user_id: localStorage.getItem("id"),
     employees: !localStorage.getItem("user_type").includes("finance mngr")
       ? false
@@ -200,7 +215,7 @@ export default {
     dialog: false,
     error: false,
     dialogDelete: false,
-    search: null,
+    search: "",
     headers: [
       {
         text: "DESCRIPTION",
@@ -251,11 +266,9 @@ export default {
       return date > new Date().toISOString().substr(0, 10);
     },
     retrieve() {
-      console.log("retrieve", this.user_id);
       this.$axios
         .get("http://localhost:8000/budget_request/" + this.user_id)
         .then(response => {
-          console.log("asjdflkaslkflkasjdf", response);
           this.budget = response.data;
         })
         .catch(e => {
@@ -291,7 +304,7 @@ export default {
           department: this.user_department,
           details: this.editedItem.details,
           total_amount: this.editedItem.total_amount,
-          prp_assigned_id: 1
+          finance_mngr_assigned: user_finance
         };
         console.log("here", params);
         this.$axios
@@ -327,6 +340,11 @@ export default {
     },
     closeDelete() {
       this.dialogDelete = false;
+    },
+    getColor(status) {
+      if (status === 'pending') return '#ffa500'
+      else if (status === 'approved') return 'green'
+      else return 'red'
     }
   }
 };

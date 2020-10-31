@@ -64,21 +64,6 @@
                   required
                 ></v-text-field>
               </v-col>
-             <v-col cols="12">
-                <v-select
-                :items="[
-                  'Jocel Redotco Mendoza',
-                  'Fenella Corinne Real Rosales',
-                  'Cielo Fe Sasing',
-                  'April Claire Chagas Podador',
-                  'Nathaniel Cala Terdes',
-                  'Carl Wyner Velasco Javier',
-                ]"
-                label="PRP in Charge*"
-                v-model="prp_assigned_id"
-                required
-              ></v-select>
-              </v-col>
             </v-row>
           </v-container>
           <small>*indicates required field</small>
@@ -101,7 +86,7 @@ export default {
   data: () => ({
     dialog: false,
     error: false,
-    prp_assigned_id: null,
+    user_finance: localStorage.getItem("user_finance"),
     date: null,
     department: null,
     description_need: null,
@@ -125,7 +110,7 @@ export default {
           description_need: this.description_need,
           department_id: this.user_department,
           total_amount: this.total_amount,
-          prp_assigned_id: 1
+          finance_mngr_assigned: user_finance
         }
         this.$axios.post("http://localhost:8000/petty_cash_request", parameter).then(res =>{
           console.log('Successfully Added', res.data)

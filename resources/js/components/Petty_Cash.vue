@@ -18,7 +18,7 @@
         </v-tabs>
       </template>
     </v-toolbar>
-    <v-data-table v-if="employees" :headers="headers" :items="petty" class="elevation-3">
+    <v-data-table v-if="employees" :headers="headers" :items="petty" :search="search" class="elevation-3">
       <template v-slot:top>
          <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-col class="mt-8">
@@ -56,9 +56,6 @@
                       <v-text-field v-model="editedItem.total_amount" type="number" label="Total Amount"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.prp_assigned_id" label="Approver"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
                       <v-text-field v-model="editedItem.status" label="Status"></v-text-field>
                     </v-col>
                   </v-row>
@@ -84,6 +81,9 @@
           </v-dialog>
         </v-toolbar>
       </template>
+      <template v-slot:item.status.status_name="{ item }">
+        <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name}}</v-chip>
+      </template>
       <template v-slot:item.actions="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
         <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
@@ -96,6 +96,7 @@
         <v-card-title>
           <span class="headline">Petty Cash Request Form</span>
         </v-card-title>
+        <v-divider></v-divider>
         <v-card-text>
           <v-container>
             <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
@@ -103,7 +104,8 @@
               <v-col cols="12" sm="6" md="12">
                 <v-text-field
                   v-model="editedItem.description_need"
-                  label="Description of Need"
+                  prepend-icon=" mdi-file-document"
+                  label="Purpose"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
@@ -137,6 +139,7 @@
                   v-model="editedItem.total_amount"
                   type="number"
                   label="Total Amount"
+                  prepend-icon=" mdi-calculator"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -164,7 +167,7 @@
     </v-dialog>
 
     <!-- MyRequests -->
-    <v-data-table v-if="requests && (!user_type.includes('hr mngr') || !user_type.includes('prp emp') || user_type.includes('prp emp'))" :headers="headers" :items="petty" class="elevation-3">
+    <v-data-table v-if="requests && (!user_type.includes('hr mngr') || !user_type.includes('prp emp') || user_type.includes('prp emp'))" :headers="headers" :items="petty" :search="search" class="elevation-3">
       <template v-slot:top>
       <v-toolbar class="mb-2" color="blue darken-1" dark flat>
         <v-toolbar-title class="col pa-3 py-4 white--text"  style="font-size:16px "
@@ -179,10 +182,18 @@
           prepend-inner-icon="mdi-magnify"
           label="Search"
         ></v-text-field>
-         <createPetty></createPetty>
+
+        <createPetty
+        v-if="user_finance !== 'No Finance assign'"
+        ></createPetty>
+
+        <h4 v-if="user_finance === 'No Finance assign'">bolbol</h4>
 
       </v-toolbar>
     </template>
+    <template v-slot:item.status.status_name="{ item }">
+        <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name}}</v-chip>
+      </template>
       <template v-slot:item.actions="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
         <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
@@ -196,11 +207,13 @@ export default {
   data: () => ({
     user_type: localStorage.getItem("user_type"),
     user_id: localStorage.getItem("id"),
+    user_finance: localStorage.getItem('user_finance'),
     user_department: localStorage.getItem("user_department"),
     employees: !localStorage.getItem("user_type").includes("finance mngr") ? false : true,
     requests: !localStorage.getItem("user_type").includes("finance mngr") ? true : false,
     dialog: false,
     error: false,
+    search: "",
     dialogDelete: false,
     headers: [
       {
@@ -238,9 +251,7 @@ export default {
       return date >  new Date().toISOString().substr(0, 10)
     },
     retrieve(){
-      console.log('retrieve', this.user_id)
       this.$axios.get("http://localhost:8000/petty_cash_request/" + this.user_id).then(response => {
-        console.log('asjdflkaslkflkasjdf', response)
         this.petty = response.data
       })
       .catch(e => {
@@ -267,13 +278,12 @@ export default {
           date: this.editedItem.date,
           department: this.user_department,
           total_amount: this.editedItem.total_amount,
-          prp_assigned_id: 1
+          finance_mngr_assigned: user_finance
         }
-        console.log('here', params)
         this.$axios.post('http://localhost:8000/petty_cash_request/' + this.editedItem.id, params).then(response=>{
           this.retrieve()
+          this.dialog = false
         })
-        this.dialog = false;
       }else{
         this.error = true;
       }
@@ -296,6 +306,11 @@ export default {
     },
     closeDelete(){
       this.dialogDelete = false
+    },
+    getColor(status) {
+      if (status === 'pending') return '#ffa500'
+      else if (status === 'approved') return 'green'
+      else return 'red'
     }
   }
 };

@@ -107,7 +107,7 @@ export default {
     start_time: null,
     end_time: null,
     error: false,
-    prp_assigned_id: null,
+    prp_assigned_id: localStorage.getItem("assigned_prp_id"),
     reason: null,
     user_id: localStorage.getItem("id")
   }),
@@ -124,24 +124,16 @@ export default {
           start_time: this.start_time,
           end_time: this.end_time,
           reason: this.reason,
-          prp_assigned_id: 1
+          prp_assigned_id: this.prp_assigned_id
         }
         this.$axios.post("http://localhost:8000/overtime_request", parameter).then(res =>{
-          console.log('Successfully Added', res.data)
-          this.retrieve()
+          this.$parent.$parent.$parent.$parent.$parent.retrieve()
+          this.dialog = false
         })
-        this.dialog = false
       }else{
         this.error = true
         this.dialog = true
       }
-    },
-    retrieve(){
-      this.$axios.post("http://localhost:8000/overtime_request/" + this.user_id).then(response =>{
-      })
-      .catch(e => {
-        console.log(e);
-      })
     },
     removeData(){
       this.reason = null,

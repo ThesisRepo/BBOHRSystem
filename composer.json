@@ -14,7 +14,8 @@
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
         "laravel/ui": "^1.2",
-        "nesbot/carbon": "^2.40"
+        "nesbot/carbon": "^2.40",
+        "pusher/pusher-php-server": "^4.1"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
