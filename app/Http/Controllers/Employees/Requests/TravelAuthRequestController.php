@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Eloquent\Implementations\Requests\TravelAuthRequestEloquent;
 use App\Eloquent\Implementations\UserEloquent;
 use App\Eloquent\Implementations\RoleEloquent;
+use App\Services\UserRequestService;
+use App\Services\UserService;
 
 class TravelAuthRequestController extends RequestBaseController
 {
@@ -14,12 +16,14 @@ class TravelAuthRequestController extends RequestBaseController
     public function __construct(
         TravelAuthRequestEloquent $travel_auth_request,
         RoleEloquent $role,
-        UserEloquent $user
+        UserEloquent $user,
+        UserRequestService $user_request_service,
+        UserService $user_service
     ) {
 
         $this->middleware(['auth', 'verify.employee']);  
         $this->travel_auth_request = $travel_auth_request;
-        parent::__construct($role ,$user, $travel_auth_request);
+        parent::__construct($role ,$user, $travel_auth_request,$user_request_service,$user_service);
         parent::setRequestName('travel_auth_request');
     }
 

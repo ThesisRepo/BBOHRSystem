@@ -22,7 +22,7 @@ export default {
     },
     created() {
         this.setUserType();
-        this.listenForChanges();
+        // this.listenForChanges();
     },
     mounted(){
         
@@ -60,11 +60,12 @@ export default {
             localStorage.setItem('user_name', this.user.first_name + " " + this.user.last_name)
             localStorage.setItem('email', this.user.email)
             localStorage.setItem('company_id', this.user.user_information.company_number)
-        },
+        }
         // listenForChanges() {
         // console.log('listening');
-        // Echo.private('newrequest.' + 1)
+        // Echo.private('newrequest.' + this.id)
         //   .listen('NewRequest', notif => {
+        //     console.log('NewRequest', notif)
         //     if (! ('Notification' in window)) {
         //       alert('Web Notification is not supported');
         //       return;
@@ -83,17 +84,6 @@ export default {
         //     });
         //   })
         // }
-        // deaunthenticate(){
-        //     console.log('logging out')
-        //     localStorage.removeItem('usertoken')
-        //     localStorage.removeItem('account_id')
-        //     localStorage.removeItem('google_code')
-        //     localStorage.removeItem('google_scope')
-        //     this.setUserType(null)
-        //     let vue = new Vue()
-        //     vue.APIRequest('authenticate/invalidate')
-        //     ROUTER.go('/')
-        // },
     }
 }
 </script>  
@@ -106,3 +96,4 @@ v-main {
 }
 
 </style>
+
