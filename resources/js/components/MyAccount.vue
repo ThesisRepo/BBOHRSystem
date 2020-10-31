@@ -198,6 +198,7 @@ import updateFinance from "./modals/edit_finance.vue";
 export default {
     data() {
         return {
+            isSelecting: false,
             user_name: localStorage.getItem("user_name"),
             prp_assign: localStorage.getItem("prp_assign"),
             user_id: localStorage.getItem("id"),
@@ -264,7 +265,7 @@ export default {
                 });
         },
         onButtonClick() {
-            this.isSelecting = true;
+            this.isSelecting = false;
             window.addEventListener(
                 "focus",
                 () => {

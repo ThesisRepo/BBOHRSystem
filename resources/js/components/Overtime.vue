@@ -18,7 +18,7 @@
         </v-tabs>
       </template>
     </v-toolbar>
-    <v-data-table v-if="employees" :headers="headers" :items="request" class="elevation-3">
+    <v-data-table v-if="employees" :headers="headers" :items="request" :search="search" class="elevation-3">
       <template v-slot:top>
          <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-col class="mt-8">
@@ -96,6 +96,7 @@
           <v-card-title>
             <span class="headline">Overtime Request Form</span>
           </v-card-title>
+          <v-divider></v-divider>
           <v-card-text>
             <v-container>
             <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
@@ -104,6 +105,7 @@
                   <v-text-field
                     v-model="editedItem.reason"
                     label="Reason"
+                    prepend-icon="mdi-file-document"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
@@ -136,6 +138,7 @@
                   <v-text-field
                     v-model="editedItem.start_time"
                     type="time"
+                    prepend-icon="mdi-timer"
                     label="Start Time"
                   ></v-text-field>
                 </v-col>
@@ -143,6 +146,7 @@
                   <v-text-field
                     v-model="editedItem.end_time"
                     type="time"
+                     prepend-icon="mdi-timer"
                     label="End Time"
                   ></v-text-field>
                 </v-col>
@@ -170,7 +174,7 @@
       </v-card>
     </v-dialog>
             
-    <v-data-table v-if="requests && (!user_type.includes('hr mngr') || !user_type.includes('prp emp') || !user_type.includes ('prp emp'))" :headers="headers" :items="overtime" class="elevation-3">
+    <v-data-table v-if="requests && (!user_type.includes('hr mngr') || !user_type.includes('prp emp') || !user_type.includes ('prp emp'))" :headers="headers" :items="overtime" :search="search" class="elevation-3">
       <template v-slot:top>
       <v-toolbar class="mb-2" color="blue darken-1" dark flat>
         <v-toolbar-title class="col pa-3 py-4 white--text"  style="font-size:16px "
@@ -221,6 +225,7 @@ export default {
       error: false,
       search: null,
       overtime_date: null,
+      search: "",
       dialogDelete: false,
     headers: [
       {

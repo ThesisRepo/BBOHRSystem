@@ -22,7 +22,7 @@ export default {
     },
     created() {
         this.setUserType();
-        this.listenForChanges();
+        // this.listenForChanges();
     },
     mounted(){
         
@@ -84,17 +84,29 @@ export default {
             });
           })
         }
-        // deaunthenticate(){
-        //     console.log('logging out')
-        //     localStorage.removeItem('usertoken')
-        //     localStorage.removeItem('account_id')
-        //     localStorage.removeItem('google_code')
-        //     localStorage.removeItem('google_scope')
-        //     this.setUserType(null)
-        //     let vue = new Vue()
-        //     vue.APIRequest('authenticate/invalidate')
-        //     ROUTER.go('/')
-        // },
+        // listenForChanges() {
+        // console.log('listening');
+        // Echo.private('newrequest.' + this.id)
+        //   .listen('NewRequest', notif => {
+        //     console.log('NewRequest', notif)
+        //     if (! ('Notification' in window)) {
+        //       alert('Web Notification is not supported');
+        //       return;
+        //     }
+        //     console.log('res', notif);
+        //     Notification.requestPermission( permission => {
+        //       let notification = new Notification('New Notificaion from BBO Request Management!', {
+        //         body: notif.message, // content for the alert
+        //         icon: "https://pusher.com/static_logos/320x320.png" // optional image url
+        //       });
+
+        //       // link to page on clicking the notification
+        //       notification.onclick = () => {
+        //         window.open(window.location.href);
+        //       };
+        //     });
+        //   })
+        // }
     }
 }
 </script>  
@@ -107,3 +119,4 @@ v-main {
 }
 
 </style>
+
