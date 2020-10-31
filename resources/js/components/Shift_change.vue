@@ -425,8 +425,12 @@ export default {
     },
     getAllFeedback(){
       this.$axios.get('http://localhost:8000/prp/shift_change_request/feedbacked/' + this.user_id).then(response => {
-        // console.log('Retrieve', response.data)
+        console.log('Retrieve', response.data)
+        if(response.data > 0){
           this.feedbacks = response.data
+        }else{
+          response.data = null
+        }
       })
     }
   }
