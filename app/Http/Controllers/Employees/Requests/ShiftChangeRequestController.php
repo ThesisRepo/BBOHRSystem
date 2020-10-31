@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Eloquent\Implementations\Requests\ShiftChangeRequestEloquent;
 use App\Eloquent\Implementations\UserEloquent;
 use App\Eloquent\Implementations\RoleEloquent;
+use App\Services\UserRequestService;
+use App\Services\UserService;
 
 class ShiftChangeRequestController extends RequestBaseController
 {
@@ -14,12 +16,14 @@ class ShiftChangeRequestController extends RequestBaseController
     public function __construct(
         ShiftChangeRequestEloquent $shift_change_request,
         RoleEloquent $role,
-        UserEloquent $user
+        UserEloquent $user,
+        UserRequestService $user_request_service,
+        UserService $user_service
     ) {
 
         $this->middleware(['auth', 'verify.employee']);  
         $this->shift_change_request = $shift_change_request;
-        parent::__construct($role ,$user, $shift_change_request);
+        parent::__construct($role ,$user, $shift_change_request, $user_request_service, $user_service);
         parent::setRequestName('shift_change_request');
     }
 

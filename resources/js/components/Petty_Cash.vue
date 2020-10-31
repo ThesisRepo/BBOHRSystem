@@ -18,7 +18,7 @@
         </v-tabs>
       </template>
     </v-toolbar>
-    <v-data-table v-if="employees" :headers="headers" :items="petty" class="elevation-3">
+    <v-data-table v-if="employees" :headers="headers" :items="petty" :search="search" class="elevation-3">
       <template v-slot:top>
          <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-col class="mt-8">
@@ -96,6 +96,7 @@
         <v-card-title>
           <span class="headline">Petty Cash Request Form</span>
         </v-card-title>
+        <v-divider></v-divider>
         <v-card-text>
           <v-container>
             <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
@@ -103,7 +104,8 @@
               <v-col cols="12" sm="6" md="12">
                 <v-text-field
                   v-model="editedItem.description_need"
-                  label="Description of Need"
+                  prepend-icon=" mdi-file-document"
+                  label="Purpose"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
@@ -137,6 +139,7 @@
                   v-model="editedItem.total_amount"
                   type="number"
                   label="Total Amount"
+                  prepend-icon=" mdi-calculator"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -164,7 +167,7 @@
     </v-dialog>
 
     <!-- MyRequests -->
-    <v-data-table v-if="requests && (!user_type.includes('hr mngr') || !user_type.includes('prp emp') || user_type.includes('prp emp'))" :headers="headers" :items="petty" class="elevation-3">
+    <v-data-table v-if="requests && (!user_type.includes('hr mngr') || !user_type.includes('prp emp') || user_type.includes('prp emp'))" :headers="headers" :items="petty" :search="search" class="elevation-3">
       <template v-slot:top>
       <v-toolbar class="mb-2" color="blue darken-1" dark flat>
         <v-toolbar-title class="col pa-3 py-4 white--text"  style="font-size:16px "
@@ -210,6 +213,7 @@ export default {
     requests: !localStorage.getItem("user_type").includes("finance mngr") ? true : false,
     dialog: false,
     error: false,
+    search: "",
     dialogDelete: false,
     headers: [
       {

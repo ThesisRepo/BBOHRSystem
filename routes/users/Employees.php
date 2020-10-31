@@ -166,3 +166,6 @@ Route::post('travel_auth_request/{id}','Requests\TravelAuthRequestController@upd
 
 // delete travel authorization request
 Route::delete('travel_auth_request/{id}','Requests\TravelAuthRequestController@delete')->name('travel_auth_request.delete');
+
+// submit multiple file
+// Route::post('submit_multiple_files/{id}','UserInformationController@updateProfileImg')->name('user_info.update_profile_img');

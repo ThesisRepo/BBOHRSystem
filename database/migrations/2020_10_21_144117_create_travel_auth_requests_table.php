@@ -19,7 +19,6 @@ class CreateTravelAuthRequestsTable extends Migration
             $table->string('destination');
             $table->date('start_date');
             $table->date('end_date');
-            $table->string('details');
             $table->string('emergency_contact');
             $table->string('employee_to_cover');
             $table->string('file_uri')->nullable();

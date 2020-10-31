@@ -102,7 +102,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Requests\ShiftChangeRequest::class);
     }
 
-    public function feedbacked_shift_change_equests() {
+    public function feedbacked_shift_change_requests() {
         return $this->morphedByMany(Requests\ShiftChangeRequest::class, 'recordable');
     }
 

@@ -9,17 +9,20 @@
           v-if="user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr')"
         >
           <v-tabs-slider></v-tabs-slider>
-          <v-tab @click="employees = false, requests = true">
+          <v-tab @click="employees = false, requests = true, feedback = false">
             My Requests
           </v-tab>
-          <v-tab @click="requests = false, employees = true">
+          <v-tab @click="requests = false, employees = true, feedback = false">
             Employees Requests 
+          </v-tab>
+          <v-tab @click="requests = false, employees = false, feedback = true">
+            Feedback 
           </v-tab>
         </v-tabs>
       </template>
     </v-toolbar>
-    <!-- //Pending Requests -->
-    <v-data-table v-if="employees" :headers="headersEmp" :items="prpPending" class="elevation-3">
+    <!-- Feedback -->
+    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-col class="mt-8">
@@ -40,11 +43,54 @@
       <template v-slot:item.status.status_name="{ item }">
         <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name}}</v-chip>
       </template>
+    </v-data-table>
+
+
+    <!-- //Pending Requests -->
+    <v-data-table v-if="employees" :headers="headersEmp" :items="prpPending" class="elevation-3">
+      <template v-slot:top>
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+          <v-col class="mt-8">
+            <v-select :items="month" label="Month"></v-select>
+          </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <v-btn depressed color="primary">SUMMARY</v-btn>
+          <v-divider class="mx-4" vertical></v-divider>
+          <v-spacer></v-spacer>
+          <v-text-field v-model="search" label="Search" single-line hide-details class="mx-5"></v-text-field>
+        </v-toolbar>
+      </template>
+      <template v-slot:item.status.status_name="{ item }">
+        <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name}}</v-chip>
+      </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)">mdi-check-decagram</v-icon>
-        <v-icon small @click="deleteItem(item)">mdi-close-circle</v-icon>
+        <v-icon small class="mr-2" @click="approveModal(item)">mdi-check-decagram</v-icon>
+        <v-icon small @click="disapproveModal(item)">mdi-close-circle</v-icon>
       </template>
     </v-data-table>
+
+    <v-dialog v-model="dialogConfirm" max-width="500px">
+      <v-card>
+        <v-card-title class="headline">Are you sure you want to approve?</v-card-title>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="closeApprove">Cancel</v-btn>
+          <v-btn color="blue darken-1" text @click="approve">OK</v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="dialogDisapprove" max-width="500px">
+      <v-card>
+        <v-card-title class="headline">Are you sure you want to reject?</v-card-title>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="closeReject">Cancel</v-btn>
+          <v-btn color="blue darken-1" text @click="disapprove">OK</v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <!-- End of Table -->
 
     <!-- Edit Modal -->
@@ -76,7 +122,10 @@
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
-                <span v-if="error2" style="color: red; font-style: italic">Start date must not be higher than End date!</span>
+                <span
+                  v-if="error2"
+                  style="color: red; font-style: italic"
+                >Start date must not be higher than End date!</span>
                 <v-menu
                   :close-on-content-click="true"
                   transition="scale-transition"
@@ -104,7 +153,10 @@
                 </v-menu>
               </v-col>
               <v-col cols="12" sm="6" md="6">
-                <span v-if="error1" style="color: red; font-style: italic">End date must be higher than start date!</span>
+                <span
+                  v-if="error1"
+                  style="color: red; font-style: italic"
+                >End date must be higher than start date!</span>
                 <v-menu
                   :close-on-content-click="true"
                   transition="scale-transition"
@@ -155,30 +207,30 @@
       </v-card>
     </v-dialog>
 
-    <v-data-table v-if="requests && (!user_type.includes('hr mngr') || !user_type.includes('prp mngr') || !user_type.includes('prp emp'))" :headers="headers" :items="request" class="elevation-3">
+    <v-data-table
+      v-if="requests && (!user_type.includes('hr mngr') || !user_type.includes('prp mngr') || !user_type.includes('prp emp'))"
+      :headers="headers"
+      :items="request"
+      class="elevation-3"
+    >
       <template v-slot:top>
-      <v-toolbar class="mb-2" color="blue darken-1" dark flat>
-        <v-toolbar-title class="col pa-3 py-4 white--text"
-          >LEAVE REQUEST</v-toolbar-title
-        >
-        <v-text-field
-          v-model="search"
-          clearable
-          flat
-          solo-inverted
-          hide-details
-          prepend-inner-icon="mdi-magnify"
-          label="Search"
-        ></v-text-field>
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+          <v-toolbar-title class="col pa-3 py-4 white--text">LEAVE REQUEST</v-toolbar-title>
+          <v-text-field
+            v-model="search"
+            clearable
+            flat
+            solo-inverted
+            hide-details
+            prepend-inner-icon="mdi-magnify"
+            label="Search"
+          ></v-text-field>
 
-        <createLeave
-        v-if="prp_assigned_id !== 'No Prp assign'"
-        ></createLeave>
+          <createLeave v-if="prp_assigned_id !== 'No Prp assign'"></createLeave>
 
-        <h4 v-if="prp_assigned_id === 'No Prp assign'">bolbol</h4>
-
-      </v-toolbar>
-    </template>
+          <h4 v-if="prp_assigned_id === 'No Prp assign'">bolbol</h4>
+        </v-toolbar>
+      </template>
       <template v-slot:item.status.status_name="{ item }">
         <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name}}</v-chip>
       </template>
@@ -199,6 +251,7 @@ export default {
     prp_assigned_id: localStorage.getItem("assigned_prp_id"),
     employees: !(localStorage.getItem('user_type')).includes('finance mngr') ? false : true,
     requests: !(localStorage.getItem('user_type')).includes('finance mngr') ? true : false,
+    feedback: !(localStorage.getItem('user_type')).includes('finance mngr') ? false : true,
     dialog: false,
     error: false,
     error1: false,
@@ -206,6 +259,8 @@ export default {
     disable: false,
     end_date: null,
     dialogDelete: false,
+    dialogConfirm: false,
+    dialogDisapprove: false,
     start_date: null,
     search: null,
     headers: [
@@ -231,8 +286,18 @@ export default {
       { text: "STATUS", value: "status.status_name" },
       { text: "ACTIONS", value: "actions", sortable: false }
     ],
+    headersFeed: [
+      { text: "REQUESTER", align: "start", value: "user.first_name" },
+      { text: "TYPE OF LEAVE", value: "leave_type.leave_type_name" },
+      { text: "TOTAL DAY/S LEAVE", value: "number_of_days" },
+      { text: "START DATE", value: "start_date" },
+      { text: "END DATE", value: "end_date" },
+      { text: "APPROVER", value: "approver_role.role_name" },
+      { text: "STATUS", value: "status_id" }
+    ],
     request: [],
     prpPending: [],
+    feedbacks: [],
     editedIndex: null,
     prp: null,
     total_days: null,
@@ -244,13 +309,28 @@ export default {
       start_date: null,
       end_date: null
     },
-    month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-    leaveType: [{value:1, name:'Sick Leave'}, 
-      {value: 2, name:'Solo Parent Leave'}, 
-      {value: 3, name:'Vacation Leave'}, 
-      {value: 4, name:'Emergency Leave'}, 
-      {value: 5, name:'Paternity Leave'},
-      {value: 6, name:'Maternity Leave'}]
+    month: [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ],
+    leaveType: [
+      { value: 1, name: "Sick Leave" },
+      { value: 2, name: "Solo Parent Leave" },
+      { value: 3, name: "Vacation Leave" },
+      { value: 4, name: "Emergency Leave" },
+      { value: 5, name: "Paternity Leave" },
+      { value: 6, name: "Maternity Leave" }
+    ]
   }),
   components: {
     createLeave
@@ -259,61 +339,77 @@ export default {
     if(this.user_type.includes('hr mngr') || this.user_type.includes('prp emp') || this.user_type.includes('general mngr')){
       this.retrievePendingPrp()
       this.retrieve()
+      this.getAllFeedback()
     }else{
       this.retrieve()
     }
   },
   methods: {
-    changeDate(){
-      if(this.editedItem.start_date !== null && this.editedItem.start_date !== ''){
-        let start = moment(String(this.editedItem.start_date))
-        let end = moment(String(this.editedItem.end_date))
-        if(end >= start){
-          let diff = (end.diff(start))
-          let differenceInDay = ((((diff/1000)/60)/60)/24)
-          this.editedItem.total_days = differenceInDay
-          this.total_days_with_text = differenceInDay + ' days of leave'
-          this.error1 = false
-          this.error2 = false
-        }else{
-          this.error1 = true
-          this.error2 = true
+    changeDate() {
+      if (
+        this.editedItem.start_date !== null &&
+        this.editedItem.start_date !== ""
+      ) {
+        let start = moment(String(this.editedItem.start_date));
+        let end = moment(String(this.editedItem.end_date));
+        if (end >= start) {
+          let diff = end.diff(start);
+          let differenceInDay = diff / 1000 / 60 / 60 / 24;
+          this.editedItem.total_days = differenceInDay;
+          this.total_days_with_text = differenceInDay + " days of leave";
+          this.error1 = false;
+          this.error2 = false;
+        } else {
+          this.error1 = true;
+          this.error2 = true;
         }
-        this.disable = false
-      }else{
-        this.disable = true
+        this.disable = false;
+      } else {
+        this.disable = true;
       }
     },
-    retrieve(){
-      this.$axios.get("http://localhost:8000/leave_request/" + this.user_id).then(response => {
-        this.request = response.data
-      })
-      .catch(e => {
-        console.log(e);
-      })
+    retrieve() {
+      this.$axios
+        .get("http://localhost:8000/leave_request/" + this.user_id)
+        .then(response => {
+          this.request = response.data;
+        })
+        .catch(e => {
+          console.log(e);
+        });
     },
-    retrievePendingPrp(){
-      this.$axios.get("http://localhost:8000/prp/leave_request/pending/" + this.user_id).then(response => {
-        this.prpPending = response.data
-      })
-      .catch(e => {
-        console.log(e);
-      })
+    retrievePendingPrp() {
+      this.$axios
+        .get("http://localhost:8000/prp/leave_request/pending/" + this.user_id)
+        .then(response => {
+          this.prpPending = response.data;
+        })
+        .catch(e => {
+          console.log(e);
+        });
     },
     editItem(item) {
-      this.editedItem.id = item.id
-      this.editedIndex = this.request.indexOf(item)
-      this.editedItem.selectedLeaveType = item.leave_type_id
-      this.editedItem.total_days = item.number_of_days
-      this.total_days_with_text = item.number_of_days + ' days of leave'
-      this.editedItem.start_date = item.start_date
-      this.editedItem.end_date = item.end_date
+      this.editedItem.id = item.id;
+      this.editedIndex = this.request.indexOf(item);
+      this.editedItem.selectedLeaveType = item.leave_type_id;
+      this.editedItem.total_days = item.number_of_days;
+      this.total_days_with_text = item.number_of_days + " days of leave";
+      this.editedItem.start_date = item.start_date;
+      this.editedItem.end_date = item.end_date;
       this.dialog = true;
     },
     save() {
-      if(this.editedItem.selectedLeaveType !== null && this.editedItem.total_days !== null
-      && this.editedItem.start_date !== null && this.editedItem.end_date !== null && this.editedItem.selectedLeaveType !== '' && this.editedItem.total_days !== ''
-      && this.editedItem.start_date !== '' && this.editedItem.end_date !== '' && this.error2 === false) {
+      if (
+        this.editedItem.selectedLeaveType !== null &&
+        this.editedItem.total_days !== null &&
+        this.editedItem.start_date !== null &&
+        this.editedItem.end_date !== null &&
+        this.editedItem.selectedLeaveType !== "" &&
+        this.editedItem.total_days !== "" &&
+        this.editedItem.start_date !== "" &&
+        this.editedItem.end_date !== "" &&
+        this.error2 === false
+      ) {
         let params = {
           id: this.editedItem.id,
           leave_type_id: this.editedItem.selectedLeaveType,
@@ -321,45 +417,98 @@ export default {
           start_date: this.editedItem.start_date,
           end_date: this.editedItem.end_date,
           prp_assigned_id: this.prp_assigned_id
-        }   
-        this.$axios.post('http://localhost:8000/leave_request/' + this.editedItem.id, params).then(response=>{
-          this.retrieve()
-        })
-        this.dialog = false
-      }else{
-        this.error = true
+        };
+        this.$axios
+          .post(
+            "http://localhost:8000/leave_request/" + this.editedItem.id,
+            params
+          )
+          .then(response => {
+            this.retrieve();
+          });
+        this.dialog = false;
+      } else {
+        this.error = true;
       }
     },
     disabledDates(date) {
-      return date >  new Date().toISOString().substr(0, 10)
+      return date > new Date().toISOString().substr(0, 10);
     },
     disabledDates2(date) {
-      return date >  new Date(this.editedItem.start_date).toISOString().substr(0, 10)
+      return (
+        date > new Date(this.editedItem.start_date).toISOString().substr(0, 10)
+      );
       this.differenceDates();
     },
 
     deleteItem(item) {
-      this.id = item.id
+      this.id = item.id;
       this.dialogDelete = true;
     },
     deleteItemConfirm() {
-      this.$axios.delete('http://localhost:8000/leave_request/' + this.id).then(response=>{
-        console.log('Successfully deleted')
-        this.retrieve()
-        this.dialogDelete = false
-      })
+      this.$axios
+        .delete("http://localhost:8000/leave_request/" + this.id)
+        .then(response => {
+          console.log("Successfully deleted");
+          this.retrieve();
+          this.dialogDelete = false;
+        });
     },
-    close(){
-      this.dialog = false
+    close() {
+      this.dialog = false;
     },
-    closeDelete(){
-      this.dialogDelete = false
+    closeDelete() {
+      this.dialogDelete = false;
     },
     getColor(status) {
-      if (status === 'pending') return '#ffa500'
-      else if (status === 'approved') return 'green'
-      else return 'red'
+      if (status === "pending") return "#ffa500";
+      else if (status === "approved") return "green";
+      else return "red";
+    },
+    approveModal(item) {
+      this.id = item.id;
+      this.dialogConfirm = true;
+    },
+    disapproveModal(item) {
+      this.id = item.id;
+      this.dialogDisapprove = true;
+    },
+    closeApprove() {
+      this.dialogConfirm = false;
+    },
+    closeReject() {
+      this.dialogDisapprove = false;
+    },
+    approve() {
+      let parameter = {
+        user_id: this.user_id,
+        status_id: 1
+      }
+      this.$axios.post('http://localhost:8000/prp/leave_request/feedback/' + this.id, parameter).then(response =>{
+        console.log('Approve', response.data)
+        this.retrievePendingPrp()
+        this.getAllFeedback()
+        this.closeApprove()
+      })
+    },
+    disapprove(){
+      let parameter = {
+        user_id: this.user_id,
+        status_id: 3
+      }
+      this.$axios.post('http://localhost:8000/prp/leave_request/feedback/' + this.id, parameter).then(res =>{
+        console.log('Disapprovve', res.data)
+        this.retrievePendingPrp()
+        this.getAllFeedback()
+        this.closeReject()
+      })
+    },
+    getAllFeedback(){
+      this.$axios.get('http://localhost:8000/prp/leave_request/feedbacked/' + this.user_id).then(response => {
+        console.log('Retrieve', response.data.feedbacked_leave_requests)
+        this.feedbacks = response.data.feedbacked_leave_requests
+      })
     }
   }
-}
+};
 </script>
