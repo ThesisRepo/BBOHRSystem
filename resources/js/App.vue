@@ -58,6 +58,12 @@ export default {
             localStorage.setItem('email', this.user.email)
             localStorage.setItem('company_id', this.user.user_information.company_number)
         }
+
+        // logout(evt) {
+
+        // }
+
+
     }
 }
 </script>  

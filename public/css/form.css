@@ -1,3 +1,14 @@
+.col, .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, 
+.col-11, .col-12, .col-auto, .col-lg, .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5,
+.col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-auto, 
+.col-md, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, 
+.col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12, .col-md-auto, .col-sm, .col-sm-1, 
+.col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, 
+.col-sm-10, .col-sm-11, .col-sm-12, .col-sm-auto, .col-xl, .col-xl-1, .col-xl-2, .col-xl-3, 
+.col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-10, .col-xl-11, 
+.col-xl-12, .col-xl-auto {
+    padding: 1px !important;
+}
 .input-group {
     border-radius: 25px;
 }
@@ -5,17 +16,22 @@
 .left {
   float:left;
   /* padding: 0.375rem 0.75rem !important; */
-  padding: .50rem .40rem !important;
+  padding: .55rem .80rem !important;
 
 }
 
 .right {
   float:right;
+  padding: .10rem .10rem !important;
 }
 
 .card .md-form label {
   font-weight:400 !important;
+
 }
+
+
+
 
 .md-form label {
   position:absolute !important;
@@ -134,21 +150,12 @@ box-sizing: border-box !important;
     }
 }
 
-.pb-4, .py-4 {
-    padding-bottom: 5rem!important;
-}
-
-
-.pt-4,
-.py-4 {
-  padding-top: 5rem!important;
-}
 
 @media (min-width: 768px) {
     .col-md-8 {
-        flex: 50% !important;
-        max-width: 50% !important;
-        margin-top: 4rem!important;
+        /* flex: 50% !important; */
+        max-width: 45% !important;
+        
     }
 }
   
@@ -170,11 +177,17 @@ box-sizing: border-box !important;
     border: 0;
     border-radius: .125rem;
     transition: color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out,-webkit-box-shadow 0.15s ease-in-out;
-    padding: .50rem .40rem !important;
-    font-size: .81rem;
+    padding: .30rem .35rem !important;
+    font-size: .80rem !important;
+  
 }    
 
 img .float-left {
     float:left !important;
     margin-right: -100px !important;
+}
+
+.form-check-label {
+    font-size: small;
+    
 }
