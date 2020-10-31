@@ -63,8 +63,9 @@ export default {
         },
         listenForChanges() {
         console.log('listening');
-        Echo.private('newrequest.' + 1)
+        Echo.private('newrequest.' + this.id)
           .listen('NewRequest', notif => {
+            console.log('NewRequest', notif)
             if (! ('Notification' in window)) {
               alert('Web Notification is not supported');
               return;
