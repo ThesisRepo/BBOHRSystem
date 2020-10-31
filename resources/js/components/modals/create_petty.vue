@@ -19,16 +19,14 @@
         <v-card-title>
           <span class="headline">Petty Cash Request Form</span>
         </v-card-title>
-        <v-divider></v-divider>
         <v-card-text>
           <v-container>
-            <span v-if="error" style="color: red; font-size:15px">All data are required</span>
+            <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
             <v-row>
               <v-col cols="12">
                 <v-text-field
-                  label="Purpose*"
+                  label="Description of Need*"
                   v-model="description_need"
-                  prepend-icon=" mdi-file-document"
                   required
                 ></v-text-field>
               </v-col>
@@ -63,32 +61,16 @@
                   label="Total Amount*"
                   type="number"
                   v-model="total_amount"
-                  prepend-icon=" mdi-calculator"
                   required
                 ></v-text-field>
               </v-col>
-             <v-col cols="12">
-                <v-select
-                :items="[
-                  'Jocel Redotco Mendoza',
-                  'Fenella Corinne Real Rosales',
-                  'Cielo Fe Sasing',
-                  'April Claire Chagas Podador',
-                  'Nathaniel Cala Terdes',
-                  'Carl Wyner Velasco Javier',
-                ]"
-                label="PRP in Charge*"
-                prepend-icon=" mdi-account-outline"
-                v-model="prp_assigned_id"
-                required
-              ></v-select>
-              </v-col>
             </v-row>
           </v-container>
+          <small>*indicates required field</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="hideModal()">
+          <v-btn color="blue darken-1" text @click="dialog = false">
             Close
           </v-btn>
           <v-btn color="blue darken-1" text @click="createPetty()">
@@ -104,7 +86,7 @@ export default {
   data: () => ({
     dialog: false,
     error: false,
-    prp_assigned_id: null,
+    user_finance: localStorage.getItem("user_finance"),
     date: null,
     department: null,
     description_need: null,
@@ -118,10 +100,6 @@ export default {
     disabledDates(date) {
       return date > new Date().toISOString().substr(0, 10);
     },
-     hideModal() {
-            this.dialog = false;
-            this.error = false;
-        },
     createPetty(){
       if(this.date !== null && this.description_need !== null &&
       this.total_amount !== null && this.date !== '' && this.description_need !== '' &&
@@ -132,14 +110,13 @@ export default {
           description_need: this.description_need,
           department_id: this.user_department,
           total_amount: this.total_amount,
-          prp_assigned_id: 1
+          finance_mngr_assigned: user_finance
         }
         this.$axios.post("http://localhost:8000/petty_cash_request", parameter).then(res =>{
           console.log('Successfully Added', res.data)
           this.$parent.$parent.$parent.$parent.$parent.retrieve()
         })
         this.dialog = false
-        this.error = false
       }else{
         this.error = true
         this.dialog = true
@@ -148,9 +125,8 @@ export default {
     removeData(){
       this.date = null,
       this.description_need = null,
-      this.total_amount = null,
-      this.prp_assigned_id = null
+      this.total_amount = null
     }
   }
-};
+}
 </script>

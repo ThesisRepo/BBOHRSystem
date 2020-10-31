@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Eloquent\Implementations\Requests\LeaveRequestEloquent;
 use App\Eloquent\Implementations\UserEloquent;
 use App\Eloquent\Implementations\RoleEloquent;
+use App\Services\UserRequestService;
+use App\Services\UserService;
 
 class LeaveRequestController extends RequestBaseController
 {
@@ -15,18 +17,17 @@ class LeaveRequestController extends RequestBaseController
     public function __construct(
         LeaveRequestEloquent $leave_request,
         RoleEloquent $role, 
-        UserEloquent $user
+        UserEloquent $user,
+        UserRequestService $user_request_service,
+        UserService $user_service
     ) {
 
         $this->middleware(['auth', 'verify.employee']);  
         $this->leave_request = $leave_request;
-        parent::__construct($role,$user, $leave_request);
+        parent::__construct($role,$user, $leave_request, $user_request_service, $user_service);
         parent::setRequestName('leave_request');
+
     }
-    
-    // public function index($id) {
-    //     return $this->leave_request->getWhere('user_id', $id);
-    // }
 
     public function store(Request $request) {
 
@@ -42,7 +43,9 @@ class LeaveRequestController extends RequestBaseController
             'approver_role_id'=> $this->nextApproverId($request->user_id),
             'status_id'=> 1
         ];
-        return $this->storeRequest($requestData, $prp_assigned_id);
+        $res = $this->storeRequest($requestData, $prp_assigned_id);
+
+        return $res;
 
     }
 
@@ -59,15 +62,25 @@ class LeaveRequestController extends RequestBaseController
             'end_date'=> $request->end_date,
             'number_of_days'=> $request->number_of_days
         ];
-        
-        return $this->updateRequest($current_leave_request, $requestData, $id, $prp_assigned_id);        
+        $res = $this->updateRequest($current_leave_request, $requestData, $id, $prp_assigned_id);
+
+        return $res;  
+
     }
 
     public function show( $id) {
-        return $this->showRequest('user_id', $id, ['leave_type', 'status', 'approver_role']);
+
+        $res =  $this->showRequest('user_id', $id, ['leave_type', 'status', 'approver_role']);
+
+        return $res;  
+
     }
 
     public function delete( $id) {
-        return $this->deleteRequest($id);
+
+        $res =  $this->deleteRequest($id);
+
+        return $res;  
+
     }
 }

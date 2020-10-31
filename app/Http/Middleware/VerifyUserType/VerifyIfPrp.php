@@ -16,11 +16,11 @@ class VerifyIfPrp
      */
     public function handle($request, Closure $next)
     {
-        if(!in_array('prp', $request->user()->roles->pluck('role_name')->toArray())) {
+        if(!in_array('prp emp', $request->user()->roles->pluck('role_name')->toArray())) {
             if($request->wantsJSON()) {
                 return response()->json(['Message', 'opps! your not authorized'], 403);
             }
-            abort(403, 'opps! your not authorized');
+            abort(403, 'opps! your not authorized as a prp');
         }
         return $next($request);
     }

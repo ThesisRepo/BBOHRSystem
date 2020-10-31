@@ -19,7 +19,7 @@ class VerifyIfEmployee
             if($request->wantsJSON()) {
                 return response()->json(['Message', 'opps! your not authorized'], 403);
             }
-            abort(403, 'opps! your not authorized');
+            abort(403, 'opps! your not authorized as employee');
         }
         return $next($request);
     }

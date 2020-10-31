@@ -16,7 +16,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password','prp_assigned'
+        'first_name', 'last_name', 'email', 'password','prp_assigned', 'finance_mngr_assigned'
     ];
 
     /**
@@ -52,7 +52,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @return \Illuminate\Database\Eloquent\Relations\hasMany
      */
     public function subordinates() {
-        return $this->hasMany('__CLASS__', 'prp_assigned');
+        return $this->hasMany(__CLASS__, 'prp_assigned');
     }
 
     /**
@@ -61,7 +61,20 @@ class User extends Authenticatable implements MustVerifyEmail
      * @return \Illuminate\Database\Eloquent\Relations\belongsTo
      */
     public function assignedPrp() {
-        return $this->belongsTo('__CLASS__', 'prp_assigned');
+        return $this->belongsTo(__CLASS__, 'prp_assigned');
+    }
+
+    public function subordinatesFinance() {
+        return $this->hasMany(__CLASS__, 'finance_mngr_assigned');
+    }
+
+    /**
+     * relationship of a pr and their subordinates
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\belongsTo
+     */
+    public function assignedFinance() {
+        return $this->belongsTo(__CLASS__, 'finance_mngr_assigned');
     }
 
     /**
@@ -77,16 +90,16 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Requests\LeaveRequest::class);
     }
 
-    public function approved_leave_requests() {
-        return $this->morphByMany(Requests\LeaveRequest::class, 'approved_request_records');
+    public function feedbacked_leave_requests() {
+        return $this->morphedByMany(Requests\LeaveRequest::class, 'recordable');
     }
 
     public function shift_change_requests() {
         return $this->hasMany(Requests\ShiftChangeRequest::class);
     }
 
-    public function approved_shift_change_equests() {
-        return $this->morphByMany(Requests\ShiftChangeRequest::class, 'approved_request_records');
+    public function feedbacked_shift_change_equests() {
+        return $this->morphedByMany(Requests\ShiftChangeRequest::class, 'recordable');
     }
 
     public function overtime_requests() {
@@ -94,7 +107,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     public function approved_overtime_requests() {
-        return $this->morphByMany(Requests\OvertimeRequest::class, 'approved_request_records');
+        return $this->morphedByMany(Requests\OvertimeRequest::class, 'recordable');
     }
 
     public function petty_cash_requests() {
@@ -102,7 +115,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     public function approved_petty_cash_requests() {
-        return $this->morphByMany(Requests\PettyCashRequest::class, 'approved_request_records');
+        return $this->morphedByMany(Requests\PettyCashRequest::class, 'recordable');
     }
 
     public function budget_requests() {

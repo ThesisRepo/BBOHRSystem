@@ -281,19 +281,6 @@
                     <v-img :src="file_uri" width="500"></v-img>
                 </v-card>
                 <br>
-                <!-- <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn
-                        color="blue darken-1"
-                        text
-                        @click="fileDialog = false"
-                        >BACK</v-btn
-                    >
-                    <v-btn color="blue darken-1" text @click="submitFiles()"
-                        >EDIT</v-btn
-                    >
-                    <v-spacer></v-spacer>
-                </v-card-actions>  -->
             </v-card>
         </v-dialog>
 
