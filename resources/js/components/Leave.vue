@@ -9,15 +9,43 @@
           v-if="user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr')"
         >
           <v-tabs-slider></v-tabs-slider>
-          <v-tab @click="employees = false, requests = true">
+          <v-tab @click="employees = false, requests = true, feedback = false">
             My Requests
           </v-tab>
-          <v-tab @click="requests = false, employees = true">
+          <v-tab @click="requests = false, employees = true, feedback = false">
             Employees Requests 
+          </v-tab>
+          <v-tab @click="requests = false, employees = false, feedback = true">
+            Feedback 
           </v-tab>
         </v-tabs>
       </template>
     </v-toolbar>
+    <!-- Feedback -->
+    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" class="elevation-3">
+      <template v-slot:top>
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+          <v-col class="mt-8">
+            <v-select :items="month" label="Month"></v-select>
+          </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <v-btn depressed color="primary">SUMMARY</v-btn>
+          <v-divider class="mx-4" vertical></v-divider>
+          <v-spacer></v-spacer>
+          <v-text-field
+            v-model="search"
+            label="Search"
+            single-line
+            hide-details
+            class="mx-5"
+          ></v-text-field>
+        </v-toolbar>
+      </template>
+      <template v-slot:item.status.status_name="{ item }">
+        <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name}}</v-chip>
+      </template>
+    </v-data-table>
+
+
     <!-- //Pending Requests -->
     <v-data-table v-if="employees" :headers="headersEmp" :items="prpPending" class="elevation-3">
       <template v-slot:top>
@@ -223,6 +251,7 @@ export default {
     prp_assigned_id: localStorage.getItem("assigned_prp_id"),
     employees: !(localStorage.getItem('user_type')).includes('finance mngr') ? false : true,
     requests: !(localStorage.getItem('user_type')).includes('finance mngr') ? true : false,
+    feedback: !(localStorage.getItem('user_type')).includes('finance mngr') ? false : true,
     dialog: false,
     error: false,
     error1: false,
@@ -257,8 +286,18 @@ export default {
       { text: "STATUS", value: "status.status_name" },
       { text: "ACTIONS", value: "actions", sortable: false }
     ],
+    headersFeed: [
+      { text: "REQUESTER", align: "start", value: "user.first_name" },
+      { text: "TYPE OF LEAVE", value: "leave_type.leave_type_name" },
+      { text: "TOTAL DAY/S LEAVE", value: "number_of_days" },
+      { text: "START DATE", value: "start_date" },
+      { text: "END DATE", value: "end_date" },
+      { text: "APPROVER", value: "approver_role.role_name" },
+      { text: "STATUS", value: "status_id" }
+    ],
     request: [],
     prpPending: [],
+    feedbacks: [],
     editedIndex: null,
     prp: null,
     total_days: null,
@@ -285,6 +324,7 @@ export default {
     if(this.user_type.includes('hr mngr') || this.user_type.includes('prp emp') || this.user_type.includes('general mngr')){
       this.retrievePendingPrp()
       this.retrieve()
+      this.getAllFeedback()
     }else{
       this.retrieve()
     }
@@ -405,14 +445,30 @@ export default {
         user_id: this.user_id,
         status_id: 1
       }
-      this.$axios.post('http://localhost:8000/prp/leave_request/feedback/' + this.id, parameter).then(response=>{
+      this.$axios.post('http://localhost:8000/prp/leave_request/feedback/' + this.id, parameter).then(response =>{
         console.log('Approve', response.data)
         this.retrievePendingPrp()
+        this.getAllFeedback()
         this.closeApprove()
       })
     },
     disapprove(){
-
+      let parameter = {
+        user_id: this.user_id,
+        status_id: 3
+      }
+      this.$axios.post('http://localhost:8000/prp/leave_request/feedback/' + this.id, parameter).then(res =>{
+        console.log('Disapprovve', res.data)
+        this.retrievePendingPrp()
+        this.getAllFeedback()
+        this.closeReject()
+      })
+    },
+    getAllFeedback(){
+      this.$axios.get('http://localhost:8000/prp/leave_request/feedbacked/' + this.user_id).then(response => {
+        console.log('Retrieve', response.data.feedbacked_leave_requests)
+        this.feedbacks = response.data.feedbacked_leave_requests
+      })
     }
   }
 }
