@@ -19,11 +19,12 @@ class CreateShiftChangeRequestsTable extends Migration
             $table->UnsignedBigInteger('department_id');
             $table->string('reason');
             $table->date('shift_date');
-            $table->string('shift_time');
+            $table->UnsignedBigInteger('shift_time_id');
             $table->UnsignedBigInteger('approver_role_id');
             $table->UnsignedBigInteger('status_id')->default(1);
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('shift_time_id')->references('id')->on('shift_times')->onDelete('cascade');
             $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
             $table->foreign('approver_role_id')->references('id')->on('roles')->onDelete('cascade');            
             $table->foreign('status_id')->references('id')->on('status')->onDelete('cascade');

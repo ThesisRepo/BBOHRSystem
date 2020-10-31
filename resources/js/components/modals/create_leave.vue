@@ -24,24 +24,20 @@
                 <v-divider></v-divider>
                 <v-card-text>
                     <v-container>
-                        <!-- <span v-if="error" style="color: red; font-size: 15px"
-                            >All data are required!</span
-                        > -->
+                        <span v-if="error" style="color: red; font-size: 15px"
+                            >All data are required</span
+                        >
                         <v-row>
                             <v-col cols="12">
                                 <v-select
                                     :items="leaveType"
+                                    prepend-icon="mdi-file-document"
                                     label="Type of Leave*"
                                     v-model="selectedLeaveType"
                                     item-text="name"
                                     item-value="value"
                                     required
                                 ></v-select>
-                                <span
-                                    v-if="error"
-                                    style="color: red; font-size: 12px"
-                                    >Type of Leave is Required</span
-                                >
                             </v-col>
 
                             <v-col cols="12" sm="4">
@@ -54,6 +50,7 @@
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-text-field
                                             v-model="start_date"
+                                            prepend-icon=" mdi-calendar"
                                             label="Start Date"
                                             readonly
                                             v-bind="attrs"
@@ -70,19 +67,13 @@
                                         @change="changeDate()"
                                     ></v-date-picker>
                                 </v-menu>
-                                
+
                                 <span
                                     v-if="error1"
                                     style="color: red; font-size: 12px"
                                     class="mb-5"
                                     >Start date must not be higher than End
                                     Date</span
-                                >
-                                <span
-                                    v-else
-                                    style="color: red; font-size: 12px"
-                                    class="mb-5"
-                                    >Start Date is required</span
                                 >
                             </v-col>
                             <v-col cols="12" sm="4">
@@ -95,6 +86,7 @@
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-text-field
                                             v-model="end_date"
+                                            prepend-icon=" mdi-calendar"
                                             label="End Date"
                                             readonly
                                             v-bind="attrs"
@@ -111,18 +103,13 @@
                                         @change="changeDate()"
                                     ></v-date-picker>
                                 </v-menu>
-                                <!-- <span
-                                    v-if="error1"
-                                    style="color: red; font-size:12px"
-                                    >End date must be higher than Start
-                                    Date</span
-                                > -->
                             </v-col>
                             <v-col cols="12" sm="4">
                                 <v-text-field
                                     label="Total Day/s of Leave*"
                                     type="text"
                                     v-model="total_days_with_text"
+                                    prepend-icon=" mdi-calculator"
                                     readonly
                                 ></v-text-field>
                             </v-col>
@@ -137,10 +124,9 @@
                                         'Carl Wyner Velasco Javier'
                                     ]"
                                     label="PRP in Charge*"
-                                    :rules="[
-                                        v => !!v || 'PRP in Charge is required'
-                                    ]"
+                                    :rules="[]"
                                     v-model="prp_assigned_id"
+                                    prepend-icon="mdi-account-outline"
                                     @click="differenceDates()"
                                     required
                                 ></v-select>
@@ -167,11 +153,9 @@ export default {
     data() {
         return {
             selectedLeaveType: null,
-            error1: false,
             error: false,
-            // error2: false,
+            error1: false,
             disable: true,
-            select: null,
             leaveType: [
                 { value: 1, name: "Sick Leave" },
                 { value: 2, name: "Solo Parent Leave" },
@@ -192,10 +176,8 @@ export default {
             user_id: localStorage.getItem("id")
         };
     },
-    mounted() {
-        this.retrieve();
-        console.log(this.$parent.$children[1]);
-    },
+    // props: ['request'],
+    mounted() {},
     methods: {
         changeDate() {
             console.log("gawas");
@@ -206,8 +188,7 @@ export default {
                     let diff = end.diff(start);
                     let differenceInDay = diff / 1000 / 60 / 60 / 24;
                     this.total_days = differenceInDay;
-                    this.total_days_with_text =
-                        differenceInDay + " days of leave";
+                    this.total_days_with_text = differenceInDay + " days of leave";
                     this.error1 = false;
                 } else {
                     this.error1 = true;
@@ -219,6 +200,7 @@ export default {
         },
         hideModal() {
             this.dialog = false;
+            this.error = false;
         },
         disabledDates(date) {
             return date > new Date().toISOString().substr(0, 10);
@@ -226,6 +208,10 @@ export default {
         disabledDates2(date) {
             return date > new Date(this.start_date).toISOString().substr(0, 10);
             this.differenceDates();
+        },
+        mounted() {
+            this.retrieve();
+            console.log(this.$parent.$children[1]);
         },
         differenceDates() {
             let start = moment(String(this.start_date));
@@ -235,22 +221,12 @@ export default {
             console.log("-----------difference", differenceInDay);
             this.differenceInDay = differenceInDay;
         },
-        retrieve() {
-            this.$axios
-                .get("http://localhost:8000/leave_request/" + this.user_id)
-                .then(response => {
-                    console.log(response.data);
-                })
-                .catch(e => {
-                    console.log(e);
-                });
-        },
         createRequest() {
             if (
                 this.selectedLeaveType !== null &&
                 this.total_days !== null &&
                 this.start_date !== null &&
-                this.end_date !== null
+                this.end_date !== null 
             ) {
                 let params = {
                     user_id: this.user_id,
@@ -260,14 +236,15 @@ export default {
                     number_of_days: this.total_days,
                     prp_assigned_id: 1
                 };
+                console.log("hi", this.$parent);
                 this.$axios
                     .post("http://localhost:8000/leave_request", params)
                     .then(res => {
-                        console.log("Successfully Added", res.data);
-                        // console.log(this.$parent.$parent.$parent.$parent.$parent);
+                        console.log("Successfully Added");
                         this.$parent.$parent.$parent.$parent.$parent.retrieve();
-                        this.removeData();
                         this.dialog = false;
+                        this.error = false;
+                        
                     });
             } else {
                 this.error = true;
@@ -275,15 +252,13 @@ export default {
             }
         },
         removeData() {
-            this.selectedLeaveType = null;
-            this.start_date = null;
-            this.end_date = null;
-            this.prp_assigned_id = null;
-            this.total_days_with_text = null;
-            // (this.selectedLeaveType = null),
-            //     (this.total_days = null),
-            //     (this.start_date = null),
-            //     (this.end_date = null);
+            this.selectedLeaveType = null,
+            this.total_days = null,
+            this.total_days_with_text = null,
+            this.start_date = null,
+            this.end_date = null,
+            this.prp_assigned_id = null,
+            this.changeDate();
         }
     }
 };

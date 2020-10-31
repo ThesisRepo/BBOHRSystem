@@ -26,6 +26,7 @@
       v-if="employees"
       :headers="headers"
       :items="shifts"
+      :search="search"
       class="elevation-3"
     >
       <template v-slot:top>
@@ -118,23 +119,26 @@
     </v-data-table>
 
     <!-- editModal -->
-     <v-dialog v-model="dialog" max-width="500px">
+     <v-dialog v-model="dialog" max-width="600px">
       <v-card>
         <v-card-title>
           <span class="headline">Shift Change Request Form</span>
         </v-card-title>
+        <v-divider></v-divider>
         <v-card-text>
           <v-container>
+            <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
             <v-row>
               <v-col cols="12" sm="6" md="12">
                 <v-text-field
                   v-model="editedItem.reason"
                   label="Reason"
+                  prepend-icon="mdi-file-document"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-menu
-                  :close-on-content-click="false"
+                  :close-on-content-click="true"
                   transition="scale-transition"
                   offset-y
                   min-width="290px"
@@ -151,7 +155,7 @@
                     ></v-text-field>
                   </template>
                   <v-date-picker
-                    v-model="shift_date"
+                    v-model="editedItem.shift_date"
                     :allowed-dates="disabledDates"
                     no-title
                     scrollable
@@ -161,26 +165,15 @@
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-select
-                  :items="shiftTime"
+                  :items="this.sTime"
                   label="Shift Time*"
-                  item-text="time"
-                  item-value="value"
-                  v-model="shift_time"
+                  item-text="shift_time_name"
+                  item-value="id"
+                  prepend-icon="mdi-timer"
+                  v-model="editedItem.shift_time"
                   required
                 ></v-select>
               </v-col>
-              <!-- <v-col cols="12" sm="6" md="6">
-                <v-text-field
-                  v-model="editedItem.prp_assigned_id"
-                  label="Approver"
-                ></v-text-field>
-              </v-col> -->
-              <!-- <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  v-model="editedItem.status"
-                  label="status"
-                ></v-text-field>
-              </v-col> -->
             </v-row>
           </v-container>
         </v-card-text>
@@ -193,20 +186,16 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
     <!-- DeleteModal -->
     <v-dialog v-model="dialogDelete" max-width="500px">
       <v-card>
         <v-card-title class="headline"
-          >Are you sure you want to delete this item?</v-card-title
-        >
+          >Are you sure you want to delete this item?</v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="closeDelete"
-            >Cancel</v-btn
-          >
-          <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-            >OK</v-btn
-          >
+          <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
+          <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -221,6 +210,7 @@
       "
       :headers="headers"
       :items="shifts"
+      :search="search"
       class="elevation-3"
     >
       <template v-slot:top>
@@ -264,33 +254,30 @@ export default {
     dialog: false,
     dialogDelete: false,
     search: null,
+    sTime: null,
+    error: false,
     shift_date: null,
     reason: null,
+    search: "",
     shift_time: null,
     headers: [
       {
         text: "REASON",
         align: "start",
-        sortable: false,
         value: "reason",
       },
       { text: "SHIFT DATE", value: "shift_date" },
-      { text: "SHIFT TIME", value: "shift_time_id" },
+      { text: "SHIFT TIME", value: "shift_time.shift_time_name" },
       { text: "APPROVER", value: "approver_role.role_name"},
-      { text: "STATUS", value: "status_id" },
+      { text: "STATUS", value: "status.status_name" },
       { text: "ACTIONS", value: "actions", sortable: false },
     ],
     shifts: [],
     editedIndex: null,
     editedItem: {
-      reason: "",
-      shift_date: 0,
-      shift_time: 0
-    },
-    defaultItem: {
-      reason: "",
-      shift_date: 0,
-      shift_time: 0
+      reason: null,
+      shift_date: null,
+      shift_time: null
     },
     start_date: null,
     month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
@@ -303,6 +290,7 @@ export default {
   },
   mounted() {
     this.retrieve()
+    this.getShift()
   },
   methods: {
     disabledDates(date) {
@@ -317,34 +305,38 @@ export default {
         console.log(e);
       })
     },
-
     editItem(item) {
       this.editedItem.id = item.id
       this.editedIndex = this.shifts.indexOf(item)
-      this.editedItem.shift_time = item.shift_time_id
+      this.editedItem.shift_time = item.shift_time
       this.editedItem.shift_date = item.shift_date
+      this.editedItem.reason = item.reason
       this.dialog = true;
+      console.log(item)
     },
-
     save() {
-      let params = {
-        id: this.editedItem.id,
-        shift_time_id: this.editedItem.shift_time,
-        shift_date: this.editedItem.shift_date,
-        prp_assigned_id: 1
+      if(this.editedItem.shift_time !== null && this.editedItem.shift_time !== '' && this.editedItem.shift_date !== null && this.shift_date !== '' &&
+      this.editedItem.reason !== null && this.editedItem.reason !== ''){
+        let params = {
+          user_id: this.user_id,
+          shift_time: this.editedItem.shift_time,
+          shift_date: this.editedItem.shift_date,
+          reason: this.editedItem.reason,
+          prp_assigned_id: 1
+        }
+        console.log('params', params, this.editedItem.id)      
+        this.$axios.post('http://localhost:8000/shift_change_request/' + this.editedItem.id, params).then(response=>{
+          this.retrieve()
+        })
+        this.dialog = false;
+      }else{
+        this.error = true;
       }
-      console.log('params', params, this.editedItem.id)      
-      this.$axios.post('http://localhost:8000/shift_change_request/' + this.editedItem.id, params).then(response=>{
-        this.retrieve()
-      })
-      this.dialog = false;
     },
-
     deleteItem(item) {
       this.id = item.id
       this.dialogDelete = true;
     },
-
     deleteItemConfirm() {
       this.$axios.delete('http://localhost:8000/shift_change_request/' + this.id).then(response=>{
         console.log('Successfully deleted')
@@ -357,6 +349,12 @@ export default {
     },
     closeDelete(){
       this.dialogDelete = false
+    },
+    getShift(){
+      this.$axios.get("http://localhost:8000/shift_time").then(response => {
+        console.log('hi', response)
+        this.sTime = response.data
+      })
     }
   }
 }

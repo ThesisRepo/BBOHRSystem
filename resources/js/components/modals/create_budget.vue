@@ -10,6 +10,7 @@
             dark
             v-bind="attrs"
             v-on="on"
+            @click="removeData()"
           >
             <v-icon>mdi-plus</v-icon>
             <v-toolbar-title style="font-size: 16px"
@@ -22,18 +23,22 @@
         <v-card-title>
           <span class="headline">Budget Request Form</span>
         </v-card-title>
+        <v-divider></v-divider>
         <v-card-text>
           <v-container>
+            <span v-if="error" style="color: red; font-size:15px">All data are required</span>
             <v-row>
               <v-col cols="12">
                 <v-text-field
                   label="Description of Need*"
+                  v-model="description_need"
+                  prepend-icon=" mdi-file-document"
                   required
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" sm="4">
+              <v-col cols="12" sm="6">
                 <v-menu
-                  :close-on-content-click="false"
+                  :close-on-content-click="true"
                   transition="scale-transition"
                   offset-y
                   min-width="290px"
@@ -57,31 +62,28 @@
                   ></v-date-picker>
                 </v-menu>
               </v-col>
-              <v-col cols="12" sm="4">
+              <v-col cols="12" sm="6">
                 <v-text-field
-                  label="Amount*"
+                  label="Total Amount*"
                   type="number"
+                  v-model="total_amount"
+                  prepend-icon=" mdi-calculator"
                   required
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" sm="4">
-                <v-text-field label="Details*" required></v-text-field>
+              <v-col cols="12" sm="12">
+                <v-text-field label="Details*" prepend-icon=" mdi-file-document" v-model="details" required></v-text-field>
               </v-col>
-              <!-- <v-col cols="12">
-                <v-text-field
-                  label="Status"
-                ></v-text-field>
-              </v-col> -->
             </v-row>
           </v-container>
           <small>*indicates required field</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false">
+          <v-btn color="blue darken-1" text @click=" hideModal()">
             Close
           </v-btn>
-          <v-btn color="blue darken-1" text @click="dialog = false">
+          <v-btn color="blue darken-1" text @click="createBudget()">
             Save
           </v-btn>
         </v-card-actions>
@@ -93,9 +95,54 @@
 export default {
   data: () => ({
     dialog: false,
+    error: false,
+    prp_assigned_id: null,
+    date: null,
+    department: null,
+    description_need: null,
+    details: null,
+    total_amount: null,
+    user_department: localStorage.getItem("user_department"),
+    user_id: localStorage.getItem("id")
   }),
-  disabledDates(date) {
-    return date > new Date().toISOString().substr(0, 10);
-  },
-};
+  methods: {
+    disabledDates(date) {
+      return date > new Date().toISOString().substr(0, 10);
+    },
+     hideModal() {
+            this.dialog = false;
+            this.error = false;
+        },
+    createBudget(){
+        if(this.date !== null && this.description_need !== null && this.details !== null &&
+        this.total_amount !== null && this.date !== '' && this.description_need !== '' &&
+        this.total_amount !== '' && this.details !== ''){
+          let parameter = {
+            user_id: this.user_id,
+            date: this.date,
+            description_need: this.description_need,
+            department_id: this.user_department,
+            details: this.details,
+            total_amount: this.total_amount,
+            prp_assigned_id: 1
+          }
+          this.$axios.post("http://localhost:8000/budget_request", parameter).then(res =>{
+            console.log('Successfully Added', res.data)
+            this.$parent.$parent.$parent.$parent.$parent.retrieve()
+          })
+          this.dialog = false
+          this.error = false
+        }else{
+          this.error = true
+          this.dialog = true
+        }
+      },
+      removeData(){
+        this.date = null,
+        this.description_need = null,
+        this.details = null,
+        this.total_amount = null
+      }
+  }
+  }
 </script>

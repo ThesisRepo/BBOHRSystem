@@ -83,7 +83,7 @@ class RequestBaseController extends Controller
             $this->setMaxRoles($this->getRoles($data->user_id));
             $approver_role_id = $data->approver_role_id;
             $status_id = $data->status_id;
-            if($this->request_name == 'petty_cash_request' || $this->request_name == 'petty_cash_request' && $this->max_role != 2) {
+            if($this->request_name == 'petty_cash_request' || $this->request_name == 'budget_request' && $this->max_role != 2) {
                 if($this->max_role == 4) {
                     return $approver_role_id == $this->max_role - 1;
                 }else {

@@ -59,6 +59,7 @@
                                                     editedItem.selectedLeaveType
                                                 "
                                                 label="Type of Leave"
+                                                
                                             ></v-text-field>
                                         </v-col>
                                         <v-col cols="12" sm="6" md="4">
@@ -142,9 +143,6 @@
                 >
                 <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
             </template>
-            <!-- <template v-slot:no-data>
-        <v-btn color="primary" @click="initialize">Reset</v-btn>
-      </template> -->
         </v-data-table>
 
         <!-- Edit Modal -->
@@ -166,6 +164,7 @@
                                 <v-select
                                     :items="leaveType"
                                     label="Type of Leave"
+                                    prepend-icon= "mdi-file-document"
                                     v-model="editedItem.selectedLeaveType"
                                     item-text="name"
                                     item-value="value"
@@ -177,10 +176,17 @@
                                     label="Total Day/s of Leave*"
                                     type="text"
                                     v-model="total_days_with_text"
-                                    readonly
+                                    prepend-icon=" mdi-calculator"
+                                    disabled
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
+                                <span
+                                    v-if="error2"
+                                    style="color: red; font-style: italic"
+                                    >Start date must not be higher than End
+                                    date!</span
+                                >
                                 <v-menu
                                     :close-on-content-click="true"
                                     transition="scale-transition"
@@ -190,6 +196,7 @@
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-text-field
                                             v-model="editedItem.start_date"
+                                            prepend-icon=" mdi-calendar"
                                             label="Start Date"
                                             readonly
                                             v-bind="attrs"
@@ -205,14 +212,14 @@
                                         @change="changeDate()"
                                     ></v-date-picker>
                                 </v-menu>
-                                <span
-                                    v-if="error1"
-                                    style="color: red; font-size:12px"
-                                    >Start date must not be higher than End
-                                    Date</span
-                                >
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
+                                <span
+                                    v-if="error1"
+                                    style="color: red; font-style: italic"
+                                    >End date must be higher than start
+                                    date!</span
+                                >
                                 <v-menu
                                     :close-on-content-click="true"
                                     transition="scale-transition"
@@ -222,6 +229,7 @@
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-text-field
                                             v-model="editedItem.end_date"
+                                            prepend-icon=" mdi-calendar"
                                             label="End Date"
                                             readonly
                                             v-bind="attrs"
@@ -238,16 +246,7 @@
                                         @change="changeDate()"
                                     ></v-date-picker>
                                 </v-menu>
-                                <span
-                                    v-if="error1"
-                                    style="color: red; font-size: 12px"
-                                    >End date must be higher than start
-                                    date!</span
-                                >
                             </v-col>
-                            <!-- <v-col cols="12" sm="6" md="4">
-                <v-text-field v-model="editedItem.prp_assigned" label="Approver "></v-text-field>
-              </v-col> -->
                         </v-row>
                     </v-container>
                 </v-card-text>
@@ -306,7 +305,7 @@
                         label="Search"
                     ></v-text-field>
 
-                    <createLeave></createLeave>
+                    <createLeave :request="request" ref="leave"></createLeave>
                 </v-toolbar>
             </template>
             <template v-slot:item.actions="{ item }">
@@ -344,7 +343,6 @@ export default {
             {
                 text: "TYPE OF LEAVE",
                 align: "start",
-                // sortable: false,
                 value: "leave_type.leave_type_name"
             },
             { text: "TOTAL DAY/S LEAVE", value: "number_of_days" },
@@ -356,6 +354,7 @@ export default {
         ],
         request: [],
         editedIndex: null,
+        prp: null,
         total_days: null,
         total_days_with_text: null,
         editedItem: {
@@ -419,6 +418,12 @@ export default {
             } else {
                 this.disable = true;
             }
+        },
+        getAllPrp() {
+            this.$axios.get("http://localhost:8000/prp").then(response => {
+                this.prp = response.data;
+                console.log(this.prp);
+            });
         },
         retrieve() {
             this.$axios
@@ -486,18 +491,6 @@ export default {
             );
             this.differenceDates();
         },
-        sample() {
-            console.log("test");
-        },
-
-        // differenceDates() {
-        //   let start = moment(String(this.start_date))
-        //   let end = moment(String(this.end_date))
-        //   let diff = (end.diff(start))
-        //   let differenceInDay = ((((diff/1000)/60)/60)/24)
-        //   console.log('-----------diff',  differenceInDay)
-        //   this.differenceInDay = differenceInDay
-        // },
 
         deleteItem(item) {
             this.id = item.id;

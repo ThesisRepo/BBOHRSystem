@@ -33,7 +33,7 @@
                                     margin
                                     color="primary"
                                     class="text-none"
-                                    round
+                                    rounded
                                     depressed
                                     :loading="isSelecting"
                                     @click="onButtonClick"
@@ -47,7 +47,6 @@
                                     accept="image/*"
                                     @change="onFileChanged"
                                 />
-                                <changeProfile></changeProfile>
                             </v-col>
                         </v-col>
                         <v-col>
@@ -189,6 +188,7 @@ import editProfile from "./modals/edit_profile.vue";
 export default {
     data() {
         return {
+            isSelecting: false,
             user_name: localStorage.getItem("user_name"),
             user_id: localStorage.getItem("id"),
             user_email: localStorage.getItem("email"),
@@ -249,7 +249,7 @@ export default {
                 });
         },
         onButtonClick() {
-            this.isSelecting = true;
+            this.isSelecting = false;
             window.addEventListener(
                 "focus",
                 () => {
@@ -257,13 +257,11 @@ export default {
                 },
                 { once: true }
             );
-
             this.$refs.uploader.click();
         },
         onFileChanged(e) {
             this.selectedFile = e.target.files[0];
             this.profile_url = URL.createObjectURL(e.target.files[0]);
-
             const config = {
                 header: { "content-type": "multipart/form-data" }
             };
@@ -272,7 +270,6 @@ export default {
             let param = {
                 id: this.user_id
             };
-
             console.log(this.user_id, "this is url");
             this.$axios
                 .post(
