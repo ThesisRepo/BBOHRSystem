@@ -73,7 +73,6 @@ class RequestBaseController extends Controller
     }
 
     public function requestBaseFeedback($id, Request $request){
-
         $data = [];
         $user = $this->request_service->getUserRoles($request->user_id);
         $max_role = $this->request_service->getMaxRoles($user->roles);
