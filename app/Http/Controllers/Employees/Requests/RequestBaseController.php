@@ -98,22 +98,6 @@ class RequestBaseController extends Controller
 
     }
 
-    public function getDepartmentId($id) {
-
-        return $this->user->findWith($id, 'userInformation.department')->userInformation->department->id;
-
-    }
-
-    public function getFullName($user_id){
-        return $this->user_service->getFullName($user_id);
-
-    }
-    
-    public function setPrpId($id) {
-
-        return $id > 0 ? $id : 0;
-
-    }
 
     public function isEditable($data) {
 
@@ -136,20 +120,36 @@ class RequestBaseController extends Controller
 
     }
 
-    public function updateRequest($editable, $data, $id, $prp_assigned_id) {
+    // public function updateRequest($editable, $data, $id, $prp_assigned_id) {
+        
+    //     if($this->isEditable($editable)){
+    //         if($prp_assigned_id) {
+
+    //             $res = response()->json($this->model->updateRequest($data, $id, $prp_assigned_id), 200);
+
+    //         }else {
+
+    //             $res = response()->json($this->model->update($data, $id), 200);
+
+    //         }
+
+    //         $employee_name = $this->getFullName();
+    //         $this->notifyNewRequest('edited', $employee_name, $prp_assigned_id, $this->request_name);
+
+    //     }else{
+    //         $res =  response()->json([], 404);
+    //     }
+
+    //     return $res;
+
+    // }
+    public function updateRequest($editable, $data, $id) {
         
         if($this->isEditable($editable)){
-            if($prp_assigned_id) {
 
-                $res = response()->json($this->model->updateRequest($data, $id, $prp_assigned_id), 200);
-
-            }else {
-
-                $res = response()->json($this->model->update($data, $id), 200);
-
-            }
-
-            $employee_name = $this->getFullName($editable->user_id);
+            $res = response()->json($this->model->update($data, $id), 200);
+            $employee_name = $this->getFullName();
+            $prp_assigned_id = $this->getPRPId();
             $this->notifyNewRequest('edited', $employee_name, $prp_assigned_id, $this->request_name);
 
         }else{
@@ -166,17 +166,28 @@ class RequestBaseController extends Controller
 
     }
 
-    public function storeRequest($data, $prp_assigned_id) {
-        if($prp_assigned_id) {
-            $res = response()->json($this->model->createRequest($data, $prp_assigned_id), 200);
-            $employee_name = $this->getFullName($data['user_id']);
-            $this->notifyNewRequest('added', $employee_name, $prp_assigned_id, $this->request_name);
+    // public function storeRequest($data, $prp_assigned_id) {
+    //     if($prp_assigned_id) {
+    //         $res = response()->json($this->model->createRequest($data, $prp_assigned_id), 200);
+    //         $employee_name = $this->getFullName($data['user_id']);
+    //         $this->notifyNewRequest('added', $employee_name, $prp_assigned_id, $this->request_name);
 
-        }else {
+    //     }else {
 
-            $res = response()->json($this->model->create($data), 200);
+    //         $res = response()->json($this->model->create($data), 200);
 
-        }
+    //     }
+
+    //     return $res;
+
+    // }
+
+    public function storeRequest($data) {
+
+        $res = response()->json($this->model->create($data), 200);
+        $employee_name = $this->getFullName();
+        $prp_assigned_id = $this->getPRPId();
+        $this->notifyNewRequest('added', $employee_name, $prp_assigned_id, $this->request_name);
 
         return $res;
 
@@ -190,12 +201,44 @@ class RequestBaseController extends Controller
 
     public function deleteRequest($id) {
         
-        $prp_assigned_id = $this->model->findWith($id, 'user')->user->prp_assigned;
+        $prp_assigned_id = $this->getPRPId();
         $res = response()->json($this->model->delete($id), 200);
-        $employee_name = $this->getFullName($prp_assigned_id);
+        $employee_name = $this->getFullName();
         $this->notifyNewRequest('deleted', $employee_name, $prp_assigned_id, $this->request_name);
 
         return $res;
 
     }
+
+    public function getDepartmentId($id) {
+
+        return $this->user->findWith($id, 'userInformation.department')->userInformation->department->id;
+
+    }
+
+    public function getFullName(){
+
+        return $this->user_service->getFullName();
+
+    }
+
+    public function getPRPId(){
+        
+        return $this->user_service->getPRPId();
+
+    }
+
+    public function getUserId(){
+        
+        return $this->user_service->getUserId();
+
+    }
+    
+    
+    // public function setPrpId($id) {
+
+    //     return $id > 0 ? $id : 0;
+
+    // }
+    
 }
