@@ -245,7 +245,6 @@ export default {
                 const config = {
                     header: { "content-type": "multipart/form-data" }
                 };
-
                 let formData = new FormData();
                 console.log(this.selectedFile.name);
                 formData.append("file_uri", this.selectedFile);
@@ -256,7 +255,6 @@ export default {
                 formData.append("emergency_contact", this.emergency_contact);
                 formData.append("employee_to_cover", this.employee_to_cover);
                 formData.append("prp_assigned_id", 1);
-
                 this.$axios
                     .post(
                         "http://localhost:8000/travel_auth_request",
@@ -294,11 +292,4 @@ export default {
     }
 };
 </script>
-<style scoped>
-.textfield.focused .label {
-    color: red;
-}
-.textfield.focused .input {
-    border: 1px solid red;
-}
-</style>
+

@@ -281,6 +281,19 @@
                     <v-img :src="file_uri" width="500"></v-img>
                 </v-card>
                 <br>
+                <!-- <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        color="blue darken-1"
+                        text
+                        @click="fileDialog = false"
+                        >BACK</v-btn
+                    >
+                    <v-btn color="blue darken-1" text @click="submitFiles()"
+                        >EDIT</v-btn
+                    >
+                    <v-spacer></v-spacer>
+                </v-card-actions>  -->
             </v-card>
         </v-dialog>
 
@@ -473,7 +486,6 @@ export default {
         //     let formData = new formData();
         //     for (var i = 0; i < this.files.length; i++) {
         //         let file = this.files[i];
-
         //         formData.append("files[" + i + "]", file);
         //     }
         //     // $axios.post('/multiple-files', formData)
@@ -526,7 +538,6 @@ export default {
                     this.deleteModal = false;
                 });
         },
-
         disabledDates(date) {
             return date > new Date().toISOString().substr(0, 10);
         },

@@ -61,28 +61,28 @@ export default {
             localStorage.setItem('email', this.user.email)
             localStorage.setItem('company_id', this.user.user_information.company_number)
         },
-        listenForChanges() {
-        console.log('listening');
-        Echo.private('newrequest.' + 1)
-          .listen('NewRequest', notif => {
-            if (! ('Notification' in window)) {
-              alert('Web Notification is not supported');
-              return;
-            }
-            console.log('res', notif);
-            Notification.requestPermission( permission => {
-              let notification = new Notification('New Notificaion from BBO Request Management!', {
-                body: notif.message, // content for the alert
-                icon: "https://pusher.com/static_logos/320x320.png" // optional image url
-              });
+        // listenForChanges() {
+        // console.log('listening');
+        // Echo.private('newrequest.' + 1)
+        //   .listen('NewRequest', notif => {
+        //     if (! ('Notification' in window)) {
+        //       alert('Web Notification is not supported');
+        //       return;
+        //     }
+        //     console.log('res', notif);
+        //     Notification.requestPermission( permission => {
+        //       let notification = new Notification('New Notificaion from BBO Request Management!', {
+        //         body: notif.message, // content for the alert
+        //         icon: "https://pusher.com/static_logos/320x320.png" // optional image url
+        //       });
 
-              // link to page on clicking the notification
-              notification.onclick = () => {
-                window.open(window.location.href);
-              };
-            });
-          })
-        }
+        //       // link to page on clicking the notification
+        //       notification.onclick = () => {
+        //         window.open(window.location.href);
+        //       };
+        //     });
+        //   })
+        // }
         // deaunthenticate(){
         //     console.log('logging out')
         //     localStorage.removeItem('usertoken')
