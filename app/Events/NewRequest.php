@@ -20,15 +20,18 @@ class NewRequest implements ShouldBroadcast
     public $message;
 
     public $request_type;
+
+    public $id;
     /**
      * Create a new event instance.
      *
      * @return void
      */
 
-    public function __construct($action, $username, $request_type)
+    public function __construct($action, $username, $id, $request_type)
     {
         $this->username = $username;
+        $this->id = $id;
         switch($request_type){
             case 'leave_request':
                     $this->request_type = 'Leave Request';
@@ -49,7 +52,7 @@ class NewRequest implements ShouldBroadcast
 
     public function broadcastOn() {
 
-        return new Channel('newrequest');
+        return new PrivateChannel('newrequest.' . $this->id);
         
     }
 

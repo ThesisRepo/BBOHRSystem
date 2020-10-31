@@ -33,7 +33,7 @@ class UserEloquent extends EloquentImplementation {
         $q->where('department_id', $user->userInformation->department_id);
       })
       ->get();
-      // dd($user->toArray());
+      
       return $res;
 
     }
