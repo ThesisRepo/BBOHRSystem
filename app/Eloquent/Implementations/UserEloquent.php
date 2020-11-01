@@ -59,8 +59,8 @@ class UserEloquent extends EloquentImplementation {
     }
 
   public function getAllFeedbackedRequests($user_id, $relationship) {
-    
-    return $this->findWith($user_id, $relationship);
+    $res = $this->findWith($user_id, $relationship);
+    return $res;
 
   }
 
