@@ -68,9 +68,7 @@ class EloquentRequestImplementation extends EloquentImplementation {
   }
 
   public function approveRequest($id, $data, $current_request, $approver) {
-
     return $this->requestFeedback($id, $data, $current_request, $approver);
-
   }
 
   public function disapproveRequest($id, $data, $current_request, $approver) {
@@ -85,7 +83,7 @@ class EloquentRequestImplementation extends EloquentImplementation {
       DB::beginTransaction();
         $request = $current_request;
         $request->update($data);
-        if(!$request->approvers()->where('recordable_id',$id)->where('user_id',$approver->id)->get()){
+        if(!$request->approvers()->where('recordable_id',$id)->where('user_id',$approver->id)->get()->toArray()){
           $request->approvers()->save($approver);
         }
       DB::commit();

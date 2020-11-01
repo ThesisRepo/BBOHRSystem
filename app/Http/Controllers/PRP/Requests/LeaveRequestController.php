@@ -21,7 +21,6 @@ class LeaveRequestController extends RequestBaseController
     }
     
     public function getPendingRequest($id){
-
         $res = $this->getBasePendingRequest($id, ['leave_type', 'status','approver_role', 'user']);
 
         return $res;
@@ -29,7 +28,7 @@ class LeaveRequestController extends RequestBaseController
     }
 
     public function getAllFeedbackedRequest($user_id){
-
+        // ['user', 'status', 'approver_role', 'department', 'leave_type']
         $res = $this->getBaseAllFeedbackedRequest($user_id, 'feedbacked_leave_requests', ['leave_type', 'status','approver_role', 'user']);
         
         return $res;
