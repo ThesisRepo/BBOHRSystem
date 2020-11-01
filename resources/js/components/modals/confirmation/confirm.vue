@@ -21,17 +21,18 @@
 export default {
   data() {
     return {
-      id: null
+      id: null,
+      dialog: false
     };
   },
   props: ['title', 'message'],
   methods: {
     show(id){
       this.id = id
-      $('#connectionError').modal('show')
+      this.dialog = true
     },
     hideModal(){
-      $('#connectionError').modal('hide')
+      this.dialog = false
     },
     onConfirm(){
       this.$emit('onConfirm', {id: this.id})
