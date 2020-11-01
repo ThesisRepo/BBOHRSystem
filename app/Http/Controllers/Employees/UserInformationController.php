@@ -135,7 +135,7 @@ class UserInformationController extends Controller
     }
 
     public function getAllPendingRequests($id) {
-        
+        $res = $this->user->find($id);
         return $res;
 
     }
