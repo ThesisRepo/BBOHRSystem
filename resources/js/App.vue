@@ -13,6 +13,7 @@
 <script>
 import Vuetify from "vuetify";
 import sidebar from "./modules/sidebar.vue";
+// import { constants } from 'fs';
 export default {
     name: "app",
     props: ['user'],
@@ -27,9 +28,11 @@ export default {
     },
     created() {
         this.setUserType();
-        // this.listenForChanges();
     },
     mounted(){
+        console.log('ata');
+
+        this.listenForChanges();
         console.log(this.user);
         var params = {  
             user_id:1,
@@ -38,9 +41,11 @@ export default {
         
         this.$axios
         .get(
-          "http://localhost:8000/user_info/pending_requests/count/" + this.user_id)
+          "http://localhost:8000/user_info/approved_requests/count/" + this.user_id)
         .then(response => {
+            console.log(response)
           if (response.data === 1) {
+
             this.$parent.$parent.getInfo()
             this.dialog = false
           } else {      
@@ -76,7 +81,6 @@ export default {
               alert('Web Notification is not supported');
               return;
             }
-            console.log('res', notif);
             Notification.requestPermission( permission => {
               let notification = new Notification('New Notificaion from BBO Request Management!', {
                 body: notif.message, // content for the alert

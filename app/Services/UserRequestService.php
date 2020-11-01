@@ -12,4 +12,5 @@ class UserRequestService
   public function notifyNewRequest($action, $user, $id,$type) {
     event(new NewRequest($action, $user, $id, $type));
   }
+  
 }

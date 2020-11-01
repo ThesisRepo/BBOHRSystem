@@ -95,4 +95,102 @@ class UserEloquent extends EloquentImplementation {
     ]);
   }
 
+  public function getAllPendingRequests($id) {
+
+    $temp_arr = [];
+    $request_type_list = [
+      'travel_auth_requests',
+      'leave_requests',
+      'shift_change_requests',
+      'overtime_requests',
+      'petty_cash_requests',
+      'budget_requests'
+    ];
+    
+    $res = $this->findWith(
+      $id,
+      [
+        'travel_auth_requests' => function($q){
+            return $q->with(['approver_role', 'status'])->where('status_id', 1);
+        }, 
+        'leave_requests' => function($q){
+            return $q->with(['approver_role', 'status'])->where('status_id', 1);
+        },
+        'shift_change_requests' => function($q){
+            return $q->with(['approver_role', 'status'])->where('status_id', 1);
+        },
+        'overtime_requests' => function($q){
+            return $q->with(['approver_role', 'status'])->where('status_id', 1);
+        },
+        'petty_cash_requests' => function($q){
+            return $q->with(['approver_role', 'status'])->where('status_id', 1);
+        },
+        'budget_requests' => function($q){
+            return $q->with(['approver_role', 'status'])->where('status_id', 1);
+        }
+      ]
+    );
+
+    foreach($request_type_list as $request_type) {
+      $request_array = $res[$request_type]->toArray();
+      if(!empty($request_array)) {
+        foreach($request_array as $request) {
+          $new_request = [
+            'request_type' => $request_type,
+            'status' => $request['status'],
+            'approver_role' => $request['approver_role'],
+            'created_at' => $request['created_at']
+          ];
+          array_push($temp_arr, $new_request);
+        }
+      }
+    };
+
+    return $temp_arr;
+  }
+
+  public function getCountOfRequests($id, $type_id) {
+
+    $res = 0;
+    $request_type_list = [
+      'travel_auth_requests_count',
+      'leave_requests_count',
+      'shift_change_requests_count',
+      'overtime_requests_count',
+      'petty_cash_requests_count',
+      'budget_requests_count'
+    ];
+
+    $query = $this->findWithCount(
+      $id,
+      [
+        'travel_auth_requests' => function($q) use($type_id){
+          return $q->with(['approver_role', 'status'])->where('status_id', $type_id);
+        }, 
+        'leave_requests' => function($q) use($type_id){
+          return $q->with(['approver_role', 'status'])->where('status_id', $type_id);
+        },
+        'shift_change_requests' => function($q) use($type_id){
+          return $q->with(['approver_role', 'status'])->where('status_id', $type_id);
+        },
+        'overtime_requests' => function($q) use($type_id){
+          return $q->with(['approver_role', 'status'])->where('status_id', $type_id);
+        },
+        'petty_cash_requests' => function($q) use($type_id){
+          return $q->with(['approver_role', 'status'])->where('status_id', $type_id);
+        },
+        'budget_requests' => function($q) use($type_id){
+          return $q->with(['approver_role', 'status'])->where('status_id', $type_id);
+        }
+      ]
+    );
+
+    foreach($request_type_list as $request_type) {
+        $request_count = $query[$request_type];
+        $res +=  $request_count;
+    }
+
+    return $res;
+
+  }
 }

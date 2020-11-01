@@ -34,11 +34,8 @@ class UserInformationController extends Controller
      */
     public function show($id)
     {
-
         $res = $this->user->findWith($id, 'userInformation.department','userInformation.shift_time');
-        
         return $res;
-
     }
 
     /**
@@ -135,14 +132,17 @@ class UserInformationController extends Controller
     }
 
     public function getAllPendingRequests($id) {
-        $res = $this->user->find($id);
+        $res = $this->user->getAllPendingRequests($id);
         return $res;
-
     }
 
-    public function getAllApprovedRequests($id) {
-
+    public function getCountApprovedRequests($id) {
+        $res = $this->user->getCountOfRequests($id, 3);
         return $res;
+    }
 
+    public function getCountPendingRequests($id) {
+        $res = $this->user->getCountOfRequests($id, 1);
+        return $res;
     }
 }
