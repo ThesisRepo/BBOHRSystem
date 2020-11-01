@@ -32,8 +32,8 @@ class ShiftChangeRequest extends Model
         return $this->morphToMany(\App\Models\User::class, 'recordable');
     }
 
-    public function request() {
-        return $this->morphMany(\App\Models\Requestable::class, 'requestable')->withTimestamps();
+    public function user_requester() {
+        return $this->morphToMany(\App\Models\User::class, 'requestable')->withTimestamps();        
     }
     
     public function approver_role() {
