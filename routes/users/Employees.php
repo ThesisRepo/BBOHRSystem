@@ -27,12 +27,15 @@ Route::post('finance/{user_id}','UserInformationController@updateFinance')->name
 //edit profile pic
 Route::post('update_profile_img/{id}','UserInformationController@updateProfileImg')->name('user_info.update_profile_img');
 
-// get count of pending request 
-Route::get('user_info/pending_requests/count/{user_id}','UserInformationController@getAllPendingRequests')->name('user_info.find.finance');
+// get all of pending request 
+Route::get('user_info/pending_requests/{user_id}','UserInformationController@getAllPendingRequests')->name('user_info.find.all_pending_requests');
 
 
 // get count of approved request 
-Route::get('user_info/approved_requests/count/{user_id}','UserInformationController@getAllApprovedRequests')->name('user_info.find.finance');
+Route::get('user_info/approved_requests/count/{user_id}','UserInformationController@getCountApprovedRequests')->name('user_info.find.count.all_approved_requests');
+
+// get count of pending request 
+Route::get('user_info/pending_requests/count/{user_id}','UserInformationController@getCountPendingRequests')->name('user_info.find.count.all_pending_requests');
 
 
 // -- LEAVE REQUEST

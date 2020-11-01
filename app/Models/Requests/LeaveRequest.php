@@ -46,6 +46,10 @@ class LeaveRequest extends Model
         return $this->morphToMany(\App\Models\User::class, 'requestable')->withTimestamps();        
     }
 
+    public function user_request() {
+        return $this->morphOne(\App\Models\UserRequest::class, 'requestable')->withTimestamps();        
+    }
+
     public function approver_role() {
         return $this->belongsTo(\App\Models\Role::class);
     }
