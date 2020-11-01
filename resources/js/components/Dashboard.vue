@@ -8,7 +8,7 @@
               <div class="primary fill-height">&nbsp;</div>
             </div>
             <div class="col pa-3 py-4 primary--text">
-              <h5 class="text-truncate text-uppercase">Leave Request</h5>
+              <h5 class="text-truncate text-uppercase">Remaining Leave Request</h5>
               <h1>7</h1>
             </div>
           </v-row>

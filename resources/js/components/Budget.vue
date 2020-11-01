@@ -38,7 +38,7 @@
                 <v-container>
                   <v-row>
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.description" label="Description of Need" ></v-text-field>
+                      <v-text-field v-model="editedItem.description" label="Purpose"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field v-model="editedItem.details" label="Details"></v-text-field>
@@ -102,7 +102,7 @@
             <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
             <v-row>
               <v-col cols="12" sm="6" md="12">
-                <v-text-field v-model="editedItem.description_need" label="Description of Need" prepend-icon=" mdi-file-document"></v-text-field>
+                <v-text-field v-model="editedItem.description_need" label="Purpose"></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-menu
