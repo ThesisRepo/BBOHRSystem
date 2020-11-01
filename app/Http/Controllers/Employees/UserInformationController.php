@@ -7,10 +7,12 @@ use App\Eloquent\Implementations\UserEloquent;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\UserService;
+use App\Traits\ImageUpload;
 
 class UserInformationController extends Controller
 {
-
+    use ImageUpload;
+    
     protected $user;
 
     protected $user_service;
@@ -68,12 +70,17 @@ class UserInformationController extends Controller
 
         $currentImg = $this->user->findWith($id, 'userInformation')->userInformation->profile_url;
         if($request->image) {
-            $imageName = time().'.'.$request->image->getClientOriginalExtension();
-            $request->image->move(public_path('images'),$imageName);
-            $image = 'images/'.$imageName;
+
+            $image = $this->image_upload_from_trait($request->image);
+
+            // $imageName = time().'.'.$request->image->getClientOriginalExtension();
+            // $request->image->move(public_path('images'),$imageName);
+            // $image = 'images/'.$imageName;
+
             $data = [
                 'profile_url' => $image
             ];
+
             $result = $this->user->updateWithUserInfo($data, $id);
             unlink($currentImg);
             

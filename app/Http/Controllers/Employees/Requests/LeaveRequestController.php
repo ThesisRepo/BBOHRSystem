@@ -48,7 +48,6 @@ class LeaveRequestController extends RequestBaseController
 
         $res = $this->storeRequest($requestData);
 
-
         return $res;
 
     }
@@ -77,18 +76,12 @@ class LeaveRequestController extends RequestBaseController
     }
 
     public function show( $id) {
-
         $res =  $this->showRequest('user_id', $id, ['leave_type', 'status', 'approver_role']);
-
         return $res;  
-
     }
 
     public function delete( $id) {
-
         $res =  $this->deleteRequest($id);
-
         return $res;  
-
     }
 }

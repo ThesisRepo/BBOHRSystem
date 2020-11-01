@@ -1,7 +1,8 @@
 <?php
 namespace App\Traits;
 
-trait CommandAccRegister {
+trait CommandAccRegister
+{
 
   private $model;
 
@@ -18,4 +19,5 @@ trait CommandAccRegister {
         'password' => bcrypt($pwd),
     ], [5, $type]);
   }
+  
 }
