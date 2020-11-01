@@ -64,7 +64,7 @@ class CreateHrManAcc extends Command
                 DB::beginTransaction();
                 
                 $this->setModel($this->user);
-                $this->createSuperAdmin(4, $this->firstname, $this->lastname, $this->email, $this->pwd);
+                $this->createSuperAdmin([1,2,4], $this->firstname, $this->lastname, $this->email, $this->pwd);
 
                 DB::commit();
                 $this->info('HR Account created for '.$this->firstname . ' ' . $this->lastname);
