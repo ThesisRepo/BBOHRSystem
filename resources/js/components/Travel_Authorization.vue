@@ -522,7 +522,6 @@ export default {
           parameter
         )
         .then(response => {
-            console.log(response.data)
           this.retrieveTravel();
           this.getAllFeedback();
         });
