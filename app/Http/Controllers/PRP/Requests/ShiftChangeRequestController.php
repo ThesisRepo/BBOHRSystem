@@ -26,7 +26,7 @@ class ShiftChangeRequestController extends RequestBaseController
     }
 
     public function getAllFeedbackedRequest($user_id){
-        $res = $this->getBaseAllFeedbackedRequest($user_id, 'feedbacked_shift_change_requests', ['department', 'status','approver_role', 'user','shift_time']);
+        $res = $this->getBaseAllFeedbackedRequest($user_id, 'feedbacked_shift_change_requests', ['status','approver_role', 'user','shift_time']);
         return $res;
 
     }
