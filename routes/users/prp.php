@@ -40,3 +40,45 @@ Route::get('prp/shift_change_request/pending/{user_id}','Requests\ShiftChangeReq
 
 // approve or disapprove a shift change request
 Route::post('prp/shift_change_request/feedback/{id}','Requests\ShiftChangeRequestController@requestFeedback')->name('prp.shift_change_request.feedback');
+
+
+// -- OVERTIME REQUEST
+
+// user_id:4,
+// status_id:3,
+
+// get all feedbacked overtime request that belongs of approver
+Route::get('prp/overtime_request/feedbacked/{user_id}','Requests\OvertimeRequestController@getAllFeedbackedRequest')->name('prp.overtime_request.feedbacked');
+
+// get all approved overtime request that belongs of approver
+Route::get('prp/overtime_request/approved/{user_id}','Requests\OvertimeRequestController@getAllApprovedRequest')->name('prp.overtime_request.approved');
+
+// get all disapproved overtime request that belongs of approver
+Route::get('prp/overtime_request/disapproved/{user_id}','Requests\OvertimeRequestController@getAllDisapprovedRequest')->name('prp.overtime_request.disapproved');
+
+// get all pending overtimerequest that belongs of approver
+Route::get('prp/overtime_request/pending/{user_id}','Requests\OvertimeRequestController@getPendingRequest')->name('prp.overtime_request.pending');
+
+// approve or disapprove a overtime request
+Route::post('prp/overtime_request/feedback/{id}','Requests\OvertimeRequestController@requestFeedback')->name('prp.overtime_request.feedback');
+
+
+// -- TRAVEL AUTHORIZATION REQUEST
+
+// user_id:4,
+// status_id:3,
+
+// get all feedbacked travel authorization request that belongs of approver
+Route::get('prp/travel_auth_request/feedbacked/{user_id}','Requests\TravelAuthRequestController@getAllFeedbackedRequest')->name('prp.travel_auth_request.feedbacked');
+
+// get all approved travel authorization request that belongs of approver
+Route::get('prp/travel_auth_request/approved/{user_id}','Requests\TravelAuthRequestController@getAllApprovedRequest')->name('prp.travel_auth_request.approved');
+
+// get all disapproved travel authorization request that belongs of approver
+Route::get('prp/travel_auth_request/disapproved/{user_id}','Requests\TravelAuthRequestController@getAllDisapprovedRequest')->name('prp.travel_auth_request.disapproved');
+
+// get all pending travel authorization request that belongs of approver
+Route::get('prp/travel_auth_request/pending/{user_id}','Requests\TravelAuthRequestController@getPendingRequest')->name('prp.travel_auth_request.pending');
+
+// approve or disapprove a travel authorization request
+Route::post('prp/travel_auth_request/feedback/{id}','Requests\TravelAuthRequestController@requestFeedback')->name('prp.travel_auth_request.feedback');
