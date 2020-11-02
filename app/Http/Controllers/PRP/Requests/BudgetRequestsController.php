@@ -11,7 +11,7 @@ class BudgetRequestsController extends RequestBaseController
     protected $budget_request;
 
     public function __construct(
-        LeaveRequestEloquent $budget_request,
+        BudgetRequestEloquent $budget_request,
         ApproverRequestService $request_service
     ) {
 

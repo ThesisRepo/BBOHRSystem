@@ -11,7 +11,7 @@ class TravelAuthRequestsController extends RequestBaseController
     protected $travel_auth_request;
 
     public function __construct(
-        LeaveRequestEloquent $travel_auth_request,
+        TravelAuthRequestEloquent $travel_auth_request,
         ApproverRequestService $request_service
     ) {
 
