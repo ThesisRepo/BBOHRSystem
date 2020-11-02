@@ -1,11 +1,14 @@
 
 @extends('layouts.app')
+@section('style')
+    <link href="{{ asset('css/form.css') }}" rel="stylesheet">
+@endsection
 
 @section('content')
 
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-8" style="margin-top: 3%;">
             <div class="card" >
                
                 <center style="margin-top: 3%;">
