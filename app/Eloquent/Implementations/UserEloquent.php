@@ -23,6 +23,9 @@ class UserEloquent extends EloquentImplementation {
        return  $this->model->findorFail($id)->userInformation()->update($data);
     }
 
+    public function allWith($relationship){
+      return  $this->with($relationship)->get();
+   }
     public function updateUserWithInfo($id, $user, $user_info){
 
       try {
