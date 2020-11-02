@@ -25,7 +25,6 @@
           <v-spacer></v-spacer>
           <v-text-field
             v-model="search"
-            v-icon="mdi - magnify"
             label="Search"
             single-line
             hide-details

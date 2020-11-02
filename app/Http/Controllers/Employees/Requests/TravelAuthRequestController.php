@@ -84,9 +84,7 @@ class TravelAuthRequestController extends RequestBaseController
         ];
 
         // return $this->updateRequest($current_travel_auth_request, $requestData, $id, $prp_assigned_id);
-
         $res = $this->updateRequest($current_travel_auth_request, $requestData, $id);
-
         return $res;  
 
     }
@@ -95,5 +93,4 @@ class TravelAuthRequestController extends RequestBaseController
         $res =  $this->deleteRequest($id);
         return $res;  
     }
-    
 }

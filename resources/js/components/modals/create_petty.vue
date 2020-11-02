@@ -61,6 +61,7 @@
                   label="Total Amount*"
                   type="number"
                   v-model="total_amount"
+                  prefix="₱"
                   required
                 ></v-text-field>
               </v-col>
