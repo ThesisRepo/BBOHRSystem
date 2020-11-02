@@ -82,3 +82,45 @@ Route::get('prp/travel_auth_request/pending/{user_id}','Requests\TravelAuthReque
 
 // approve or disapprove a travel authorization request
 Route::post('prp/travel_auth_request/feedback/{id}','Requests\TravelAuthRequestController@requestFeedback')->name('prp.travel_auth_request.feedback');
+
+
+// -- BUDGET REQUEST
+
+// user_id:4,
+// status_id:3,
+
+// get all feedbacked budget request that belongs of approver
+Route::get('prp/budget_request/feedbacked/{user_id}','Requests\BudgetRequestController@getAllFeedbackedRequest')->name('prp.budget_request.feedbacked');
+
+// get all approved budget request that belongs of approver
+Route::get('prp/budget_request/approved/{user_id}','Requests\BudgetRequestController@getAllApprovedRequest')->name('prp.budget_request.approved');
+
+// get all disapproved budget request that belongs of approver
+Route::get('prp/budget_request/disapproved/{user_id}','Requests\BudgetRequestController@getAllDisapprovedRequest')->name('prp.budget_request.disapproved');
+
+// get all pending travel authorization request that belongs of approver
+Route::get('prp/budget_request/pending/{user_id}','Requests\BudgetRequestController@getPendingRequest')->name('prp.budget_request.pending');
+
+// approve or disapprove a budget request
+Route::post('prp/budget_request/feedback/{id}','Requests\BudgetRequestController@requestFeedback')->name('prp.budget_request.feedback');
+
+
+// -- PETTY CASH REQUEST
+
+// user_id:4,
+// status_id:3,
+
+// get all petty cash budget request that belongs of approver
+Route::get('prp/petty_cash_request/feedbacked/{user_id}','Requests\PettyCashRequestController@getAllFeedbackedRequest')->name('prp.petty_cash_request.feedbacked');
+
+// get all petty cash request that belongs of approver
+Route::get('prp/petty_cash_request/approved/{user_id}','Requests\PettyCashRequestController@getAllApprovedRequest')->name('prp.petty_cash_request.approved');
+
+// get all petty cash budget request that belongs of approver
+Route::get('prp/petty_cash_request/disapproved/{user_id}','Requests\PettyCashRequestController@getAllDisapprovedRequest')->name('prp.petty_cash_request.disapproved');
+
+// get all pending petty cash request that belongs of approver
+Route::get('prp/petty_cash_request/pending/{user_id}','Requests\PettyCashRequestController@getPendingRequest')->name('prp.petty_cash_request.pending');
+
+// approve or disapprove a petty cash request
+Route::post('prp/petty_cash_request/feedback/{id}','Requests\PettyCashRequestController@requestFeedback')->name('prp.petty_cash_request.feedback');
