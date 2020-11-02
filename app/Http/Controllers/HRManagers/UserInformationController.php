@@ -87,8 +87,35 @@ class UserInformationController extends Controller
     
     public function update(Request $request, $id)
     {
-        // kani kay tanan na ma edit
-        return $this->user->updateWithUserInfo($request->all(), $id);        
+        $user = [
+            'prp_assigned' => $this->user_service->getPRPId(),
+            'finance_mngr_assigned' => $this->user_service->getFinanceMngrAssignedId(),
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+        ];
+
+        $user_info = [
+            'department_id' => $request->department_id,
+            'shift_time_id' => $request->shift_time_id,
+            'gender'=> $request->gender,
+            'company_number' => $request->company_number,
+            'profile_url' => $request->profile_url,
+            'company_position' => $request->company_position,
+            'date_hired' => $request->date_hired,
+            'company_status' => $request->company_status,
+            'birthday' => $request->birthday,
+            'allowed_leave_number' => $request->allowed_leave_number,
+            'address' => $request->address,
+            'civil_status' => $request->civil_status,
+            'contact_number' => $request->contact_number,
+            'pag_ibig_number' => $request->pag_ibig_number,
+            'sss_number' => $request->sss_number,
+            'tin_number' => $request->tin_number,
+            'philhealth_number' => $request->philhealth_number
+        ];
+
+        return $this->user->updateUserWithInfo($id, $user, $user_info);        
     }
 
     /**

@@ -19,10 +19,11 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('finance_mngr_assigned')->nullable();
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
             $table->foreign('prp_assigned')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('finance_mngr_assigned')->references('id')->on('users')->onDelete('cascade');
@@ -37,5 +38,8 @@ class CreateUsersTable extends Migration
     public function down()
     {
         Schema::dropIfExists('users');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
     }
 }
