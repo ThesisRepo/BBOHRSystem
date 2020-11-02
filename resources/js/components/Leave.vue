@@ -319,8 +319,8 @@ export default {
       { text: "TOTAL DAY/S LEAVE", value: "number_of_days" },
       { text: "START DATE", value: "start_date" },
       { text: "END DATE", value: "end_date" },
-      { text: "APPROVER", value: "approver_role_id" },
-      { text: "STATUS", value: "status_id" }
+      { text: "APPROVER", value: "approver_role.role_name" },
+      { text: "STATUS", value: "status.status_name" }
     ],
     request: [],
     prpPending: [],

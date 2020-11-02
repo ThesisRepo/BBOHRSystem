@@ -68,20 +68,6 @@
                   required
                 ></v-text-field>
               </v-col>
-              <v-col cols="12">
-                <v-select
-                  :items="[
-                    'Jocel Redotco Mendoza',
-                    'Fenella Corinne Real Rosales',
-                    'Cielo Fe Sasing',
-                    'April Claire Chagas Podador',
-                    'Nathaniel Cala Terdes',
-                    'Carl Wyner Velasco Javier',
-                  ]"
-                  label="PRP in Charge*"
-                  required
-                ></v-select>
-              </v-col>
             </v-row>
           </v-container>
           <small>*indicates required field</small>
@@ -128,6 +114,7 @@ export default {
         }
         this.$axios.post("http://localhost:8000/overtime_request", parameter).then(res =>{
           this.$parent.$parent.$parent.$parent.$parent.retrieve()
+
           this.dialog = false
         })
       }else{

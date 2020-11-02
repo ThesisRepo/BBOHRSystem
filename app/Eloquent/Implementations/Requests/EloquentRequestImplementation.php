@@ -17,31 +17,31 @@ class EloquentRequestImplementation extends EloquentImplementation {
     return get_class($this->model);
   }
 
-  public function create(array $data) {
-    $res = parent::create($data);
-    $res->user_requester()->save(Auth::user());
-    return $res;
-  }
+  // public function create(array $data) {
+  //   $res = parent::create($data);
+  //   $res->user_requester()->save(Auth::user());
+  //   return $res;
+  // }
 
-  public function delete($id) {
+  // public function delete($id) {
 
-    try {
+  //   try {
 
-      DB::beginTransaction();
-        $current_request = $this->find($id);
-        $current_request->user_requester()->detach();
-        $res = parent::delete($id);
-      DB::commit();
-      return $res;
+  //     DB::beginTransaction();
+  //       $current_request = $this->find($id);
+  //       $current_request->user_requester()->detach();
+  //       $res = parent::delete($id);
+  //     DB::commit();
+  //     return $res;
 
-    }catch(\Exception $e) {
+  //   }catch(\Exception $e) {
 
-      DB::rollback();
-      return $e;
+  //     DB::rollback();
+  //     return $e;
       
-    }
+  //   }
     
-  }
+  // }
 
   public function getPendingRequestForApprover($user_id, $max_role_id, $relationship) {
 

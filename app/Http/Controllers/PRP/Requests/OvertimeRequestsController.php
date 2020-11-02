@@ -11,7 +11,7 @@ class OvertimeRequestsController extends RequestBaseController
     protected $overtime_request;
 
     public function __construct(
-        LeaveRequestEloquent $overtime_request,
+        OvertimeRequestEloquent $overtime_request,
         ApproverRequestService $request_service
     ) {
 

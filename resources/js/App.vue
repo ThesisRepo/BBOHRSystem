@@ -34,24 +34,24 @@ export default {
 
         this.listenForChanges();
         console.log(this.user);
-        var params = {  
-            user_id:1,
-            status_id:3,
-        };
+        // var params = {  
+        //     user_id:1,
+        //     status_id:3,
+        // };
         
-        this.$axios
-        .get(
-          "http://localhost:8000/user_info/approved_requests/count/" + this.user_id)
-        .then(response => {
-            console.log(response)
-          if (response.data === 1) {
+        // this.$axios
+        // .get(
+        //   "http://localhost:8000/user_info/approved_requests/count/" + this.user_id)
+        // .then(response => {
+        //     console.log(response)
+        //   if (response.data === 1) {
 
-            this.$parent.$parent.getInfo()
-            this.dialog = false
-          } else {      
-            this.$parent.$parent.getInfo()
-          }
-        })
+        //     this.$parent.$parent.getInfo()
+        //     this.dialog = false
+        //   } else {      
+        //     this.$parent.$parent.getInfo()
+        //   }
+        // })
     },
     methods: {
         setUserType(){
