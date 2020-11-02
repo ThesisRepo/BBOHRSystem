@@ -23,6 +23,22 @@ class UserEloquent extends EloquentImplementation {
        return  $this->model->findorFail($id)->userInformation()->update($data);
     }
 
+    public function updateUserWithInfo($id, $user, $user_info){
+
+      try {
+        DB::beginTransaction();
+          $res = $this->model->findorFail($id);
+          $res->update($user);
+          $res->userInformation()->update($user_info);
+        DB::commit();
+        return $res;
+      }catch(\Exception $e) {
+        DB::rollback();
+        return $e;
+      }
+
+   }
+
     public function getPrp($user) {
 
       $res = $this->model->where('id','!=',$user->id)
