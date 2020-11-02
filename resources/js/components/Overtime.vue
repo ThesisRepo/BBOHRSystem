@@ -16,7 +16,7 @@
       </template>
     </v-toolbar>
 
-        <!-- Feedback -->
+    <!-- Feedback -->
     <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
@@ -220,6 +220,12 @@
 
       </v-toolbar>
     </template>
+      <template v-slot:item.approver_role.role_name="{ item }">
+        <v-chip 
+        class="ma-2"
+        outlined
+        :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name}}</v-chip>
+      </template>
     <template v-slot:item.status.status_name="{ item }">
         <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name}}</v-chip>
       </template>
@@ -358,8 +364,7 @@ export default {
           end_time: this.editedItem.end_time,
           reason: this.editedItem.reason,
           prp_assigned_id: this.prp_assigned_id
-        }
-        console.log('params', params, this.editedItem.id)      
+        }     
         this.$axios.post('http://localhost:8000/overtime_request/' + this.editedItem.id, params).then(response=>{
           this.retrieve()
         })
@@ -412,9 +417,9 @@ export default {
           parameter
         )
         .then(response => {
+          console.log(response.data)
           this.retrieveOvertime();
           this.getAllFeedback();
-          this.closeApprove();
         });
     },
     disapprove() {
@@ -430,7 +435,6 @@ export default {
         .then(res => {
           this.retrieveOvertime();
           this.getAllFeedback();
-          this.closeReject();
         });
     },
     getAllFeedback() {
@@ -440,8 +444,7 @@ export default {
             this.user_id
         )
         .then(response => {
-          console.log('array', response.data)
-          // this.feedbacks = response.data;
+          this.feedbacks = response.data.feedbacked_overtime_requests;
         });
     },
     getColor(status) {

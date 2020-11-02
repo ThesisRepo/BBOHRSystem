@@ -2,93 +2,116 @@
   <div>
     <v-toolbar flat>
       <template v-slot:extension>
-        <v-tabs
-          dark
-          background-color="primary"
-          fixed-tabs
-          v-if="user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr')"
-        >
+        <v-tabs dark background-color="primary" fixed-tabs v-if="user_type.includes('hr mngr') || user_type.includes('finance mngr') || user_type.includes('general mngr')">
           <v-tabs-slider></v-tabs-slider>
-          <v-tab @click="employees = false, requests = true">
-            Employees Requests
-          </v-tab>
-          <v-tab @click="requests = false, employees = true">
-            My Requests
-          </v-tab>
+          <v-tab @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
+          <v-tab @click="requests = false, employees = true, feedback = false">Employees Requests</v-tab>
+          <v-tab @click="requests = false, employees = false, feedback = true">Feedback</v-tab>
         </v-tabs>
       </template>
     </v-toolbar>
-    <v-data-table v-if="employees" :headers="headers" :items="petty" :search="search" class="elevation-3">
+    <!-- Feedback -->
+    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" class="elevation-3">
       <template v-slot:top>
-         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-col class="mt-8">
-            <v-select :items="month" label="Month"></v-select>
+            <v-menu
+              :close-on-content-click="false"
+              transition="scale-transition"
+              offset-y
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  class="input-name"
+                  v-model="dateRangeText"
+                  chips
+                  label="DATE"
+                  prepend-icon="mdi-calendar"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+               <v-date-picker
+                v-model="dates"
+                range
+              ></v-date-picker>
+            </v-menu>
           </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <v-btn depressed color="primary">SUMMARY</v-btn>
           <v-divider class="mx-4" vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-text-field
-            v-model="search"
-            v-icon="mdi-magnify"
-            label="Search"
-            single-line
-            hide-details
-            class="mx-5"
-          ></v-text-field>
-          <v-dialog v-model="dialog">
-            <v-card class="mt-5">
-              <v-card-text>
-                <v-container>
-                  <v-row>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.description" label="Description"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.details" label="Details"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.date" label="Date"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.department" label="Department"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.total_amount" type="number" label="Total Amount"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.status" label="Status"></v-text-field>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-                <v-btn color="blue darken-1" text @click="save()">Save</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="500px">
-            <v-card>
-              <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-                <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
-                <v-spacer></v-spacer>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+          <v-text-field v-model="search" label="Search" single-line hide-details class="mx-5"></v-text-field>
         </v-toolbar>
+      </template>
+      <template v-slot:item.approver_role.role_name="{ item }">
+        <v-chip
+        class="ma-2"
+        outlined
+        :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name}}</v-chip>
+      </template>
+      <template v-slot:item.status.status_name="{ item }">
+        <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name}}</v-chip>
+      </template>
+    </v-data-table>
+
+    <!-- Employee Overtime -->
+    <v-data-table v-if="employees" :headers="headersEmp" :items="pettyPending" class="elevation-3">
+      <template v-slot:top>
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+          <v-col class="mt-8">
+            <v-menu
+              :close-on-content-click="false"
+              transition="scale-transition"
+              offset-y
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  class="input-name"
+                  v-model="dateRangeText"
+                  chips
+                  label="DATE"
+                  prepend-icon="mdi-calendar"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+               <v-date-picker
+                v-model="dates"
+                range
+              ></v-date-picker>
+            </v-menu>
+          </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <v-btn depressed color="primary">SUMMARY</v-btn>
+          <v-divider class="mx-4" vertical></v-divider>
+          <v-spacer></v-spacer>
+          <v-text-field v-model="search" label="Search" single-line hide-details class="mx-5"></v-text-field>
+        </v-toolbar>
+      </template>
+      <template v-slot:item.approver_role.role_name="{ item }">
+        <v-chip
+        class="ma-2"
+        outlined
+        :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name}}</v-chip>
       </template>
       <template v-slot:item.status.status_name="{ item }">
         <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name}}</v-chip>
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-        <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+        <v-icon small class="mr-2" @click="approveModal(item)">mdi-check-decagram</v-icon>
+        <v-icon small @click="disapproveModal(item)">mdi-close-circle</v-icon>
       </template>
     </v-data-table>
+
+    <Confirmation
+      ref="confirms"
+      :title="'Confirmation'"
+      :message="approveThis === 'approve' ? 'Are you sure you want to approve this request?' : 'Are you sure you want to reject this request?'"
+      @onConfirm="confirm($event)"
+    ></Confirmation>
     
     <!-- Employee Edit Modal -->
     <v-dialog v-model="dialog" persistent max-width="600px">
@@ -153,18 +176,11 @@
       </v-card>
     </v-dialog>
 
-    <!-- Employee DeleteModal -->
-    <v-dialog v-model="dialogDelete" max-width="500px">
-      <v-card>
-        <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-          <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
-          <v-spacer></v-spacer>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <!-- DeleteModal -->
+    <ConfirmationDel
+      ref="confirmDel"
+      @onConfirm="confirmDel($event)"
+    ></ConfirmationDel>
 
     <!-- MyRequests -->
     <v-data-table v-if="requests && (!user_type.includes('hr mngr') || !user_type.includes('prp emp') || user_type.includes('prp emp'))" :headers="headers" :items="petty" :search="search" class="elevation-3">
@@ -191,6 +207,12 @@
 
       </v-toolbar>
     </template>
+      <template v-slot:item.approver_role.role_name="{ item }">
+        <v-chip 
+        class="ma-2"
+        outlined
+        :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name}}</v-chip>
+      </template>
     <template v-slot:item.status.status_name="{ item }">
         <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name}}</v-chip>
       </template>
@@ -203,6 +225,8 @@
 </template>
 <script>
 import createPetty from "./modals/create_petty.vue";
+import Confirmation from "./modals/confirmation/confirm.vue";
+import ConfirmationDel from "./modals/confirmation/delete.vue";
 export default {
   data: () => ({
     user_type: localStorage.getItem("user_type"),
@@ -211,17 +235,13 @@ export default {
     user_department: localStorage.getItem("user_department"),
     employees: !localStorage.getItem("user_type").includes("finance mngr") ? false : true,
     requests: !localStorage.getItem("user_type").includes("finance mngr") ? true : false,
+    feedback: !localStorage.getItem("user_type").includes("finance mngr") ? false : true,
     dialog: false,
     error: false,
-    search: "",
+    search: null,
     dialogDelete: false,
     headers: [
-      {
-        text: "DESCRIPTION",
-        align: "start",
-        sortable: false,
-        value: "description_need"
-      },
+      { text: "DESCRIPTION", align: "start", sortable: false, value: "description_need" },
       { text: "DATE", value: "date" },
       { text: "DEPARTMENT", value: "department.department_name" },
       { text: "TOTAL AMOUNT", value: "total_amount" },
@@ -229,7 +249,29 @@ export default {
       { text: "STATUS", value: "status.status_name" },
       { text: "ACTIONS", value: "actions", sortable: false }
     ],
+    headersEmp: [
+      { text: "REQUESTER", align: "start", value: "user.first_name" },
+      { text: "DESCRIPTION", value: "description_need" },
+      { text: "DATE", value: "date" },
+      { text: "DEPARTMENT", value: "department.department_name" },
+      { text: "TOTAL AMOUNT", value: "total_amount" },
+      { text: "APPROVER", value: "approver_role.role_name" },
+      { text: "STATUS", value: "status.status_name" },
+      { text: "ACTIONS", value: "actions", sortable: false }
+    ],
+    headersFeed: [
+      { text: "REQUESTER", align: "start", value: "user.first_name" },
+      { text: "DESCRIPTION", value: "description_need" },
+      { text: "DATE", value: "date" },
+      { text: "DEPARTMENT", value: "department.department_name" },
+      { text: "TOTAL AMOUNT", value: "total_amount" },
+      { text: "APPROVER", value: "approver_role.role_name" },
+      { text: "STATUS", value: "status.status_name" }
+    ],
     petty: [],
+    pettyPending: [],
+    feedbacks: [],
+    approveThis: '',
     search: null,
     editedIndex: 1,
     editedItem: {
@@ -238,13 +280,30 @@ export default {
       total_amount: null,
       details: null
     },
-    month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    dates: [new Date().toISOString().substr(0, 10), ]
   }),
   components: {
-    createPetty
+    createPetty,
+    Confirmation,
+    ConfirmationDel
+  },
+  computed: {
+    dateRangeText () {
+      return this.dates.join(' ~ ')
+    },
   },
   mounted(){
-    this.retrieve()
+    if (
+      this.user_type.includes("hr mngr") ||
+      this.user_type.includes("finance mngr") ||
+      this.user_type.includes("general mngr")
+    ) {
+      this.retrievePetty();
+      this.getAllFeedback();
+      this.retrieve();
+    } else {
+      this.retrieve();
+    }
   },
   methods: {
     disabledDates(date) {
@@ -257,6 +316,19 @@ export default {
       .catch(e => {
         console.log(e);
       })
+    },
+    retrievePetty() {
+      this.$axios
+        .get(
+          "http://localhost:8000/prp/petty_cash_request/pending/" +
+            this.user_id
+        )
+        .then(response => {
+          this.pettyPending = response.data;
+        })
+        .catch(e => {
+          console.log(e);
+        });
     },
 
     editItem(item) {
@@ -278,7 +350,7 @@ export default {
           date: this.editedItem.date,
           department: this.user_department,
           total_amount: this.editedItem.total_amount,
-          finance_mngr_assigned: user_finance
+          finance_mngr_assigned: this.user_finance
         }
         this.$axios.post('http://localhost:8000/petty_cash_request/' + this.editedItem.id, params).then(response=>{
           this.retrieve()
@@ -290,27 +362,90 @@ export default {
     },
 
     deleteItem(item) {
-      this.id = item.id
-      this.dialogDelete = true;
+      this.id = item.id;
+      this.$refs.confirmDel.show(item)
     },
 
-    deleteItemConfirm() {
-      this.$axios.delete('http://localhost:8000/petty_cash_request/' + this.id).then(response=>{
-        console.log('Successfully deleted')
-        this.retrieve()
-        this.dialogDelete = false
-      })
+    confirmDel() {
+      this.$axios
+        .delete("http://localhost:8000/petty_cash_request/" + this.id)
+        .then(response => {
+          this.retrieve();
+        });
     },
     close(){
       this.dialog = false
     },
-    closeDelete(){
-      this.dialogDelete = false
+    approveModal(item) {
+      this.approveThis = 'approve'
+      this.id = item.id;
+      this.$refs.confirms.show(item)
+    },
+    confirm(){
+      if(this.approveThis === 'approve'){
+        this.approve()
+      }else{
+        this.disapprove()
+      }
+    },
+    disapproveModal(item) {
+      this.approveThis = 'disapprove'
+      this.id = item.id;
+      this.$refs.confirms.show(item)
+    },
+    approve() {
+      let parameter = {
+        user_id: this.user_id,
+        status_id: 1
+      };
+      this.$axios
+        .post(
+          "http://localhost:8000/prp/petty_cash_request/feedback/" + this.id,
+          parameter
+        )
+        .then(response => {
+          console.log(response.data)
+          this.retrievePetty();
+          this.getAllFeedback();
+        });
+    },
+    disapprove() {
+      let parameter = {
+        user_id: this.user_id,
+        status_id: 3
+      };
+      this.$axios
+        .post(
+          "http://localhost:8000/prp/petty_cash_request/feedback/" + this.id,
+          parameter
+        )
+        .then(res => {
+          this.retrievePetty();
+          this.getAllFeedback();
+        });
+    },
+    getAllFeedback() {
+      this.$axios
+        .get(
+          "http://localhost:8000/prp/petty_cash_request/feedbacked/" +
+            this.user_id
+        )
+        .then(response => {
+          console.log(response.data)
+          // this.feedbacks = response.data;
+        });
     },
     getColor(status) {
       if (status === 'pending') return '#ffa500'
       else if (status === 'approved') return 'green'
       else return 'red'
+    },
+    prpColor(approver_role) {
+      if (approver_role === "prp emp") return "#0047ab"
+      else if (approver_role === "hr mngr") return "blue"
+      else if (approver_role === "finance mngr") return "#00004d"
+      else if (approver_role === "emp") return "0f52ba"
+      else return "#002366";
     }
   }
 };

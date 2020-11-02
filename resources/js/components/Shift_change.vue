@@ -431,7 +431,6 @@ export default {
         .then(response => {
           this.retrieveShift();
           this.getAllFeedback();
-          this.closeApprove();
         });
     },
     disapprove() {
@@ -447,7 +446,6 @@ export default {
         .then(res => {
           this.retrieveShift();
           this.getAllFeedback();
-          this.closeReject();
         });
     },
     getAllFeedback() {

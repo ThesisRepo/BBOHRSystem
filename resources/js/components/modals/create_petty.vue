@@ -111,7 +111,7 @@ export default {
           description_need: this.description_need,
           department_id: this.user_department,
           total_amount: this.total_amount,
-          finance_mngr_assigned: user_finance
+          finance_mngr_assigned: this.user_finance
         }
         this.$axios.post("http://localhost:8000/petty_cash_request", parameter).then(res =>{
           console.log('Successfully Added', res.data)
