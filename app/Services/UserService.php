@@ -38,11 +38,13 @@ class UserService
     }
 
     public function getPRPId() {
-
-        $prp_assigned_id = Auth::user()->prp_assigned;
-        
+        $prp_assigned_id = Auth::user()->prp_assigned;    
         return $prp_assigned_id;
+    }
 
+    public function getFinanceMngrAssignedId() {
+        $finance_mngr_assigned_id = Auth::user()->finance_mngr_assigned;     
+        return $finance_mngr_assigned_id;
     }
 
     public function getUserId() {
