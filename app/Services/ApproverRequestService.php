@@ -72,9 +72,9 @@ class ApproverRequestService
         }
     }
 
-    public function getAllFeedbackedRequest($user_id, $relationship){
+    public function getAllFeedbackedRequest($user_id, $relationship, $nested_relationship){
         
-        return $this->user->getAllFeedbackedRequests($user_id, $relationship);
+        return $this->user->getAllFeedbackedRequests($user_id, $relationship, $nested_relationship);
     
     }
 

@@ -58,8 +58,17 @@ class UserEloquent extends EloquentImplementation {
 
     }
 
-  public function getAllFeedbackedRequests($user_id, $relationship) {
-    $res = $this->findWith($user_id, $relationship);
+  public function getAllFeedbackedRequests($user_id, $relationship, $nested_relationship) {
+    
+    $res = $this->findWith(
+      $user_id,
+      [
+        $relationship => function($q) use($nested_relationship){
+          return $q->with($nested_relationship);
+        }
+      ] 
+    );
+    
     return $res;
 
   }
@@ -90,7 +99,7 @@ class UserEloquent extends EloquentImplementation {
   public function getFeedbackRequest($user_id, $relationship, $status_id) {
     return $this->findWith($user_id, [
       $relationship => function($q) use($status_id){
-        return $q->with(['user', 'status', 'approver_role', 'department', 'leave_type'])->where('status_id', $status_id);
+        return $q->where('status_id', $status_id);
       }
     ]);
   }
