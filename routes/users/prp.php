@@ -48,19 +48,19 @@ Route::post('prp/shift_change_request/feedback/{id}','Requests\ShiftChangeReques
 // status_id:3,
 
 // get all feedbacked overtime request that belongs of approver
-Route::get('prp/overtime_request/feedbacked/{user_id}','Requests\OvertimeRequestController@getAllFeedbackedRequest')->name('prp.overtime_request.feedbacked');
+Route::get('prp/overtime_request/feedbacked/{user_id}','Requests\OvertimeRequestsController@getAllFeedbackedRequest')->name('prp.overtime_request.feedbacked');
 
 // get all approved overtime request that belongs of approver
-Route::get('prp/overtime_request/approved/{user_id}','Requests\OvertimeRequestController@getAllApprovedRequest')->name('prp.overtime_request.approved');
+Route::get('prp/overtime_request/approved/{user_id}','Requests\OvertimeRequestsController@getAllApprovedRequest')->name('prp.overtime_request.approved');
 
 // get all disapproved overtime request that belongs of approver
-Route::get('prp/overtime_request/disapproved/{user_id}','Requests\OvertimeRequestController@getAllDisapprovedRequest')->name('prp.overtime_request.disapproved');
+Route::get('prp/overtime_request/disapproved/{user_id}','Requests\OvertimeRequestsController@getAllDisapprovedRequest')->name('prp.overtime_request.disapproved');
 
 // get all pending overtimerequest that belongs of approver
-Route::get('prp/overtime_request/pending/{user_id}','Requests\OvertimeRequestController@getPendingRequest')->name('prp.overtime_request.pending');
+Route::get('prp/overtime_request/pending/{user_id}','Requests\OvertimeRequestsController@getPendingRequest')->name('prp.overtime_request.pending');
 
 // approve or disapprove a overtime request
-Route::post('prp/overtime_request/feedback/{id}','Requests\OvertimeRequestController@requestFeedback')->name('prp.overtime_request.feedback');
+Route::post('prp/overtime_request/feedback/{id}','Requests\OvertimeRequestsController@requestFeedback')->name('prp.overtime_request.feedback');
 
 
 // -- TRAVEL AUTHORIZATION REQUEST

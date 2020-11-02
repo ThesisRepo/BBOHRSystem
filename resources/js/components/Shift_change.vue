@@ -262,8 +262,8 @@ export default {
       { text: "REQUESTER", align: "start", value: "user.first_name" },
       { text: "SHIFT DATE", value: "shift_date" },
       { text: "SHIFT TIME", value: "shift_time.shift_time_name" },
-      { text: "APPROVER", value: "approver_role_id" },
-      { text: "STATUS", value: "status_id" }
+      { text: "APPROVER", value: "approver_role.role_name" },
+      { text: "STATUS", value: "status.status_name" }
     ],
     shifts: [],
     shiftPending: [],
