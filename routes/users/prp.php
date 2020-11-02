@@ -48,19 +48,19 @@ Route::post('prp/shift_change_request/feedback/{id}','Requests\ShiftChangeReques
 // status_id:3,
 
 // get all feedbacked overtime request that belongs of approver
-Route::get('prp/overtime_request/feedbacked/{user_id}','Requests\OvertimeRequestController@getAllFeedbackedRequest')->name('prp.overtime_request.feedbacked');
+Route::get('prp/overtime_request/feedbacked/{user_id}','Requests\OvertimeRequestsController@getAllFeedbackedRequest')->name('prp.overtime_request.feedbacked');
 
 // get all approved overtime request that belongs of approver
-Route::get('prp/overtime_request/approved/{user_id}','Requests\OvertimeRequestController@getAllApprovedRequest')->name('prp.overtime_request.approved');
+Route::get('prp/overtime_request/approved/{user_id}','Requests\OvertimeRequestsController@getAllApprovedRequest')->name('prp.overtime_request.approved');
 
 // get all disapproved overtime request that belongs of approver
-Route::get('prp/overtime_request/disapproved/{user_id}','Requests\OvertimeRequestController@getAllDisapprovedRequest')->name('prp.overtime_request.disapproved');
+Route::get('prp/overtime_request/disapproved/{user_id}','Requests\OvertimeRequestsController@getAllDisapprovedRequest')->name('prp.overtime_request.disapproved');
 
 // get all pending overtimerequest that belongs of approver
-Route::get('prp/overtime_request/pending/{user_id}','Requests\OvertimeRequestController@getPendingRequest')->name('prp.overtime_request.pending');
+Route::get('prp/overtime_request/pending/{user_id}','Requests\OvertimeRequestsController@getPendingRequest')->name('prp.overtime_request.pending');
 
 // approve or disapprove a overtime request
-Route::post('prp/overtime_request/feedback/{id}','Requests\OvertimeRequestController@requestFeedback')->name('prp.overtime_request.feedback');
+Route::post('prp/overtime_request/feedback/{id}','Requests\OvertimeRequestsController@requestFeedback')->name('prp.overtime_request.feedback');
 
 
 // -- TRAVEL AUTHORIZATION REQUEST
@@ -69,19 +69,19 @@ Route::post('prp/overtime_request/feedback/{id}','Requests\OvertimeRequestContro
 // status_id:3,
 
 // get all feedbacked travel authorization request that belongs of approver
-Route::get('prp/travel_auth_request/feedbacked/{user_id}','Requests\TravelAuthRequestController@getAllFeedbackedRequest')->name('prp.travel_auth_request.feedbacked');
+Route::get('prp/travel_auth_request/feedbacked/{user_id}','Requests\TravelAuthRequestsController@getAllFeedbackedRequest')->name('prp.travel_auth_request.feedbacked');
 
 // get all approved travel authorization request that belongs of approver
-Route::get('prp/travel_auth_request/approved/{user_id}','Requests\TravelAuthRequestController@getAllApprovedRequest')->name('prp.travel_auth_request.approved');
+Route::get('prp/travel_auth_request/approved/{user_id}','Requests\TravelAuthRequestsController@getAllApprovedRequest')->name('prp.travel_auth_request.approved');
 
 // get all disapproved travel authorization request that belongs of approver
-Route::get('prp/travel_auth_request/disapproved/{user_id}','Requests\TravelAuthRequestController@getAllDisapprovedRequest')->name('prp.travel_auth_request.disapproved');
+Route::get('prp/travel_auth_request/disapproved/{user_id}','Requests\TravelAuthRequestsController@getAllDisapprovedRequest')->name('prp.travel_auth_request.disapproved');
 
 // get all pending travel authorization request that belongs of approver
-Route::get('prp/travel_auth_request/pending/{user_id}','Requests\TravelAuthRequestController@getPendingRequest')->name('prp.travel_auth_request.pending');
+Route::get('prp/travel_auth_request/pending/{user_id}','Requests\TravelAuthRequestsController@getPendingRequest')->name('prp.travel_auth_request.pending');
 
 // approve or disapprove a travel authorization request
-Route::post('prp/travel_auth_request/feedback/{id}','Requests\TravelAuthRequestController@requestFeedback')->name('prp.travel_auth_request.feedback');
+Route::post('prp/travel_auth_request/feedback/{id}','Requests\TravelAuthRequestsController@requestFeedback')->name('prp.travel_auth_request.feedback');
 
 
 // -- BUDGET REQUEST
@@ -90,19 +90,19 @@ Route::post('prp/travel_auth_request/feedback/{id}','Requests\TravelAuthRequestC
 // status_id:3,
 
 // get all feedbacked budget request that belongs of approver
-Route::get('prp/budget_request/feedbacked/{user_id}','Requests\BudgetRequestController@getAllFeedbackedRequest')->name('prp.budget_request.feedbacked');
+Route::get('prp/budget_request/feedbacked/{user_id}','Requests\BudgetRequestsController@getAllFeedbackedRequest')->name('prp.budget_request.feedbacked');
 
 // get all approved budget request that belongs of approver
-Route::get('prp/budget_request/approved/{user_id}','Requests\BudgetRequestController@getAllApprovedRequest')->name('prp.budget_request.approved');
+Route::get('prp/budget_request/approved/{user_id}','Requests\BudgetRequestsController@getAllApprovedRequest')->name('prp.budget_request.approved');
 
 // get all disapproved budget request that belongs of approver
-Route::get('prp/budget_request/disapproved/{user_id}','Requests\BudgetRequestController@getAllDisapprovedRequest')->name('prp.budget_request.disapproved');
+Route::get('prp/budget_request/disapproved/{user_id}','Requests\BudgetRequestsController@getAllDisapprovedRequest')->name('prp.budget_request.disapproved');
 
 // get all pending travel authorization request that belongs of approver
-Route::get('prp/budget_request/pending/{user_id}','Requests\BudgetRequestController@getPendingRequest')->name('prp.budget_request.pending');
+Route::get('prp/budget_request/pending/{user_id}','Requests\BudgetRequestsController@getPendingRequest')->name('prp.budget_request.pending');
 
 // approve or disapprove a budget request
-Route::post('prp/budget_request/feedback/{id}','Requests\BudgetRequestController@requestFeedback')->name('prp.budget_request.feedback');
+Route::post('prp/budget_request/feedback/{id}','Requests\BudgetRequestsController@requestFeedback')->name('prp.budget_request.feedback');
 
 
 // -- PETTY CASH REQUEST
@@ -111,16 +111,16 @@ Route::post('prp/budget_request/feedback/{id}','Requests\BudgetRequestController
 // status_id:3,
 
 // get all petty cash budget request that belongs of approver
-Route::get('prp/petty_cash_request/feedbacked/{user_id}','Requests\PettyCashRequestController@getAllFeedbackedRequest')->name('prp.petty_cash_request.feedbacked');
+Route::get('prp/petty_cash_request/feedbacked/{user_id}','Requests\PettyCashRequestsController@getAllFeedbackedRequest')->name('prp.petty_cash_request.feedbacked');
 
 // get all petty cash request that belongs of approver
-Route::get('prp/petty_cash_request/approved/{user_id}','Requests\PettyCashRequestController@getAllApprovedRequest')->name('prp.petty_cash_request.approved');
+Route::get('prp/petty_cash_request/approved/{user_id}','Requests\PettyCashRequestsController@getAllApprovedRequest')->name('prp.petty_cash_request.approved');
 
 // get all petty cash budget request that belongs of approver
-Route::get('prp/petty_cash_request/disapproved/{user_id}','Requests\PettyCashRequestController@getAllDisapprovedRequest')->name('prp.petty_cash_request.disapproved');
+Route::get('prp/petty_cash_request/disapproved/{user_id}','Requests\PettyCashRequestsController@getAllDisapprovedRequest')->name('prp.petty_cash_request.disapproved');
 
 // get all pending petty cash request that belongs of approver
-Route::get('prp/petty_cash_request/pending/{user_id}','Requests\PettyCashRequestController@getPendingRequest')->name('prp.petty_cash_request.pending');
+Route::get('prp/petty_cash_request/pending/{user_id}','Requests\PettyCashRequestsController@getPendingRequest')->name('prp.petty_cash_request.pending');
 
 // approve or disapprove a petty cash request
-Route::post('prp/petty_cash_request/feedback/{id}','Requests\PettyCashRequestController@requestFeedback')->name('prp.petty_cash_request.feedback');
+Route::post('prp/petty_cash_request/feedback/{id}','Requests\PettyCashRequestsController@requestFeedback')->name('prp.petty_cash_request.feedback');
