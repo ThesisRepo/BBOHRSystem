@@ -37,7 +37,15 @@
 
       <v-toolbar-title style="color:white"> BBO </v-toolbar-title>
     </v-app-bar>
+
+    <!-- <v-list v-if="isLoggedIn">
+      <a id="logout-link" href="#" @click.prevent="logout">Logout</a>
+    </v-list> -->
   </v-app>
+  
+   
+        
+
 </template>
 <style>
 v-app-bar {
@@ -74,10 +82,31 @@ export default {
       this.employ.splice(this.employ.length-1, 0, { icon: "mdi-account-group", text: "Manage Users", route: "/ManageUsers" })
     }
   },
+
   methods: {
+
     redirect(route) {
-      ROUTER.push(route).catch(() => {});
+      if(route != '/logout') {
+       ROUTER.push(route).catch(() => {});
+      }else {
+        this.logout();
+      }
+    },
+    // logout(evt) {
+    //   if (confirm("Are you sure you want to logout ?")) {
+    //     axios.get('api/logout').then(response => {
+    //     localStorage.removeItem('auth_token');  
+    //     })
+    //   }
+    // }
+    logout() {
+       this.$axios
+        .post(
+          "http://localhost:8000/logout")
+        .then(response => {
+          location.reload();
+        })
     }
-  },
+  }
 };
 </script> 

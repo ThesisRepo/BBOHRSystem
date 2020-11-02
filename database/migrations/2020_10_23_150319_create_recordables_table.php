@@ -14,6 +14,7 @@ class CreateRecordablesTable extends Migration
     public function up()
     {
         Schema::create('recordables', function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->integer('user_id');
             $table->integer('recordable_id');
             $table->string('recordable_type');

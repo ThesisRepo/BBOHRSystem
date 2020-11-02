@@ -94,6 +94,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->morphedByMany(Requests\LeaveRequest::class, 'recordable');
     }
 
+    public function recorded_leave_requests() {
+        return $this->morphedByMany(Requests\LeaveRequest::class, 'requestable');
+    }
+
+
+
     public function shift_change_requests() {
         return $this->hasMany(Requests\ShiftChangeRequest::class);
     }
@@ -101,6 +107,12 @@ class User extends Authenticatable implements MustVerifyEmail
     public function feedbacked_shift_change_requests() {
         return $this->morphedByMany(Requests\ShiftChangeRequest::class, 'recordable');
     }
+
+    public function recorded_shift_change_requests() {
+        return $this->morphedByMany(Requests\ShiftChangeRequest::class, 'requestable');
+    }
+
+
 
     public function overtime_requests() {
         return $this->hasMany(Requests\OvertimeRequest::class);
@@ -110,6 +122,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->morphedByMany(Requests\OvertimeRequest::class, 'recordable');
     }
 
+    public function recorded_overtime__requests() {
+        return $this->morphedByMany(Requests\OvertimeRequest::class, 'requestable');
+    }
+
+
+
     public function petty_cash_requests() {
         return $this->hasMany(Requests\PettyCashRequest::class);
     }
@@ -118,7 +136,34 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->morphedByMany(Requests\PettyCashRequest::class, 'recordable');
     }
 
+    public function recorded_petty_cash_requests() {
+        return $this->morphedByMany(Requests\PettyCashRequest::class, 'requestable');
+    }
+
+
+
     public function budget_requests() {
-        return $this->hasMany(Requests\PettyCashRequest::class);
+        return $this->hasMany(Requests\BudgetRequest::class);
+    }
+
+    public function approved_budget_requests() {
+        return $this->morphedByMany(Requests\BudgetRequest::class, 'recordable');
+    }
+
+    public function recorded_budget_requests() {
+        return $this->morphedByMany(Requests\BudgetRequest::class, 'requestable');
+    }
+
+    
+    public function travel_auth_requests() {
+        return $this->hasMany(Requests\TravelAuthRequest::class);
+    }
+
+    public function approved_travel_auth_requests() {
+        return $this->morphedByMany(Requests\TravelAuthRequest::class, 'recordable');
+    }
+
+    public function recorded_travel_auth_requests() {
+        return $this->morphedByMany(Requests\TravelAuthRequest::class, 'requestable');
     }
 }

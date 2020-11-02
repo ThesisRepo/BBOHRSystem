@@ -39,11 +39,8 @@ class RequestBaseController extends Controller
     }
 
     public function getBaseAllFeedbackedRequest($user_id, $relationship){
-
         $res = $this->request_service->getAllFeedbackedRequest($user_id, $relationship);
-
         return $res;
-    
     }
 
     public function getBaseAllApprovedRequest($user_id, $relationship){

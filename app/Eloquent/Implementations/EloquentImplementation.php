@@ -55,6 +55,10 @@ class EloquentImplementation implements EloquentContract {
   public function findWith( $id, $relationship) {
     return $this->model->with( $relationship)->find($id);
   }
+
+  public function findWithCount($id, $relationship) {
+    return $this->model->withCount($relationship)->find($id);
+  }
   /**
    * @param array $data
    * @param int $id

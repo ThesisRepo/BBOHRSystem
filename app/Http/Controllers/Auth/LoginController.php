@@ -23,7 +23,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+      $this->middleware('guest')->except('logout');
     }
 
     /**
@@ -42,6 +42,7 @@ class LoginController extends Controller
      */
     public function authenticate(LoginRequest $request)
     {
+      
         $credentials = $request->only('email', 'password');
 
         if(Auth::attempt($credentials, $request->has('remember'))){
@@ -61,4 +62,14 @@ class LoginController extends Controller
 
         return redirect('login');
     }
+
+
+    // public function logout(Request $request)
+    // {
+    //     $request->user()->token()->revoke();
+
+    //     return response()->json([
+    //         'message' => 'Successfully logged out'
+    //     ]);
+    // }
 }

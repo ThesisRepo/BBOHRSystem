@@ -13,6 +13,7 @@
 <script>
 import Vuetify from "vuetify";
 import sidebar from "./modules/sidebar.vue";
+// import { constants } from 'fs';
 export default {
     name: "app",
     props: ['user'],
@@ -20,27 +21,37 @@ export default {
         sidebar
         // dashboard
     },
+    data(){
+        return {
+            user_id: localStorage.getItem("id")
+        }
+    },
     created() {
         this.setUserType();
-        // this.listenForChanges();
     },
     mounted(){
+        console.log('ata');
+
+        this.listenForChanges();
+        console.log(this.user);
+        var params = {  
+            user_id:1,
+            status_id:3,
+        };
         
-        // var params = {  
-        //     finance_mngr_assigned:3
-        // };
-        
-        // this.$axios
-        // .post(
-        //   "http://localhost:8000/leave_request/", params)
-        // .then(response => {
-        //   if (response.data === 1) {
-        //     this.$parent.$parent.getInfo()
-        //     this.dialog = false
-        //   } else {      
-        //     this.$parent.$parent.getInfo()
-        //   }
-        // })
+        this.$axios
+        .get(
+          "http://localhost:8000/user_info/approved_requests/count/" + this.user_id)
+        .then(response => {
+            console.log(response)
+          if (response.data === 1) {
+
+            this.$parent.$parent.getInfo()
+            this.dialog = false
+          } else {      
+            this.$parent.$parent.getInfo()
+          }
+        })
     },
     methods: {
         setUserType(){
@@ -50,8 +61,8 @@ export default {
                 roleList.push(element.role_name)
                 // element.role_name
             });
-            this.user.assigned_prp ? localStorage.setItem('assigned_prp_id', this.user.assigned_prp.id) : localStorage.setItem('assigned_prp_id', 'No Prp assign')
-            this.user.assigned_finance.first_name + ' ' + this.user.assigned_finance.last_name ? localStorage.setItem('user_finance', this.user.assigned_finance.first_name + ' ' + this.user.assigned_finance.last_name) : localStorage.setItem('user_finance', 'No Finance assign')
+            // this.user.assigned_prp ? localStorage.setItem('assigned_prp_id', this.user.assigned_prp.id) : localStorage.setItem('assigned_prp_id', 'No Prp assign')
+            // this.user.assigned_finance.first_name + ' ' + this.user.assigned_finance.last_name ? localStorage.setItem('user_finance', this.user.assigned_finance.first_name + ' ' + this.user.assigned_finance.last_name) : localStorage.setItem('user_finance', 'No Finance assign')
             localStorage.setItem('user_pic', this.user.user_information.profile_url)
             this.user.assigned_prp ? localStorage.setItem('prp_assign', this.user.assigned_prp.first_name + ' ' + this.user.assigned_prp.last_name) : localStorage.setItem('prp_assign', 'No Prp assign')
             localStorage.setItem('user_department', this.user.user_information.department.department_name)
@@ -60,6 +71,31 @@ export default {
             localStorage.setItem('user_name', this.user.first_name + " " + this.user.last_name)
             localStorage.setItem('email', this.user.email)
             localStorage.setItem('company_id', this.user.user_information.company_number)
+<<<<<<< HEAD
+=======
+        },
+        listenForChanges() {
+        console.log('listening');
+        Echo.private('newrequest.' + this.user.id)
+          .listen('NewRequest', notif => {
+            console.log('NewRequest', notif)
+            if (! ('Notification' in window)) {
+              alert('Web Notification is not supported');
+              return;
+            }
+            Notification.requestPermission( permission => {
+              let notification = new Notification('New Notificaion from BBO Request Management!', {
+                body: notif.message, // content for the alert
+                icon: "https://pusher.com/static_logos/320x320.png" // optional image url
+              });
+
+              // link to page on clicking the notification
+              notification.onclick = () => {
+                window.open(window.location.href);
+              };
+            });
+          })
+>>>>>>> 66534488d92e582ddf3ba0e4344afafb92b130b2
         }
         // listenForChanges() {
         // console.log('listening');
@@ -88,6 +124,7 @@ export default {
 }
 </script>  
 <style>
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap');
 v-main {
     background-color: black;
 }
