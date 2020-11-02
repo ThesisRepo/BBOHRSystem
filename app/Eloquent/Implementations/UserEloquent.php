@@ -202,4 +202,19 @@ class UserEloquent extends EloquentImplementation {
     return $res;
 
   }
+
+  public function registerUser($user, $roles, $user_info) {
+    try {
+      DB::beginTransaction();
+        $user = $this->model->create($user);
+        $user->roles()->attach($roles);
+        $user->userInformation()->create($user_info);
+      DB::commit();
+      return $user;
+    }catch(\Exception $e) {
+      DB::rollback();
+      return $e;
+    }
+    
+  }
 }
