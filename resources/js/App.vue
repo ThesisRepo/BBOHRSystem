@@ -30,7 +30,7 @@ export default {
         this.setUserType();
     },
     mounted(){
-        console.log('ata');
+        console.log('ata', this.user);
 
         this.listenForChanges();
         console.log(this.user);
@@ -62,7 +62,7 @@ export default {
                 // element.role_name
             });
             this.user.assigned_prp ? localStorage.setItem('assigned_prp_id', this.user.assigned_prp.id) : localStorage.setItem('assigned_prp_id', 'No Prp assign')
-            this.user.assigned_finance.first_name + ' ' + this.user.assigned_finance.last_name ? localStorage.setItem('user_finance', this.user.assigned_finance.first_name + ' ' + this.user.assigned_finance.last_name) : localStorage.setItem('user_finance', 'No Finance assign')
+            this.user.assigned_finance ? localStorage.setItem('user_finance', this.user.assigned_finance.first_name + ' ' + this.user.assigned_finance.last_name) : localStorage.setItem('user_finance', 'No Finance assign')
             localStorage.setItem('user_pic', this.user.user_information.profile_url)
             this.user.assigned_prp ? localStorage.setItem('prp_assign', this.user.assigned_prp.first_name + ' ' + this.user.assigned_prp.last_name) : localStorage.setItem('prp_assign', 'No Prp assign')
             localStorage.setItem('user_department', this.user.user_information.department.department_name)

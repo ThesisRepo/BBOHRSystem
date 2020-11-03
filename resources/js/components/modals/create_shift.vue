@@ -112,7 +112,6 @@ export default {
         }
         console.log(parameter)
         this.$axios.post("http://localhost:8000/shift_change_request", parameter).then(res =>{
-          console.log('Successfully Added', res.data)
           this.$parent.$parent.$parent.$parent.$parent.retrieve()
           this.dialog = false
         })

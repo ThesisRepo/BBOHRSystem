@@ -256,7 +256,8 @@
             prepend-inner-icon="mdi-magnify"
             label="Search"
           ></v-text-field>
-          <createTravel></createTravel>
+          <createTravel v-if="prp_assigned_id !== 'No Prp assign'"></createTravel>
+          <h4 v-if="prp_assigned_id === 'No Prp assign'">bolbol</h4>
         </v-toolbar>
       </template>
 
@@ -282,6 +283,7 @@ export default {
     file_uri: "",
     user_type: localStorage.getItem("user_type"),
     user_id: localStorage.getItem("id"),
+    prp_assigned_id: localStorage.getItem("assigned_prp_id"),
     employees: !localStorage.getItem("user_type").includes("finance mngr") ? false : true,
     requests: !localStorage.getItem("user_type").includes("finance mngr") ? true : false,
     feedback: !localStorage.getItem("user_type").includes("finance mngr") ? false : true,
