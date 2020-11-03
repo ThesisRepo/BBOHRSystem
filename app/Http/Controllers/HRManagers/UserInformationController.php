@@ -31,7 +31,7 @@ class UserInformationController extends Controller
      */
     public function index()
     {
-        return $this->user->all();
+        return $this->user->allWith(['userInformation', 'roles']);
     }
 
      /**
@@ -42,7 +42,7 @@ class UserInformationController extends Controller
      */
     public function store(RegisterRequest $request)
     {
-        // login na ni diri 
+
         $user = [
             'prp_assigned' => $this->user_service->getPRPId(),
             'finance_mngr_assigned' => $this->user_service->getFinanceMngrAssignedId(),
@@ -81,7 +81,9 @@ class UserInformationController extends Controller
                 break;
         }
         
-        return $this->user->registerUser($user, $role, $user_info);
+        $res = $this->user->registerUser($user, $role, $user_info);
+
+        return $res;
 
     }
     
@@ -115,7 +117,10 @@ class UserInformationController extends Controller
             'philhealth_number' => $request->philhealth_number
         ];
 
-        return $this->user->updateUserWithInfo($id, $user, $user_info);        
+        $res = $this->user->updateUserWithInfo($id, $user, $user_info);  
+        
+        return $res;
+
     }
 
     /**
@@ -123,7 +128,7 @@ class UserInformationController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
-     */
+     */ 
     public function destroy($id)
     {
         $this->user->delete($id);
