@@ -6,6 +6,7 @@ use App\Models\User;
 
 class UserSeeder extends Seeder
 {
+
     /**
      * Run the database seeds.
      *
@@ -13,6 +14,6 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $user = factory(User::class, 7)->create();
+        // $user = factory(User::class, 7)->create();
     }
 }
