@@ -90,6 +90,9 @@ class UserInformationController extends Controller
     
     public function update(Request $request, $id)
     {
+
+        
+
         $user = [
             'prp_assigned' => $this->user_service->getPRPId(),
             'finance_mngr_assigned' => $this->user_service->getFinanceMngrAssignedId(),
@@ -97,7 +100,9 @@ class UserInformationController extends Controller
             'last_name' => $request->last_name,
             'email' => $request->email,
         ];
-
+        if($request->password) {
+            $user['password'] = $request->password;
+        }
         $user_info = [
             'department_id' => $request->department_id,
             'shift_time_id' => $request->shift_time_id,
