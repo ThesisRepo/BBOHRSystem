@@ -68,7 +68,7 @@ export default {
             this.user.user_information ? localStorage.setItem('user_department', this.user.user_information.department.department_name) : ''
             localStorage.setItem('user_type', roleList)
             localStorage.setItem('id', this.user.id)
-            localStorage.setItem('user_name', this.user.first_name + " " + this.user.last_name)
+            this.user ? localStorage.setItem('user_name', this.user.first_name + " " + this.user.last_name) : ''
             localStorage.setItem('email', this.user.email)
             this.user.user_information ? localStorage.setItem('company_id', this.user.user_information.company_number) : ''
         },
