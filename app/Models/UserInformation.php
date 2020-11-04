@@ -24,6 +24,7 @@ class UserInformation extends Model
         'contact_number',
         'civil_status',
         'company_status',
+        'regularization_date',
         'birthday',
         'address',
         'tin_number',
