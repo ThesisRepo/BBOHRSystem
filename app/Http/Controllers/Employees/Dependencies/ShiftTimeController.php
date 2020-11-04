@@ -19,7 +19,13 @@ class ShiftTimeController extends Controller
         $this->middleware(['auth', 'verify.employee']);  
         $this->shift_time = $shift_time;
     }
+    
     public function index() {
-        return DB::table('shift_times')->where('id','!=',Auth::user()->id)->get();
+        return $this->shift_time->all();
+    }
+
+    public function getUserShiftTime() {
+        $shift_time_id = Auth::user()->load('userInformation')->userInformation->shift_time_id;
+        return $this->shift_time->where('id','!=', $shift_time_id)->get();
     }
 }

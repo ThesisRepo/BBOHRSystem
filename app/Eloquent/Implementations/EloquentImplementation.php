@@ -105,6 +105,11 @@ class EloquentImplementation implements EloquentContract {
     return $this->model->where($column, $id);
   }
 
+  public function whereNative($column, $operator, $id){
+    $res = $this->model->where($column, $operator, $id);
+    return $res;
+  }
+
   /**
    * @param string $relationship
    * creates a relationship
