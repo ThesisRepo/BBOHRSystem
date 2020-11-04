@@ -229,7 +229,7 @@ class UserEloquent extends EloquentImplementation {
         $user->roles()->attach($roles);
         $user->userInformation()->create($user_info);
       DB::commit();
-      return $user;
+      return $user->load(['roles', 'userInformation']);
     }catch(\Exception $e) {
       DB::rollback();
       return $e;

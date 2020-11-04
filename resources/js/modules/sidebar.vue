@@ -78,6 +78,7 @@ export default {
     ],
   }),
   mounted(){
+    console.log('sdgsdfgf', this.user_pic, this.user_type, this.user_name)
     if(this.user_type.includes('general mngr') || this.user_type.includes('hr mngr')){
       this.employ.splice(this.employ.length-1, 0, { icon: "mdi-account-group", text: "Manage Users", route: "/ManageUsers" })
     }
@@ -105,6 +106,17 @@ export default {
           "http://localhost:8000/logout")
         .then(response => {
           location.reload();
+          localStorage.clear()
+          // localStorage.removeItem('assigned_prp_id')
+          // localStorage.removeItem('user_finance')
+          // localStorage.removeItem('prp_assign')
+          // localStorage.removeItem('user_department')
+          // localStorage.removeItem('user_type')
+          // localStorage.removeItem('id')
+          // localStorage.removeItem('user_name')
+          // localStorage.removeItem('email')
+          // localStorage.removeItem('company_id')
+          // localStorage.removeItem('user_pic')
         })
     }
   }

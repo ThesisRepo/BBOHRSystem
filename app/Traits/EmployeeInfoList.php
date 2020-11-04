@@ -8,8 +8,8 @@ trait EmployeeInfoList
     return  [
         [
           'user' => [
-            'prp_assigned' => 3,
-            'finance_assigned' => 4,
+            // 'prp_assigned' => 3,
+            // 'finance_assigned' => 4,
             'first_name' => 'Cielo Fe Sasing',
             'last_name' => 'Atis',
             'email' => 'Cielofe@bbo.com.ph',
@@ -38,8 +38,8 @@ trait EmployeeInfoList
         ],
         [
           'user' => [
-            'prp_assigned' => 3,
-            'finance_assigned' => 4,
+            // 'prp_assigned' => 3,
+            // 'finance_assigned' => 4,
             'first_name' => 'Gerard Winston Villegas',
             'last_name' => 'Hamoy',
             'email' => 'GerardHamoy@bbo.com.ph',
@@ -68,8 +68,8 @@ trait EmployeeInfoList
         ],
         [
           'user' => [
-            'prp_assigned' => 3,
-            'finance_assigned' => 4,
+            // 'prp_assigned' => 3,
+            // 'finance_assigned' => 4,
             'first_name' => 'Brisbane Jr Real',
             'last_name' => 'Bacalla',
             'email' => 'BrisbaneBacalla@bbo.com.ph',
