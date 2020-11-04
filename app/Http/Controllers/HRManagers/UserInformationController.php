@@ -31,7 +31,7 @@ class UserInformationController extends Controller
      */
     public function index()
     {
-        return $this->user->all()->load(['roles', 'userInformation']);
+        return $this->user->getAllNonAdminEmployees();
     }
 
      /**
