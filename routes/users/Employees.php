@@ -83,6 +83,7 @@ Route::delete('shift_change_request/{id}','Requests\ShiftChangeRequestController
 
 //get all shift time
 Route::get('shift_time','Dependencies\ShiftTimeController@index')->name('shift_time.retrieve');
+Route::get('shift_time/mine','Dependencies\ShiftTimeController@getUserShiftTime')->name('shift_time.retrieve');
 
 // -- OVERTIME REQUEST
 
