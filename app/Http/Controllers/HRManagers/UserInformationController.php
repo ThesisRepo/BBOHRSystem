@@ -31,7 +31,7 @@ class UserInformationController extends Controller
      */
     public function index()
     {
-        return $this->user->all();
+        return $this->user->all()->load(['roles', 'userInformation']);
     }
 
      /**
@@ -124,7 +124,7 @@ class UserInformationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete($id)
     {
         $this->user->delete($id);
     }

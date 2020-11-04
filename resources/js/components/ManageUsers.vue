@@ -17,40 +17,6 @@
           <template v-slot:activator="{ on, attrs }">
             <createUser></createUser>
           </template>
-          <v-card>
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.name" label="name"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.id_number" label="id_number"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.email" label="email"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.password" label="password"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.department" label="department"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.regularization_date"
-                      label="regularization_date"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="save">Save</v-btn>
-            </v-card-actions>
-          </v-card>
         </v-dialog>
 
         <!-- Delete Modal -->
@@ -92,42 +58,31 @@ export default {
     dialog: false,
     search: "",
     headers: [
-      {
-        text: "NAME",
-        align: "start",
-        sortable: false,
-        value: "name"
-      },
-      { text: "ID NO.", value: "id_number" },
+      { text: "NAME", align: "start", sortable: false, value: "first_name" },
+      { text: "ID NO.", value: "user_information.company_number" },
       { text: "COMPANY EMAIL", value: "email" },
-      { text: "PASSWORD", value: "password" },
-      { text: "DEPARTMENT", value: "department" },
-      { text: "REGULARIZATION DATE", value: "regularization_date" },
+      { text: "DEPARTMENT", value: "user_information.department_id" },
+      { text: "PRP IN CHARGE", value: "prp_assigned" },
+      { text: "STATUS", value: "user_information.company_status" },
       { text: "ACTIONS", value: "actions", sortable: false }
     ],
     user: [],
     editedIndex: -1,
-    editedItem: {
-      name: "",
-      id_number: 0,
-      email: 0,
-      password: 0,
-      department: "",
-      regularization_date: ""
-    }
+    user_id: localStorage.getItem("id")
   }),
   components: {
     ConfirmationDel,
     createUser
   },
   mounted(){
-    // this.retrieve()
+    this.retrieve()
   },
   methods: {
     retrieve(){
       this.$axios.get("http://localhost:8000/hr/manage/user").then(response => {
-        console.log(response)
-        // this.user = response
+        // console.log(response.data)
+        this.user = response.data
+        // this.user = response.data.first_name + '' + response.data.last_name
       })
     },
     //End
@@ -143,9 +98,9 @@ export default {
     },
     confirmDel(){
       this.$axios
-        .delete("http://localhost:8000/leave_request/" + this.id)
+        .delete("http://localhost:8000/hr/manage/user/" + this.id)
         .then(response => {
-          // this.retrieve();x
+          this.retrieve()
         });
     },
     close() {

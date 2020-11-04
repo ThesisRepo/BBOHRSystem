@@ -36,7 +36,7 @@
             </v-col>
             <v-col>
               <h1 class="title-h3 text-md-h3 text-sm-h3 text-truncate mt-8">{{ user_name }}</h1>
-              <h2 class="title-h5 text-md-h5 text-sm-h5 text-truncate">{{ datas.company_position }}</h2>
+              <h2 class="title-h5 text-md-h5 text-sm-h5 text-truncate">{{ datas ? datas.company_position : '' }}</h2>
 
               <h3
                 class="text--primary text-caption text-sm-body-2 text-md-body-1"
