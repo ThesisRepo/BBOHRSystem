@@ -121,7 +121,7 @@ export default {
     createUser
   },
   mounted(){
-    this.retrieve()
+    // this.retrieve()
   },
   methods: {
     retrieve(){
