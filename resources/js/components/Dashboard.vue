@@ -9,7 +9,7 @@
             </div>
             <div class="col pa-3 py-4 primary--text">
               <h5 class="text-truncate text-uppercase">Remaining Leave Request</h5>
-              <h1>7</h1>
+              <h1>{{ leave_number }}</h1>
             </div>
           </v-row>
         </v-card>
@@ -22,7 +22,7 @@
             </div>
             <div class="col pa-3 py-4 red--text">
               <h5 class="text-truncate text-uppercase">Pending Request</h5>
-              <h1>10</h1>
+              <h1>{{ pending }}</h1>
             </div>
           </v-row>
         </v-card>
@@ -36,7 +36,7 @@
             </div>
             <div class="col pa-3 py-4 green--text">
               <h5 class="text-truncate text-uppercase">Approve Request</h5>
-              <h1>53</h1>
+              <h1>{{ approve }}</h1>
             </div>
           </v-row>
         </v-card>
@@ -145,7 +145,11 @@ export default {
     DashBoardtable,
   },
   data: () => ({
+    leave_number: localStorage.getItem("leave_number"),
     user_id: localStorage.getItem("id"),
+    pending: null,
+    approve: null,
+    // End
     focus: "",
     type: "month",
     typeToLabel: {
@@ -184,16 +188,14 @@ export default {
     this.getNoPending()
   },
   methods: {
-    // user_info/approved_requests/count/{user_id}
     getNoApprove(){
-      this.$axios.get('http:localhost:8000/user_info/approved_requests/count/' + this.user_id).then(response => {
-        console.log('sample', response.data)
+      this.$axios.get('http://localhost:8000/user_info/approved_requests/count/' + this.user_id).then(response => {
+        this.approve = response.data
       })
     },
-    // user_info/pending_requests/count/{user_id}
     getNoPending(){
-      this.$axios.get('http:localhost:8000/user_info/pending_requests/count/' + this.user_id).then(response => {
-        console.log('samples', response.data)
+      this.$axios.get('http://localhost:8000/user_info/pending_requests/count/' + this.user_id).then(response => {
+        this.pending = response.data
       })
     },
     // End
