@@ -173,7 +173,6 @@ class UserEloquent extends EloquentImplementation {
         }
       }
     };
-
     return $temp_arr;
   }
 
