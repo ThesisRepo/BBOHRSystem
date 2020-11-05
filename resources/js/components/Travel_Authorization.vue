@@ -313,7 +313,7 @@
                 <v-toolbar class="mb-2" color="blue darken-1" dark flat>
                     <v-toolbar-title
                         class="col pa-3 py-4 white--text"
-                        style="font-size: 16px"
+                        style="font-size:16px"
                         >TRAVEL REQUEST</v-toolbar-title
                     >
                     <v-text-field
