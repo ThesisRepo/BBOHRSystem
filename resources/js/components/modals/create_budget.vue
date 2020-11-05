@@ -27,13 +27,6 @@
           <v-container>
             <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
             <v-row>
-              <v-col cols="12">
-                <v-text-field
-                  label="Purpose*"
-                  v-model="description_need"
-                  required
-                ></v-text-field>
-              </v-col>
               <v-col cols="12" sm="6">
                 <v-menu
                   :close-on-content-click="true"
@@ -97,7 +90,6 @@ export default {
     user_finance: localStorage.getItem("user_finance"),
     date: null,
     department: null,
-    description_need: null,
     details: null,
     total_amount: null,
     user_department: localStorage.getItem("user_department"),
@@ -108,13 +100,12 @@ export default {
       return date > new Date().toISOString().substr(0, 10);
     },
     createBudget(){
-        if(this.date !== null && this.description_need !== null && this.details !== null &&
-        this.total_amount !== null && this.date !== '' && this.description_need !== '' &&
+        if(this.date !== null && this.details !== null &&
+        this.total_amount !== null && this.date !== '' &&
         this.total_amount !== '' && this.details !== ''){
           let parameter = {
             user_id: this.user_id,
             date: this.date,
-            description_need: this.description_need,
             department_id: this.user_department,
             details: this.details,
             total_amount: this.total_amount,
@@ -131,7 +122,6 @@ export default {
       },
       removeData(){
         this.date = null,
-        this.description_need = null,
         this.details = null,
         this.total_amount = null
       }
