@@ -8,7 +8,6 @@ class BudgetRequest extends Model
 {
     protected $fillable = [ 
         'user_id',
-        'description_need',
         'department_id',
         'date',
         'total_amount',
