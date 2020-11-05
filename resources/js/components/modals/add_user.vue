@@ -2,7 +2,18 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="primary" dark v-bind="attrs" v-on="on">Add New User</v-btn>
+        <v-btn color="light blue darken-2"
+          rounded
+          outlined
+          dark
+          v-bind="attrs"
+          v-on="on"
+          @click="removeData()"
+        >
+          <v-icon>mdi-plus</v-icon>
+          <v-toolbar-title style="font-size: 16px"
+            >New User</v-toolbar-title
+          ></v-btn>
       </template>
       <v-card>
         <v-toolbar dark color="primary">
@@ -105,7 +116,7 @@
                     ></v-select>
                   </v-col>
                   <v-col>
-                    <v-select :items="['Finance', 'Marketing', 'HR']" label="Company Position*" v-model="company_position" required></v-select>
+                    <v-select :items="['Finance', 'Marketing', 'HR']" label="Department*" v-model="department" required></v-select>
                   </v-col>
                   <v-col>
                     <v-select
