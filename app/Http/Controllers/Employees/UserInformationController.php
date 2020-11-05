@@ -91,7 +91,7 @@ class UserInformationController extends Controller
 
     }
 
-    public function getAllPrp($id) {
+    public function getAllPrpInDepartment($id) {
 
         $user = $this->user->findWith($id, ['userInformation','roles']);
         $max_role = $this->user_service->getMaxRoles($user->roles);
@@ -103,7 +103,12 @@ class UserInformationController extends Controller
 
         return $res;
     }
-    
+
+    public function getAllPrp() {
+        $res = $this->user->getAllPrp();
+        return $res;
+    }
+
     public function getAllFinance() {
 
         $res = response()->json($this->user->getFinance()->toArray(), 200);
