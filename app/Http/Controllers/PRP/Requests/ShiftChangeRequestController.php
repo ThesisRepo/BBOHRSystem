@@ -21,17 +21,12 @@ class ShiftChangeRequestController extends RequestBaseController
     }
     
     public function getPendingRequest($id){
-
         $res = $this->getBasePendingRequest($id,['user', 'status', 'approver_role', 'shift_time']);
-
         return $res;
-
     }
 
     public function getAllFeedbackedRequest($user_id){
-
-        $res = $this->getBaseAllFeedbackedRequest($user_id, 'feedbacked_shift_change_requests');
-        
+        $res = $this->getBaseAllFeedbackedRequest($user_id, 'feedbacked_shift_change_requests', ['status','approver_role', 'user','shift_time']);
         return $res;
 
     }

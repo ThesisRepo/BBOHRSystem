@@ -9,55 +9,99 @@
           v-if="user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr')"
         >
           <v-tabs-slider></v-tabs-slider>
-          <v-tab @click="employees = false, requests = true, feedback = false">
-            My Requests
-          </v-tab>
-          <v-tab @click="requests = false, employees = true, feedback = false">
-            Employees Requests 
-          </v-tab>
-          <v-tab @click="requests = false, employees = false, feedback = true">
-            Feedback 
-          </v-tab>
+          <v-tab @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
+          <v-tab @click="requests = false, employees = true, feedback = false">Employees Requests</v-tab>
+          <v-tab @click="requests = false, employees = false, feedback = true">Feedback</v-tab>
         </v-tabs>
       </template>
     </v-toolbar>
+
     <!-- Feedback -->
     <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-col class="mt-8">
-            <v-select :items="month" label="Month"></v-select>
-          </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <v-btn depressed color="primary">SUMMARY</v-btn>
-          <v-divider class="mx-4" vertical></v-divider>
-          <v-spacer></v-spacer>
-          <v-text-field
-            v-model="search"
-            label="Search"
-            single-line
-            hide-details
-            class="mx-5"
-          ></v-text-field>
-        </v-toolbar>
-      </template>
-      <template v-slot:item.status.status_name="{ item }">
-        <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name}}</v-chip>
-      </template>
-    </v-data-table>
-
-
-    <!-- //Pending Requests -->
-    <v-data-table v-if="employees" :headers="headersEmp" :items="prpPending" class="elevation-3">
-      <template v-slot:top>
-        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
-          <v-col class="mt-8">
-            <v-select :items="month" label="Month"></v-select>
+            <v-menu
+              :close-on-content-click="false"
+              transition="scale-transition"
+              offset-y
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  class="input-name"
+                  v-model="dateRangeText"
+                  chips
+                  label="DATE"
+                  prepend-icon="mdi-calendar"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+               <v-date-picker
+                v-model="dates"
+                range
+              ></v-date-picker>
+            </v-menu>
           </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <v-btn depressed color="primary">SUMMARY</v-btn>
           <v-divider class="mx-4" vertical></v-divider>
           <v-spacer></v-spacer>
           <v-text-field v-model="search" label="Search" single-line hide-details class="mx-5"></v-text-field>
         </v-toolbar>
+      </template>
+      <template v-slot:item.approver_role.role_name="{ item }">
+        <v-chip
+        class="ma-2"
+        outlined
+        :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name}}</v-chip>
+      </template>
+      <template v-slot:item.status.status_name="{ item }">
+        <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name}}</v-chip>
+      </template>
+    </v-data-table>
+
+    <!-- Pending Requests -->
+    <v-data-table v-if="employees" :headers="headersEmp" :items="prpPending" class="elevation-3">
+      <template v-slot:top>
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+          <v-col class="mt-8">
+            <v-menu
+              :close-on-content-click="false"
+              transition="scale-transition"
+              offset-y
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  class="input-name"
+                  v-model="dateRangeText"
+                  chips
+                  label="DATE"
+                  prepend-icon="mdi-calendar"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+               <v-date-picker
+                v-model="dates"
+                range
+              ></v-date-picker>
+            </v-menu>
+          </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <v-btn depressed color="primary">SUMMARY</v-btn>
+          <v-divider class="mx-4" vertical></v-divider>
+          <v-spacer></v-spacer>
+          <v-text-field v-model="search" label="Search" single-line hide-details class="mx-5"></v-text-field>
+        </v-toolbar>
+      </template>
+      <template v-slot:item.approver_role.role_name="{ item }">
+        <v-chip 
+        class="ma-2"
+        outlined
+        :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name}}</v-chip>
       </template>
       <template v-slot:item.status.status_name="{ item }">
         <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name}}</v-chip>
@@ -68,29 +112,12 @@
       </template>
     </v-data-table>
 
-    <v-dialog v-model="dialogConfirm" max-width="500px">
-      <v-card>
-        <v-card-title class="headline">Are you sure you want to approve?</v-card-title>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="closeApprove">Cancel</v-btn>
-          <v-btn color="blue darken-1" text @click="approve">OK</v-btn>
-          <v-spacer></v-spacer>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
-    <v-dialog v-model="dialogDisapprove" max-width="500px">
-      <v-card>
-        <v-card-title class="headline">Are you sure you want to reject?</v-card-title>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="closeReject">Cancel</v-btn>
-          <v-btn color="blue darken-1" text @click="disapprove">OK</v-btn>
-          <v-spacer></v-spacer>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <Confirmation
+      ref="confirms"
+      :title="'Confirmation'"
+      :message="approveThis === 'approve' ? 'Are you sure you want to approve this request?' : 'Are you sure you want to reject this request?'"
+      @onConfirm="confirm($event)"
+    ></Confirmation>
     <!-- End of Table -->
 
     <!-- Edit Modal -->
@@ -194,18 +221,12 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
     <!-- Delete Modal -->
-    <v-dialog v-model="dialogDelete" max-width="500px">
-      <v-card>
-        <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-          <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
-          <v-spacer></v-spacer>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <ConfirmationDel
+      ref="confirmDel"
+      @onConfirm="confirmDel($event)"
+    ></ConfirmationDel>
 
     <v-data-table
       v-if="requests && (!user_type.includes('hr mngr') || !user_type.includes('prp mngr') || !user_type.includes('prp emp'))"
@@ -231,6 +252,12 @@
           <h4 v-if="prp_assigned_id === 'No Prp assign'">bolbol</h4>
         </v-toolbar>
       </template>
+      <template v-slot:item.approver_role.role_name="{ item }">
+        <v-chip 
+        class="ma-2"
+        outlined
+        :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name}}</v-chip>
+      </template>
       <template v-slot:item.status.status_name="{ item }">
         <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name}}</v-chip>
       </template>
@@ -241,34 +268,34 @@
     </v-data-table>
   </div>
 </template>
+<style>
+.input-name {
+  font-size: 12px;
+}
+</style>
 <script>
 import createLeave from "./modals/create_leave.vue";
 import moment from "moment";
+import Confirmation from "./modals/confirmation/confirm.vue";
+import ConfirmationDel from "./modals/confirmation/delete.vue";
 export default {
   data: () => ({
     user_type: localStorage.getItem("user_type"),
     user_id: localStorage.getItem("id"),
     prp_assigned_id: localStorage.getItem("assigned_prp_id"),
-    employees: !(localStorage.getItem('user_type')).includes('finance mngr') ? false : true,
-    requests: !(localStorage.getItem('user_type')).includes('finance mngr') ? true : false,
-    feedback: !(localStorage.getItem('user_type')).includes('finance mngr') ? false : true,
+    employees: !localStorage.getItem("user_type").includes("finance mngr") ? false : true,
+    requests: !localStorage.getItem("user_type").includes("finance mngr") ? true : false,
+    feedback: !localStorage.getItem("user_type").includes("finance mngr") ? false : true,
     dialog: false,
     error: false,
     error1: false,
     error2: false,
     disable: false,
     end_date: null,
-    dialogDelete: false,
-    dialogConfirm: false,
-    dialogDisapprove: false,
     start_date: null,
     search: null,
     headers: [
-      {
-        text: "TYPE OF LEAVE",
-        align: "start",
-        value: "leave_type.leave_type_name"
-      },
+      { text: "TYPE OF LEAVE", align: "start", value: "leave_type.leave_type_name" },
       { text: "TOTAL DAY/S LEAVE", value: "number_of_days" },
       { text: "START DATE", value: "start_date" },
       { text: "END DATE", value: "end_date" },
@@ -293,13 +320,14 @@ export default {
       { text: "START DATE", value: "start_date" },
       { text: "END DATE", value: "end_date" },
       { text: "APPROVER", value: "approver_role.role_name" },
-      { text: "STATUS", value: "status_id" }
+      { text: "STATUS", value: "status.status_name" }
     ],
     request: [],
     prpPending: [],
     feedbacks: [],
     editedIndex: null,
     prp: null,
+    menu: false,
     total_days: null,
     total_days_with_text: null,
     editedItem: {
@@ -309,20 +337,7 @@ export default {
       start_date: null,
       end_date: null
     },
-    month: [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December"
-    ],
+    dates: [new Date().toISOString().substr(0, 10), ],
     leaveType: [
       { value: 1, name: "Sick Leave" },
       { value: 2, name: "Solo Parent Leave" },
@@ -330,18 +345,30 @@ export default {
       { value: 4, name: "Emergency Leave" },
       { value: 5, name: "Paternity Leave" },
       { value: 6, name: "Maternity Leave" }
-    ]
+    ],
+    approveThis: ''
   }),
   components: {
-    createLeave
+    createLeave,
+    Confirmation,
+    ConfirmationDel
   },
-  mounted(){
-    if(this.user_type.includes('hr mngr') || this.user_type.includes('prp emp') || this.user_type.includes('general mngr')){
-      this.retrievePendingPrp()
-      this.retrieve()
-      this.getAllFeedback()
-    }else{
-      this.retrieve()
+  computed: {
+    dateRangeText () {
+      return this.dates.join(' ~ ')
+    },
+  },
+  mounted() {
+    if (
+      this.user_type.includes("hr mngr") ||
+      this.user_type.includes("prp emp") ||
+      this.user_type.includes("general mngr")
+    ) {
+      this.retrievePendingPrp();
+      this.retrieve();
+      this.getAllFeedback();
+    } else {
+      this.retrieve();
     }
   },
   methods: {
@@ -443,71 +470,85 @@ export default {
 
     deleteItem(item) {
       this.id = item.id;
-      this.dialogDelete = true;
+      this.$refs.confirmDel.show(item)
     },
-    deleteItemConfirm() {
+    confirmDel(){
       this.$axios
         .delete("http://localhost:8000/leave_request/" + this.id)
         .then(response => {
-          console.log("Successfully deleted");
           this.retrieve();
-          this.dialogDelete = false;
         });
     },
     close() {
       this.dialog = false;
-    },
-    closeDelete() {
-      this.dialogDelete = false;
     },
     getColor(status) {
       if (status === "pending") return "#ffa500";
       else if (status === "approved") return "green";
       else return "red";
     },
+    prpColor(approver_role) {
+      if (approver_role === "prp emp") return "#0047ab"
+      else if (approver_role === "hr mngr") return "blue"
+      else if (approver_role === "finance mngr") return "#00004d"
+      else if (approver_role === "emp") return "0f52ba"
+      else return "#002366";
+    },
     approveModal(item) {
+      this.approveThis = 'approve'
       this.id = item.id;
-      this.dialogConfirm = true;
+      this.$refs.confirms.show(item)
+    },
+    confirm(){
+      if(this.approveThis === 'approve'){
+        this.approve()
+      }else{
+        this.disapprove()
+      }
     },
     disapproveModal(item) {
+      this.approveThis = 'disapprove'
       this.id = item.id;
-      this.dialogDisapprove = true;
-    },
-    closeApprove() {
-      this.dialogConfirm = false;
-    },
-    closeReject() {
-      this.dialogDisapprove = false;
+      this.$refs.confirms.show(item)
     },
     approve() {
       let parameter = {
         user_id: this.user_id,
         status_id: 1
-      }
-      this.$axios.post('http://localhost:8000/prp/leave_request/feedback/' + this.id, parameter).then(response =>{
-        console.log('Approve', response.data)
-        this.retrievePendingPrp()
-        this.getAllFeedback()
-        this.closeApprove()
-      })
+      };
+      this.$axios
+        .post(
+          "http://localhost:8000/prp/leave_request/feedback/" + this.id,
+          parameter
+        )
+        .then(response => {
+          this.retrievePendingPrp();
+          this.getAllFeedback();
+        });
     },
-    disapprove(){
+    disapprove() {
       let parameter = {
         user_id: this.user_id,
         status_id: 3
-      }
-      this.$axios.post('http://localhost:8000/prp/leave_request/feedback/' + this.id, parameter).then(res =>{
-        console.log('Disapprovve', res.data)
-        this.retrievePendingPrp()
-        this.getAllFeedback()
-        this.closeReject()
-      })
+      };
+      this.$axios
+        .post(
+          "http://localhost:8000/prp/leave_request/feedback/" + this.id,
+          parameter
+        )
+        .then(res => {
+          this.retrievePendingPrp();
+          this.getAllFeedback();
+        });
     },
-    getAllFeedback(){
-      this.$axios.get('http://localhost:8000/prp/leave_request/feedbacked/' + this.user_id).then(response => {
-        console.log('Retrieve', response.data.feedbacked_leave_requests)
-        this.feedbacks = response.data.feedbacked_leave_requests
-      })
+    getAllFeedback() {
+      this.$axios
+        .get(
+          "http://localhost:8000/prp/leave_request/feedbacked/" + this.user_id
+        )
+        .then(response => {
+          this.feedbacks = response.data.feedbacked_leave_requests;
+        });
     }
   }
 };

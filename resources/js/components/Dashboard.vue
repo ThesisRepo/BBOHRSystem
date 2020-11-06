@@ -8,7 +8,7 @@
               <div class="primary fill-height">&nbsp;</div>
             </div>
             <div class="col pa-3 py-4 primary--text">
-              <h5 class="text-truncate text-uppercase">Leave Request</h5>
+              <h5 class="text-truncate text-uppercase">Remaining Leave Request</h5>
               <h1>7</h1>
             </div>
           </v-row>
@@ -145,6 +145,7 @@ export default {
     DashBoardtable,
   },
   data: () => ({
+    user_id: localStorage.getItem("id"),
     focus: "",
     type: "month",
     typeToLabel: {
@@ -179,8 +180,23 @@ export default {
   }),
   mounted() {
     this.$refs.calendar.checkChange();
+    this.getNoApprove()
+    this.getNoPending()
   },
   methods: {
+    // user_info/approved_requests/count/{user_id}
+    getNoApprove(){
+      this.$axios.get('http:localhost:8000/user_info/approved_requests/count/' + this.user_id).then(response => {
+        console.log('sample', response.data)
+      })
+    },
+    // user_info/pending_requests/count/{user_id}
+    getNoPending(){
+      this.$axios.get('http:localhost:8000/user_info/pending_requests/count/' + this.user_id).then(response => {
+        console.log('samples', response.data)
+      })
+    },
+    // End
     viewDay({ date }) {
       this.focus = date;
       this.type = "day";

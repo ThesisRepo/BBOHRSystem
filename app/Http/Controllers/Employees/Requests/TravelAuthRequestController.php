@@ -8,9 +8,14 @@ use App\Eloquent\Implementations\UserEloquent;
 use App\Eloquent\Implementations\RoleEloquent;
 use App\Services\UserRequestService;
 use App\Services\UserService;
+use App\Traits\ImageUpload;
 
 class TravelAuthRequestController extends RequestBaseController
 {
+
+    use ImageUpload;
+
+    
     protected $travel_auth_request;
 
     public function __construct(
@@ -28,15 +33,21 @@ class TravelAuthRequestController extends RequestBaseController
     }
 
     public function show( $id) {
-        return $this->showRequest('user_id', $id, ['approver_role', 'status', 'user.userInformation']);
+        $res = $this->showRequest('user_id', $id, ['approver_role', 'status', 'user.userInformation']);
+        return $res;
     }
     
     public function store(Request $request) {
-        $prp_assigned_id = $request->prp_assigned_id;
-        $image="";
-            $imageName = time().'.'.$request->file_uri->getClientOriginalExtension();
-            $request->file_uri->move(public_path('images'),$imageName);
-            $image = 'images/'.$imageName;
+
+        // $prp_assigned_id = $request->prp_assigned_id;
+
+        // $image="";
+        // $imageName = time().'.'.$request->file_uri->getClientOriginalExtension();
+        // $request->file_uri->move(public_path('images'),$imageName);
+        // $image = 'images/'.$imageName;
+
+        $image = $this->image_upload_from_trait($request->file_uri);
+
         $requestData = [
             'user_id'=> $request->user_id,
             'destination'=> $request->destination,
@@ -48,13 +59,21 @@ class TravelAuthRequestController extends RequestBaseController
             'approver_role_id'=> $this->nextApproverId($request->user_id),
             'status_id'=> 1
         ];
-        return $this->storeRequest($requestData, $prp_assigned_id);
+
+        // return $this->storeRequest($requestData, $prp_assigned_id);
+
+        $res = $this->storeRequest($requestData);
+
+        return $res;
+
     }
     
     public function update(Request $request, $id) {
 
         $current_travel_auth_request = $this->travel_auth_request->find($id);
-        $prp_assigned_id = $request->prp_assigned_id;
+
+        // $prp_assigned_id = $request->prp_assigned_id;
+
         $requestData = [
             'destination'=> $request->destination,
             'start_date'=> $request->start_date,
@@ -63,10 +82,15 @@ class TravelAuthRequestController extends RequestBaseController
             'employee_to_cover'=> $request->employee_to_cover,
             'file_uri'=> $request->file_uri,
         ];
-        return $this->updateRequest($current_travel_auth_request, $requestData, $id, $prp_assigned_id);
+
+        // return $this->updateRequest($current_travel_auth_request, $requestData, $id, $prp_assigned_id);
+        $res = $this->updateRequest($current_travel_auth_request, $requestData, $id);
+        return $res;  
+
     }
 
     public function delete( $id) {
-        return $this->deleteRequest($id);
+        $res =  $this->deleteRequest($id);
+        return $res;  
     }
 }

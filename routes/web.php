@@ -18,11 +18,15 @@ Route::group(
     [
         'namespace' => 'Auth'
     ], 
+
     function () {
 
         Route::get('login', 'LoginController@login')->name('login');
 
         Route::post('login', 'LoginController@authenticate');
+
+        //edit
+        // Route::get('logout', 'LoginController@logout')->name('logout');
 
         Route::post('logout', 'LoginController@logout')->name('logout');
     

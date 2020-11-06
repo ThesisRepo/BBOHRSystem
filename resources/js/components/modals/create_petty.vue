@@ -25,7 +25,7 @@
             <v-row>
               <v-col cols="12">
                 <v-text-field
-                  label="Description of Need*"
+                  label="Purpose*"
                   v-model="description_need"
                   required
                 ></v-text-field>
@@ -61,6 +61,7 @@
                   label="Total Amount*"
                   type="number"
                   v-model="total_amount"
+                  prefix="₱"
                   required
                 ></v-text-field>
               </v-col>
@@ -110,7 +111,7 @@ export default {
           description_need: this.description_need,
           department_id: this.user_department,
           total_amount: this.total_amount,
-          finance_mngr_assigned: user_finance
+          finance_mngr_assigned: this.user_finance
         }
         this.$axios.post("http://localhost:8000/petty_cash_request", parameter).then(res =>{
           console.log('Successfully Added', res.data)

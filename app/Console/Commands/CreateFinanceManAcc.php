@@ -64,7 +64,7 @@ class CreateFinanceManAcc extends Command
                 DB::beginTransaction();
 
                 $this->setModel($this->user);
-                $this->createSuperAdmin(3, $this->firstname, $this->lastname, $this->email, $this->pwd);
+                $this->createSuperAdmin([1,2,3], $this->firstname, $this->lastname, $this->email, $this->pwd);
 
                 DB::commit();
                 $this->info('Finance Manager Account created for '.$this->firstname . ' ' . $this->lastname);

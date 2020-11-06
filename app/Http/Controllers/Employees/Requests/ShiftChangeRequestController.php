@@ -28,7 +28,8 @@ class ShiftChangeRequestController extends RequestBaseController
     }
 
     public function show( $id) {
-        return $this->showRequest('user_id', $id, ['approver_role', 'status', 'shift_time']);
+        $res = $this->showRequest('user_id', $id, ['approver_role', 'status', 'shift_time']);
+        return $res;
     }
     
     public function store(Request $request) {
@@ -37,7 +38,7 @@ class ShiftChangeRequestController extends RequestBaseController
             return response()->json([],404);            
         }
 
-        $prp_assigned_id =  $this->setPrpId($request->prp_assigned_id);
+        // $prp_assigned_id =  $this->setPrpId($request->prp_assigned_id);
 
         $requestData = [
             'user_id'=> $request->user_id,
@@ -48,7 +49,12 @@ class ShiftChangeRequestController extends RequestBaseController
             'approver_role_id'=> $this->nextApproverId($request->user_id ),
             'status_id'=> 1
         ];
-        return $this->storeRequest($requestData, $prp_assigned_id);
+
+        // return $this->storeRequest($requestData, $prp_assigned_id);
+
+        $res = $this->storeRequest($requestData);
+
+        return $res;
     }
     
     public function update(Request $request, $id) {
@@ -59,7 +65,7 @@ class ShiftChangeRequestController extends RequestBaseController
 
         $current_shift_change_request = $this->shift_change_request->findWith($id, 'user');
         $user_id = $current_shift_change_request->user->id;
-        $prp_assigned_id =  $this->setPrpId($request->prp_assigned_id);
+        // $prp_assigned_id =  $this->setPrpId($request->prp_assigned_id);
 
         $requestData = [
             'department_id'=> $this->getDepartmentId($user_id),
@@ -68,23 +74,29 @@ class ShiftChangeRequestController extends RequestBaseController
             'shift_time_id'=> $request->shift_time_id,
         ];
 
-        return $this->updateRequest($current_shift_change_request, $requestData, $id, $prp_assigned_id);
+        // return $this->updateRequest($current_shift_change_request, $requestData, $id, $prp_assigned_id);
+
+        $res = $this->updateRequest($current_shift_change_request, $requestData, $id);
+
+        return $res;  
 
     }
 
     public function delete( $id) {
-
-        return $this->deleteRequest($id);
-
+        $res =  $this->deleteRequest($id);
+        return $res;
     }
 
     public function isEqualShiftTime($data) {
+
         $shift_time = $this->user->findWith($data->user_id, 'userInformation.shift_time')->userInformation->shift_time;
 
         if(!$shift_time) {
             return false;
         }
+
         return $shift_time->shift_time_name == $data-> $shift_time;
+        
 
     }
 }
