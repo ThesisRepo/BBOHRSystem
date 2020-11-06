@@ -20,6 +20,10 @@ const router = new Router({
   base: process.env.BASE_URL,
   routes : [
     {
+      path: "/",
+      redirect: "/Dashboard"
+    },
+    {
       path: "/MyAccount",
       name: "MyAccount",
       component: MyAccount
