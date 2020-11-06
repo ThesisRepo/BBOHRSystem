@@ -1,7 +1,8 @@
 <?php
 
 // home
-Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
+// Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
+Route::get('/', 'HomeController@index')->name('home')->middleware('verified');
 
 
 // -- USER INFORMATION
