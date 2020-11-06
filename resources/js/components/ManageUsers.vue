@@ -80,7 +80,7 @@ export default {
   methods: {
     retrieve(){
       this.$axios.get("http://localhost:8000/hr/manage/user").then(response => {
-        // console.log(response.data)
+        console.log(response.data)
         this.user = response.data
         // this.user = response.data.first_name + '' + response.data.last_name
       })

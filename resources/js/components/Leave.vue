@@ -6,7 +6,7 @@
           dark
           background-color="primary"
           fixed-tabs
-          v-if="user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr')"
+          v-if="(user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr')) && !user_type.includes('finance mngr')"
         >
           <v-tabs-slider></v-tabs-slider>
           <v-tab @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
@@ -265,9 +265,6 @@ export default {
     employees: false,
     requests: true,
     feedback: false,
-    // employees: !localStorage.getItem("user_type").includes("finance mngr") ? false : true,
-    // requests: !localStorage.getItem("user_type").includes("finance mngr") ? true : false,
-    // feedback: !localStorage.getItem("user_type").includes("finance mngr") ? false : true,
     dialog: false,
     error: false,
     error1: false,
