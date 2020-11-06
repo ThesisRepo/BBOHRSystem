@@ -57,6 +57,17 @@ class UserEloquent extends EloquentImplementation {
 
     }
 
+    public function getAllPrp() {
+      $res = $this->model->whereDoesntHave('roles', function($q){
+        $q->whereIn('role_id', [3, 5]);
+      })->whereHas('roles', function($q){
+        $q->whereIn('role_id', [2]);
+      })->get();
+    
+      return $res;
+
+    }
+
     public function getHR() {
       
       $res = $this->model->whereHas('roles', function($q){

@@ -38,7 +38,6 @@ class BudgetRequestController extends RequestBaseController
 
         $requestData = [
             'user_id'=> $request->user_id,
-            'description_need'=> $request->description_need,
             'date'=> $request->date,
             'total_amount'=> $request->total_amount,
             'details'=> $request->details,
@@ -62,7 +61,6 @@ class BudgetRequestController extends RequestBaseController
         // $prp_assigned_id = $request->prp_assigned_id;
 
         $requestData = [
-            'description_need'=> $request->description_need,
             'date'=> $request->date,
             'total_amount'=> $request->total_amount,
             'details'=> $request->details

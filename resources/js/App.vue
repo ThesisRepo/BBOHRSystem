@@ -39,19 +39,19 @@ export default {
         //     status_id:3,
         // };
         
-        // this.$axios
-        // .get(
-        //   "http://localhost:8000/user_info/approved_requests/count/" + this.user_id)
-        // .then(response => {
-        //     console.log(response)
-        //   if (response.data === 1) {
+        this.$axios
+        .get(
+          "http://localhost:8000/prp")
+        .then(response => {
+            console.log('dat', response)
+          if (response.data === 1) {
 
-        //     this.$parent.$parent.getInfo()
-        //     this.dialog = false
-        //   } else {      
-        //     this.$parent.$parent.getInfo()
-        //   }
-        // })
+            this.$parent.$parent.getInfo()
+            this.dialog = false
+          } else {      
+            this.$parent.$parent.getInfo()
+          }
+        })
     },
     methods: {
         setUserType(){
