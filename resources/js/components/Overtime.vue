@@ -6,12 +6,12 @@
           dark
           background-color="primary"
           fixed-tabs
-          v-if="user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes  ( 'general mngr')"
+          v-if="(user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr')) && !user_type.includes('finance mngr')"
         >
           <v-tabs-slider></v-tabs-slider>
           <v-tab @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
           <v-tab @click="requests = false, employees = true, feedback = false">Employees Requests</v-tab>
-          <v-tab @click="requests = false, employees = false, feedback = true">Feedback</v-tab>
+          <v-tab @click="requests = false, employees = false, feedback = true">History</v-tab>
         </v-tabs>
       </template>
     </v-toolbar>
@@ -45,67 +45,41 @@
               ></v-date-picker>
             </v-menu>
           </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <v-btn depressed color="primary">SUMMARY</v-btn>
+          <v-btn color="light blue darken-2" outlined>SUMMARY</v-btn>
           <v-divider class="mx-4" vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-text-field v-model="search" label="Search" single-line hide-details class="mx-5"></v-text-field>
+          <v-text-field
+            v-model="search"
+            clearable
+            flat
+            solo-inverted
+            hide-details
+            prepend-inner-icon="mdi-magnify"
+            label="Search"
+          ></v-text-field>
         </v-toolbar>
       </template>
-      <template v-slot:item.approver_role.role_name="{ item }">
-        <v-chip
-        class="ma-2"
-        outlined
-        :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name}}</v-chip>
-      </template>
-      <template v-slot:item.status.status_name="{ item }">
-        <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name}}</v-chip>
-      </template>
+      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approve' ? 'APPROVE' : item.status.status_name === 'disapprove' ? 'DISAPPROVE' : ''}}</v-chip> </template>
+      <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
     </v-data-table>
 
     <!-- Employee Overtime -->
     <v-data-table v-if="employees" :headers="headersEmp" :items="overtimePending" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
-          <v-col class="mt-8">
-            <v-menu
-              :close-on-content-click="false"
-              transition="scale-transition"
-              offset-y
-              min-width="290px"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  class="input-name"
-                  v-model="dateRangeText"
-                  chips
-                  label="DATE"
-                  prepend-icon="mdi-calendar"
-                  readonly
-                  v-bind="attrs"
-                  v-on="on"
-                ></v-text-field>
-              </template>
-               <v-date-picker
-                v-model="dates"
-                range
-              ></v-date-picker>
-            </v-menu>
-          </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <v-btn depressed color="primary">SUMMARY</v-btn>
-          <v-divider class="mx-4" vertical></v-divider>
-          <v-spacer></v-spacer>
-          <v-text-field v-model="search" label="Search" single-line hide-details class="mx-5"></v-text-field>
+          <v-text-field
+            v-model="search"
+            clearable
+            flat
+            solo-inverted
+            hide-details
+            prepend-inner-icon="mdi-magnify"
+            label="Search"
+          ></v-text-field>
         </v-toolbar>
       </template>
-      <template v-slot:item.approver_role.role_name="{ item }">
-        <v-chip
-        class="ma-2"
-        outlined
-        :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name}}</v-chip>
-      </template>
-      <template v-slot:item.status.status_name="{ item }">
-        <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name}}</v-chip>
-      </template>
+      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approve' ? 'APPROVE' : item.status.status_name === 'disapprove' ? 'DISAPPROVE' : ''}}</v-chip> </template>
+      <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
       <template v-slot:item.actions="{ item }">
         <v-icon small class="mr-2" @click="approveModal(item)">mdi-check-decagram</v-icon>
         <v-icon small @click="disapproveModal(item)">mdi-close-circle</v-icon>
@@ -114,8 +88,8 @@
 
     <Confirmation
       ref="confirms"
-      :title="'Confirmation'"
-      :message="approveThis === 'approve' ? 'Are you sure you want to approve this request?' : 'Are you sure you want to reject this request?'"
+      :title="approveThis === 'approve' || approveThis === 'disapprove' ? 'Confirmation' : approveThis === 'message' ? 'Reminder' : ''"
+      :message="approveThis === 'approve' ? 'Are you sure you want to approve this request?' : approveThis === 'disapprove' ? 'Are you sure you want to reject this request?' : approveThis === 'message' ? 'Set-up your PRP first' : ''"
       @onConfirm="confirm($event)"
     ></Confirmation>
 
@@ -196,7 +170,10 @@
         @onConfirm="confirmDel($event)"
       ></ConfirmationDel>
             
-    <v-data-table v-if="requests && (!user_type.includes('hr mngr') || !user_type.includes('prp emp') || !user_type.includes ('prp emp'))" :headers="headers" :items="overtime" :search="search" class="elevation-3">
+    <v-data-table v-if="requests && (!user_type.includes('hr mngr') || !user_type.includes('finance mngr') || !user_type.includes('prp emp'))"
+      :headers="headers"
+      :items="overtime"
+      class="elevation-3">
       <template v-slot:top>
       <v-toolbar class="mb-2" color="blue darken-1" dark flat>
         <v-toolbar-title class="col pa-3 py-4 white--text"  style="font-size:16px "
@@ -216,19 +193,22 @@
         v-if="prp_assigned_id !== 'No Prp assign'"
         ></createOvertime>
 
-        <h4 v-if="prp_assigned_id === 'No Prp assign'">bolbol</h4>
+        <v-btn
+          v-if="prp_assigned_id === 'No Prp assign'"
+          color="light blue darken-2"
+          outlined
+          @click="messagePop()"
+        >
+        <v-icon>mdi-plus</v-icon>
+        <v-toolbar-title style="font-size: 16px"
+          >Make Request</v-toolbar-title
+        >
+        </v-btn>
 
       </v-toolbar>
     </template>
-      <template v-slot:item.approver_role.role_name="{ item }">
-        <v-chip 
-        class="ma-2"
-        outlined
-        :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name}}</v-chip>
-      </template>
-    <template v-slot:item.status.status_name="{ item }">
-        <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name}}</v-chip>
-      </template>
+      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approve' ? 'APPROVE' : item.status.status_name === 'disapprove' ? 'DISAPPROVE' : ''}}</v-chip> </template>
+      <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
       <template v-slot:item.actions="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
         <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
@@ -245,9 +225,9 @@ export default {
     user_type: localStorage.getItem("user_type"),
     user_id: localStorage.getItem("id"),
     prp_assigned_id: localStorage.getItem("assigned_prp_id"),
-    employees: !localStorage.getItem("user_type").includes("finance mngr") ? false : true,
-    requests: !localStorage.getItem("user_type").includes("finance mngr") ? true : false,
-    feedback: !localStorage.getItem("user_type").includes("finance mngr") ? false : true,
+    employees: false,
+    requests: true,
+    feedback: false,
     dialog: false,
     error: false,
     search: null,
@@ -331,6 +311,10 @@ export default {
       .catch(e => {
         console.log(e);
       })
+    },
+    messagePop(){
+      this.approveThis = 'message'
+      this.$refs.confirms.show()
     },
     retrieveOvertime() {
       this.$axios

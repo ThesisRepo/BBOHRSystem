@@ -30,7 +30,7 @@ export default {
         this.setUserType();
     },
     mounted(){
-        // console.log('ata', this.user);
+        // console.log('ata', this.user.user_information.allowed_leave_number);
 
         this.listenForChanges();
         // console.log(this.user);
@@ -39,19 +39,19 @@ export default {
         //     status_id:3,
         // };
         
-        // this.$axios
-        // .get(
-        //   "http://localhost:8000/user_info/approved_requests/count/" + this.user_id)
-        // .then(response => {
-        //     console.log(response)
-        //   if (response.data === 1) {
+        this.$axios
+        .get(
+          "http://localhost:8000/prp")
+        .then(response => {
+            console.log('dat', response)
+          if (response.data === 1) {
 
-        //     this.$parent.$parent.getInfo()
-        //     this.dialog = false
-        //   } else {      
-        //     this.$parent.$parent.getInfo()
-        //   }
-        // })
+            this.$parent.$parent.getInfo()
+            this.dialog = false
+          } else {      
+            this.$parent.$parent.getInfo()
+          }
+        })
     },
     methods: {
         setUserType(){
@@ -61,6 +61,7 @@ export default {
                 roleList.push(element.role_name)
                 // element.role_name
             });
+            this.user.user_information ? localStorage.setItem('leave_number', this.user.user_information.allowed_leave_number) : localStorage.setItem('leave_number', 0)
             this.user.assigned_prp ? localStorage.setItem('assigned_prp_id', this.user.assigned_prp.id) : localStorage.setItem('assigned_prp_id', 'No Prp assign')
             this.user.assigned_finance ? localStorage.setItem('user_finance', this.user.assigned_finance.first_name + ' ' + this.user.assigned_finance.last_name) : localStorage.setItem('user_finance', 'No Finance assign')
             this.user.user_information ? localStorage.setItem('user_pic', this.user.user_information.profile_url) : ''
