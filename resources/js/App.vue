@@ -33,6 +33,7 @@ export default {
         // console.log('ata', this.user.user_information.allowed_leave_number);
 
         this.listenForChanges();
+        this.$router.push({ name: 'Dashboard' });
         // console.log(this.user);
         // var params = {  
         //     user_id:1,
