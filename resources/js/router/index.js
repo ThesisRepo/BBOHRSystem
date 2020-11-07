@@ -63,11 +63,10 @@ const router = new Router({
       path: "/ManageUsers",
       name: "ManageUsers",
       component: ManageUsers
-    }
+    },
     // {
-    //   path: "/logout",
-    //   name: "Logout",
-    //   component: ManageUsers
+    //   path: "/",
+    //   name: "Logout"
     // }
   ] 
 });
