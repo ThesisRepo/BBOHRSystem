@@ -126,7 +126,10 @@ class EloquentRequestImplementation extends EloquentImplementation {
 
   // }
   public function getRequestSummaryByDate($status_id, $start, $end) {
-    $res = $this->where('status_id', $status_id)->where('updated_at', '>', $start)->where('updated_at', '<', $end)->get();
+    // $res = $this->where('status_id', $status_id)->get();
+    // $res = $this->where('status_id', $status_id)->where('updated_at', '>', $start)->where('updated_at', '<', $end)->get();
+    $res = $this->where('created_at', '>', $start)->get();
+    dd($res->toArray());
     return $res;
   }
 
