@@ -24,6 +24,7 @@
           <v-spacer></v-spacer>
         </v-toolbar>
         <br>
+        <br>
         <v-container class="primary fill-height">
               <v-card class="mx-auto" max-width="1200">
                 <v-card-text class="display-1.8 text--primary" style="padding:5px!important; margin-left: 5%;">
@@ -117,7 +118,7 @@
                 <v-divider></v-divider>
                 <div style="margin-left: 10%; margin-right: 10%">
                   <v-row>
-                    <v-col cols="12" md="4">
+                    <v-col cols="12" md="3">
                       <v-text-field
                         class="input-name"
                         v-model="email"
@@ -125,7 +126,7 @@
                         prepend-icon="mdi-account"
                       ></v-text-field>
                     </v-col>
-                    <v-col cols="12" md="4">
+                    <v-col cols="12" md="3">
                       <v-text-field
                         class="input-name"
                         v-model="password"
@@ -134,7 +135,7 @@
                         prepend-icon="mdi-key"
                       ></v-text-field>
                     </v-col>
-                    <v-col cols="12" md="4">
+                    <v-col cols="12" md="3">
                       <v-text-field
                         class="input-name"
                         v-model="confirm_password"
@@ -143,13 +144,33 @@
                         prepend-icon="mdi-key"
                       ></v-text-field>
                     </v-col>
-                    <v-col cols="12" md="4">
+                    <v-col cols="12" md="3">
                       <v-text-field
                         class="input-name"
                         v-model="company_number"
                         label="Company Number"
                         prepend-icon="mdi-phone"
                       ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="4">
+                      <v-menu
+                        :close-on-content-click="true"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="290px"
+                        >
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-text-field
+                            v-model="regularization_date"
+                            label="Regularization Date"
+                            prepend-icon="mdi-calendar"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                            ></v-text-field>
+                        </template>
+                        <v-date-picker v-model="regularization_date" no-title scrollable color="primary"></v-date-picker>
+                        </v-menu>
                     </v-col>
                     <v-col cols="12" md="4">
                       <v-select
@@ -333,6 +354,7 @@ export default {
     civil_status: null,
     contact_number: null,
     pag_ibig_number: null,
+    regularization_date: null,
     sss_number: null,
     tin_number: null,
     philhealth_number: null,
@@ -424,6 +446,7 @@ export default {
         last_name: this.last_name,
         email: this.email,
         password: this.password,
+        regularization_date: this.regularization_date,
         password_confirmation: this.confirm_password,
         department: this.department,
         shift_time: this.shift_time,
@@ -438,13 +461,8 @@ export default {
       this.$axios
         .post("http://localhost:8000/hr/manage/user", params)
         .then(response => {
-          // console.log("im here", response.data)
-          // this.$parent.$parent.
-          this.dialog = false;
+          this.$parent.$parent.$parent.$parent.$parent.$parent.retrieve()
         });
-      // }else{
-      //   this.error = true
-      // }
     },
     removeData() {
       this.address = null,
@@ -462,6 +480,7 @@ export default {
         this.password = null,
         this.department = null,
         this.shift_time = null,
+        this.regularization_date = null,
         this.allowed_leave_number = null,
         this.gender = null,
         this.company_position = null,
