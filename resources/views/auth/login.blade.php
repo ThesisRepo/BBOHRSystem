@@ -2,8 +2,18 @@
 @extends('layouts.app')
 @section('style')
     <link href="{{ asset('css/form.css') }}" rel="stylesheet">
+    <style>
+    #gmail{
+        width:20x;
+        height:20px;
+        margin-right:10px;
+    }
+    </style>
 @endsection
-
+@section('js')
+   <script>
+   </script>
+@endsection
 @section('content')
 
 <div class="container">
@@ -59,7 +69,12 @@
                                 </button>
                             </div>
                         </div> 
-
+                        <div id ="gmailDiv" class="col-md-10 col-3 mx-auto">
+                            <a href="{{ url('auth/google') }}" class="btn btn-lg btn-default btn-block">
+                                <img id ="gmail" src="http://localhost:8000/img/google_logo.png" alt="">
+                                <strong>Login With Google</strong>
+                            </a> 
+                        </div>
                         <div class="form-group row">
                             <div class="col-md-10 col-3 mx-auto"> 
                                 <div class="form-check">    
