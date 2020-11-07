@@ -56,7 +56,9 @@
                 </v-col>
                 <v-col cols="12" md="4">
                   <v-select
-                    :items="['Female', 'Male']"
+                    :items="genderItem"
+                    item-text="text"
+                    item-value="value"
                     label="Gender*"
                     v-model="editItem.gender"
                     prepend-icon="mdi-gender-male-female"
@@ -67,20 +69,15 @@
                   <v-menu
                     ref="menu"
                     v-model="menu"
-                    :close-on-content-click="true"
+                    :close-on-content-click="false"
                     transition="scale-transition"
                     offset-y
                     min-width="290px"
                   >
-                    <template
-                      v-slot:activator="{
-                            on,
-                            attrs
-                        }"
-                    >
+                    <template v-slot:activator="{ on, attrs }">
                       <v-text-field
                         v-model="editItem.birthday"
-                        label="Birthday"
+                        label="Birthday Date"
                         prepend-icon="mdi-calendar"
                         readonly
                         v-bind="attrs"
@@ -88,12 +85,9 @@
                       ></v-text-field>
                     </template>
                     <v-date-picker
+                      ref="picker"
                       v-model="editItem.birthday"
-                      :max="
-                            new Date()
-                                .toISOString()
-                                .substr(0, 10)
-                            "
+                      :max="new Date().toISOString().substr(0, 10)"
                       min="1950-01-01"
                       @change="save"
                     ></v-date-picker>
@@ -169,10 +163,10 @@
                 <v-col cols="12" md="4">
                   <v-select
                     :items="[
-                            'Probationary',
-                            'OJT',
-                            'Regular'
-                        ]"
+                      'probationary',
+                      'OJT',
+                      'regular'
+                    ]"
                     label="Company Status*"
                     v-model="editItem.company_status"
                     required
@@ -181,10 +175,21 @@
                 <v-col cols="12" md="4">
                   <v-select
                     :items="[
-                            'Employee',
-                            'HR',
-                            'Finance'
-                        ]"
+                      'Customer Support Leader',
+                      'PHP DEV',
+                      'Reseller Support',
+                      'MKTG. Assistant',
+                      'Apps Developer',
+                      'Sales & Support',
+                      'Online Sales Associate',
+                      'Android DEV',
+                      'HR',
+                      'Accounting',
+                      'Admin Assistant',
+                      'Accounting Assistant',
+                      'Utility',
+                      'Marketing Staff'
+                    ]"
                     label="Company Position*"
                     v-model="editItem.company_position"
                     prepend-icon="mdi-account"
@@ -201,46 +206,49 @@
               <v-row>
                 <v-col cols="12" md="4">
                   <v-select
-                    :items="prp"
-                    label="PRP Assign"
-                    :item-text="
-                        prp =>
-                            prp.first_name +
-                            ' ' +
-                            prp.last_name
-                        "
-                    item-value="id"
-                    v-model="editItem.selectPrp"
-                    prepend-icon="mdi-account"
-                    required
+                  :items="prp"
+                  label="PRP Assign"
+                  :item-text="
+                  prp =>
+                  prp.first_name +
+                  ' ' +
+                  prp.last_name
+                  "
+                  item-value="id"
+                  v-model="editItem.selectPrp"
+                  prepend-icon="mdi-account"
+                  @change="getPrp()"
+                  required
                   ></v-select>
                 </v-col>
                 <v-col cols="12" md="4">
                   <v-select
                     :items="finance"
                     label="Finance Assign"
-                    prepend-icon="mdi-account"
                     :item-text="
-                            finance =>
-                                finance.first_name +
-                                ' ' +
-                                finance.last_name
-                            "
+                        finance =>
+                            finance.first_name +
+                            ' ' +
+                            finance.last_name
+                    "
                     item-value="id"
                     v-model="editItem.selectFinance"
                     required
-                  ></v-select>
+                ></v-select>
                 </v-col>
                 <v-col cols="12" md="4">
                   <v-select
-                    :items="[
-                            'Finance',
-                            'Marketing',
-                            'HR'
-                        ]"
-                    label="Department*"
-                    v-model="editItem.department"
-                    required
+                  :items="[
+                      'Accounting',
+                      'Admin',
+                      'CS(Sales)',
+                      'Marketing',
+                      'Apps',
+                      'PHP'
+                  ]"
+                  label="Department*"
+                  v-model="editItem.department"
+                  required
                   ></v-select>
                 </v-col>
                 <v-col cols="12" md="4">
@@ -365,6 +373,12 @@
     </v-data-table>
   </div>
 </template>
+<style>
+.v-overlay__scrim{
+  display: none !important;
+}
+</style>
+
 <script>
 import createUser from "./modals/add_user.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
@@ -381,8 +395,8 @@ export default {
       { text: "NAME", align: "start", sortable: false, value: "first_name" },
       { text: "ID NO.", value: "user_information.company_number" },
       { text: "COMPANY EMAIL", value: "email" },
-      { text: "DEPARTMENT", value: "user_information.department_id" },
-      { text: "PRP IN CHARGE", value: "prp_assigned" },
+      { text: "DEPARTMENT", value: "user_information.department.department_name" },
+      { text: "PRP IN CHARGE", value: "assigned_prp.first_name" },
       { text: "STATUS", value: "user_information.company_status" },
       { text: "ACTIONS", value: "actions", sortable: false }
     ],
@@ -415,7 +429,11 @@ export default {
       birthday: null,
       company_number: null,
     },
-    user_id: localStorage.getItem("id")
+    user_id: localStorage.getItem("id"),
+    genderItem: [
+      {text: 'Female', value: 0},
+      {text: 'Male', value: 1}
+    ]
   }),
   components: {
     ConfirmationDel,
@@ -423,6 +441,14 @@ export default {
   },
   mounted() {
     this.retrieve();
+    this.getAllPrp()
+    this.getAllFinance();
+    this.getShift()
+  },
+  watch: {
+    menu (val) {
+      val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
+    },
   },
   methods: {
     retrieve() {
@@ -431,32 +457,37 @@ export default {
       });
     },
     editedItem(item) {
+      console.log('lbolbol', item)
       this.editItem.id = item.id
-      this.editItem.address = item.address
+      this.editItem.address = item.user_information.address
       this.editItem.civil_status = item.civil_status
-      this.editItem.contact_number = item.contact_number
-      this.editItem.pag_ibig_number = item.pag_ibig_number
-      this.editItem.sss_number = item.sss_number
-      this.editItem.tin_number = item.tin_number
-      this.editItem.philhealth_number = item.philhealth_number
-      this.editItem.selectPrp = item.prp_assigned
-      this.editItem.selectFinance = item.finance_assigned
+      this.editItem.contact_number = item.user_information.contact_number
+      this.editItem.pag_ibig_number = item.user_information.pag_ibig_number
+      this.editItem.sss_number = item.user_information.sss_number
+      this.editItem.tin_number = item.user_information.tin_number
+      this.editItem.philhealth_number = item.user_information.philhealth_number
+      this.editItem.selectPrp = item.assigned_prp.id
+      this.editItem.selectFinance = item.assigned_finance.id
       this.editItem.first_name = item.first_name
       this.editItem.last_name = item.last_name
       this.editItem.email = item.email
       this.editItem.password = item.password
-      this.editItem.regularization_date = item.regularization_date
+      this.editItem.regularization_date = item.user_information.regularization_date
       this.editItem.password_confirmation = item.confirm_password
-      this.editItem.department = item.department
-      this.editItem.shift_time = item.shift_time
-      this.editItem.gender = item.gender
-      this.editItem.allowed_leave_number = item.allowed_leave_number
-      this.editItem.company_position = item.company_position
-      this.editItem.date_hired = item.date_hired
-      this.editItem.company_status = item.company_status
-      this.editItem.birthday = item.birthday
-      this.editItem.company_number = item.company_number
+      this.editItem.department = item.user_information.department.department_name
+      this.editItem.shift_time = item.user_information.shift_time_id
+      this.editItem.gender = parseInt(item.user_information.gender)
+      this.editItem.allowed_leave_number = item.user_information.allowed_leave_number
+      this.editItem.company_position = item.user_information.company_position
+      this.editItem.date_hired = item.user_information.date_hired
+      this.editItem.company_status = item.user_information.company_status
+      this.editItem.birthday = item.user_information.birthday
+      this.editItem.company_number = item.user_information.company_number
       this.dialog = true
+      console.log(this.editItem.shift_time, this.editItem.department, this.editItem.selectFinance, this.editItem.selectPrp)
+    },
+    getPrp(){
+      console.log(this.editItem.selectPrp)
     },
     update(){
       let params = {
@@ -507,13 +538,30 @@ export default {
           this.retrieve();
         });
     },
-    save(date) {
-      this.$refs.menu.save(date);
-    }
-    //End
-    // seeItem(item) {
-    //   this.showModal = true;
-    // }
+    getAllPrp() {
+      this.$axios
+        .get("http://localhost:8000/prp/")
+        .then(response => {
+          console.log(response.data)
+          this.prp = response.data
+        });
+    },
+    getAllFinance() {
+      this.$axios
+        .get("http://localhost:8000/finance")
+        .then(response => {
+          console.log(response.data)
+          this.finance = response.data;
+        });
+    },
+    getShift() {
+      this.$axios.get("http://localhost:8000/shift_time").then(response => {
+        this.sTime = response.data;
+      });
+    },
+    save(birthday) {
+      this.$refs.menu.save(birthday);
+    },
   }
 };
 </script>
