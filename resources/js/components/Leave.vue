@@ -17,7 +17,8 @@
     </v-toolbar>
 
     <!-- Feedback -->
-    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" class="elevation-3">
+    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" 
+      :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-col class="mt-8">
@@ -64,7 +65,8 @@
     </v-data-table>
 
     <!-- Pending Requests -->
-    <v-data-table v-if="employees" :headers="headersEmp" :items="prpPending" class="elevation-3">
+    <v-data-table v-if="employees" :headers="headersEmp" :items="prpPending" 
+      :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-text-field
@@ -206,6 +208,7 @@
       v-if="requests && (!user_type.includes('hr mngr') || !user_type.includes('finance mngr') || !user_type.includes('prp emp'))"
       :headers="headers"
       :items="request"
+      :search="search"
       class="elevation-3"
     >
       <template v-slot:top>
@@ -253,7 +256,7 @@
 </style>
 <script>
 
-import createLeave from "./modals/exports/leave_export.vue";
+import createLeave from "./modals/create_leave.vue";
 import moment from "moment";
 import Confirmation from "./modals/confirmation/confirm.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
@@ -273,7 +276,7 @@ export default {
     disable: false,
     end_date: null,
     start_date: null,
-    search: null,
+    search: '',
     headers: [
       { text: "TYPE OF LEAVE", align: "start", value: "leave_type.leave_type_name" },
       { text: "TOTAL DAY/S LEAVE", value: "number_of_days" },

@@ -11,7 +11,7 @@
       </template>
     </v-toolbar>
     <!-- Feedback -->
-    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" class="elevation-3">
+    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-col class="mt-8">
@@ -58,7 +58,7 @@
     </v-data-table>
 
     <!-- Employee Shift -->
-    <v-data-table v-if="employees" :headers="headersEmp" :items="shiftPending" class="elevation-3">
+    <v-data-table v-if="employees" :headers="headersEmp" :items="shiftPending" :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-text-field
@@ -158,6 +158,7 @@
       v-if="requests && (!user_type.includes('hr mngr') || !user_type.includes('finance mngr') || !user_type.includes('prp emp'))"
       :headers="headers"
       :items="shifts"
+      :search="search"
       class="elevation-3"
     >
       <template v-slot:top>
@@ -214,7 +215,7 @@ export default {
     requests: true,
     feedback: false,
     dialog: false,
-    search: null,
+    search: '',
     sTime: null,
     error: false,
     shift_date: null,

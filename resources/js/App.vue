@@ -33,26 +33,31 @@ export default {
         // console.log('ata', this.user.user_information.allowed_leave_number);
 
         this.listenForChanges();
-        this.$router.push({ name: 'Dashboard' });
+        // this.$router.push({ name: 'Dashboard' });
+
+        // console.log(this.$route)
+        if(this.$route.name == 'Dashboard'){
+            this.$router.push({ name: 'Dashboard' });
+        }
         // console.log(this.user);
         // var params = {  
         //     user_id:1,
         //     status_id:3,
         // };
         
-        this.$axios
-        .get(
-          "http://localhost:8000/prp")
-        .then(response => {
-            console.log('dat', response)
-          if (response.data === 1) {
+        // this.$axios
+        // .get(
+        //   "http://localhost:8000/prp")
+        // .then(response => {
+        //     console.log('dat', response)
+        //   if (response.data === 1) {
 
-            this.$parent.$parent.getInfo()
-            this.dialog = false
-          } else {      
-            this.$parent.$parent.getInfo()
-          }
-        })
+        //     this.$parent.$parent.getInfo()
+        //     this.dialog = false
+        //   } else {      
+        //     this.$parent.$parent.getInfo()
+        //   }
+        // })
     },
     methods: {
         setUserType(){
