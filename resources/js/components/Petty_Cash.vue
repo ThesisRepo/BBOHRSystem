@@ -11,7 +11,7 @@
       </template>
     </v-toolbar>
     <!-- Feedback -->
-    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" class="elevation-3">
+    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-col class="mt-8">
@@ -58,7 +58,7 @@
     </v-data-table>
 
     <!-- Employee Overtime -->
-    <v-data-table v-if="employees" :headers="user_type.includes('finance mngr') || user_type.includes('general mngr') ? headersEmp : headersEmployee" :items="pettyPending" class="elevation-3">
+    <v-data-table v-if="employees" :headers="user_type.includes('finance mngr') || user_type.includes('general mngr') ? headersEmp : headersEmployee" :items="pettyPending" :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-text-field
@@ -215,7 +215,7 @@ export default {
     feedback: false,
     dialog: false,
     error: false,
-    search: null,
+    search: '',
     dialogDelete: false,
     headers: [
       { text: "DESCRIPTION", align: "start", sortable: false, value: "description_need" },
@@ -258,7 +258,6 @@ export default {
     pettyPending: [],
     feedbacks: [],
     approveThis: '',
-    search: null,
     editedIndex: 1,
     editedItem: {
       description_need: null,

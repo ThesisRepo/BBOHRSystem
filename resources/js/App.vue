@@ -32,7 +32,8 @@ export default {
     mounted(){
         console.log('ata', this.$route);
         if( this.$route.name == 'home'){
-        this.$router.push({ name: 'Dashboard' });
+        this.$router.push
+        ({ name: 'Dashboard' });
 
         }
         this.listenForChanges();
@@ -44,19 +45,19 @@ export default {
         //     status_id:3,
         // };
         
-        this.$axios
-        .get(
-          "http://localhost:8000/prp")
-        .then(response => {
-            console.log('dat', response)
-          if (response.data === 1) {
+        // this.$axios
+        // .get(
+        //   "http://localhost:8000/prp")
+        // .then(response => {
+        //     console.log('dat', response)
+        //   if (response.data === 1) {
 
-            this.$parent.$parent.getInfo()
-            this.dialog = false
-          } else {      
-            this.$parent.$parent.getInfo()
-          }
-        })
+        //     this.$parent.$parent.getInfo()
+        //     this.dialog = false
+        //   } else {      
+        //     this.$parent.$parent.getInfo()
+        //   }
+        // })
     },
     methods: {
         setUserType(){

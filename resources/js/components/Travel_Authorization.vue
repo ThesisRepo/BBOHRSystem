@@ -15,7 +15,7 @@
       </template>
     </v-toolbar>
     <!-- Feedback -->
-    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" class="elevation-3">
+    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-col class="mt-8">
@@ -62,7 +62,7 @@
     </v-data-table>
 
     <!-- Pending Requests -->
-    <v-data-table v-if="employees" :headers="headersEmp" :items="travelPending" class="elevation-3">
+    <v-data-table v-if="employees" :headers="headersEmp" :items="travelPending" :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-text-field
@@ -282,7 +282,7 @@ export default {
     disable: false,
     end_date: null,
     error2: false,
-    search: "",
+    search: '',
     deleteModal: false,
     dialogDelete: false,
     headers: [

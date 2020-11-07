@@ -17,7 +17,7 @@
     </v-toolbar>
 
     <!-- Feedback -->
-    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" class="elevation-3">
+    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-col class="mt-8">
@@ -64,7 +64,7 @@
     </v-data-table>
 
     <!-- Employee Overtime -->
-    <v-data-table v-if="employees" :headers="headersEmp" :items="overtimePending" class="elevation-3">
+    <v-data-table v-if="employees" :headers="headersEmp" :items="overtimePending" :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-text-field
@@ -173,6 +173,7 @@
     <v-data-table v-if="requests && (!user_type.includes('hr mngr') || !user_type.includes('finance mngr') || !user_type.includes('prp emp'))"
       :headers="headers"
       :items="overtime"
+      :search="search"
       class="elevation-3">
       <template v-slot:top>
       <v-toolbar class="mb-2" color="blue darken-1" dark flat>
@@ -230,9 +231,8 @@ export default {
     feedback: false,
     dialog: false,
     error: false,
-    search: null,
     overtime_date: null,
-    search: "",
+    search: '',
     headers: [
       { text: "REASON", align: "start", value: "reason" },
       { text: "OVERTIME DATE", value: "date" },

@@ -80,7 +80,7 @@ class UserEloquent extends EloquentImplementation {
 
     public function getAllNonAdminEmployees() {
       
-      $res = $this->model->whereDoesntHave('roles', function($q){
+      $res = $this->model->with(['userInformation', 'userInformation.department', 'roles'])->whereDoesntHave('roles', function($q){
         $q->whereIn('role_id', [3, 4, 5]);
       })->get();
       
