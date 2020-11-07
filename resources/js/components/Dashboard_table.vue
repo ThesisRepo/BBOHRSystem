@@ -7,7 +7,7 @@
     </template>
     <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name === 'pending' ? 'PENDING' : ''}}</v-chip> </template>
     <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
-    <template v-slot:item.request_type="{ item }"> <span>{{item.request_type === 'leave_requests' ? 'Leave Request' : item.request_type === 'shift_change_requests' ? 'Shift Request' : item.request_type === 'budget_requests' ? 'Budget Request' : item.request_type === 'petty_cash_requests' ? 'Petty Cash Request': '' }}</span> </template>
+    <template v-slot:item.request_type="{ item }"> <span>{{item.request_type === 'leave_requests' ? 'Leave Request' : item.request_type === 'shift_change_requests' ? 'Shift Request' : item.request_type === 'budget_requests' ? 'Budget Request' : item.request_type === 'petty_cash_requests' ? 'Petty Cash Request': 'travel_auth_requests' ? 'Travel Requests' : '' }}</span> </template>
     <template v-slot:item.created_at="{ item }"> <span>{{getDate()}}</span> </template>
   </v-data-table>
 </template>
