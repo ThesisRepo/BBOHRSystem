@@ -21,9 +21,11 @@
     <!-- <link href="{{ asset('css/form.css') }}" rel="stylesheet"> -->
 </head>
 @yield('style')
+
 <style>
 
 </style>
+@yield('js')
 <body>
     <div id="app">
         @guest
@@ -59,4 +61,5 @@
         </div>
     </div>
 </body>
+
 </html>

@@ -50,3 +50,11 @@ Route::group(
 Route::get('/', function () {
     return redirect()->route('login');
 }); 
+
+Route::get('google', function () {
+    return view('googleAuth');
+});
+
+Route::get('auth/google', 'Auth\LoginController@redirectToGoogle');
+
+Route::get('login/google/callback', 'Auth\LoginController@handleGoogleCallback');
