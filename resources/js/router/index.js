@@ -25,6 +25,14 @@ const router = new Router({
       component: MyAccount
     },
     {
+      path: "/",
+      name: "home",
+    },
+    // {
+    //   path: "/",
+    //   redirect: "Dashboard",
+    // },
+    {
       path: "/Dashboard",
       name: "Dashboard",
       component: Dashboard

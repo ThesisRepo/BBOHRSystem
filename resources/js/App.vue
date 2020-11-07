@@ -30,15 +30,15 @@ export default {
         this.setUserType();
     },
     mounted(){
-        // console.log('ata', this.user.user_information.allowed_leave_number);
+        console.log('ata', this.$route);
+        if( this.$route.name == 'home'){
+        this.$router.push
+        ({ name: 'Dashboard' });
 
-        this.listenForChanges();
-        // this.$router.push({ name: 'Dashboard' });
-
-        // console.log(this.$route)
-        if(this.$route.name == 'Dashboard'){
-            this.$router.push({ name: 'Dashboard' });
         }
+        this.listenForChanges();
+
+        // this.$router.push({ name: 'Dashboard' });
         // console.log(this.user);
         // var params = {  
         //     user_id:1,
