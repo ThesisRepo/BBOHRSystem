@@ -16,7 +16,7 @@
       </template>
     </v-toolbar>
     <!-- Feedback -->
-    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" class="elevation-3">
+    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-col class="mt-8">
@@ -63,7 +63,7 @@
     </v-data-table>
 
     <!-- Employee Budget -->
-    <v-data-table v-if="employees" :headers="user_type.includes('finance mngr') || user_type.includes('general mngr') ? headersEmp : headersEmployee" :items="budgetPending" class="elevation-3">
+    <v-data-table v-if="employees" :headers="user_type.includes('finance mngr') || user_type.includes('general mngr') ? headersEmp : headersEmployee" :items="budgetPending" :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-text-field
@@ -215,7 +215,7 @@ export default {
     dialog: false,
     error: false,
     dialogDelete: false,
-    search: null,
+    search: '',
     headers: [
       { text: "DATE", value: "date" },
       { text: "DEPARTMENT", value: "department.department_name" },
