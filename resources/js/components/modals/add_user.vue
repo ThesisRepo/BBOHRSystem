@@ -67,7 +67,9 @@
                     </v-col>
                     <v-col cols="12" md="4">
                       <v-select
-                        :items="['Female', 'Male']"
+                        :items="genderItem"
+                        item-text="text"
+                        item-value="value"
                         label="Gender*"
                         v-model="gender"
                         prepend-icon="mdi-gender-male-female"
@@ -78,20 +80,15 @@
                       <v-menu
                         ref="menu"
                         v-model="menu"
-                        :close-on-content-click="true"
+                        :close-on-content-click="false"
                         transition="scale-transition"
                         offset-y
                         min-width="290px"
                       >
-                        <template
-                          v-slot:activator="{
-                            on,
-                            attrs
-                        }"
-                        >
+                        <template v-slot:activator="{ on, attrs }">
                           <v-text-field
                             v-model="birthday"
-                            label="Birthday"
+                            label="Birthday Date"
                             prepend-icon="mdi-calendar"
                             readonly
                             v-bind="attrs"
@@ -99,12 +96,9 @@
                           ></v-text-field>
                         </template>
                         <v-date-picker
+                          ref="picker"
                           v-model="birthday"
-                          :max="
-                            new Date()
-                                .toISOString()
-                                .substr(0, 10)
-                            "
+                          :max="new Date().toISOString().substr(0, 10)"
                           min="1950-01-01"
                           @change="save"
                         ></v-date-picker>
@@ -187,9 +181,20 @@
                     <v-col cols="12" md="4">
                       <v-select
                         :items="[
-                            'Employee',
+                            'Customer Support Leader',
+                            'PHP DEV',
+                            'Reseller Support',
+                            'MKTG. Assistant',
+                            'Apps Developer',
+                            'Sales & Support',
+                            'Online Sales Associate',
+                            'Android DEV',
                             'HR',
-                            'Finance'
+                            'Accounting',
+                            'Admin Assistant',
+                            'Accounting Assistant',
+                            'Utility',
+                            'Marketing Staff'
                         ]"
                         label="Company Position*"
                         v-model="company_position"
@@ -240,9 +245,12 @@
                     <v-col cols="12" md="4">
                         <v-select
                         :items="[
-                            'Finance',
+                            'Accounting',
+                            'Admin',
+                            'CS(Sales)',
                             'Marketing',
-                            'HR'
+                            'Apps',
+                            'PHP'
                         ]"
                         label="Department*"
                         v-model="department"
@@ -342,6 +350,8 @@
 <script>
 export default {
   data: () => ({
+    birthday: null,
+    menu: false,
     dialog: false,
     selectPrp: null,
     prp: null,
@@ -371,42 +381,49 @@ export default {
     company_position: null,
     date_hired: null,
     company_status: null,
-    birthday: null,
     company_number: null,
     confirm_password: null,
-    menu: false
+    genderItem: [
+      {text: 'Female', value: 0},
+      {text: 'Male', value: 1}
+    ]
   }),
   mounted() {
-    // this.getAllPrp()
+    this.getAllPrp()
     this.getAllFinance();
+    this.getShift()
+  },
+  watch: {
+    menu (val) {
+      val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
+    },
   },
   methods: {
     getAllPrp() {
       this.$axios
-        .get("http://localhost:8000/prp/" + this.user_id)
+        .get("http://localhost:8000/prp")
         .then(response => {
-          console.log(response.data);
           this.prp = response.data;
         });
     },
     getAllFinance() {
       this.$axios
-        .get("http://localhost:8000/finance/" + this.user_id)
+        .get("http://localhost:8000/finance")
         .then(response => {
           this.finance = response.data;
         });
     },
     getShift() {
       this.$axios.get("http://localhost:8000/shift_time").then(response => {
-        console.log("hi", response);
         this.sTime = response.data;
       });
     },
     //end
-    save(date) {
-      this.$refs.menu.save(date);
+    save(birthday) {
+      this.$refs.menu.save(birthday);
     },
     addNew() {
+      console.log('sdfasdf', this.gender)
       // if (
       //   this.address === null &&
       //   this.civil_status === null &&

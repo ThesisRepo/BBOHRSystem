@@ -80,7 +80,7 @@ class UserEloquent extends EloquentImplementation {
 
     public function getAllNonAdminEmployees() {
       
-      $res = $this->model->with(['userInformation', 'userInformation.department', 'roles'])->whereDoesntHave('roles', function($q){
+      $res = $this->model->with(['userInformation', 'userInformation.department', 'assignedPrp', 'assignedFinance', 'roles'])->whereDoesntHave('roles', function($q){
         $q->whereIn('role_id', [3, 4, 5]);
       })->get();
       
@@ -90,7 +90,7 @@ class UserEloquent extends EloquentImplementation {
 
     public function getFinance() {
       
-      $res = $this->model->whereHas('roles', function($q){
+      $res = $this->model->with(['assignedFinance'])->whereHas('roles', function($q){
         $q->whereIn('role_id', [3]);
       })->get();
 
