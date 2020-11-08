@@ -9,14 +9,14 @@
         <v-card>
                 <v-card-title>
             <center>
-                <span style="text-align: center">SUMMARY</span>
+                <span class="headline" style="text-align: center">SUMMARY</span>
             </center>
                 <br><br>
-                <p>{{ start_date ? start_date : 'No start date selected' }} - {{ end_date ? end_date : 'No end date selected' }}</p>
+                <p>{{ start_date }} - {{ end_date }}</p>
                 </v-card-title>
             <v-card-text>
                 <v-container>
-                    <template v-if="summary !== null">
+                    <template>
                         <v-data-table
                             :headers="headers"
                             :items="summary"
@@ -26,12 +26,7 @@
                             {{ header.text.toUpperCase() }}
                             </template>
                         </v-data-table>
-                    </template>
-                    <template
-                    v-else
-                    >
-                    <h1>"No data"</h1>
-                    </template>
+                        </template>
                 </v-container>
             </v-card-text>
             <v-card-actions>
@@ -44,7 +39,7 @@
                 Close
             </v-btn>
             <vue-json-to-csv :json-data="summary"
-            :csv-title="'SUMMARY OF LEAVE REQUEST FROM' + start_date + '-' + end_date"
+            :csv-title="'SUMMARY OF TRAVEL REQUEST FROM' + start_date + '-' + end_date"
             >
             <v-btn
                 color="blue darken-1"
@@ -73,10 +68,12 @@ export default {
           align: 'start',
           value: 'user_id',
         },
-        { text: 'TYPE OF LEAVE', value: 'leave_type.leave_type_name' },
-        { text: 'TOTAL DAY/S LEAVE', value: 'number_of_days' },
+        { text: 'DESTINATION', value: 'destination' },
         { text: 'START DATE', value: 'start_date' },
         { text: 'END DATE', value: 'end_date' },
+        { text: 'EMERGENCY CONTACT', value: 'emergency_contact' },
+        { text: 'EMPLOYEE TO COVER', value: 'employee_to_cover' },
+        { text: 'DOCUMENT', value: 'file_uri' },
         { text: 'STATUS', value: 'status.status_name' },
       ],
  }),
@@ -91,7 +88,7 @@ export default {
              start_date: param1,
              end_date: param2
          }
-         this.$axios.post('http://localhost:8000/hr/summary/leave_request', param).then( response =>{
+         this.$axios.post('http://localhost:8000/hr/summary/travel_auth_request', param).then( response =>{
              this.summary = response.data
          })
          this.dialog = true

@@ -43,7 +43,7 @@
               ></v-date-picker>
             </v-menu>
           </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <v-btn depressed color="primary">SUMMARY</v-btn>
+          <v-btn depressed @click="summary()" color="primary">SUMMARY</v-btn>
           <v-divider class="mx-4" vertical></v-divider>
           <v-spacer></v-spacer>
           <v-text-field
@@ -256,6 +256,9 @@
         <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
       </template>
     </v-data-table>
+    <SummaryTemplate
+    ref="summary"
+    ></SummaryTemplate>
   </div>
 </template>
 
@@ -264,6 +267,7 @@ import createTravel from "./modals/create_travel.vue";
 import moment from "moment";
 import Confirmation from "./modals/confirmation/confirm.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
+import SummaryTemplate from "./modals/exports/overtime_export.vue";
 export default {
   data: () => ({
     file_uri: "",
@@ -341,7 +345,8 @@ export default {
   components: {
     createTravel,
     Confirmation,
-    ConfirmationDel
+    ConfirmationDel,
+    SummaryTemplate
   },
   computed: {
     dateRangeText () {
@@ -384,6 +389,7 @@ export default {
         .get("http://localhost:8000/travel_auth_request/" + this.user_id)
         .then(response => {
           this.travel = response.data;
+          console.log(this.travel)
         })
         .catch(e => {
           console.log(e);
@@ -552,6 +558,10 @@ export default {
         date > new Date(this.editedItem.start_date).toISOString().substr(0, 10)
       );
       this.differenceDates();
+    },
+    summary(){
+      console.log(this.dates[0], this.dates[1])
+      this.$refs.summary.show(this.dates[0], this.dates[1])
     }
   }
 };

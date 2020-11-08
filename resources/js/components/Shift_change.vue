@@ -204,7 +204,7 @@
 import createShift from "./modals/create_shift.vue";
 import Confirmation from "./modals/confirmation/confirm.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
-import SummaryTemplate from "./modals/exports/leave_export.vue";
+import SummaryTemplate from "./modals/exports/shift_export.vue";
 // import { constants } from 'fs';
 export default {
   data: () => ({

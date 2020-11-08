@@ -45,7 +45,7 @@
               ></v-date-picker>
             </v-menu>
           </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <v-btn color="light blue darken-2" outlined>SUMMARY</v-btn>
+          <v-btn color="light blue darken-2" @click="summary()" outlined>SUMMARY</v-btn>
           <v-divider class="mx-4" vertical></v-divider>
           <v-spacer></v-spacer>
           <v-text-field
@@ -215,12 +215,16 @@
         <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
       </template>
     </v-data-table>
+    <SummaryTemplate
+    ref="summary"
+    ></SummaryTemplate>
   </div>
 </template>
 <script>
 import createOvertime from "./modals/create_overtime.vue";
 import Confirmation from "./modals/confirmation/confirm.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
+import SummaryTemplate from "./modals/exports/overtime_export.vue";
 export default {
   data: () => ({
     user_type: localStorage.getItem("user_type"),
@@ -280,7 +284,8 @@ export default {
   components: {
     createOvertime,
     Confirmation,
-    ConfirmationDel
+    ConfirmationDel,
+    SummaryTemplate
   },
   computed: {
     dateRangeText () {
@@ -307,6 +312,7 @@ export default {
     retrieve(){
       this.$axios.get("http://localhost:8000/overtime_request/" + this.user_id).then(response => {
         this.overtime = response.data
+        console.log(this.overtime)
       })
       .catch(e => {
         console.log(e);
@@ -443,6 +449,10 @@ export default {
       else if (approver_role === "emp") return "0f52ba"
       else return "#002366";
     },
+    summary(){
+      console.log(this.dates[0], this.dates[1])
+      this.$refs.summary.show(this.dates[0], this.dates[1])
+    }
   }
 }
 </script>
