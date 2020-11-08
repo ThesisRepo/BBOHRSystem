@@ -1,15 +1,16 @@
 <template>
   <v-row>
-    <v-container class="primary fill-height" cols="4">
+    <v-container cols="4">
       <v-col>
-        <v-card class="mx-auto pa-2">
-          <v-card-title>
-            <span class="headline primary--text">USER PROFILE</span>
+        <v-card class="mx-auto" elevation="6">
+          <v-card-title class="primary fill-height" >
+            <span class="headline white--text">USER PROFILE</span>
           </v-card-title>
-          <v-divider></v-divider>
           <v-row>
             <v-col>
-              <v-avatar v-if="profile_url === null" class="ml-15" color="grey darken-1" size="200"></v-avatar>
+              <v-avatar v-if="profile_url === null" class="ml-15" size="200">
+                <img src="images/user.png" width="100%" height="100%" id="profile">
+              </v-avatar>
               <v-avatar v-else class="ml-15" color="grey darken-1" size="200">
                 <img :src="profile_url" width="100%" height="100%" id="profile">
               </v-avatar>
@@ -20,6 +21,7 @@
                   color="primary"
                   class="text-none"
                   rounded
+                  outlined
                   depressed
                   :loading="isSelecting"
                   @click="onButtonClick"
@@ -35,23 +37,37 @@
               </v-col>
             </v-col>
             <v-col>
-              <h1 class="title-h3 text-md-h3 text-sm-h3 text-truncate mt-8">{{ user_name }}</h1>
-              <h2 class="title-h5 text-md-h5 text-sm-h5 text-truncate">{{ datas ? datas.company_position : '' }}</h2>
+              <h1 class="title-h4 text-md-h4 text-sm-h4 text-truncate mt-8"><b>{{ user_name }}</b></h1>
+              <h2 class="title-h6 text-md-h6 text-sm-h6 text-truncate"><v-icon>mdi-account-cog</v-icon> {{ datas ? datas.company_position : '' }}</h2>
 
               <h3
                 class="text--primary text-caption text-sm-body-2 text-md-body-1"
-              >Company Email: {{ user_email }}</h3>
+              ><v-icon>mdi-email</v-icon> {{ user_email }}</h3>
               <h4
                 class="text--primary text-caption text-sm-body-2 text-md-body-1"
-              >Id Number: {{ company_number }}</h4>
-              <span class="text--primary text-caption text-sm-body-2 text-md-body-1">
-                Prp Assigned: {{ prp_assign }}
-                <updatePrp></updatePrp>
-              </span>
-              <span class="text--primary text-caption text-sm-body-2 text-md-body-1">
-                Finance Assigned: {{ user_finance }}
-                <updateFinance></updateFinance>
-              </span>
+              ><v-icon>mdi-id-card</v-icon> {{ company_number }}</h4>
+              <v-row>
+                <span class="text--primary text-caption text-sm-body-2 text-md-body-1">
+                  &nbsp;&nbsp;&nbsp;<v-icon>mdi-account-tie</v-icon> {{ prp_assign }}
+                </span>
+                <span class="text--primary text-caption text-sm-body-2 text-md-body-1">
+                   &nbsp;&nbsp;<u class="indigo--text lighten-1--text" style="cursor:pointer" @click="updatePrp">Update</u>
+                </span>
+                <updatePrp
+                ref="updatePrp"
+                ></updatePrp>
+              </v-row>
+              <v-row class="mt-3">
+                <span class="text--primary text-caption text-sm-body-2 text-md-body-1">
+                  &nbsp;&nbsp;&nbsp;<v-icon>mdi-account-cash</v-icon> {{ user_finance }}
+                </span>
+                <span class="text--primary text-caption text-sm-body-2 text-md-body-1">
+                   &nbsp;&nbsp;<u class="indigo--text lighten-1--text" style="cursor:pointer" @click="updateFinance">Update</u>
+                </span>
+                  <updateFinance
+                  ref="updateFinance"
+                  ></updateFinance>
+              </v-row>
             </v-col>
             <v-col class="text-right">
               <editProfile :datas="datas"></editProfile>
@@ -62,7 +78,7 @@
     </v-container>
     <br>
     <br>
-    <v-container class="primary fill-height" cols="4" mt-10>
+    <v-container cols="4" mt-10>
       <v-col>
         <v-card>
           <v-card-text>
@@ -163,6 +179,12 @@ export default {
     updateFinance
   },
   methods: {
+    updatePrp(){
+      this.$refs.updatePrp.show()
+    },
+    updateFinance(){
+      this.$refs.updateFinance.show()
+    },
     getInfo() {
       this.$axios
         .get("http://localhost:8000/user_info/" + this.user_id)

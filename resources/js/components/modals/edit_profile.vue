@@ -2,7 +2,7 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="primary" rounded large dark v-bind="attrs" v-on="on">
+        <v-btn color="primary" rounded large outlined dark v-bind="attrs" v-on="on">
           <v-icon left>mdi-pencil</v-icon>Edit Profile
         </v-btn>
       </template>
