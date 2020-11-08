@@ -275,7 +275,7 @@ export default {
     disable: false,
     end_date: null,
     start_date: null,
-    search: null,
+    search: '',
     headers: [
       { text: "TYPE OF LEAVE", align: "start", value: "leave_type.leave_type_name" },
       { text: "TOTAL DAY/S LEAVE", value: "number_of_days" },

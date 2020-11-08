@@ -1,5 +1,5 @@
 <template>
-  <v-data-table :headers="headers" :items="user" class="elevation-1">
+  <v-data-table :headers="headers" :items="user" :search="search" class="elevation-1">
     <template v-slot:top>
       <v-toolbar class="mb-2" color="blue darken-1" dark flat>
         <v-toolbar-title class="col pa-3 py-4 white--text" style="font-size:16px ">MANAGE USER</v-toolbar-title>
