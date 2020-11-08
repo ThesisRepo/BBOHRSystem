@@ -43,7 +43,7 @@
               ></v-date-picker>
             </v-menu>
           </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <v-btn depressed color="primary">SUMMARY</v-btn>
+          <v-btn depressed @click="summary()" color="primary">SUMMARY</v-btn>
           <v-divider class="mx-4" vertical></v-divider>
           <v-spacer></v-spacer>
           <v-text-field
@@ -57,7 +57,7 @@
           ></v-text-field>
         </v-toolbar>
       </template>
-      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approve' ? 'APPROVE' : item.status.status_name === 'disapprove' ? 'DISAPPROVE' : ''}}</v-chip> </template>
+      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approve' ? 'APPROVE' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
     </v-data-table>
 
@@ -76,7 +76,7 @@
           ></v-text-field>
         </v-toolbar>
       </template>
-      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approve' ? 'APPROVE' : item.status.status_name === 'disapprove' ? 'DISAPPROVE' : ''}}</v-chip> </template>
+      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approve' ? 'APPROVE' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
       <template v-slot:item.actions="{ item }">
         <v-icon small class="mr-2" @click="approveModal(item)">mdi-check-decagram</v-icon>
@@ -86,8 +86,8 @@
 
     <Confirmation
       ref="confirms"
-      :title="approveThis === 'approve' || approveThis === 'disapprove' ? 'Confirmation' : approveThis === 'message' ? 'Reminder' : ''"
-      :message="approveThis === 'approve' ? 'Are you sure you want to approve this request?' : approveThis === 'disapprove' ? 'Are you sure you want to reject this request?' : approveThis === 'message' ? 'Set-up your PRP first' : ''"
+      :title="approveThis === 'approve' || approveThis === 'disapproved' ? 'Confirmation' : approveThis === 'message' ? 'Reminder' : ''"
+      :message="approveThis === 'approve' ? 'Are you sure you want to approve this request?' : approveThis === 'disapproved' ? 'Are you sure you want to reject this request?' : approveThis === 'message' ? 'Set-up your PRP first' : ''"
       @onConfirm="confirm($event)"
     ></Confirmation>
 
@@ -249,13 +249,16 @@
         <v-btn color="primary" @click="fileDialog = true; file_uri = item.file_uri">File</v-btn>
       </template>
       
-      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approve' ? 'APPROVE' : item.status.status_name === 'disapprove' ? 'DISAPPROVE' : ''}}</v-chip> </template>
+      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approve' ? 'APPROVE' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
       <template v-slot:item.actions="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
         <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
       </template>
     </v-data-table>
+    <SummaryTemplate
+    ref="summary"
+    ></SummaryTemplate>
   </div>
 </template>
 
@@ -264,6 +267,7 @@ import createTravel from "./modals/create_travel.vue";
 import moment from "moment";
 import Confirmation from "./modals/confirmation/confirm.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
+import SummaryTemplate from "./modals/exports/overtime_export.vue";
 export default {
   data: () => ({
     file_uri: "",
@@ -341,7 +345,8 @@ export default {
   components: {
     createTravel,
     Confirmation,
-    ConfirmationDel
+    ConfirmationDel,
+    SummaryTemplate
   },
   computed: {
     dateRangeText () {
@@ -384,6 +389,7 @@ export default {
         .get("http://localhost:8000/travel_auth_request/" + this.user_id)
         .then(response => {
           this.travel = response.data;
+          console.log(this.travel)
         })
         .catch(e => {
           console.log(e);
@@ -500,7 +506,7 @@ export default {
       }
     },
     disapproveModal(item) {
-      this.approveThis = 'disapprove'
+      this.approveThis = 'disapproved'
       this.id = item.id;
       this.$refs.confirms.show(item)
     },
@@ -552,6 +558,10 @@ export default {
         date > new Date(this.editedItem.start_date).toISOString().substr(0, 10)
       );
       this.differenceDates();
+    },
+    summary(){
+      console.log(this.dates[0], this.dates[1])
+      this.$refs.summary.show(this.dates[0], this.dates[1])
     }
   }
 };

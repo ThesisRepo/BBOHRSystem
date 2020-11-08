@@ -4,6 +4,7 @@ namespace App\Http\Controllers\HRManagers\Requests;
 
 use Illuminate\Http\Request;
 use App\Eloquent\Implementations\Requests\PettyCashRequestEloquent;
+use App\Http\Controllers\HRManagers\RequestBaseController;
 
 class PettyCashRequestController extends RequestBaseController
 {
