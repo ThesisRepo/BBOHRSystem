@@ -6,23 +6,17 @@
         persistent
         max-width="600px"
         >
-        <template v-slot:activator="{ on, attrs }">
-            <v-btn
-            color="primary"
-            dark
-            v-bind="attrs"
-            v-on="on"
-            >
-            Open Dialog
-            </v-btn>
-        </template>
         <v-card>
-            <v-card-title>
-            <span class="headline">User Profile</span>
-            </v-card-title>
+                <v-card-title>
+            <center>
+                <span style="text-align: center">SUMMARY</span>
+            </center>
+                <br><br>
+                <p>{{ start_date ? start_date : 'No start date selected' }} - {{ end_date ? end_date : 'No end date selected' }}</p>
+                </v-card-title>
             <v-card-text>
                 <v-container>
-                    <template>
+                    <template v-if="summary !== null">
                         <v-data-table
                             :headers="headers"
                             :items="summary"
@@ -32,9 +26,13 @@
                             {{ header.text.toUpperCase() }}
                             </template>
                         </v-data-table>
-                        </template>
+                    </template>
+                    <template
+                    v-else
+                    >
+                    <h1>"No data"</h1>
+                    </template>
                 </v-container>
-            <small>*indicates required field</small>
             </v-card-text>
             <v-card-actions>
             <v-spacer></v-spacer>
@@ -45,13 +43,16 @@
             >
                 Close
             </v-btn>
+            <vue-json-to-csv :json-data="summary"
+            :csv-title="'SUMMARY OF LEAVE REQUEST FROM' + start_date + '-' + end_date"
+            >
             <v-btn
                 color="blue darken-1"
                 text
-                @click="dialog = false"
             >
-                Save
+                Export as CSV
             </v-btn>
+            </vue-json-to-csv>
             </v-card-actions>
         </v-card>
         </v-dialog>
@@ -59,61 +60,44 @@
   </div>
 </template>
 <script>
-// import VueJsonToCsv from 'vue-json-to-csv'
+import VueJsonToCsv from 'vue-json-to-csv'
 export default {
   data: () => ({
     dialog: false,
+    summary: [],
+    start_date: '',
+    end_date: '',
     headers: [
         {
-          text: 'Date',
+          text: 'REQUESTER',
           align: 'start',
-          value: 'name',
+          value: 'user_id',
         },
-        // { text: 'Calories', value: 'calories' },
-        // { text: 'Fat (g)', value: 'fat' },
-        // { text: 'Carbs (g)', value: 'carbs' },
-        // { text: 'Protein (g)', value: 'protein' },
-        // { text: 'Iron (%)', value: 'iron' },
-      ],
-      summary: [
-        {
-          name: 'Frozen Yogurt',
-        //   calories: 159,
-        //   fat: 6.0,
-        //   carbs: 24,
-        //   protein: 4.0,
-        //   iron: '1%',
-        }
+        { text: 'TYPE OF LEAVE', value: 'leave_type.leave_type_name' },
+        { text: 'TOTAL DAY/S LEAVE', value: 'number_of_days' },
+        { text: 'START DATE', value: 'start_date' },
+        { text: 'END DATE', value: 'end_date' },
+        { text: 'STATUS', value: 'status.status_name' },
       ],
  }),
+ components: {
+    'vue-json-to-csv': VueJsonToCsv
+  },
  methods: {
      show(param1, param2){
+         this.start_date = param1
+         this.end_date = param2
          let param = {
              start_date: param1,
              end_date: param2
          }
-         console.log(param)
-         this.$axios.post('http://localhost:8000/hr/summary/shift_change_request', param).then( response =>{
-             console.log(response.data, 'ghjkdfrgthyu')
+         this.$axios.post('http://localhost:8000/hr/summary/leave_request', param).then( response =>{
              this.summary = response.data
          })
          this.dialog = true
      }
  }
-//   name: 'TemplateSummaryExporter',
-//   components: {
-//     'vue-json-to-csv': VueJsonToCsv
-//   },
-// <vue-json-to-csv :json-data="[
-//                     { name: 'Joe', surname: 'Roe' },
-//                     { name: 'John', surname: 'Doe' }
-//                 ]"
-//                 :labels="{ name: { title: 'First name' }, surname: { title: 'Last name'} }"
-//                 >
-//                 <button>
-//                     <b>My custom button</b>
-//                 </button>
-//                 </vue-json-to-csv>
+
     
 }
 </script>
