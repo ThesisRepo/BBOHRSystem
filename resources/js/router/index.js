@@ -18,22 +18,23 @@ Vue.use(Vuetify);
 const router = new Router({
   mode: "hash",
   base: process.env.BASE_URL,
+    
   routes : [
     {
       path: "/MyAccount",
       name: "MyAccount",
       component: MyAccount
     },
-    {
-      path: "/",
-      name: "home",
-    },
     // {
     //   path: "/",
-    //   redirect: "Dashboard",
+    //   name: "home",
     // },
     {
-      path: "/Dashboard",
+      path: '*',
+      redirect: 'Dashboard'
+    },
+    {
+      path: "/",
       name: "Dashboard",
       component: Dashboard
     },
@@ -71,12 +72,7 @@ const router = new Router({
       path: "/ManageUsers",
       name: "ManageUsers",
       component: ManageUsers
-    },
-    // {
-    //   path: "/",
-    //   name: "Logout"
-    // }
+    }
   ] 
 });
-
 export default router;
