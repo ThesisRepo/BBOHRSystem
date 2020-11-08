@@ -45,7 +45,7 @@ class LoginController extends Controller
      */
     public function authenticate(LoginRequest $request)
     {
-      
+        
         $credentials = $request->only('email', 'password');
 
         if(Auth::attempt($credentials, $request->has('remember'))){
@@ -103,7 +103,7 @@ class LoginController extends Controller
                         return redirect()->intended('home');
                     }
                 }else{
-                    return redirect('/login');
+                    return redirect('/login')->withErrors(['email'=>'Cannot verify current email.']);
                 }   
             }
 
