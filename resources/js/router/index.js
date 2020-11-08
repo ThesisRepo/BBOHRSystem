@@ -25,6 +25,14 @@ const router = new Router({
       component: MyAccount
     },
     {
+      path: "/",
+      name: "home",
+    },
+    // {
+    //   path: "/",
+    //   redirect: "Dashboard",
+    // },
+    {
       path: "/Dashboard",
       name: "Dashboard",
       component: Dashboard
@@ -63,11 +71,10 @@ const router = new Router({
       path: "/ManageUsers",
       name: "ManageUsers",
       component: ManageUsers
-    }
+    },
     // {
-    //   path: "/logout",
-    //   name: "Logout",
-    //   component: ManageUsers
+    //   path: "/",
+    //   name: "Logout"
     // }
   ] 
 });

@@ -18,7 +18,7 @@
             v-for="(item, index) in employ"
             :key="index"
             link
-            @click="redirect(item.route)"
+            @click="item.route ? redirect(item.route) : logout()"
           >
             <v-list-item-icon >
               <v-icon color="white darken-2">{{ item.icon }}</v-icon>
@@ -74,7 +74,9 @@ export default {
       { icon: "mdi-account-cash", text: "Petty Cash Request", route: "/PettyCash" },
       { icon: "mdi-account-cash-outline", text: "Budget Request", route: "/Budget" },
       { icon: "mdi-airplane", text: "Travel Authorization", route: "/TravelAuthorization" },
-      { icon: "mdi-logout", text: "LogOut", route: "/logout" }
+      { icon: "mdi-logout", text: "LogOut"}
+      // { icon: "mdi-logout", text: "LogOut", route: "/logout" }
+
     ],
   }),
   mounted(){
@@ -87,19 +89,14 @@ export default {
   methods: {
 
     redirect(route) {
-      if(route != '/logout') {
        ROUTER.push(route).catch(() => {});
-      }else {
-        this.logout();
-      }
+      // if(route != '/logout') {
+      //  ROUTER.push(route).catch(() => {});
+      // }else {
+      //   this.$router.push({ name: 'logout' });
+      //   this.logout();
+      // }
     },
-    // logout(evt) {
-    //   if (confirm("Are you sure you want to logout ?")) {
-    //     axios.get('api/logout').then(response => {
-    //     localStorage.removeItem('auth_token');  
-    //     })
-    //   }
-    // }
     logout() {
        this.$axios
         .post(
@@ -107,6 +104,7 @@ export default {
         .then(response => {
           location.reload();
           localStorage.clear()
+          window.location.replace("http://localhost:8000");
           // localStorage.removeItem('assigned_prp_id')
           // localStorage.removeItem('user_finance')
           // localStorage.removeItem('prp_assign')

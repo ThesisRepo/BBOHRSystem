@@ -33,5 +33,9 @@ return [
     'sparkpost' => [
         'secret' => env('SPARKPOST_SECRET'),
     ],
-
+    'google' => [
+        'client_id' => '272360026064-mf2r9nq7ibgubdsqn8hnpt1epsnj6rnt.apps.googleusercontent.com',
+        'client_secret' => 'Ml1JnDqu6ivxHhtK_FzF8aHg',
+        'redirect' => 'http://localhost:8000/login/google/callback',
+    ],
 ];

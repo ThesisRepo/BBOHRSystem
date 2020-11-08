@@ -33,11 +33,11 @@ Route::post('hr/manage/user','UserInformationController@store')->name('user.mana
 Route::post('hr/manage/user/{id}','UserInformationController@update')->name('user.manage.update');
 Route::delete('hr/manage/user/{id}','UserInformationController@delete')->name('user.manage.delete');
 
-Route::post('hr/summary/leave_request','LeaveRequestController@getApprovedLeaveRequestSummary')->name('user.summary.leave_request.approved');
-Route::post('hr/summary/shift_change_request','ShiftChangeRequestController@getApprovedLeaveRequestSummary')->name('user.summary.shift_change_request.approved');
-Route::post('hr/summary/overtime_request','OvertimeRequestController@getApprovedLeaveRequestSummary')->name('user.summary.overtime_request.approved');
-Route::post('hr/summary/petty_cash_request','PettyCashRequestController@getApprovedLeaveRequestSummary')->name('user.summary.petty_cash_request.approved');
-Route::post('hr/summary/budget_request','BudgetRequestController@getApprovedLeaveRequestSummary')->name('user.summary.budget_request.approved');
-Route::post('hr/summary/travel_auth_request','TravelAuthRequestController@getApprovedLeaveRequestSummary')->name('user.summary.travel_auth_request.approved');
+Route::post('hr/summary/leave_request','Requests/LeaveRequestController@getApprovedLeaveRequestSummary')->name('user.summary.leave_request.approved');
+Route::post('hr/summary/shift_change_request','Requests\ShiftChangeRequestController@getApprovedLeaveRequestSummary')->name('user.summary.shift_change_request.approved');
+Route::post('hr/summary/overtime_request','Requests/OvertimeRequestController@getApprovedLeaveRequestSummary')->name('user.summary.overtime_request.approved');
+Route::post('hr/summary/petty_cash_request','Requests/PettyCashRequestController@getApprovedLeaveRequestSummary')->name('user.summary.petty_cash_request.approved');
+Route::post('hr/summary/budget_request','Requests/BudgetRequestController@getApprovedLeaveRequestSummary')->name('user.summary.budget_request.approved');
+Route::post('hr/summary/travel_auth_request','Requests/TravelAuthRequestController@getApprovedLeaveRequestSummary')->name('user.summary.travel_auth_request.approved');
 
 

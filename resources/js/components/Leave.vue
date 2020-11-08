@@ -6,7 +6,7 @@
           dark
           background-color="primary"
           fixed-tabs
-          v-if="user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr')"
+          v-if="(user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr')) && !user_type.includes('finance mngr')"
         >
           <v-tabs-slider></v-tabs-slider>
           <v-tab @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
@@ -17,7 +17,8 @@
     </v-toolbar>
 
     <!-- Feedback -->
-    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" class="elevation-3">
+    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" 
+      :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-col class="mt-8">
@@ -59,12 +60,13 @@
           ></v-text-field>
         </v-toolbar>
       </template>
-      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approve' ? 'APPROVE' : item.status.status_name === 'disapprove' ? 'DISAPPROVE' : ''}}</v-chip> </template>
+      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approve' ? 'APPROVE' : item.status.status_name === 'disapproved' ? 'DISAPPROVE' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
     </v-data-table>
 
     <!-- Pending Requests -->
-    <v-data-table v-if="employees" :headers="headersEmp" :items="prpPending" class="elevation-3">
+    <v-data-table v-if="employees" :headers="headersEmp" :items="prpPending" 
+      :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-text-field
@@ -206,6 +208,7 @@
       v-if="requests && (!user_type.includes('hr mngr') || !user_type.includes('finance mngr') || !user_type.includes('prp emp'))"
       :headers="headers"
       :items="request"
+      :search="search"
       class="elevation-3"
     >
       <template v-slot:top>
@@ -252,6 +255,7 @@
 }
 </style>
 <script>
+
 import createLeave from "./modals/create_leave.vue";
 import moment from "moment";
 import Confirmation from "./modals/confirmation/confirm.vue";
@@ -265,9 +269,6 @@ export default {
     employees: false,
     requests: true,
     feedback: false,
-    // employees: !localStorage.getItem("user_type").includes("finance mngr") ? false : true,
-    // requests: !localStorage.getItem("user_type").includes("finance mngr") ? true : false,
-    // feedback: !localStorage.getItem("user_type").includes("finance mngr") ? false : true,
     dialog: false,
     error: false,
     error1: false,

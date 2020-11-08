@@ -1,7 +1,8 @@
 <?php
 
 // home
-Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
+// Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
+Route::get('/', 'HomeController@index')->name('home')->middleware('verified');
 
 
 // -- USER INFORMATION
@@ -22,7 +23,7 @@ Route::get('prp','UserInformationController@getAllPrp')->name('user_info.all.prp
 Route::post('prp/{user_id}','UserInformationController@updatePrp')->name('user_info.update.prp');
 
 //get all Finance
-Route::get('finance/{user_id}','UserInformationController@getAllFinance')->name('user_info.find.finance');
+Route::get('finance','UserInformationController@getAllFinance')->name('user_info.find.finance');
 
 //update Finance
 Route::post('finance/{user_id}','UserInformationController@updateFinance')->name('user_info.update.finance');

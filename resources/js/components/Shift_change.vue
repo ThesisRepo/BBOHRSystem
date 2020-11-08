@@ -11,7 +11,7 @@
       </template>
     </v-toolbar>
     <!-- Feedback -->
-    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" class="elevation-3">
+    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-col class="mt-8">
@@ -39,7 +39,7 @@
               ></v-date-picker>
             </v-menu>
           </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <v-btn color="light blue darken-2" outlined>SUMMARY</v-btn>
+          <v-btn color="light blue darken-2" @click="summary()" outlined>SUMMARY</v-btn>
           <v-divider class="mx-4" vertical></v-divider>
           <v-spacer></v-spacer>
           <v-text-field
@@ -53,12 +53,12 @@
           ></v-text-field>
         </v-toolbar>
       </template>
-      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approve' ? 'APPROVE' : item.status.status_name === 'disapprove' ? 'DISAPPROVE' : ''}}</v-chip> </template>
+      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approve' ? 'APPROVE' : item.status.status_name === 'disapproved' ? 'DISAPPROVE' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
     </v-data-table>
 
     <!-- Employee Shift -->
-    <v-data-table v-if="employees" :headers="headersEmp" :items="shiftPending" class="elevation-3">
+    <v-data-table v-if="employees" :headers="headersEmp" :items="shiftPending" :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-text-field
@@ -158,6 +158,7 @@
       v-if="requests && (!user_type.includes('hr mngr') || !user_type.includes('finance mngr') || !user_type.includes('prp emp'))"
       :headers="headers"
       :items="shifts"
+      :search="search"
       class="elevation-3"
     >
       <template v-slot:top>
@@ -193,12 +194,17 @@
         <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
       </template>
     </v-data-table>
+
+    <SummaryTemplate
+    ref="summary"
+    ></SummaryTemplate>
   </div>
 </template>
 <script>
 import createShift from "./modals/create_shift.vue";
 import Confirmation from "./modals/confirmation/confirm.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
+import SummaryTemplate from "./modals/exports/leave_export.vue";
 // import { constants } from 'fs';
 export default {
   data: () => ({
@@ -209,7 +215,7 @@ export default {
     requests: true,
     feedback: false,
     dialog: false,
-    search: null,
+    search: '',
     sTime: null,
     error: false,
     shift_date: null,
@@ -258,7 +264,8 @@ export default {
   components: {
     createShift,
     Confirmation,
-    ConfirmationDel
+    ConfirmationDel,
+    SummaryTemplate
   },
   computed: {
     dateRangeText () {
@@ -438,6 +445,10 @@ export default {
         .then(response => {
           this.feedbacks = response.data.feedbacked_shift_change_requests;
         });
+    },
+    summary(){
+      console.log(this.dates[0], this.dates[1])
+      this.$refs.summary.show(this.dates[0], this.dates[1])
     }
   }
 };
