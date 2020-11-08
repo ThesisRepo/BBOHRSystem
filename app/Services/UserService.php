@@ -48,10 +48,12 @@ class UserService
     }
 
     public function getUserId() {
-
         $user_id = Auth::user()->id;
-        
         return $user_id;
-
+    }
+    
+    public function getAuth() {
+        $res = Auth::user();
+        return $res;
     }
 }

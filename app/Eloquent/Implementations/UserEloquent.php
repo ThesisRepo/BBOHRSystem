@@ -243,6 +243,7 @@ class UserEloquent extends EloquentImplementation {
   }
 
   public function registerUser($user, $roles, $user_info) {
+
     try {
       DB::beginTransaction();
         $user = $this->model->create($user);
@@ -255,5 +256,61 @@ class UserEloquent extends EloquentImplementation {
       return $e;
     }
     
+  }
+
+  public function getRequestFeedbackedSelective($user_id, $relationship, $status_array) {
+
+    $new_relationship = [
+        $relationship => function( $q) use( $status_array) {
+          return $q->whereIn('status_id', $status_array);
+        }
+      ];
+    $res = $this->findWith($user_id, $new_relationship);
+
+    return $res;
+
+  }
+
+  public function getRequestFeedbackedDate($user_id, $table_name, $relationship, $start_date, $end_date) {
+    $new_relationship = [
+      $relationship => function( $q) use( $table_name, $start_date, $end_date) {
+        return $q->where( $table_name . '.created_at', '>', $start_date)
+          ->where( $table_name .  '.created_at', '<', $end_date);
+      }
+    ];
+    $res = $this->findWith( $user_id, $new_relationship);
+
+    return $res;
+
+  }
+
+  public function getTableFeedbackedLeaveRequests() {
+    $res = $this->model->feedbacked_leave_requests()->getTable();
+    return $res;
+  }
+
+  public function getTableFeedbackedOvertimeRequests() {
+    $res = $this->model->feedbacked_overtime_requests()->getTable();
+    return $res;
+  }
+
+  public function getTableFeedbackedPettyCashRequests() {
+    $res = $this->model->feedbacked_petty_cash_requests()->getTable();
+    return $res;
+  }
+
+  public function getTableFeedbackedBudgetRequests() {
+    $res = $this->model->feedbacked_budget_requests()->getTable();
+    return $res;
+  }
+
+  public function getTableFeedbackedTravelAuthRequests() {
+    $res = $this->model->feedbacked_travel_auth_requests()->getTable();
+    return $res;
+  }
+
+  public function getTableFeedbackedShiftChangeRequests() {
+    $res = $this->model->shift_change_requests()->getTable();
+    return $res;
   }
 }
