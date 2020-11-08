@@ -61,10 +61,10 @@ class EloquentRequestImplementation extends EloquentImplementation {
     //   })->orWhereHas('user.assignedPrp.roles', function($query) use($max_role_id) {
     //     return $query->whereNotIn('role_id',[1,2, $max_role_id]);
     //   })->get();
-    $res = $this->whereWith('status_id',1, $relationship)->where('approver_role_id', $max_role_id)
-      ->whereHas('user', function($query) use($user_id){
-        return $query->where('prp_assigned',$user_id);
-      })->orHas('user.assignedPrp.roles','!=', $max_role_id)->get();
+    $res = $this->whereWith('status_id',1,  $relationship)->where('approver_role_id', $max_role_id)
+      ->whereHas('user', function($query) use($user_id, $max_role_id){
+        return $query->where('prp_assigned',$user_id)->orHas('assignedPrp.roles','!=', $max_role_id);
+      })->get();
     return $res;
     
   }
