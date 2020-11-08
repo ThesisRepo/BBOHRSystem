@@ -40,13 +40,13 @@ export default {
         // this.$router.push({ name: 'Dashboard' });
         // console.log(this.user);
         // var params = {  
-        //     user_id:1,
-        //     status_id:3,
+        //     start_date:'2020-11-5',
+        //     end_date:'2020-11-11',
         // };
         
         // this.$axios
         // .post(
-        //   "http://localhost:8000/hr/summary/leave_request/" + this.user_id,params)
+        //   "http://localhost:8000/hr/summary/leave_request/",params)
         // .then(response => {
         //     console.log('dat', response)
         //   if (response.data === 1) {
