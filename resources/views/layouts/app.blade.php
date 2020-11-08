@@ -21,29 +21,88 @@
     <!-- <link href="{{ asset('css/form.css') }}" rel="stylesheet"> -->
 </head>
 @yield('style')
-<style>
 
+<style>
+.col-md-7 {
+    height:100vh;
+}
+.col-md-7 main, .col-md-5 main {
+    position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+#name {
+    height:500px;
+}
+@media screen and (max-width: 800px) {
+    #name {
+    height: 300px;
+  }
+}
+#companyName, #appName{
+    font-size:50px;
+}
+#companyName{
+    color:#3490dc
+}
+.col-md-7 {
+    background-color:#3490dc;
+}
 </style>
+@yield('js')
 <body>
-    <div id="app">
+    <div id="app" class="container-fluid">
+        <div class="row">
+            @guest
+            <div class="col-md-5" >
+                <main class="py-4" >
+                    <div class="container-fluid" id="name"  >
+                        <div class="row justify-content-center">
+                            <div class="col-md-9" >
+                                <img  src="{{url('img/logo.png')}}" width="80" height="50" class="mb-5" alt="logo">
+                                <p id="companyName">BLUE BEE ONE </p>
+                                <p id="appName">REQUEST MANAGEMENT SYSTEM</p>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+            <div id="app" class="col-md-7">
+                <main class="py-4">
+                    @yield('content')
+                </main>
+            </div>
+            @endguest
+        </div>
+        @auth
+        <div id="app">
+            <main class="py-4">
+                @yield('content')
+            </main>
+        </div>
+        @endauth
+    </div>
+</body>
+</html>
+<!-- <div id="app">
         @guest
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm" id="navbar">
             <div>
                   <img src="{{url('img/logo.png')}}" width="100" alt="logo"  class="float-left">
                 </a>
-                <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
-                </button> -->
+                </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
+                 
                     <ul class="navbar-nav mr-auto">
 
                     </ul>
 
-                    <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
                     </ul>
                 </div>
             </div>
@@ -57,6 +116,4 @@
                 @yield('content')
             </main>
         </div>
-    </div>
-</body>
-</html>
+    </div> -->
