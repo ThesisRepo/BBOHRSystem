@@ -30,12 +30,11 @@ export default {
         this.setUserType();
     },
     mounted(){
-        console.log('ata', this.$route);
-        if( this.$route.name == 'home'){
-        this.$router.push
-        ({ name: 'Dashboard' });
+        // console.log('ata', this.$route);
+        // if( this.$route.path == '/'){
+        // this.$router.push({ name: 'Dashboard' });
 
-        }
+        // }
         this.listenForChanges();
 
         // this.$router.push({ name: 'Dashboard' });
@@ -46,8 +45,8 @@ export default {
         // };
         
         // this.$axios
-        // .get(
-        //   "http://localhost:8000/prp")
+        // .post(
+        //   "http://localhost:8000/hr/summary/leave_request/" + this.user_id,params)
         // .then(response => {
         //     console.log('dat', response)
         //   if (response.data === 1) {

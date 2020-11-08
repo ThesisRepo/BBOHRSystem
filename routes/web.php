@@ -13,7 +13,6 @@
 Route::get('/', function () {
     return redirect()->route('login');
 });
-
 Route::group(
     [
         'namespace' => 'Auth'
