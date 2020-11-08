@@ -55,14 +55,16 @@ class EloquentRequestImplementation extends EloquentImplementation {
   }
 
   public function getPendingRequestForApproverAdmin($user_id, $max_role_id, $relationship) {
-
+    // $res = $this->whereWith('status_id',1, $relationship)->where('approver_role_id', $max_role_id)
+    //   ->whereHas('user', function($query) use($user_id){
+    //     return $query->where('prp_assigned',$user_id);
+    //   })->orWhereHas('user.assignedPrp.roles', function($query) use($max_role_id) {
+    //     return $query->whereNotIn('role_id',[1,2, $max_role_id]);
+    //   })->get();
     $res = $this->whereWith('status_id',1, $relationship)->where('approver_role_id', $max_role_id)
       ->whereHas('user', function($query) use($user_id){
         return $query->where('prp_assigned',$user_id);
-      })->orWhereHas('user.assignedPrp.roles', function($query) use($max_role_id) {
-        return $query->whereNotIn('role_id',[1,2, $max_role_id]);
-      })->get();
-
+      })->orHas('user.assignedPrp.roles','!=', $max_role_id)->get();
     return $res;
     
   }
@@ -128,7 +130,7 @@ class EloquentRequestImplementation extends EloquentImplementation {
   public function getRequestSummaryByDate($status_id, $start, $end) {
     // $res = $this->where('status_id', $status_id)->get();
     // $res = $this->where('status_id', $status_id)->where('updated_at', '>', $start)->where('updated_at', '<', $end)->get();
-    $res = $this->whereNative('status_id', '!=', 1)->get();
+    $res = $this->whereNative('status_id', '!=', 2)->get();
     // dd($res->toArray());
     return $res;
   }
