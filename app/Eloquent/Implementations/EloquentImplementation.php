@@ -90,6 +90,13 @@ class EloquentImplementation implements EloquentContract {
   public function whereWith($column, $id, $relationship){
     return $this->with($relationship)->where($column, $id);
   }
+
+  public function whereWithWhereHas($column, $operator, $value, $relationship, $relationship_column, $relationship_operator, $relationship_value) {
+    $res = $this->whereNative($column, $operator, $value)->whereHas($relationship, function($q) use($relationship_column, $relationship_operator, $relationship_value){
+        return $q->where($relationship_column, $relationship_operator, $relationship_value);
+    })->get();
+    return $res;
+  }
   /**
    * @param string $model
    * creates a model

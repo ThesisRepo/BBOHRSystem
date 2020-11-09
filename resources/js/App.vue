@@ -37,16 +37,16 @@ export default {
         // }
         this.listenForChanges();
 
-        // this.$router.push({ name: 'Dashboard' });
-        // console.log(this.user);
-        // var params = {  
-        //     start_date:'2020-11-5',
-        //     end_date:'2020-11-11',
-        // };
+        this.$router.push({ name: 'Dashboard' });
+        console.log(this.user);
+        var params = {  
+            start_date:'2020-11-5',
+            end_date:'2020-11-11',
+        };
         
         // this.$axios
-        // .post(
-        //   "http://localhost:8000/hr/summary/leave_request/",params)
+        // .get(
+        //   "http://localhost:8000/departments/employees")
         // .then(response => {
         //     console.log('dat', response)
         //   if (response.data === 1) {

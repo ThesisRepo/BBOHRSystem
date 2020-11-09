@@ -16,19 +16,19 @@ class Department extends Model
      * 
      * @return \Illuminate\Database\Eloquent\Relations\hasMany
      */
-    public function user_informations(){
-        return hasMany(UserInformation::class);
+    public function userInformations(){
+        return $this->hasMany(UserInformation::class);
     }
 
     public function leave_requests(){
-        return hasMany(Requests\LeaveRequest::class);
+        return $this->hasMany(Requests\LeaveRequest::class);
     }
 
     public function shift_change_request(){
-        return hasMany(Requests\ShiftChangeRequest::class);
+        return $this->hasMany(Requests\ShiftChangeRequest::class);
     }
 
     public function petty_cash_request(){
-        return hasMany(Requests\PettyCashRequest::class);
+        return $this->hasMany(Requests\PettyCashRequest::class);
     }
 }
