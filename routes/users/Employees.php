@@ -117,6 +117,9 @@ Route::delete('overtime_request/{id}','Requests\OvertimeRequestController@delete
 Route::get('departments','DepartmentController@index')->name('departments.retrieve');
 
 
+//get all co-workers in department
+Route::get('departments/employees','UserInformationController@getAllCoEmployeesInDepartment')->name('departments.employees.retrieve');
+
 // -- PETTY CASH REQUEST
 
 // prp_assigned_id:5,
