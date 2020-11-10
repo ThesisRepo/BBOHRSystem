@@ -30,19 +30,12 @@ export default {
         this.setUserType();
     },
     mounted(){
-        // console.log('ata', this.$route);
-        // if( this.$route.path == '/'){
-        // this.$router.push({ name: 'Dashboard' });
-
-        // }
         this.listenForChanges();
-
-        this.$router.push({ name: 'Dashboard' });
         console.log(this.user);
-        var params = {  
-            start_date:'2020-11-5',
-            end_date:'2020-11-11',
-        };
+        // var params = {  
+        //     start_date:'2020-11-5',
+        //     end_date:'2020-11-11',
+        // };
         
         // this.$axios
         // .get(
