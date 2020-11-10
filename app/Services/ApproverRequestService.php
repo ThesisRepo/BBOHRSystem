@@ -66,7 +66,8 @@ class ApproverRequestService
                 break;
 
             default:
-                return $max_role_id++;
+                $max_role_id++;   
+                return $max_role_id;
                 break;
             
         }

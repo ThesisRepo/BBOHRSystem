@@ -95,7 +95,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function feedbacked_leave_requests() {
         return $this->morphedByMany(Requests\LeaveRequest::class, 'recordable');
     }
-
+    
     // public function recorded_leave_requests() {
     //     return $this->morphedByMany(Requests\LeaveRequest::class, 'requestable');
     // }

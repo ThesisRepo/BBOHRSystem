@@ -116,6 +116,23 @@ class UserInformationController extends Controller
         return $res;
     }
 
+    public function getAllCoEmployeesInDepartment(){
+
+        $user_id = $this->user_service->getAuth()->id;
+        $department_id = $this->user_service->getAuth()->load('userInformation')->userInformation->department_id;
+        $column = 'id';
+        $operator = '!=';
+        $value = $user_id;
+        $relationship = 'userInformation';
+        $relationship_column = 'department_id';
+        $relationship_value = $department_id;
+        $relationship_operator = '=';
+        $res = $this->user->whereWithWhereHas($column, $operator, $value, $relationship, $relationship_column, $relationship_operator, $relationship_value);
+        
+        return $res;
+
+    }
+
     public function updatePrp($user_id, Request $request) {
 
         $data = [
