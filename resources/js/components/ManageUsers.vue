@@ -346,6 +346,7 @@
           <v-toolbar-title class="col pa-3 py-4 white--text" style="font-size:16px ">MANAGE USER</v-toolbar-title>
           <v-text-field
             v-model="search"
+            class ="mr-15"
             clearable
             flat
             solo-inverted

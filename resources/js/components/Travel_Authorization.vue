@@ -267,7 +267,7 @@ import createTravel from "./modals/create_travel.vue";
 import moment from "moment";
 import Confirmation from "./modals/confirmation/confirm.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
-import SummaryTemplate from "./modals/exports/overtime_export.vue";
+import SummaryTemplate from "./modals/exports/travel_export.vue";
 export default {
   data: () => ({
     file_uri: "",
