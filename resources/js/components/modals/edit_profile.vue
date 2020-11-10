@@ -55,7 +55,8 @@
 <script>
 export default {
   data: () => ({
-    dialog: false
+    dialog: false,
+    user_id: localStorage.getItem("id"),
   }),
   props: ["datas"],
   methods: {

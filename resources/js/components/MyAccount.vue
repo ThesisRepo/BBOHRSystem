@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-container cols="4">
+    <v-container>
         <v-card class="mx-auto" elevation="6">
           <v-card-title class="primary fill-height" >
             <span class="headline white--text">USER PROFILE</span>
@@ -78,40 +78,38 @@
         <v-card class="mx-auto" elevation="6">
           <v-card-text>
             <v-container>
-              <v-row>
-                <h4 class="primary--text" style="margin-left: 3%;">Personal Information:</h4>
-                <v-col cols="12" md="12">
-                  <span style="margin-left: 3%;"><v-icon class="primary--text">mdi-map-marker</v-icon> {{ address }}</span>
+              <h4 class="primary--text" mb-1 style="margin-left: 3%;">Personal Information:</h4>
+              <v-row style="margin-left: 5%;">
+                <v-col cols="6">
+                  <p class="black--text"><v-icon class="primary--text">mdi-map-marker</v-icon> {{ address ? address : 'No Address' }}</p>
+                  <p class="black--text"><v-icon class="primary--text">mdi-calendar</v-icon> {{ birthdate ? birthdate : 'No Birthdate'}}</p>
                 </v-col>
-                <v-col cols="12" md="12">
-                  <span style="margin-left: 3%;"><v-icon class="primary--text">mdi-account-group</v-icon> {{ department }}</span>
+                <v-col cols="6">
+                  <p class="black--text"><v-icon class="primary--text">mdi-contacts</v-icon> {{ contact_number ? contact_number : 'No Contact No.' }}</p>
+                  <p class="black--text"><v-icon class="primary--text">mdi-account</v-icon> {{ status === 'single' ? 'Single' : status === 'married' ? 'Married' : status ? status : 'No Status' }}</p>
                 </v-col>
-                <v-col cols="12" md="12">
-                  <span style="margin-left: 3%;"><v-icon class="primary--text">mdi-google-street-view</v-icon> {{ company_status }}</span>
+              </v-row>
+              <!-- end Personal Info -->
+              <h4 class="primary--text" mb-1 style="margin-left: 3%;">Business Information:</h4>
+              <v-row style="margin-left: 5%;">
+                <v-col cols="6">
+                  <p class="black--text"><v-icon class="primary--text">mdi-account-group</v-icon> {{ department ? department : 'No Department' }}</p>
+                  <p class="black--text"><v-icon class="primary--text">mdi-google-street-view</v-icon> {{ company_status === 'regular' ? 'Regular' : company_status ? company_status : 'No Company Status' }}</p>
                 </v-col>
-                <v-col cols="12" md="12">
-                  <span style="margin-left: 3%;"><v-icon class="primary--text">mdi-calendar-check</v-icon> {{ date_hired }}</span>
+                <v-col cols="6">
+                  <p class="black--text"><v-icon class="primary--text">mdi-calendar-check</v-icon> {{ date_hired ? date_hired : 'No Date Hired'}}</p>
                 </v-col>
-                <v-col cols="12" md="12">
-                  <span style="margin-left: 3%;"><v-icon class="primary--text">mdi-account</v-icon> {{ status }}</span>
+              </v-row>
+              <!-- end Business Info -->
+              <h4 class="primary--text" mb-1 style="margin-left: 3%;">Others:</h4>
+              <v-row style="margin-left: 5%;">
+                <v-col cols="6">
+                  <p class="black--text"><v-icon class="primary--text">mdi-calculator</v-icon> {{ pag_ibig ? pag_ibig : 'No Pag-ibig Account' }}</p>
+                  <p class="black--text"><v-icon class="primary--text">mdi-calculator</v-icon> {{ tin_number ? tin_number : 'No TIN'}}</p>
                 </v-col>
-                <v-col cols="12" md="12">
-                  <span style="margin-left: 3%;"><v-icon class="primary--text">mdi-calendar</v-icon> {{ birthdate }}</span>
-                </v-col>
-                <v-col cols="12" md="12">
-                  <span style="margin-left: 3%;"><v-icon class="primary--text">mdi-contacts</v-icon> {{ contact_number }}</span>
-                </v-col>
-                <v-col cols="12" md="12">
-                  <span style="margin-left: 3%;"><v-icon class="primary--text">mdi-calculator</v-icon> {{ pag_ibig }}</span>
-                </v-col>
-                <v-col cols="12" md="12">
-                  <span style="margin-left: 3%;"><v-icon class="primary--text">mdi-calculator</v-icon> {{ tin_number }}</span>
-                </v-col>
-                <v-col cols="12" md="12">
-                  <span style="margin-left: 3%;"><v-icon class="primary--text">mdi-calculator</v-icon> {{ philhealth_num }}</span>
-                </v-col>
-                <v-col cols="12" md="12">
-                  <span style="margin-left: 3%;"><v-icon class="primary--text">mdi-calculator</v-icon> {{ sss_num }}</span>
+                <v-col cols="6">
+                  <p class="black--text"><v-icon class="primary--text">mdi-calculator</v-icon> {{ philhealth_num ? philhealth_num : 'No PhilHealth'}}</p>
+                  <p class="black--text"><v-icon class="primary--text">mdi-calculator</v-icon> {{ sss_num ? sss_num : 'No SSS'}}</p>
                 </v-col>
               </v-row>
             </v-container>
@@ -176,21 +174,21 @@ export default {
         .then(response => {
           this.prp_assign = localStorage.getItem("prp_assign");
           this.user_finance = localStorage.getItem("user_finance");
-          this.datas = response.data.user_information;
-          this.department =
-            response.data.user_information.department.department_name ? response.data.user_information.department.department_name : 'No Department';
-          this.date_hired = response.data.user_information.date_hired ? response.data.user_information.date_hired : 'No Date Hired';
-          this.address = response.data.user_information.address ? response.data.user_information.address : 'Unkown Address';
-          this.status = response.data.user_information.civil_status ? response.data.user_information.civil_status : 'No Civil Status';
-          this.company_status = response.data.user_information.company_status ? response.data.user_information.company_status : 'No Company Status';
-          this.profile_url = response.data.user_information.profile_url;
-          this.birthdate = response.data.user_information.birthday ? response.data.user_information.birthday : 'No Birthdate';
-          this.contact_number = response.data.user_information.contact_number ? response.data.user_information.contact_number : 'No Contact No.';
-          this.pag_ibig = response.data.user_information.pag_ibig_number ? response.data.user_information.pag_ibig_number : 'No Pag-ibig Account';
-          this.tin_number = response.data.user_information.tin_number ? response.data.user_information.tin_number : 'No TIN';
-          this.philhealth_num =
-            response.data.user_information.philhealth_number ? response.data.user_information.philhealth_number : 'No PhilHealth';
-          this.sss_num = response.data.user_information.sss_number ? response.data.user_information.sss_number : 'No SSS';
+          if(response.data.user_information != null){
+             this.datas = response.data.user_information;
+            this.department = response.data.user_information.department.department_name;
+            this.date_hired = response.data.user_information.date_hired;
+            this.address = response.data.user_information.address;
+            this.status = response.data.user_information.civil_status;
+            this.company_status = response.data.user_information.company_status;
+            this.profile_url = response.data.user_information.profile_url;
+            this.birthdate = response.data.user_information.birthday;
+            this.contact_number = response.data.user_information.contact_number;
+            this.pag_ibig = response.data.user_information.pag_ibig_number;
+            this.tin_number = response.data.user_information.tin_number;
+            this.philhealth_num = response.data.user_information.philhealth_number;
+            this.sss_num = response.data.user_information.sss_number;
+          }
         })
         .catch(e => {
           console.log(e);
