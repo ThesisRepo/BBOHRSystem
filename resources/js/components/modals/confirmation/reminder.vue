@@ -34,8 +34,6 @@ export default {
       this.dialog = false
     },
     onConfirm(){
-      this.$emit('onConfirm', {id: this.id})
-      this.id = null
       this.hideModal()
     }
   }

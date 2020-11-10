@@ -238,6 +238,11 @@
           >
           </v-btn>
 
+          <Reminder
+          ref="reminder"
+          :message="'Please set-up your PRP Assign'"
+          ></Reminder>
+
         </v-toolbar>
       </template>
       <template v-slot:item.status.status_name="{ item }"> 
@@ -248,9 +253,11 @@
         <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
       </template>
     </v-data-table>
+
     <SummaryTemplate
     ref="summary"
     ></SummaryTemplate>
+
   </div>
 </template>
 <style>
@@ -264,6 +271,7 @@ import createLeave from "./modals/create_leave.vue";
 import moment from "moment";
 import Confirmation from "./modals/confirmation/confirm.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
+import Reminder from "./modals/confirmation/reminder.vue";
 import SummaryTemplate from "./modals/exports/leave_export.vue";
 export default {
   // "employees = false, requests = true, feedback = false"
@@ -340,7 +348,8 @@ export default {
     createLeave,
     Confirmation,
     ConfirmationDel,
-    SummaryTemplate
+    SummaryTemplate,
+    Reminder
   },
   computed: {
     dateRangeText () {
@@ -486,8 +495,7 @@ export default {
       this.$refs.confirms.show(item)
     },
     messagePop(){
-      this.approveThis = 'message'
-      this.$refs.confirms.show()
+      this.$refs.reminder.show()
     },
     confirm(){
       if(this.approveThis === 'approve'){
