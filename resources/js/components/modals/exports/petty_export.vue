@@ -7,10 +7,10 @@
         max-width="600px"
         >
         <v-card>
-              v-toolbar class="mb-2" color="blue darken-1" dark flat>
+              <v-toolbar class="mb-2" color="blue darken-1" dark flat>
                         <v-card-title>
                             <v-col >
-                                <span style="font-size: 20px">SUMMARY:</span>
+                                <span style="font-size: 18px">SUMMARY OF PETTY CASH REQUEST:</span>
                             </v-col>
 
                             <span
@@ -44,7 +44,7 @@
             <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
-                color="blue darken-1"
+                color="red"
                 @click="dialog = false"
                 class="mr-2"
                 dark
