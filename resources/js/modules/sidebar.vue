@@ -34,11 +34,28 @@
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
-
-    <v-app-bar app fixed color="light-blue darken-4">
+     <!-- <v-app-bar app fixed color="light-blue darken-4">
       <v-app-bar-nav-icon @click="drawer = !drawer" color="white darken-2"></v-app-bar-nav-icon>
 
       <v-toolbar-title style="color:white"> BBO </v-toolbar-title>
+    </v-app-bar> -->
+    <v-app-bar 
+      app
+      fixed
+      color="white"
+      elevate-on-scroll
+      >
+      <v-app-bar-nav-icon @click="drawer = !drawer" color="light-blue darken-4"></v-app-bar-nav-icon>
+      <!-- <v-img
+        lazy-src="../storage/img/logoCircle.png"
+        max-height="25"
+        max-width="25"
+        src="../storage/img/logoCircle.png"
+        class="ml-5 mr-2"
+      ></v-img> -->
+      <v-toolbar-title style="color:black">
+      
+        <span style="color:#3490dc">Blue Bee One</span>  Request Management System</v-toolbar-title>
     </v-app-bar>
 
     <!-- <v-list v-if="isLoggedIn">
