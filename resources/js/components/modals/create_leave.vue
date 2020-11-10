@@ -19,8 +19,9 @@
       </template>
       <v-card>
         <v-card-title>
-          <span class="headline">Leave Request Form</span>
+          <span class="headline-bold" >LEAVE REQUEST FORM</span>
         </v-card-title>
+        <v-divider></v-divider>
         <v-card-text>
           <v-container>
             <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
