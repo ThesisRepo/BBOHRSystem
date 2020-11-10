@@ -60,7 +60,7 @@ export default {
         this.$axios
           .post("http://localhost:8000/prp/" + this.user_id, parameter)
           .then(res => {
-            this.$parent.$parent.$parent.$parent.$parent.getInfo();
+            this.$parent.$parent.getInfo();
           });
         this.dialog = false;
       } else {
@@ -70,20 +70,21 @@ export default {
     },
     removeData() {
       this.getAllPrp();
-      this.prp.forEach(element => {
-        if (
-          element.first_name + " " + element.last_name ===
-          localStorage.getItem("prp_assign")
-        ) {
-          this.selectPrp = element.id;
-        }
-      });
+      if(this.prp !== null){
+        this.prp.forEach(element => {
+          if (
+            element.first_name + " " + element.last_name ===
+            localStorage.getItem("prp_assign")
+          ) {
+            this.selectPrp = element.id;
+          }
+        });
+      }
     },
     getAllPrp() {
       this.$axios
         .get("http://localhost:8000/prp/" + this.user_id)
         .then(response => {
-          console.log('prp', response.data)
           this.prp = response.data;
         });
     }

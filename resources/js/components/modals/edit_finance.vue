@@ -1,16 +1,6 @@
 <template>
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="600px">
-      <!-- <template v-slot:activator="{ on, attrs }">
-        <div
-          class="indigo--text lighten-1--text text-decoration-underline"
-          v-bind="attrs"
-          v-on="on"
-          @click="removeData()"
-        >
-          <v-toolbar-title class="indigo--text lighten-1--text" style="font-size:18px">Update</v-toolbar-title>
-        </div>
-      </template> -->
       <v-card>
         <v-card-title>
           <span class="headline">Update Finance Assign</span>
@@ -24,11 +14,11 @@
                   :items="finance"
                   label="Finance Assign"
                   :item-text="
-                                        finance =>
-                                            finance.first_name +
-                                            ' ' +
-                                            finance.last_name
-                                    "
+                      finance =>
+                          finance.first_name +
+                          ' ' +
+                          finance.last_name
+                  "
                   item-value="id"
                   v-model="selectFinance"
                   required
@@ -57,7 +47,6 @@ export default {
     user_finance: localStorage.getItem("user_finance")
   }),
   mounted() {
-    this.getAllFinance();
     this.removeData()
     this.selectFinance = localStorage.getItem("user_finance");
   },
@@ -79,11 +68,9 @@ export default {
                   "user_finance",
                   element.first_name + " " + element.last_name
                 );
-                console.log(localStorage.getItem("user_finance"));
                 this.$parent.$parent.getInfo();
               }
             });
-            //   console.log(res.data)
           });
         this.dialog = false;
       } else {
@@ -93,18 +80,20 @@ export default {
     },
     removeData() {
       this.getAllFinance();
-      this.finance.forEach(element => {
-        if (
-          element.first_name + " " + element.last_name ===
-          localStorage.getItem("user_finance")
-        ) {
-          this.selectFinance = element.id;
-        }
-      });
+      if(this.finance !== null){
+        this.finance.forEach(element => {
+          if (
+            element.first_name + " " + element.last_name ===
+            localStorage.getItem("user_finance")
+          ) {
+            this.selectFinance = element.id;
+          }
+        });
+      }
     },
     getAllFinance() {
       this.$axios
-        .get("http://localhost:8000/finance/" + this.user_id)
+        .get("http://localhost:8000/finance")
         .then(response => {
           this.finance = response.data;
         });
