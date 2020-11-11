@@ -10,6 +10,106 @@ trait EmployeeInfoList
           'user' => [
             // 'prp_assigned' => 3,
             // 'finance_assigned' => 4,
+            'first_name' => 'Shin',
+            'last_name' => 'Shan',
+            'email' => 'ShinShane@bbo.com.ph',
+            'password' => Hash::make('123456789')
+          ],
+          'user_info' => null,
+          // 'user_info' => [
+          //   'department_id' => 2,
+          //   'shift_time_id'=> 1,
+          //   'gender'=> 1,
+          //   'company_number'=> '1234652',
+          //   // 'profile_url'=> null
+          //   // 'company_position'=> 'Customer Support Leader',
+          //   'date_hired'=> '2018-3-6',
+          //   // 'contact_number'=> 
+          //   'civil_status'=> 'single',
+          //   'company_status'=> 'regular',
+          //   'birthday'=>'1984-4-13',
+          //   'address'=> 'Sta. Cruz, Liloan, Cebu',
+          //   // 'tin_number'=> 
+          //   // 'sss_number'=>
+          //   // 'pag_ibig_number'=>
+          //   // 'philhealth_number'=>
+          //   // 'allowed_leave_number'=>
+          // ],
+          'user_roles' => [4],
+          'user_company_positions' => null
+          // 'user_company_positions' => [15]
+        ],
+        [
+          'user' => [
+            // 'prp_assigned' => 3,
+            // 'finance_assigned' => 4,
+            'first_name' => 'Fenella',
+            'last_name' => 'Corriene',
+            'email' => 'Feneela@bbo.com.ph',
+            'password' => Hash::make('123456789')
+          ],
+          'user_info' => null,
+          // 'user_info' => [
+          //   'department_id' => 2,
+          //   'shift_time_id'=> 1,
+          //   'gender'=> 1,
+          //   'company_number'=> '1234652',
+          //   // 'profile_url'=> null
+          //   // 'company_position'=> 'Customer Support Leader',
+          //   'date_hired'=> '2018-3-6',
+          //   // 'contact_number'=> 
+          //   'civil_status'=> 'single',
+          //   'company_status'=> 'regular',
+          //   'birthday'=>'1984-4-13',
+          //   'address'=> 'Sta. Cruz, Liloan, Cebu',
+          //   // 'tin_number'=> 
+          //   // 'sss_number'=>
+          //   // 'pag_ibig_number'=>
+          //   // 'philhealth_number'=>
+          //   // 'allowed_leave_number'=>
+          // ],
+          'user_roles' => [4],
+          'user_company_positions' => null
+          // 'user_company_positions' => [15]
+        ],
+        [
+          'user' => [
+            // 'prp_assigned' => 3,
+            // 'finance_assigned' => 4,
+            'first_name' => 'Claire',
+            'last_name' => 'khan',
+            'email' => 'claire@bbo.com.ph',
+            'password' => Hash::make('123456789')
+          ],
+          'user_info' => null,
+          // 'user_info' => [
+          //   'department_id' => 2,
+          //   'shift_time_id'=> 1,
+          //   'gender'=> 1,
+          //   'company_number'=> '1234652',
+          //   // 'profile_url'=> null
+          //   // 'company_position'=> 'Customer Support Leader',
+          //   'date_hired'=> '2018-3-6',
+          //   // 'contact_number'=> 
+          //   'civil_status'=> 'single',
+          //   'company_status'=> 'regular',
+          //   'birthday'=>'1984-4-13',
+          //   'address'=> 'Sta. Cruz, Liloan, Cebu',
+          //   // 'tin_number'=> 
+          //   // 'sss_number'=>
+          //   // 'pag_ibig_number'=>
+          //   // 'philhealth_number'=>
+          //   // 'allowed_leave_number'=>
+          // ],
+          'user_roles' => [3],
+          'user_company_positions' => null
+
+          // 'user_company_positions' => [15]
+        ],
+        [
+          'user' => [
+            // 'prp_assigned' => 3,
+            // 'finance_assigned' => 4,
             'first_name' => 'Cielo Fe Sasing',
             'last_name' => 'Atis',
             'email' => 'Cielofe@bbo.com.ph',

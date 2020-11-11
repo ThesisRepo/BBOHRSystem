@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('last_name');
             $table->string('email');
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('google_id')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->softDeletes();
@@ -37,9 +38,9 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
         Schema::table('users', function (Blueprint $table) {
             $table->dropSoftDeletes();
         });
+        Schema::dropIfExists('users');
     }
 }
