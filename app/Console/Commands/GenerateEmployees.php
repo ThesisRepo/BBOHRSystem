@@ -47,7 +47,8 @@ class GenerateEmployees extends Command
             $user = User::create($employee_info['user']);
             $user->roles()->attach($employee_info['user_roles']);
             $user->userInformation()->create($employee_info['user_info']);
-
+            $user->userInformation->company_positions()->attach($employee_info['user_company_positions']);
         }
+        $this->info('initial employees were added to application' . $e);
     }
 }

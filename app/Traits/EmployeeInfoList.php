@@ -21,7 +21,7 @@ trait EmployeeInfoList
             'gender'=> 1,
             'company_number'=> '1234652',
             // 'profile_url'=> null
-            'company_position'=> 'Customer Support Leader',
+            // 'company_position'=> 'Customer Support Leader',
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
@@ -34,7 +34,8 @@ trait EmployeeInfoList
             // 'philhealth_number'=>
             // 'allowed_leave_number'=>
           ],
-          'user_roles' => [1,2]
+          'user_roles' => [1,2],
+          'user_company_positions' => [15]
         ],
         [
           'user' => [
@@ -51,7 +52,7 @@ trait EmployeeInfoList
             'gender'=> 0,
             'company_number'=> '1236652',
             // 'profile_url'=> null
-            'company_position'=> 'Apps Developer',
+            // 'company_position'=> 'Apps Developer', 
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
@@ -64,7 +65,8 @@ trait EmployeeInfoList
             // 'philhealth_number'=>
             // 'allowed_leave_number'=>
           ],
-          'user_roles' => [1,2]
+          'user_roles' => [1,2],
+          'user_company_positions' => [11]
         ],
         [
           'user' => [
@@ -81,7 +83,7 @@ trait EmployeeInfoList
             'gender'=> 0,
             'company_number'=> '1236652',
             // 'profile_url'=> null
-            'company_position'=> 'PHP DEV',
+            // 'company_position'=> 'PHP DEV',
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
@@ -94,7 +96,8 @@ trait EmployeeInfoList
             // 'philhealth_number'=>
             // 'allowed_leave_number'=>
           ],
-          'user_roles' => [1,2]
+          'user_roles' => [1,2],
+          'user_company_positions' => [2]
         ],
         [
           'user' => [
@@ -111,7 +114,7 @@ trait EmployeeInfoList
             'gender'=> 0,
             'company_number'=> '1236652',
             // 'profile_url'=> null
-            'company_position'=> 'MKTG. Assistant',
+            // 'company_position'=> 'MKTG. Assistant',
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
@@ -124,9 +127,9 @@ trait EmployeeInfoList
             // 'philhealth_number'=>
             // 'allowed_leave_number'=>
           ],
-          'user_roles' => [1]
+          'user_roles' => [1],
+          'user_company_positions' => [13]
         ],
-    
         [
           'user' => [
             // 'prp_assigned' => 3,
@@ -142,7 +145,7 @@ trait EmployeeInfoList
             'gender'=> 0,
             'company_number'=> '1236652',
             // 'profile_url'=> null
-            'company_position'=> 'Sales & Support',
+            // 'company_position'=> 'Sales & Support',
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
@@ -155,7 +158,8 @@ trait EmployeeInfoList
             // 'philhealth_number'=>
             // 'allowed_leave_number'=>
           ],
-          'user_roles' => [1]
+          'user_roles' => [1],
+          'user_company_positions' => [12]
         ],
         [
           'user' => [
@@ -172,7 +176,7 @@ trait EmployeeInfoList
             'gender'=> 0,
             'company_number'=> '1236652',
             // 'profile_url'=> null
-            'company_position'=> 'Online Sales Associate',
+            // 'company_position'=> 'Online Sales Associate',
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
@@ -185,7 +189,9 @@ trait EmployeeInfoList
             // 'philhealth_number'=>
             // 'allowed_leave_number'=>
           ],
-          'user_roles' => [1]
+          'user_roles' => [1],
+          'user_company_positions' => [10]
+
         ],   
         [
           'user' => [
@@ -202,7 +208,7 @@ trait EmployeeInfoList
             'gender'=> 0,
             'company_number'=> '1236652',
             // 'profile_url'=> null
-            'company_position'=> 'Utility/Messenger',
+            // 'company_position'=> 'Utility/Messenger',
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
@@ -215,7 +221,8 @@ trait EmployeeInfoList
             // 'philhealth_number'=>
             // 'allowed_leave_number'=>
           ],
-          'user_roles' => [1]
+          'user_roles' => [1],
+          'user_company_positions' => [4]
         ],
         [
           'user' => [
@@ -232,7 +239,7 @@ trait EmployeeInfoList
             'gender'=> 0,
             'company_number'=> '1236652',
             // 'profile_url'=> null
-            'company_position'=> 'Marketng Staff',
+            // 'company_position'=> 'Marketng Staff',
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
@@ -245,7 +252,8 @@ trait EmployeeInfoList
             // 'philhealth_number'=>
             // 'allowed_leave_number'=>
           ],
-          'user_roles' => [1]
+          'user_roles' => [1],
+          'user_company_positions' => [1]
         ],
         [
           'user' => [
@@ -262,7 +270,7 @@ trait EmployeeInfoList
             'gender'=> 0,
             'company_number'=> '1236652',
             // 'profile_url'=> null
-            'company_position'=> 'Accounting Assistant',
+            // 'company_position'=> 'Accounting Assistant',
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
@@ -275,7 +283,8 @@ trait EmployeeInfoList
             // 'philhealth_number'=>
             // 'allowed_leave_number'=>
           ],
-          'user_roles' => [1]
+          'user_roles' => [1],
+          'user_company_positions' => [5]
         ],
         [
           'user' => [
@@ -292,7 +301,7 @@ trait EmployeeInfoList
             'gender'=> 0,
             'company_number'=> '1236652',
             // 'profile_url'=> null
-            'company_position'=> 'App Developer',
+            // 'company_position'=> 'App Developer',
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> ,
             'civil_status'=> 'single',
@@ -305,7 +314,8 @@ trait EmployeeInfoList
             // 'philhealth_number'=>
             // 'allowed_leave_number'=>
           ],
-          'user_roles' => [1]
+          'user_roles' => [1],
+          'user_company_positions' => [11]
         ],
         [
           'user' => [
@@ -322,7 +332,7 @@ trait EmployeeInfoList
             'gender'=> 0,
             'company_number'=> '1236652',
             // 'profile_url'=> null
-            'company_position'=> 'Android Dev',
+            // 'company_position'=> 'Android Dev',
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
@@ -335,7 +345,8 @@ trait EmployeeInfoList
             // 'philhealth_number'=>
             // 'allowed_leave_number'=>
           ],
-          'user_roles' => [1]
+          'user_roles' => [1],
+          'user_company_positions' => [3]
         ],
         [
           'user' => [
@@ -352,7 +363,7 @@ trait EmployeeInfoList
             'gender'=> 0,
             'company_number'=> '1236652',
             // 'profile_url'=> null
-            'company_position'=> 'Android Dev',
+            // 'company_position'=> 'Android Dev',
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
@@ -365,7 +376,8 @@ trait EmployeeInfoList
             // 'philhealth_number'=>
             // 'allowed_leave_number'=>
           ],
-          'user_roles' => [1]
+          'user_roles' => [1],
+          'user_company_positions' => [3]
         ],
         [
           'user' => [
@@ -382,7 +394,7 @@ trait EmployeeInfoList
             'gender'=> 0,
             'company_number'=> '1236652',
             // 'profile_url'=> null,
-            'company_position'=> 'PHP DEV',
+            // 'company_position'=> 'PHP DEV',
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
@@ -395,7 +407,8 @@ trait EmployeeInfoList
             // 'philhealth_number'=>
             // 'allowed_leave_number'=>
           ],
-          'user_roles' => [1]
+          'user_roles' => [1],
+          'user_company_positions' => [2]
         ],
         [
           'user' => [
@@ -412,7 +425,7 @@ trait EmployeeInfoList
             'gender'=> 0,
             'company_number'=> '1236652',
             // 'profile_url'=> null
-            'company_position'=> 'Designer',
+            // 'company_position'=> 'Designer',
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
@@ -425,7 +438,8 @@ trait EmployeeInfoList
             // 'philhealth_number'=>
             // 'allowed_leave_number'=>
           ],
-          'user_roles' => [1]
+          'user_roles' => [1],
+          'user_company_positions' => [15]
         ],
         [
           'user' => [
@@ -442,7 +456,7 @@ trait EmployeeInfoList
             'gender'=> 0,
             'company_number'=> '1236652',
             // 'profile_url'=> null
-            'company_position'=> 'Reseller Support',
+            // 'company_position'=> 'Reseller Support',
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
@@ -455,7 +469,8 @@ trait EmployeeInfoList
             // 'philhealth_number'=>
             // 'allowed_leave_number'=>
           ],
-          'user_roles' => [1]
+          'user_roles' => [1],
+          'user_company_positions' => [14]
         ],
         [
           'user' => [
@@ -472,7 +487,7 @@ trait EmployeeInfoList
             'gender'=> 0,
             'company_number'=> '1236652',
             // 'profile_url'=> null
-            'company_position'=> 'PHP DEV',
+            // 'company_position'=> 'PHP DEV',
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> ,
             'civil_status'=> 'single',
@@ -485,7 +500,8 @@ trait EmployeeInfoList
             // 'philhealth_number'=>
             // 'allowed_leave_number'=>
           ],
-          'user_roles' => [1]
+          'user_roles' => [1],
+          'user_company_positions' => [2]
         ],
         [
           'user' => [
@@ -502,7 +518,7 @@ trait EmployeeInfoList
             'gender'=> 0,
             'company_number'=> '1236652',
             // 'profile_url'=> null
-            'company_position'=> 'PHP DEV',
+            // 'company_position'=> 'PHP DEV',
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> ,
             'civil_status'=> 'single',
@@ -515,7 +531,8 @@ trait EmployeeInfoList
             // 'philhealth_number'=>
             // 'allowed_leave_number'=>
           ],
-          'user_roles' => [1]
+          'user_roles' => [1],
+          'user_company_positions' => [2]
         ],
         [
           'user' => [
@@ -532,7 +549,7 @@ trait EmployeeInfoList
             'gender'=> 0,
             'company_number'=> '1236652',
             // 'profile_url'=> null
-            'company_position'=> 'PHP DEV',
+            // 'company_position'=> 'PHP DEV',
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
@@ -545,7 +562,8 @@ trait EmployeeInfoList
             // 'philhealth_number'=>
             // 'allowed_leave_number'=>
           ],
-          'user_roles' => [1]
+          'user_roles' => [1],
+          'user_company_positions' => [2]
         ],
     ];
   } 
