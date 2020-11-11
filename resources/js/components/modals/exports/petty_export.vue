@@ -7,13 +7,25 @@
         max-width="600px"
         >
         <v-card>
-                <v-card-title>
-            <center>
-                <span class="headline" style="text-align: center">SUMMARY</span>
-            </center>
-                <br><br>
-                <p>{{ start_date }} - {{ end_date }}</p>
-                </v-card-title>
+              <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+                        <v-card-title>
+                            <v-col >
+                                <span style="font-size: 18px">SUMMARY OF PETTY CASH REQUEST:</span>
+                            </v-col>
+
+                            <span
+                                style="font-size: 15px"
+                            >
+                                {{
+                                    start_date
+                                        ? start_date
+                                        : "No start date selected"
+                                }}
+                                /
+                                {{ end_date ? end_date : "END DATE" }}
+                            </span>
+                        </v-card-title>
+                    </v-toolbar>
             <v-card-text>
                 <v-container>
                     <template>
@@ -32,9 +44,10 @@
             <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
-                color="blue darken-1"
-                text
+                color="red"
                 @click="dialog = false"
+                class="mr-2"
+                dark
             >
                 Close
             </v-btn>
@@ -42,8 +55,7 @@
             :csv-title="'SUMMARY OF PETTY CASH REQUEST FROM' + start_date + '-' + end_date"
             >
             <v-btn
-                color="blue darken-1"
-                text
+                v-btn color="success" class ="mr-8"
             >
                 Export as CSV
             </v-btn>
