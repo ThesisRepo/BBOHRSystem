@@ -26,13 +26,14 @@ class UserEloquent extends EloquentImplementation {
     public function allWith($relationship){
       return  $this->with($relationship)->get();
    }
-    public function updateUserWithInfo($id, $user, $user_info){
+    public function updateUserWithInfo($id, $user, $user_info, $company_position){
 
       try {
         DB::beginTransaction();
           $res = $this->model->findorFail($id);
           $res->update($user);
           $res->userInformation()->update($user_info);
+          $user->userInformation->company_positions()->attach($company_position);
         DB::commit();
         return $res;
       }catch(\Exception $e) {
@@ -242,13 +243,14 @@ class UserEloquent extends EloquentImplementation {
 
   }
 
-  public function registerUser($user, $roles, $user_info) {
+  public function registerUser($user, $roles, $user_info, $company_position) {
 
     try {
       DB::beginTransaction();
         $user = $this->model->create($user);
         $user->roles()->attach($roles);
         $user->userInformation()->create($user_info);
+        $user->userInformation->company_positions()->attach($company_position);
       DB::commit();
       return $user->load(['roles', 'userInformation']);
     }catch(\Exception $e) {
