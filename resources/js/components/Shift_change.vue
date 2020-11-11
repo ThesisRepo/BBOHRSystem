@@ -90,9 +90,11 @@
     <!-- editModal -->
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
-        <v-card-title>
-          <span class="headline">Shift Change Request Form</span>
-        </v-card-title>
+         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+            <v-card-title>
+              <span class="headline-bold">SHIFT CHANGE REQUEST FORM</span>
+            </v-card-title>
+          </v-toolbar>
         <v-card-text>
           <v-container>
             <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
@@ -142,8 +144,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-          <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+          <v-btn color="red" class="white--text" @click="close">Cancel</v-btn>
+          <v-btn color="success" @click="save">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -188,7 +190,7 @@
 
           <Reminder
           ref="reminder"
-          :message="'Please set-up your PRP Assign'"
+          :message="'Please set your PRP Assign'"
           ></Reminder>
 
         </v-toolbar>
