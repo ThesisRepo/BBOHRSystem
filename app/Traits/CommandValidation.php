@@ -39,11 +39,17 @@ trait CommandValidation {
     }else {
       $val = $this->ask($question);
     }
-    if($message = $this->validateInput($rule, $field, $val)) {
+    if($field == 'password_confirmation') {
+      if($val != $rule["password"]) {
+        $this->error('password confirmation and password must match.');
+        return $this->askValid($question, $field, $rule, $secret);
+      }
+    }else{
+      if($message = $this->validateInput($rule, $field, $val)) {
         $this->error($message);
         return $this->askValid($question, $field, $rule, $secret);
+      }
     }
-
     return $val;
   }
 }

@@ -58,7 +58,7 @@ class CreateFinanceManAcc extends Command
      */
     public function handle()
     {
-        if(!$this->user->isRoleExisting(3)) {
+        if($this->user->isRoleExisting(3)) {
             $this->setRegisterValues();
             try {
                 DB::beginTransaction();
