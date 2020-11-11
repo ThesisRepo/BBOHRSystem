@@ -18,10 +18,11 @@
         </v-btn>
       </template>
       <v-card>
+         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
         <v-card-title>
           <span class="headline-bold">SHIFT CHANGE REQUEST FORM</span>
         </v-card-title>
-        <v-divider></v-divider>
+        </v-toolbar>
         <v-card-text>
           <v-container>
             <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
@@ -71,10 +72,10 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false"
+          <v-btn color="red" dark @click="dialog = false"
             >Close</v-btn
           >
-          <v-btn color="blue darken-1" text @click="dialog = false, createShift()">Save</v-btn>
+          <v-btn color="success" @click="dialog = false, createShift()">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
