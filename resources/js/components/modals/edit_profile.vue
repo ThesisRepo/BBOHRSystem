@@ -2,7 +2,7 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="primary" rounded large dark v-bind="attrs" v-on="on">
+        <v-btn color="primary" rounded large outlined dark v-bind="attrs" v-on="on">
           <v-icon left>mdi-pencil</v-icon>Edit Profile
         </v-btn>
       </template>
@@ -29,16 +29,16 @@
                 ></v-select>
               </v-col>
               <v-col cols="12" sm="6" md="4">
-                <v-text-field label="PagIbig No.*" v-model="datas.pag_ibig_number" required></v-text-field>
+                <v-text-field label="PagIbig*" v-model="datas.pag_ibig_number" required></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="4">
-                <v-text-field label="SSS No.*" v-model="datas.sss_number" required></v-text-field>
+                <v-text-field label="SSS*" v-model="datas.sss_number" required></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="4">
-                <v-text-field label="Tin No.*" v-model="datas.tin_number" required></v-text-field>
+                <v-text-field label="Tin*" v-model="datas.tin_number" required></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="4">
-                <v-text-field label="PhilHealth No.*" v-model="datas.philhealth_number" required></v-text-field>
+                <v-text-field label="PhilHealth*" v-model="datas.philhealth_number" required></v-text-field>
               </v-col>
             </v-row>
           </v-container>
@@ -55,7 +55,8 @@
 <script>
 export default {
   data: () => ({
-    dialog: false
+    dialog: false,
+    user_id: localStorage.getItem("id"),
   }),
   props: ["datas"],
   methods: {
