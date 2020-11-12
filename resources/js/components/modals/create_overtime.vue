@@ -16,9 +16,11 @@
         </v-btn>
       </template>
       <v-card>
-        <v-card-title>
-          <span class="headline">Overtime Request Form</span>
-        </v-card-title>
+         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+            <v-card-title>   
+              <span class="headline-bold">OVERTIME REQUEST FORM</span>
+            </v-card-title>
+          </v-toolbar>
         <v-card-text>
           <v-container>
             <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
@@ -70,14 +72,13 @@
               </v-col>
             </v-row>
           </v-container>
-          <small>*indicates required field</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false">
+          <v-btn color="red" dark @click="dialog = false">
             Close
           </v-btn>
-          <v-btn color="blue darken-1" text @click="createShift()">
+          <v-btn color="success" @click="createShift()">
             Save
           </v-btn>
         </v-card-actions>

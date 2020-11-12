@@ -95,9 +95,11 @@
     <!-- ******************start********************** -->
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-card class="mt-5">
-        <v-card-title>
-          <span class="headline">Budget Request Form</span>
-        </v-card-title>
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+          <v-card-title>
+            <span class="headline-bold">BUDGET REQUEST FORM</span>
+          </v-card-title>
+        </v-toolbar>
         <v-divider></v-divider>
         <v-card-text>
           <v-container>
@@ -140,8 +142,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-          <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+          <v-btn color="red" class="white--text" @click="close">Cancel</v-btn>
+          <v-btn color="success" @click="save">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -190,7 +192,7 @@
 
       <Reminder
         ref="reminder"
-        :message="'Please set-up your Finance Assign'"
+        :message="'Please set your Finance Assign'"
         ></Reminder>
 
         </v-toolbar>

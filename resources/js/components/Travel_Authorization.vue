@@ -94,6 +94,11 @@
     <!-- ****************start************** -->
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+          <v-card-title>
+            <span class="headline-bold">TRAVEL AUTHORIZATION REQUEST</span>
+          </v-card-title>
+        </v-toolbar>
         <v-card-text>
           <v-container>
             <v-row>
@@ -186,8 +191,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false">Cancel</v-btn>
-          <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+          <v-btn color="red" class="white--text" @click="dialog = false">Cancel</v-btn>
+          <v-btn color="success" @click="save">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -245,7 +250,7 @@
 
         <Reminder
         ref="reminder"
-        :message="'Please set-up your PRP Assign'"
+        :message="'Please set your PRP Assign'"
         ></Reminder>
 
         </v-toolbar>

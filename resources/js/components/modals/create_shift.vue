@@ -18,10 +18,11 @@
         </v-btn>
       </template>
       <v-card>
-        <v-card-title>
-          <span class="headline-bold">SHIFT CHANGE REQUEST FORM</span>
-        </v-card-title>
-        <v-divider></v-divider>
+         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+            <v-card-title>
+              <span class="headline-bold">SHIFT CHANGE REQUEST FORM</span>
+            </v-card-title>
+          </v-toolbar>
         <v-card-text>
           <v-container>
             <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
@@ -71,10 +72,10 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false"
+          <v-btn color="red" dark @click="dialog = false"
             >Close</v-btn
           >
-          <v-btn color="blue darken-1" text @click="dialog = false, createShift()">Save</v-btn>
+          <v-btn color="success" @click="dialog = false, createShift()">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -107,7 +108,7 @@ export default {
         let parameter = {
           user_id: this.user_id,
           shift_date: this.shift_date,
-          shift_time_id: this.shift_time,
+        shift_time_id: this.shift_time,
           reason: this.reason,
           prp_assigned_id: this.prp_assigned_id
         }

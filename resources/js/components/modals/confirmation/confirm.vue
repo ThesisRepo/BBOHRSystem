@@ -2,16 +2,22 @@
   <div class="text-center">
     <v-dialog v-model="dialog" width="500">
       <v-card>
-        <v-card-title class="headline grey lighten-2">{{ title }}</v-card-title>
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+          <v-card-title>
+              <span class="headline-bold ">{{ title }}</span>
+          </v-card-title>
+        </v-toolbar>
 
-        <v-card-text>{{ message }}</v-card-text>
+        <center>
+          <v-card-text><b>{{ message }}</b></v-card-text>
+        </center>
 
         <v-divider></v-divider>
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="hideModal()">Cancel</v-btn>
-          <v-btn color="green darken-1" text @click="onConfirm()">Confirm</v-btn>
+          <v-btn color="red" class="white--text" @click="hideModal()">Cancel</v-btn>
+          <v-btn color="success" @click="onConfirm()">Confirm</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

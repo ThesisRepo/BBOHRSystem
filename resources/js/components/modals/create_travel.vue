@@ -16,9 +16,11 @@
         </v-btn>
       </template>
       <v-card>
-        <v-card-title>
-          <span class="headline">Travel Authorization Form</span>
-        </v-card-title>
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+          <v-card-title>
+            <span class="headline-bold">TRAVEL AUTHORIZATION REQUEST</span>
+          </v-card-title>
+        </v-toolbar>
         <v-card-text>
           <v-container>
             <span v-if="error" style="color: red; font-size: 15px">All data are required!</span>
@@ -34,13 +36,13 @@
               <v-col cols="12" sm="6" md="6">
                 <v-select
                   :items="[
-                    'Jocel Redotco Mendoza',
-                    'Fenella Corinne Real Rosales',
-                    'Cielo Fe Sasing',
-                    'April Claire Chagas Podador',
-                    'Nathaniel Cala Terdes',
-                    'Carl Wyner Velasco Javier'
-                ]"
+                                        'Jocel Redotco Mendoza',
+                                        'Fenella Corinne Real Rosales',
+                                        'Cielo Fe Sasing',
+                                        'April Claire Chagas Podador',
+                                        'Nathaniel Cala Terdes',
+                                        'Carl Wyner Velasco Javier'
+                                    ]"
                   label="Employee to Cover*"
                   v-model="employee_to_cover"
                   prepend-icon=" mdi-account-outline"
@@ -104,8 +106,7 @@
                     color="primary"
                     scrollable
                     @change="changeDate()"
-                  >
-                  </v-date-picker>
+                  ></v-date-picker>
                 </v-menu>
               </v-col>
               <v-col cols="12">
@@ -125,8 +126,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-          <v-btn color="blue darken-1" text @click="createTravel()">Save</v-btn>
+          <v-btn color="red" dark @click="dialog = false">Close</v-btn>
+          <v-btn color="success" @click="createTravel()">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
