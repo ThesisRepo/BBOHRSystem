@@ -16,6 +16,7 @@ class DepartmentSeeder extends Seeder
             Department::create(['department_name' => 'Marketing']);
             Department::create(['department_name' => 'Admin']);
             Department::create(['department_name' => 'Finance']);
+            Department::create(['department_name' => 'CS(Sales)']);
             Department::create(['department_name' => 'Mobile Development']);
             Department::create(['department_name' => 'Web Development']);
         }  

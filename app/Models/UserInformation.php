@@ -19,7 +19,6 @@ class UserInformation extends Model
         'gender',
         'company_number',
         'profile_url',
-        'company_position',
         'date_hired',
         'contact_number',
         'civil_status',
@@ -72,5 +71,9 @@ class UserInformation extends Model
 
     public function shift_time() {
         return $this->belongsTo(Requests\ShiftTime::class);
+    }
+
+    public function company_positions() {
+        return $this->belongstoMany(CompanyPosition::class, 'user_company_positions')->withTimestamps();
     }
 }

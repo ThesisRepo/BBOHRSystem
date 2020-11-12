@@ -58,7 +58,6 @@ class UserInformationController extends Controller
             'gender'=> $request->gender,
             'company_number' => $request->company_number,
             'profile_url' => $request->profile_url,
-            'company_position' => $request->company_position,
             'date_hired' => $request->date_hired,
             'company_status' => $request->company_status,
             'regularization_date' => $request->regularization_date,
@@ -72,6 +71,9 @@ class UserInformationController extends Controller
             'tin_number' => $request->tin_number,
             'philhealth_number' => $request->philhealth_number
         ];
+
+        $company_position = $request->company_position;
+
         $role = [];
 
         switch($request->role_id) {
@@ -83,7 +85,7 @@ class UserInformationController extends Controller
                 break;
         }
         
-        return $this->user->registerUser($user, $role, $user_info);
+        return $this->user->registerUser($user, $role, $user_info, $company_position);
 
     }
     
@@ -108,7 +110,6 @@ class UserInformationController extends Controller
             'gender'=> $request->gender,
             'company_number' => $request->company_number,
             'profile_url' => $request->profile_url,
-            'company_position' => $request->company_position,
             'date_hired' => $request->date_hired,
             'company_status' => $request->company_status,
             'regularization_date' => $request->regularization_date,
@@ -122,8 +123,8 @@ class UserInformationController extends Controller
             'tin_number' => $request->tin_number,
             'philhealth_number' => $request->philhealth_number
         ];
-
-        return $this->user->updateUserWithInfo($id, $user, $user_info);        
+        $company_position = $request->company_position;
+        return $this->user->updateUserWithInfo($id, $user, $user_info, $company_position);        
     }
 
     /**

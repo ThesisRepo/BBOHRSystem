@@ -46,8 +46,13 @@ class GenerateEmployees extends Command
         foreach($this->employee_info_list() as $employee_info) {
             $user = User::create($employee_info['user']);
             $user->roles()->attach($employee_info['user_roles']);
-            $user->userInformation()->create($employee_info['user_info']);
-
+            if( $employee_info['user_info']) {
+                $user->userInformation()->create($employee_info['user_info']);
+            }
+            if( $employee_info['user_company_positions']) {
+                $user->userInformation->company_positions()->attach($employee_info['user_company_positions']);
+            }
         }
+        $this->info('initial employees were added to application');
     }
 }

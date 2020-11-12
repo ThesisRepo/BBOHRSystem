@@ -2,15 +2,21 @@
   <div class="text-center">
     <v-dialog v-model="dialog" width="500">
       <v-card>
-        <v-card-title class="headline grey lighten-2">Reminder</v-card-title>
-
-        <v-card-text>{{ message }}</v-card-text>
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+          <v-card-title>
+              <span class="headline-bold ">Reminder</span>
+          </v-card-title>
+        </v-toolbar>
+        
+        <center>
+          <v-card-text><b>{{ message }}</b></v-card-text>
+        </center>
 
         <v-divider></v-divider>
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="onConfirm()">Ok</v-btn>
+          <v-btn color="success" @click="onConfirm()">Ok</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

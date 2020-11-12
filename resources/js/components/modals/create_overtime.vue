@@ -17,10 +17,10 @@
       </template>
       <v-card>
          <v-toolbar class="mb-2" color="blue darken-1" dark flat>
-        <v-card-title>   
-          <span class="headline-bold">OVERTIME REQUEST FORM</span>
-         </v-card-title>
-        </v-toolbar>
+            <v-card-title>   
+              <span class="headline-bold">OVERTIME REQUEST FORM</span>
+            </v-card-title>
+          </v-toolbar>
         <v-card-text>
           <v-container>
             <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
