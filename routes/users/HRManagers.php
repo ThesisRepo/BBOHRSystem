@@ -49,3 +49,6 @@ Route::post('hr/summary/travel_auth_request','UserInformationController@getAllFe
 
 // for getting all available company position
 Route::get('hr/company_position','CompanyPositionController@index')->name('hr.company_position.all');
+Route::post('hr/company_position','CompanyPositionController@create')->name('hr.company_position.create');
+Route::post('hr/company_position/{id}','CompanyPositionController@update')->name('hr.company_position.update');
+Route::delete('hr/company_position','CompanyPositionController@delete')->name('hr.company_position.delete');
