@@ -16,7 +16,9 @@ class UserEloquent extends EloquentImplementation {
     }
 
     public function createWithRoles($data, array $id) {
-      return $this->model->create($data)->roles()->attach($id);
+      $res = $this->model->create($data);
+      $res->roles()->attach($id);
+      return $res;
     }
     
     public function updateWithUserInfo($data, $id){
@@ -255,7 +257,8 @@ class UserEloquent extends EloquentImplementation {
       return $user->load(['roles', 'userInformation']);
     }catch(\Exception $e) {
       DB::rollback();
-      return $e;
+      throw new \ErrorException($e);
+      // return $e;
     }
     
   }
