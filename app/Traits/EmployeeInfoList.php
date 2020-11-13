@@ -35,7 +35,11 @@ trait EmployeeInfoList
           //   // 'philhealth_number'=>
           //   // 'allowed_leave_number'=>
           // ],
+<<<<<<< HEAD
           'user_roles' => [2, 5],
+=======
+          'user_roles' => [5],
+>>>>>>> 1c687e581010db8c05681dc0fb7740cd47f82206
           'user_company_positions' => null
           // 'user_company_positions' => [15]
         ],
