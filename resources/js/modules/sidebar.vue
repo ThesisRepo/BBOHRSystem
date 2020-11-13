@@ -1,6 +1,6 @@
 <template>
-  <v-app id="inspire">
-    <v-navigation-drawer v-model="drawer" app color="light-blue darken-4">
+  <v-app>
+    <v-navigation-drawer v-model="drawer" app color="light-blue darken-4" class="example">
       <center>
         <v-sheet color="light-blue darken-4" class="pa-5">
           <v-avatar v-if="user_pic === null" class="mb-10" size="64">
@@ -68,12 +68,27 @@
 
 </template>
 <style>
-v-app-bar {
-  overflow: hidden !important;
+/* v-app {
+  overflow-y: hidden !important;
+} */
+.v-application--wrap {
+  overflow-y: scroll; /* Add the ability to scroll */
 }
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.v-application--wrap::-webkit-scrollbar {
+    display: none;
+}
+
+/* v-app-bar {
+  overflow: hidden !important;
+} */
 .v-list-item__title {
   font-size: 15px;
 }
+/* .v-application--wrap{
+
+} */
 </style>
 
 <script>
