@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Auth;
 use Socialite;
 use App\Models\User;
+use DB;
+use Carbon\Carbon;
 
 class LoginController extends Controller
 {
@@ -51,7 +53,7 @@ class LoginController extends Controller
         if(Auth::attempt($credentials, $request->has('remember'))){
             return redirect()->intended('home');
         }
-
+        
         return redirect('login')->withInput($request->only('email', 'remember'))->withErrors(['invalid'=>'You have entered invalid credentials']);
     }
 
@@ -66,6 +68,25 @@ class LoginController extends Controller
         return redirect('login');
     }
 
+    public function userActivationToken($token) {
+        $check = DB::table('user_acc_activations')->where('token', $token)->first();
+        if(!is_null($check)) {  
+            $user_id = $check->user_id;
+            $usertable = DB::table('users');
+            $user = $usertable->find($user_id);
+            if($user->email_verified_at != null) {
+                return redirect('login')->with('success','User already verified');
+            }
+            $current_time = Carbon::now();
+            $data = [
+                'email_verified_at' => $current_time->toDateTimeString()
+            ];  
+            $usertable->where('id', $user_id)->update($data);
+            DB::table('user_acc_activations')->where('token', $token)->delete();
+            return redirect('login')->with('success','User verified successfully');        
+        }
+        return redirect('login')->with('invalidToken','token invalid');
+    }
 
     // public function logout(Request $request)
     // {

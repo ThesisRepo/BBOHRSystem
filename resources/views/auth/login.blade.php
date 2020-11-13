@@ -27,7 +27,19 @@
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-9" style="margin-top: 3%;">
-            <div class="card" >             
+            <div class="card" > 
+                <center> 
+                @if(session()->has('success'))
+                    <div class="alert alert-success">
+                        {{session('success') }}
+                    </div>
+                @endif
+                @if(session()->has('invalidToken'))
+                    <div class="alert alert-warning">
+                        {{session('invalidToken') }}
+                    </div>
+                @endif   
+                </center>     
                 <center style="margin-top: 5%;">
                     <img src="http://localhost:8000/img/user_logo.png" width="100" alt="logo">
                 </center>
