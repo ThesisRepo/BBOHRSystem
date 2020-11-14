@@ -8,18 +8,26 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Mail\Mailable;
+use App\Mail\UserAccActivation;
+use Mail;
+
 class UserAccRegister implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    protected $mail;
+
+    protected $data;
+
+    protected $user;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Mailable $mail)
+    public function __construct($data, $user)
     {
-        $this->mail = $mail;
+        $this->user = $user;
+        $this->data = $data;
     }
 
     /**
@@ -29,6 +37,6 @@ class UserAccRegister implements ShouldQueue
      */
     public function handle()
     {
-        //
+        Mail::to($user = $this->user['email'])->send(new UserAccActivation($this->data, $this->user));
     }
 }

@@ -1,8 +1,9 @@
 <?php
 namespace App\Traits;
-use Mail;
+use App\Jobs\UserAccRegister;
+use Carbon\Carbon;
 use DB;
-use App\Mail\UserAccActivation;
+
 trait CallForActionEmail {
 
   public function sendVerificationEmailOnRegister($user) {
@@ -14,19 +15,16 @@ trait CallForActionEmail {
         'token' => $link
     ];
     DB::table('user_acc_activations')->insert($activation_data);
-    $blade_file = 'emails/user-acc-activation';
     $data = [
       'user' => $activation_data
     ];
     $to = $user_email;
-    $subject = 'BBO Request Management Password!';
-    $this->emailTemplate($blade_file, $data, $to, $subject);
+    $this->emailTemplate($data, $user);
 
   }      
 
-  public function emailTemplate($blade_file, $data, $user_data) {
-    
-    Mail::to($user = $user_data)->send(new UserAccActivation($data));
-
+  public function emailTemplate($data, $user) {
+    $job = (new UserAccRegister($data, $user))->delay(Carbon::now()->addSeconds(5));
+    dispatch($job);
   }
 }
