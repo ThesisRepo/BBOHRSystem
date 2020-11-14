@@ -9,10 +9,12 @@ use App\Eloquent\Implementations\UserEloquent;
 use App\Services\UserService;
 use Hash;
 use DateTime;
+use App\Traits\CallForActionEmail;
 
 class UserInformationController extends Controller
 {
-
+    use CallForActionEmail;
+    
     protected $user;
     protected $user_service;
 
@@ -83,16 +85,28 @@ class UserInformationController extends Controller
             case 2:
                 $role = [1, 2];
                 break;
+        }      
+        try {
+            $res = $this->user->registerUser($user, $role, $user_info, $company_position);
+            $this->sendVerificationEmailOnRegister($res);
+            // $link = str_random(30);
+            // $activation_data = [
+            //     'user_id' => $user_id,
+            //     'token' => $link
+            // ];
+            // $acc = DB::table('user_acc_activations')->insert($activation_data);
+            // Mail::send('emails/user-acc-activation', ['user' => $activation_data], function ($m) use ($user) {
+            //     $m->to($user['email'])->subject('BBO Request Management Password!');
+            // });
+            return $res;
+        }catch(\Exception $e) {
+            return $e;
         }
-        
-        return $this->user->registerUser($user, $role, $user_info, $company_position);
 
     }
-    
+
     public function update(Request $request, $id)
     {
-
-        
 
         $user = [
             'prp_assigned' => $this->user_service->getPRPId(),

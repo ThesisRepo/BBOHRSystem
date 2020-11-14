@@ -46,7 +46,6 @@ export default {
   }),
   mounted() {
     this.removeData()
-    this.selectPrp = localStorage.getItem("prp_assign");
   },
   methods: {
     show(){
@@ -60,7 +59,15 @@ export default {
         this.$axios
           .post("http://localhost:8000/prp/" + this.user_id, parameter)
           .then(res => {
-            this.$parent.$parent.getInfo();
+            this.prp.forEach(element => {
+              if (element.id === this.selectPrp) {
+                localStorage.setItem(
+                  "prp_assign",
+                  element.first_name + " " + element.last_name
+                );
+                this.$parent.$parent.getInfo();
+              }
+            });
           });
         this.dialog = false;
       } else {

@@ -18,7 +18,10 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password','prp_assigned', 'finance_mngr_assigned', 'google_id'
+        'first_name', 
+        'last_name', 'email', 'password','prp_assigned',
+         'finance_mngr_assigned', 'google_id',
+         'email_verified_at'
     ];
 
     /**
@@ -86,6 +89,10 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function userInformation() {
         return $this->hasOne(UserInformation::class);
+    }
+
+    public function user_acc_activation() {
+        return $this->hasOne(UserAccActivation::class);
     }
     
     public function leave_requests() {
