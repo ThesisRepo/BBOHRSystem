@@ -27,7 +27,7 @@
     height:100vh;
 }
 .col-md-7 main, .col-md-5 main {
-    position: relative;
+  position: relative;
   top: 50%;
   -webkit-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
@@ -61,8 +61,9 @@
                         <div class="container-fluid" id="name"  >
                             <div class="row justify-content-center">
                                 <div class="col-md-9" >
-                                    <img  src="{{url('img/logo.png')}}" width="80" height="50" class="mb-5" alt="logo">
+                                    <!-- <img  src="{{url('img/logo.png')}}" width="400" height="auto" class="mb-3" alt="logo"> -->
                                     <p id="companyName">BLUE BEE ONE </p>
+                                    <p id="tag"><i>"The name of our company comes from Blue Bee. The blue bee is said to bring happiness and make a path of happiness, which exists in each one of us."</i></p>
                                     <p id="appName">REQUEST MANAGEMENT SYSTEM</p>
                                 </div>
                             </div>
