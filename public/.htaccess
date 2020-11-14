@@ -2,8 +2,7 @@
    <IfModule mod_negotiation.c>
        Options -MultiViews -Indexes
    </IfModule>
-   
-   <IfModule dir_module> DirectoryIndex index.html index.php </IfModule>
+  
 
    RewriteEngine On
 
