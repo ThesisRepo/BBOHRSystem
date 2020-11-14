@@ -8,7 +8,6 @@ class BudgetRequest extends Model
 {
     protected $fillable = [ 
         'user_id',
-        'description_need',
         'department_id',
         'date',
         'total_amount',
@@ -26,8 +25,13 @@ class BudgetRequest extends Model
     }
 
     public function approvers() {
-        return $this->morphToMany(\App\Models\User::class, 'approved_request_records');
+        return $this->morphToMany(\App\Models\User::class, 'recordable');
     }
+    
+    public function user_requester() {
+        return $this->morphToMany(\App\Models\User::class, 'requestable')->withTimestamps();        
+    }
+    
     public function approver_role() {
         return $this->belongsTo(\App\Models\Role::class);
     }

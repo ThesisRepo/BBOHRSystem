@@ -9,28 +9,27 @@
           dark
           v-bind="attrs"
           v-on="on"
+          @click="removeData()"
         >
           <v-icon>mdi-plus</v-icon>
           <v-toolbar-title style="font-size: 16px">Make Request</v-toolbar-title>
         </v-btn>
       </template>
       <v-card>
-        <v-card-title>
-          <span class="headline">Petty Cash Request Form</span>
-        </v-card-title>
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+          <v-card-title>
+            <span class="headline-bold">PETTY CASH REQUEST FORM</span>
+          </v-card-title>
+        </v-toolbar>
         <v-card-text>
           <v-container>
             <v-row>
               <v-col cols="12">
-                <v-text-field
-                  label="Description of Need*"
-                  v-model="description_need"
-                  required
-                ></v-text-field>
+                <v-text-field label="Purpose*" v-model="description_need" required></v-text-field>
               </v-col>
-              <v-col cols="12" sm="4">
+              <v-col cols="12" sm="6">
                 <v-menu
-                  :close-on-content-click="false"
+                  :close-on-content-click="true"
                   transition="scale-transition"
                   offset-y
                   min-width="290px"
@@ -54,56 +53,22 @@
                   ></v-date-picker>
                 </v-menu>
               </v-col>
-              <v-col cols="12" sm="4">
-                <v-select
-                  :items="departments"
-                  label="Department*"
-                  v-model="department"
-                  item-text="name"
-                  item-value="value"
-                  required
-                ></v-select>
-              </v-col>
-              <v-col cols="12" sm="4">
+              <v-col cols="12" sm="6">
                 <v-text-field
                   label="Total Amount*"
                   type="number"
+                  v-model="total_amount"
+                  prefix="₱"
                   required
                 ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="4">
-                <v-text-field
-                  label="Details*"
-                  v-model="details"
-                  required
-                ></v-text-field>
-              </v-col>
-             <v-col cols="12">
-                <v-select
-                :items="[
-                  'Jocel Redotco Mendoza',
-                  'Fenella Corinne Real Rosales',
-                  'Cielo Fe Sasing',
-                  'April Claire Chagas Podador',
-                  'Nathaniel Cala Terdes',
-                  'Carl Wyner Velasco Javier',
-                ]"
-                label="PRP in Charge*"
-                required
-              ></v-select>
               </v-col>
             </v-row>
           </v-container>
-          <small>*indicates required field</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false">
-            Close
-          </v-btn>
-          <v-btn color="blue darken-1" text @click="dialog = false">
-            Save
-          </v-btn>
+          <v-btn color="red" dark @click="dialog = false">Close</v-btn>
+          <v-btn color="success" @click="createPetty()">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -113,44 +78,54 @@
 export default {
   data: () => ({
     dialog: false,
-    departments: [{value:1, name:'Marketing'}, 
-      {value: 2, name:'CS'}, 
-      {value: 3, name:'Apps'}, 
-      {value: 4, name:'PHP'}, 
-      {value: 5, name:'Accounting'},
-      {value: 6, name:'Admin'}],
-      date: null,
-      details: null,
-      department: null,
-      description_need: null,
-      total_amount: null
+    error: false,
+    user_finance: localStorage.getItem("user_finance"),
+    date: null,
+    department: null,
+    description_need: null,
+    total_amount: null,
+    user_department: localStorage.getItem("user_department"),
+    user_id: localStorage.getItem("id")
   }),
+  mounted() {},
   methods: {
     disabledDates(date) {
       return date > new Date().toISOString().substr(0, 10);
     },
-    createPetty(){
-      let parameter = {
-        user_id: this.user_id,
-        date: this.date,
-        description_need: this.description_need,
-        details: this.details,
-        department_id: this.department,
-        total_amount: this.total_amount,
-        prp_assigned_id: 1
+    createPetty() {
+      if (
+        this.date !== null &&
+        this.description_need !== null &&
+        this.total_amount !== null &&
+        this.date !== "" &&
+        this.description_need !== "" &&
+        this.total_amount !== ""
+      ) {
+        let parameter = {
+          user_id: this.user_id,
+          date: this.date,
+          description_need: this.description_need,
+          department_id: this.user_department,
+          total_amount: this.total_amount,
+          finance_mngr_assigned: this.user_finance
+        };
+        this.$axios
+          .post("http://localhost:8000/petty_cash_request", parameter)
+          .then(res => {
+            console.log("Successfully Added", res.data);
+            this.$parent.$parent.$parent.$parent.$parent.retrieve();
+          });
+        this.dialog = false;
+      } else {
+        this.error = true;
+        this.dialog = true;
       }
-      this.$axios.post("http://localhost:8000/petty_cash_request", parameter).then(res =>{
-        console.log('Successfully Added', res.data)
-        this.retrieve()
-      })
     },
-    retrieve(){
-      this.$axios.post("http://localhost:8000/petty_cash_request/" + this.user_id).then(response =>{
-      })
-      .catch(e => {
-        console.log(e);
-      })
+    removeData() {
+      (this.date = null),
+        (this.description_need = null),
+        (this.total_amount = null);
     }
   }
-}
+};
 </script>

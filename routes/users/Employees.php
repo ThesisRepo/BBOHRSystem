@@ -1,7 +1,8 @@
 <?php
 
 // home
-Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
+// Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
+Route::get('/', 'HomeController@index')->name('home');
 
 
 // -- USER INFORMATION
@@ -12,12 +13,33 @@ Route::get('user_info/{id}','UserInformationController@show')->name('user_info.f
 // updates user info
 Route::post('user_info/{id}','UserInformationController@update')->name('user_info.update');
 
+//get all per department prps
+Route::get('prp/{user_id}','UserInformationController@getAllPrpInDepartment')->name('user_info.all.department.prp');
+
 //get all prps
-Route::get('prp','UserInformationController@getAllPrp')->name('user_info.findPrp');
+Route::get('prp','UserInformationController@getAllPrp')->name('user_info.all.prp');
+
+//update prp
+Route::post('prp/{user_id}','UserInformationController@updatePrp')->name('user_info.update.prp');
+
+//get all Finance
+Route::get('finance','UserInformationController@getAllFinance')->name('user_info.find.finance');
+
+//update Finance
+Route::post('finance/{user_id}','UserInformationController@updateFinance')->name('user_info.update.finance');
 
 //edit profile pic
 Route::post('update_profile_img/{id}','UserInformationController@updateProfileImg')->name('user_info.update_profile_img');
 
+// get all of pending request 
+Route::get('user_info/pending_requests/{user_id}','UserInformationController@getAllPendingRequests')->name('user_info.find.all_pending_requests');
+
+
+// get count of approved request 
+Route::get('user_info/approved_requests/count/{user_id}','UserInformationController@getCountApprovedRequests')->name('user_info.find.count.all_approved_requests');
+
+// get count of pending request 
+Route::get('user_info/pending_requests/count/{user_id}','UserInformationController@getCountPendingRequests')->name('user_info.find.count.all_pending_requests');
 
 
 // -- LEAVE REQUEST
@@ -47,7 +69,7 @@ Route::get('leave_type','Dependencies\LeaveTypeController@index')->name('leave_t
 // user_id:4,
 // reason:'hdfddaman',
 // shift_date: '2020-10-10',
-// shift_time: '7-8pm',
+// shift_time-id: 1,
 
 // add shift change request
 Route::post('shift_change_request','Requests\ShiftChangeRequestController@store')->name('shift_change_request.store');
@@ -61,6 +83,11 @@ Route::post('shift_change_request/{id}','Requests\ShiftChangeRequestController@u
 // delete change request
 Route::delete('shift_change_request/{id}','Requests\ShiftChangeRequestController@delete')->name('shift_change_request.delete');
 
+// -- ShiftTime
+
+//get all shift time
+Route::get('shift_time','Dependencies\ShiftTimeController@index')->name('shift_time.retrieve');
+Route::get('shift_time/mine','Dependencies\ShiftTimeController@getUserShiftTime')->name('shift_time.retrieve');
 
 // -- OVERTIME REQUEST
 
@@ -89,6 +116,9 @@ Route::delete('overtime_request/{id}','Requests\OvertimeRequestController@delete
 //get all departments
 Route::get('departments','DepartmentController@index')->name('departments.retrieve');
 
+
+//get all co-workers in department
+Route::get('departments/employees','UserInformationController@getAllCoEmployeesInDepartment')->name('departments.employees.retrieve');
 
 // -- PETTY CASH REQUEST
 
@@ -131,3 +161,22 @@ Route::post('budget_request/{id}','Requests\BudgetRequestController@update')->na
 
 // delete budget request
 Route::delete('budget_request/{id}','Requests\BudgetRequestController@delete')->name('budget_request.delete');
+
+
+// -- Travel Authorization REQUEST
+
+
+// add travel authorization request
+Route::post('travel_auth_request','Requests\TravelAuthRequestController@store')->name('travel_auth_request.store');
+
+// retrieve all travel authorization request of a user
+Route::get('travel_auth_request/{id}','Requests\TravelAuthRequestController@show')->name('travel_auth_request.find');
+
+// update travel authorization request
+Route::post('travel_auth_request/{id}','Requests\TravelAuthRequestController@update')->name('travel_auth_request.update');
+
+// delete travel authorization request
+Route::delete('travel_auth_request/{id}','Requests\TravelAuthRequestController@delete')->name('travel_auth_request.delete');
+
+// submit multiple file
+// Route::post('submit_multiple_files/{id}','UserInformationController@updateProfileImg')->name('user_info.update_profile_img');

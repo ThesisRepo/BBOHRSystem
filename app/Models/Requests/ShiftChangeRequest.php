@@ -11,7 +11,7 @@ class ShiftChangeRequest extends Model
         'department_id',
         'reason',
         'shift_date',
-        'shift_time',
+        'shift_time_id',
         'approver_role_id',
         'status_id'
     ];
@@ -29,9 +29,18 @@ class ShiftChangeRequest extends Model
     }
 
     public function approvers() {
-        return $this->morphToMany(\App\Models\User::class, 'approved_request_records');
+        return $this->morphToMany(\App\Models\User::class, 'recordable');
     }
+
+    public function user_requester() {
+        return $this->morphToMany(\App\Models\User::class, 'requestable')->withTimestamps();        
+    }
+    
     public function approver_role() {
         return $this->belongsTo(\App\Models\Role::class);
+    }
+
+    public function shift_time() {
+        return $this->belongsTo(\App\Models\Requests\ShiftTime::class);
     }
 }

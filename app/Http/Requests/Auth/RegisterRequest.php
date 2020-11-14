@@ -6,6 +6,24 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterRequest extends AuthBaseRequest
 {
+    protected $email = 'bail|required|unique:users';
+
+    /**
+     * password validation rule.
+     * 
+     * @var String
+     * 
+     */
+    protected $password = 'bail|required|confirmed|min:8';
+
+    /**
+     * password validation rule.
+     * 
+     * @var String
+     * 
+     */
+    protected $password_confirmation = 'bail|required|min:8';
+    
     /**
      * Get the validation rules that apply to the request.
      *

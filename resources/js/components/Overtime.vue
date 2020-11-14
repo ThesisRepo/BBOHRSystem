@@ -6,102 +6,111 @@
           dark
           background-color="primary"
           fixed-tabs
-          v-if="user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes  ( 'general mngr')"
+          v-if="(user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr')) && !user_type.includes('finance mngr')"
         >
           <v-tabs-slider></v-tabs-slider>
-          <v-tab @click="employees = false, requests = true">
-            Employees Requests
-          </v-tab>
-          <v-tab @click="requests = false, employees = true">
-            My Requests
-          </v-tab>
+          <v-tab @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
+          <v-tab @click="requests = false, employees = true, feedback = false">Employees Requests</v-tab>
+          <v-tab @click="requests = false, employees = false, feedback = true">History</v-tab>
         </v-tabs>
       </template>
     </v-toolbar>
-    <v-data-table v-if="employees" :headers="headers" :items="request" class="elevation-3">
+
+    <!-- Feedback -->
+    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" :search="search" class="elevation-3">
       <template v-slot:top>
-         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-col class="mt-8">
-            <v-select :items="month" label="Month"></v-select>
+            <v-menu
+              :close-on-content-click="false"
+              transition="scale-transition"
+              offset-y
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  class="input-name"
+                  v-model="dateRangeText"
+                  chips
+                  label="DATE"
+                  prepend-icon="mdi-calendar"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+               <v-date-picker
+                v-model="dates"
+                range
+              ></v-date-picker>
+            </v-menu>
           </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <v-btn depressed color="primary">SUMMARY</v-btn>
+          <v-btn color="light blue darken-2" @click="summary()" outlined>SUMMARY</v-btn>
           <v-divider class="mx-4" vertical></v-divider>
           <v-spacer></v-spacer>
           <v-text-field
             v-model="search"
-            v-icon="mdi-magnify"
-            label="Search"
-            single-line
+            clearable
+            flat
+            solo-inverted
             hide-details
-            class="mx-5"
+            prepend-inner-icon="mdi-magnify"
+            label="Search"
           ></v-text-field>
-          <v-dialog v-model="dialog">
-            <v-card class="mt-5">
-              <v-card-text>
-                <v-container>
-                  <v-row>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.reason" label="Reason"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.overtime_date" label="Overtime Date"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.start_time" label="Start Time"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.end_time" label="End Time"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.prp_assigned_id" label="Approver"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.status" label="Status"></v-text-field>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-                <v-btn color="blue darken-1" text @click="save()">Save</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="500px">
-            <v-card>
-              <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-                <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
-                <v-spacer></v-spacer>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
         </v-toolbar>
       </template>
+      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approve' ? 'APPROVE' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
+      <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
+    </v-data-table>
+
+    <!-- Employee Overtime -->
+    <v-data-table v-if="employees" :headers="headersEmp" :items="overtimePending" :search="search" class="elevation-3">
+      <template v-slot:top>
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+          <v-text-field
+            v-model="search"
+            clearable
+            flat
+            solo-inverted
+            hide-details
+            prepend-inner-icon="mdi-magnify"
+            label="Search"
+          ></v-text-field>
+        </v-toolbar>
+      </template>
+      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approve' ? 'APPROVE' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
+      <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-        <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+        <v-icon small class="mr-2" @click="approveModal(item)">mdi-check-decagram</v-icon>
+        <v-icon small @click="disapproveModal(item)">mdi-close-circle</v-icon>
       </template>
     </v-data-table>
 
+    <Confirmation
+      ref="confirms"
+      :title="approveThis === 'approve' || 'disapproved' ? 'Confirmation' : ''"
+      :message="approveThis === 'approve' ? 'Are you sure you want to approve this request?' : 'Are you sure you want to reject this request?'"
+      @onConfirm="confirm($event)"
+    ></Confirmation>
+
     <!-- EditModal -->
       <v-dialog v-model="dialog" max-width="500px">
-          <!-- <template v-slot:activator="{ on, attrs }">         
-          </template> -->
         <v-card>
-          <v-card-title>
-            <span class="headline">Overtime Request Form</span>
-          </v-card-title>
+         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+            <v-card-title>   
+              <span class="headline-bold">OVERTIME REQUEST FORM</span>
+            </v-card-title>
+          </v-toolbar>
+          <v-divider></v-divider>
           <v-card-text>
             <v-container>
+            <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
               <v-row>
                 <v-col cols="12" sm="6" md="6">
                   <v-text-field
                     v-model="editedItem.reason"
                     label="Reason"
+                    prepend-icon="mdi-file-document"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
@@ -134,6 +143,7 @@
                   <v-text-field
                     v-model="editedItem.start_time"
                     type="time"
+                    prepend-icon="mdi-timer"
                     label="Start Time"
                   ></v-text-field>
                 </v-col>
@@ -141,46 +151,32 @@
                   <v-text-field
                     v-model="editedItem.end_time"
                     type="time"
+                     prepend-icon="mdi-timer"
                     label="End Time"
                   ></v-text-field>
                 </v-col>
-                <!-- <v-col cols="12" sm="6" md="4">
-                  <v-text-field
-                    v-model="editedItem.prp_assigned_id"
-                    label="Approver"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field
-                    v-model="editedItem.status"
-                    label="Status"
-                  ></v-text-field>
-                </v-col> -->
               </v-row>
             </v-container>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-            <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+            <v-btn color="red" class="white--text" @click="close"> Cancel </v-btn>
+            <v-btn color="success" @click="save"> Save </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
 
-        <!-- //Delete Modal -->
-    <v-dialog v-model="dialogDelete" max-width="500px">
-      <v-card>
-        <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-          <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
-          <v-spacer></v-spacer>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+      <!-- DeleteModal -->
+      <ConfirmationDel
+        ref="confirmDel"
+        @onConfirm="confirmDel($event)"
+      ></ConfirmationDel>
             
-    <v-data-table v-if="requests && (!user_type.includes('hr mngr') || !user_type.includes('prp emp') || !user_type.includes ('prp emp'))" :headers="headers" :items="overtime" class="elevation-3">
+    <v-data-table v-if="requests && (!user_type.includes('hr mngr') || !user_type.includes('finance mngr') || !user_type.includes('prp emp'))"
+      :headers="headers"
+      :items="overtime"
+      :search="search"
+      class="elevation-3">
       <template v-slot:top>
       <v-toolbar class="mb-2" color="blue darken-1" dark flat>
         <v-toolbar-title class="col pa-3 py-4 white--text"  style="font-size:16px "
@@ -196,78 +192,127 @@
           label="Search"
         ></v-text-field>
 
-        <createOvertime></createOvertime>
+        <createOvertime
+        v-if="prp_assigned_id !== 'No Prp assign'"
+        ></createOvertime>
+
+        <v-btn
+          v-if="prp_assigned_id === 'No Prp assign'"
+          color="light blue darken-2"
+          outlined
+          @click="messagePop()"
+        >
+        <v-icon>mdi-plus</v-icon>
+        <v-toolbar-title style="font-size: 16px"
+          >Make Request</v-toolbar-title
+        >
+        </v-btn>
+
+          <Reminder
+          ref="reminder"
+          :message="'Please set your PRP Assign'"
+          ></Reminder>
 
       </v-toolbar>
     </template>
+      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approve' ? 'APPROVE' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
+      <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
       <template v-slot:item.actions="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
         <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
       </template>
-      <!-- <template v-slot:no-data>
-        <v-btn color="primary" @click="initialize">Reset</v-btn>
-      </template> -->
     </v-data-table>
+    <SummaryTemplate
+    ref="summary"
+    ></SummaryTemplate>
   </div>
 </template>
 <script>
 import createOvertime from "./modals/create_overtime.vue";
+import Confirmation from "./modals/confirmation/confirm.vue";
+import ConfirmationDel from "./modals/confirmation/delete.vue";
+import SummaryTemplate from "./modals/exports/overtime_export.vue";
+import Reminder from "./modals/confirmation/reminder.vue";
 export default {
   data: () => ({
     user_type: localStorage.getItem("user_type"),
     user_id: localStorage.getItem("id"),
-    employees: !localStorage.getItem("user_type").includes("finance mngr")
-        ? false
-        : true,
-      requests: !localStorage.getItem("user_type").includes("finance mngr")
-        ? true
-        : false,
-      dialog: false,
-      search: null,
-      overtime_date: null,
-      dialogDelete: false,
+    prp_assigned_id: localStorage.getItem("assigned_prp_id"),
+    employees: false,
+    requests: true,
+    feedback: false,
+    dialog: false,
+    error: false,
+    overtime_date: null,
+    search: '',
     headers: [
-      {
-        text: "REASON",
-        align: "start",
-        sortable: false,
-        value: "reason"
-      },
+      { text: "REASON", align: "start", value: "reason" },
       { text: "OVERTIME DATE", value: "date" },
       { text: "START TIME", value: "start_time" },
       { text: "END TIME", value: "end_time" },
       { text: "APPROVER", value: "approver_role.role_name"},
-      { text: "STATUS", value: "status_id" },
+      { text: "STATUS", value: "status.status_name" },
       { text: "ACTIONS", value: "actions", sortable: false }
     ],
+    headersEmp: [
+      { text: "REQUESTER", align: "start", value: "user.first_name" },
+      { text: "REASON", value: "reason" },
+      { text: "OVERTIME DATE", value: "date" },
+      { text: "START TIME", value: "start_time" },
+      { text: "END TIME", value: "end_time" },
+      { text: "APPROVER", value: "approver_role.role_name"},
+      { text: "STATUS", value: "status.status_name" },
+      { text: "ACTIONS", value: "actions", sortable: false }
+    ],
+    headersFeed: [
+      { text: "REQUESTER", align: "start", value: "user.first_name" },
+      { text: "REASON", value: "reason" },
+      { text: "OVERTIME DATE", value: "date" },
+      { text: "START TIME", value: "start_time" },
+      { text: "END TIME", value: "end_time" },
+      { text: "APPROVER", value: "approver_role.role_name"},
+      { text: "STATUS", value: "status.status_name" }
+    ],
     overtime: [],
+    overtimePending: [],
+    feedbacks: [],
+    approveThis: '',
     start_time: null,
     reason: null,
     end_time: null,
     editedIndex: null,
     editedItem: {
-      reason: "",
-      overtime_date: 0,
-      start_time: 0,
-      end_time: 0,
-      prp_assigned_id: "",
-      status: ""
+      reason: null,
+      overtime_date: null,
+      start_time: null,
+      end_time: null
     },
-    defaultItem: {
-      reason: "",
-      overtime_date: 0,
-      start_time: 0,
-      end_time: 0,
-      prp_assigned_id: "",
-      status: ""
-    },
-    month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    dates: [new Date().toISOString().substr(0, 10), ]
   }),
   components: {
-    createOvertime
+    createOvertime,
+    Confirmation,
+    ConfirmationDel,
+    SummaryTemplate,
+    Reminder
+  },
+  computed: {
+    dateRangeText () {
+      return this.dates.join(' ~ ')
+    },
   },
   mounted(){
-    this.retrieve()
+    if (
+      this.user_type.includes("hr mngr") ||
+      this.user_type.includes("prp emp") ||
+      this.user_type.includes("general mngr")
+    ) {
+      this.retrieveOvertime();
+      this.getAllFeedback();
+      this.retrieve();
+    } else {
+      this.retrieve();
+    }
   },
   methods: {
     disabledDates(date) {
@@ -276,13 +321,28 @@ export default {
     retrieve(){
       this.$axios.get("http://localhost:8000/overtime_request/" + this.user_id).then(response => {
         this.overtime = response.data
-        console.log('here na mi', this.overtime)
+        console.log(this.overtime)
       })
       .catch(e => {
         console.log(e);
       })
     },
-
+    messagePop(){
+      this.$refs.reminder.show()
+    },
+    retrieveOvertime() {
+      this.$axios
+        .get(
+          "http://localhost:8000/prp/overtime_request/pending/" +
+            this.user_id
+        )
+        .then(response => {
+          this.overtimePending = response.data;
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
     editItem(item) {
       this.editedItem.id = item.id
       this.editedIndex = this.overtime.indexOf(item)
@@ -292,39 +352,114 @@ export default {
       this.editedItem.end_time = item.end_time
       this.dialog = true;
     },
-
     save() {
-      let params = {
-        id: this.editedItem.id,
-        date: this.editedItem.overtime_date,
-        start_time: this.editedItem.start_time,
-        end_time: this.editedItem.end_time,
-        prp_assigned_id: 1
+      if(this.editedItem.date !== null && this.editedItem.date !== '' && this.editedItem.start_time !== null && this.editedItem.start_time !== '' &&
+      this.editedItem.end_time !== null && this.editedItem.end_time !== '' && this.editedItem.reason !== null && this.editedItem.reason !== ''){
+        let params = {
+          id: this.editedItem.id,
+          date: this.editedItem.overtime_date,
+          start_time: this.editedItem.start_time,
+          end_time: this.editedItem.end_time,
+          reason: this.editedItem.reason,
+          prp_assigned_id: this.prp_assigned_id
+        }     
+        this.$axios.post('http://localhost:8000/overtime_request/' + this.editedItem.id, params).then(response=>{
+          this.retrieve()
+        })
+        this.dialog = false;
+      }else{
+        this.error = true;
       }
-      console.log('params', params, this.editedItem.id)      
-      this.$axios.post('http://localhost:8000/overtime_request/' + this.editedItem.id, params).then(response=>{
-        this.retrieve()
-      })
-      this.dialog = false;
     },
 
     deleteItem(item) {
-      this.id = item.id
-      this.dialogDelete = true;
+      this.id = item.id;
+      this.$refs.confirmDel.show(item)
     },
 
-    deleteItemConfirm() {
-      this.$axios.delete('http://localhost:8000/overtime_request/' + this.id).then(response=>{
-        console.log('Successfully deleted')
-        this.retrieve()
-        this.dialogDelete = false
-      })
+    confirmDel() {
+      this.$axios
+        .delete("http://localhost:8000/overtime_request/" + this.id)
+        .then(response => {
+          this.retrieve();
+        });
     },
     close(){
       this.dialog = false
     },
-    closeDelete(){
-      this.dialogDelete = false
+    approveModal(item) {
+      this.approveThis = 'approve'
+      this.id = item.id;
+      this.$refs.confirms.show(item)
+    },
+    confirm(){
+      if(this.approveThis === 'approve'){
+        this.approve()
+      }else{
+        this.disapprove()
+      }
+    },
+    disapproveModal(item) {
+      this.approveThis = 'disapproved'
+      this.id = item.id;
+      this.$refs.confirms.show(item)
+    },
+    approve() {
+      let parameter = {
+        user_id: this.user_id,
+        status_id: 1
+      };
+      this.$axios
+        .post(
+          "http://localhost:8000/prp/overtime_request/feedback/" + this.id,
+          parameter
+        )
+        .then(response => {
+          console.log(response.data)
+          this.retrieveOvertime();
+          this.getAllFeedback();
+        });
+    },
+    disapprove() {
+      let parameter = {
+        user_id: this.user_id,
+        status_id: 3
+      };
+      this.$axios
+        .post(
+          "http://localhost:8000/prp/overtime_request/feedback/" + this.id,
+          parameter
+        )
+        .then(res => {
+          this.retrieveOvertime();
+          this.getAllFeedback();
+        });
+    },
+    getAllFeedback() {
+      this.$axios
+        .get(
+          "http://localhost:8000/prp/overtime_request/feedbacked/" +
+            this.user_id
+        )
+        .then(response => {
+          this.feedbacks = response.data.feedbacked_overtime_requests;
+        });
+    },
+    getColor(status) {
+      if (status === 'pending') return '#ffa500'
+      else if (status === 'approved') return 'green'
+      else return 'red'
+    },
+    prpColor(approver_role) {
+      if (approver_role === "prp emp") return "#0047ab"
+      else if (approver_role === "hr mngr") return "blue"
+      else if (approver_role === "finance mngr") return "#00004d"
+      else if (approver_role === "emp") return "0f52ba"
+      else return "#002366";
+    },
+    summary(){
+      console.log(this.dates[0], this.dates[1])
+      this.$refs.summary.show(this.dates[0], this.dates[1])
     }
   }
 }

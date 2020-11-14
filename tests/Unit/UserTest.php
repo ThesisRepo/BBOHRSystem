@@ -5,7 +5,7 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ExampleTest extends TestCase
+class UserTest extends TestCase
 {
     /**
      * 
@@ -17,6 +17,6 @@ class ExampleTest extends TestCase
      */
     public function only_logged_in_users_can_see_the_dashboard()
     {
-        $response = $this->get('/home')->assertRedirect('/login');
+        $response = $this->get('/')->assertRedirect('/login');
     }
 }

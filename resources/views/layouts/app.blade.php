@@ -18,41 +18,72 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- <link href="{{ asset('css/form.css') }}" rel="stylesheet"> -->
 </head>
+@yield('style')
+
+<style>
+.col-md-7 {
+    height:100vh;
+}
+.col-md-7 main, .col-md-5 main {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+#name {
+    height:500px;
+}
+@media screen and (max-width: 800px) {
+    #name {
+    height: 300px;
+  }
+}
+#companyName, #appName{
+    font-size:50px;
+}
+#companyName{
+    color:#3490dc
+}
+.col-md-7 {
+    background-color:#3490dc;
+}
+</style>
+@yield('js')
 <body>
-    <div id="app">
+    <div id="app" class="container-fluid">
         @guest
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                  <img src="{{url('img/logo.png')}}" width="100" alt="logo">
-                </a>
-                <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button> -->
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                    </ul>
+            <div class="row">
+                <div class="col-md-5" >
+                    <main class="py-4" >
+                        <div class="container-fluid" id="name"  >
+                            <div class="row justify-content-center">
+                                <div class="col-md-9" >
+                                    <!-- <img  src="{{url('img/logo.png')}}" width="400" height="auto" class="mb-3" alt="logo"> -->
+                                    <p id="companyName">BLUE BEE ONE </p>
+                                    <p id="tag"><i>"The name of our company comes from Blue Bee. The blue bee is said to bring happiness and make a path of happiness, which exists in each one of us."</i></p>
+                                    <p id="appName">REQUEST MANAGEMENT SYSTEM</p>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
                 </div>
+                <div id="app" class="col-md-7">
+                    <main class="py-4">
+                        @yield('content')
+                    </main>
+                </div>       
             </div>
-        </nav>
-        <div>
-            
-        </div>
-        @endguest
-        <div id="app">
-            <main class="py-4">
-                @yield('content')
-            </main>
-        </div>
+        @endguest 
+        @auth
+            <div id="app">
+                <main class="py-4">
+                    @yield('content')
+                </main>
+            </div>
+        @endauth
     </div>
 </body>
 </html>

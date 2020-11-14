@@ -1,129 +1,55 @@
 <template>
-  <v-data-table :headers="headers" :items="desserts" class="elevation-1">
+  <v-data-table :headers="headers" :items="requests" class="elevation-1">
     <template v-slot:top>
-    <v-toolbar
-          class="mb-2"
-          color="blue darken-1"
-          dark
-          flat
-        >
-        <v-toolbar-title class="col pa-3 py-4 white--text" style="font-size:16px"
-          >REQUESTS STATUS</v-toolbar-title
-        >
+    <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+      <v-toolbar-title class="col pa-3 py-4 white--text" style="font-size:16px">REQUESTS STATUS</v-toolbar-title>
     </v-toolbar>
-        <v-dialog v-model="dialog" max-width="500px">
-          <v-card>
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.date"
-                      label="date"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.type_request"
-                      label="type_request"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.status"
-                      label="status"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-          </v-card>
-        </v-dialog>
     </template>
-
-    <template v-slot:no-data>
-      <v-btn color="primary" @click="initialize"> Reset </v-btn>
-    </template>
+    <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name === 'pending' ? 'PENDING' : ''}}</v-chip> </template>
+    <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
+    <template v-slot:item.request_type="{ item }"> <span>{{item.request_type === 'leave_requests' ? 'Leave Request' : item.request_type === 'shift_change_requests' ? 'Shift Request' : item.request_type === 'budget_requests' ? 'Budget Request' : item.request_type === 'petty_cash_requests' ? 'Petty Cash Request': 'travel_auth_requests' ? 'Travel Requests' : '' }}</span> </template>
+    <template v-slot:item.created_at="{ item }"> <span>{{getDate()}}</span> </template>
   </v-data-table>
 </template>
 <script>
+import moment from 'moment'
 export default {
   data: () => ({
-    dialog: false,
-    dialogDelete: false,
+    user_id: localStorage.getItem("id"),
+    appprover: null,
     headers: [
-      {
-        text: "DATE",
-        align: "start",
-        value: "date",
-      },
-      { text: "TYPE OF REQUEST", value: "type_request" },
-      { text: "STATUS", value: "status" },
+      { text: "DATE", align: "start", value: "created_at" },
+      { text: "TYPE OF REQUEST", value: "request_type" },
+      { text: "STATUS", value: "status.status_name" },
+      { text: "APPROVER", value: "approver_role.role_name" }
     ],
-    desserts: [],
-    editedIndex: -1,
-    editedItem: {
-      date: "",
-      type_request: "",
-      status: "",
-    },
-    defaultItem: {
-      date: "",
-      type_request: "",
-      status: "",
-    },
+    requests: [],
   }),
-  methods: {
-    initialize() {
-      this.desserts = [
-        {
-          date: "September 8, 2020",
-          type_request: "Leave Request",
-          status: "Pending in HR",
-        },
-      ];
-    },
-    editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialog = true;
-    },
-
-    deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialogDelete = true;
-    },
-
-    deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1);
-      this.closeDelete();
-    },
-
-    close() {
-      this.dialog = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
-
-    closeDelete() {
-      this.dialogDelete = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
-
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
-      } else {
-        this.desserts.push(this.editedItem);
-      }
-      this.close();
-    },
+  mounted(){
+    this.getRequests()
   },
-};
+  methods: {
+    getDate(date){
+      return moment(date).format('MM/DD/YYYY')
+    },
+    getRequests(){
+      this.$axios.get('http://localhost:8000/user_info/pending_requests/' + this.user_id).then(response =>{
+        console.log('requests', response.data)
+        this.requests = response.data
+      })
+    },
+    getColor(status) {
+      if (status === "pending") return "#ffa500";
+      else if (status === "approved") return "green";
+      else return "red";
+    },
+    prpColor(approver_role) {
+      if (approver_role === "prp emp") return "#0047ab"
+      else if (approver_role === "hr mngr") return "blue"
+      else if (approver_role === "finance mngr") return "#00004d"
+      else if (approver_role === "emp") return "0f52ba"
+      else return "#002366";
+    },
+  }
+}
 </script>

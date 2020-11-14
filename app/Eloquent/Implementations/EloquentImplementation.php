@@ -55,6 +55,10 @@ class EloquentImplementation implements EloquentContract {
   public function findWith( $id, $relationship) {
     return $this->model->with( $relationship)->find($id);
   }
+
+  public function findWithCount($id, $relationship) {
+    return $this->model->withCount($relationship)->find($id);
+  }
   /**
    * @param array $data
    * @param int $id
@@ -78,11 +82,21 @@ class EloquentImplementation implements EloquentContract {
   public function getWhere($column, $id){
     return $this->where($column, $id)->get();
   }
-
+  
   public function getWhereWith($column, $id, $relationship){
     return $this->with($relationship)->where($column, $id)->get();
   }
   
+  public function whereWith($column, $id, $relationship){
+    return $this->with($relationship)->where($column, $id);
+  }
+
+  public function whereWithWhereHas($column, $operator, $value, $relationship, $relationship_column, $relationship_operator, $relationship_value) {
+    $res = $this->whereNative($column, $operator, $value)->whereHas($relationship, function($q) use($relationship_column, $relationship_operator, $relationship_value){
+        return $q->where($relationship_column, $relationship_operator, $relationship_value);
+    })->get();
+    return $res;
+  }
   /**
    * @param string $model
    * creates a model
@@ -98,6 +112,11 @@ class EloquentImplementation implements EloquentContract {
     return $this->model->where($column, $id);
   }
 
+  public function whereNative($column, $operator, $id){
+    $res = $this->model->where($column, $operator, $id);
+    return $res;
+  }
+
   /**
    * @param string $relationship
    * creates a relationship
@@ -105,6 +124,8 @@ class EloquentImplementation implements EloquentContract {
    * @return App\Eloquent\Implementations\EloquentImplementation
    */
   public function with( $relationship) {
+
     return $this->model->with( $relationship);
+
   }
 }

@@ -5,18 +5,23 @@ namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
-
+    
+    use SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password','prp_assigned'
+        'first_name', 
+        'last_name', 'email', 'password','prp_assigned',
+         'finance_mngr_assigned', 'google_id',
+         'email_verified_at'
     ];
 
     /**
@@ -52,7 +57,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @return \Illuminate\Database\Eloquent\Relations\hasMany
      */
     public function subordinates() {
-        return $this->hasMany('__CLASS__', 'prp_assigned');
+        return $this->hasMany(__CLASS__, 'prp_assigned');
     }
 
     /**
@@ -61,7 +66,20 @@ class User extends Authenticatable implements MustVerifyEmail
      * @return \Illuminate\Database\Eloquent\Relations\belongsTo
      */
     public function assignedPrp() {
-        return $this->belongsTo('__CLASS__', 'prp_assigned');
+        return $this->belongsTo(__CLASS__, 'prp_assigned');
+    }
+
+    public function subordinatesFinance() {
+        return $this->hasMany(__CLASS__, 'finance_mngr_assigned');
+    }
+
+    /**
+     * relationship of a pr and their subordinates
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\belongsTo
+     */
+    public function assignedFinance() {
+        return $this->belongsTo(__CLASS__, 'finance_mngr_assigned');
     }
 
     /**
@@ -72,40 +90,89 @@ class User extends Authenticatable implements MustVerifyEmail
     public function userInformation() {
         return $this->hasOne(UserInformation::class);
     }
+
+    public function user_acc_activation() {
+        return $this->hasOne(UserAccActivation::class);
+    }
     
     public function leave_requests() {
         return $this->hasMany(Requests\LeaveRequest::class);
     }
 
-    public function approved_leave_requests() {
-        return $this->morphByMany(Requests\LeaveRequest::class, 'approved_request_records');
+    public function feedbacked_leave_requests() {
+        return $this->morphedByMany(Requests\LeaveRequest::class, 'recordable');
     }
+    
+    // public function recorded_leave_requests() {
+    //     return $this->morphedByMany(Requests\LeaveRequest::class, 'requestable');
+    // }
+
+
 
     public function shift_change_requests() {
         return $this->hasMany(Requests\ShiftChangeRequest::class);
     }
 
-    public function approved_shift_change_equests() {
-        return $this->morphByMany(Requests\ShiftChangeRequest::class, 'approved_request_records');
+    public function feedbacked_shift_change_requests() {
+        return $this->morphedByMany(Requests\ShiftChangeRequest::class, 'recordable');
     }
+
+    // public function recorded_shift_change_requests() {
+    //     return $this->morphedByMany(Requests\ShiftChangeRequest::class, 'requestable');
+    // }
+
+
 
     public function overtime_requests() {
         return $this->hasMany(Requests\OvertimeRequest::class);
     }
 
-    public function approved_overtime_requests() {
-        return $this->morphByMany(Requests\OvertimeRequest::class, 'approved_request_records');
+    public function feedbacked_overtime_requests() {
+        return $this->morphedByMany(Requests\OvertimeRequest::class, 'recordable');
     }
+
+    // public function recorded_overtime__requests() {
+    //     return $this->morphedByMany(Requests\OvertimeRequest::class, 'requestable');
+    // }
+
+
 
     public function petty_cash_requests() {
         return $this->hasMany(Requests\PettyCashRequest::class);
     }
 
-    public function approved_petty_cash_requests() {
-        return $this->morphByMany(Requests\PettyCashRequest::class, 'approved_request_records');
+    public function feedbacked_petty_cash_requests() {
+        return $this->morphedByMany(Requests\PettyCashRequest::class, 'recordable');
     }
 
+    // public function recorded_petty_cash_requests() {
+    //     return $this->morphedByMany(Requests\PettyCashRequest::class, 'requestable');
+    // }
+
+
+
     public function budget_requests() {
-        return $this->hasMany(Requests\PettyCashRequest::class);
+        return $this->hasMany(Requests\BudgetRequest::class);
     }
+
+    public function feedbacked_budget_requests() {
+        return $this->morphedByMany(Requests\BudgetRequest::class, 'recordable');
+    }
+
+    // public function recorded_budget_requests() {
+    //     return $this->morphedByMany(Requests\BudgetRequest::class, 'requestable');
+    // }
+
+    
+    public function travel_auth_requests() {
+        return $this->hasMany(Requests\TravelAuthRequest::class);
+    }
+
+    public function feedbacked_travel_auth_requests() {
+        return $this->morphedByMany(Requests\TravelAuthRequest::class, 'recordable');
+    }
+
+    // public function recorded_travel_auth_requests() {
+    //     return $this->morphedByMany(Requests\TravelAuthRequest::class, 'requestable');
+    // }
 }

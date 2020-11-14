@@ -16,7 +16,6 @@ class CreateBudgetRequestsTable extends Migration
         Schema::create('budget_requests', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->UnsignedBigInteger('user_id');
-            $table->string('description_need');
             $table->date('date');
             $table->UnsignedBigInteger('department_id');
             $table->decimal('total_amount',15, 2);

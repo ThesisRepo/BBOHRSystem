@@ -20,7 +20,7 @@ class AuthBaseRequest extends FormRequest
      * @var String
      * 
      */
-    protected $email = 'bail|required|min:8';
+    protected $email = 'bail|required|email';
 
     /**
      * password validation rule.
@@ -36,7 +36,7 @@ class AuthBaseRequest extends FormRequest
      * @var String
      * 
      */
-    protected $password_confirmation = 'bail|required|confirmed|min:8';
+    protected $password_confirmation = 'bail|required|min:8';
 
     /**
      * Determine if the user is authorized to make this request.

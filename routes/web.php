@@ -13,16 +13,19 @@
 Route::get('/', function () {
     return redirect()->route('login');
 });
-
 Route::group(
     [
         'namespace' => 'Auth'
     ], 
+
     function () {
 
         Route::get('login', 'LoginController@login')->name('login');
 
         Route::post('login', 'LoginController@authenticate');
+
+        //edit
+        // Route::get('logout', 'LoginController@logout')->name('logout');
 
         Route::post('logout', 'LoginController@logout')->name('logout');
     
@@ -42,7 +45,16 @@ Route::group(
 
     }
 );
+Route::get('user/activation/{token}','Auth\LoginController@userActivationToken');
 
 Route::get('/', function () {
     return redirect()->route('login');
 }); 
+
+Route::get('google', function () {
+    return view('googleAuth');
+});
+
+Route::get('auth/google', 'Auth\LoginController@redirectToGoogle');
+
+Route::get('login/google/callback', 'Auth\LoginController@handleGoogleCallback');

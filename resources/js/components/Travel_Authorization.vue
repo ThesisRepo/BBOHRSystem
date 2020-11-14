@@ -6,137 +6,46 @@
           dark
           background-color="primary"
           fixed-tabs
-          v-if="
-            user_type.includes('hr mngr') ||
-            user_type.includes('prp emp') ||
-            user_type.include('general mngr')
-          "
-        >
+          v-if="(user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr')) && !user_type.includes('finance mngr')">
           <v-tabs-slider></v-tabs-slider>
-          <v-tab @click="(employees = false), (requests = true)">
-            <!-- <v-icon>mdi-phone</v-icon> -->
-            Employees Requests
-          </v-tab>
-          <v-tab @click="(requests = false), (employees = true)">
-            <!-- <v-icon>mdi-heart</v-icon> -->
-            My Requests
-          </v-tab>
+          <v-tab @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
+          <v-tab @click="requests = false, employees = true, feedback = false">Employees Requests</v-tab>
+          <v-tab @click="requests = false, employees = false, feedback = true">History</v-tab>
         </v-tabs>
       </template>
     </v-toolbar>
-    <v-data-table
-      v-if="employees"
-      :headers="headers"
-      :items="desserts"
-      class="elevation-3"
-    >
+    <!-- Feedback -->
+    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-col class="mt-8">
-            <v-select :items="items" label="Month"></v-select> </v-col
-          >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <v-btn depressed color="primary">SUMMARY</v-btn>
+            <v-menu
+              :close-on-content-click="false"
+              transition="scale-transition"
+              offset-y
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  class="input-name"
+                  v-model="dateRangeText"
+                  chips
+                  label="DATE"
+                  prepend-icon="mdi-calendar"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+               <v-date-picker
+                v-model="dates"
+                range
+              ></v-date-picker>
+            </v-menu>
+          </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <v-btn depressed @click="summary()" color="primary">SUMMARY</v-btn>
           <v-divider class="mx-4" vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-text-field
-            v-model="search"
-            v-icon="mdi - magnify"
-            label="Search"
-            single-line
-            hide-details
-            class="mx-5"
-          ></v-text-field>
-          <v-dialog v-model="dialog">
-            <v-card class="mt-5">
-              <v-card-text>
-                <v-container>
-                  <v-row>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.reason"
-                        label="reason"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.shift_date"
-                        label="shift_date"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.shift_time"
-                        label="shift_time"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.prp_assigned"
-                        label="prp_assigned"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.status"
-                        label="status"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-                <v-btn color="blue darken-1" text @click="save">Save</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="500px">
-            <v-card>
-              <v-card-title class="headline"
-                >Are you sure you want to delete this item?</v-card-title
-              >
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeDelete"
-                  >Cancel</v-btn
-                >
-                <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                  >OK</v-btn
-                >
-                <v-spacer></v-spacer>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </v-toolbar>
-      </template>
-      <template v-slot:item.actions="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-        <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
-      </template>
-      <template v-slot:no-data>
-        <v-btn color="primary" @click="initialize">Reset</v-btn>
-      </template>
-    </v-data-table>
-
-    <v-data-table
-      v-if="
-        requests &&
-        (!user_type.includes('hr mngr') ||
-          !user_type.includes('prp mngr') ||
-          !user_type.includes('prp emp'))
-      "
-      :headers="headers"
-      :items="desserts"
-      class="elevation-3"
-    >
-      <template v-slot:top>
-        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
-          <v-toolbar-title
-            class="col pa-3 py-4 white--text"
-            style="font-size: 16px"
-            >TRAVEL REQUEST</v-toolbar-title
-          >
           <v-text-field
             v-model="search"
             clearable
@@ -146,191 +55,525 @@
             prepend-inner-icon="mdi-magnify"
             label="Search"
           ></v-text-field>
-          <createShift></createShift>
-
-          <v-dialog v-model="dialog" max-width="500px">
-            <v-card>
-              <v-card-text>
-                <v-container>
-                  <v-row>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.reason"
-                        label="reason"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.date"
-                        label="date"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.start_time"
-                        label="start_time"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.prp_assigned"
-                        label="prp_assigned"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.status"
-                        label="status"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close">
-                  Cancel
-                </v-btn>
-                <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="500px">
-            <v-card>
-              <v-card-title class="headline"
-                >Are you sure you want to delete this item?</v-card-title
-              >
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeDelete"
-                  >Cancel</v-btn
-                >
-                <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                  >OK</v-btn
-                >
-                <v-spacer></v-spacer>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
         </v-toolbar>
       </template>
+      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approve' ? 'APPROVE' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
+      <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
+    </v-data-table>
+
+    <!-- Pending Requests -->
+    <v-data-table v-if="employees" :headers="headersEmp" :items="travelPending" :search="search" class="elevation-3">
+      <template v-slot:top>
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+          <v-text-field
+            v-model="search"
+            clearable
+            flat
+            solo-inverted
+            hide-details
+            prepend-inner-icon="mdi-magnify"
+            label="Search"
+          ></v-text-field>
+        </v-toolbar>
+      </template>
+      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approve' ? 'APPROVE' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
+      <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
+      <template v-slot:item.actions="{ item }">
+        <v-icon small class="mr-2" @click="approveModal(item)">mdi-check-decagram</v-icon>
+        <v-icon small @click="disapproveModal(item)">mdi-close-circle</v-icon>
+      </template>
+    </v-data-table>
+
+    <Confirmation
+      ref="confirms"
+      :title="approveThis === 'approve' || 'disapproved' ? 'Confirmation' : ''"
+      :message="approveThis === 'approve' ? 'Are you sure you want to approve this request?' : 'Are you sure you want to reject this request?'"
+      @onConfirm="confirm($event)"
+    ></Confirmation>
+
+    <!-- ****************start************** -->
+    <v-dialog v-model="dialog" max-width="500px">
+      <v-card>
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+          <v-card-title>
+            <span class="headline-bold">TRAVEL AUTHORIZATION REQUEST</span>
+          </v-card-title>
+        </v-toolbar>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field
+                  v-model="editedItem.destination"
+                  label="Destination"
+                  prepend-icon=" mdi-home-modern"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field
+                  v-model="editedItem.emergency_contact"
+                  label="Emergency Contact"
+                  prepend-icon="mdi-account-outline"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <span v-if="error2" style="color: red; font-style: italic">
+                  Start date must not be higher than End
+                  date!
+                </span>
+                <v-menu
+                  :close-on-content-click="true"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="editedItem.start_date"
+                      label="Start Date"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                      prepend-icon=" mdi-calendar"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="editedItem.start_date"
+                    :allowed-dates="disabledDates"
+                    no-title
+                    scrollable
+                    color="primary"
+                    @change="changeDate()"
+                  ></v-date-picker>
+                </v-menu>
+              </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <span v-if="error1" style="color: red; font-style: italic">
+                  End date must be higher than start
+                  date!
+                </span>
+                <v-menu
+                  :close-on-content-click="true"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="editedItem.end_date"
+                      label="End Date"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                      :disabled="disable"
+                      prepend-icon=" mdi-calendar"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="editedItem.end_date"
+                    :allowed-dates="disabledDates2"
+                    no-title
+                    scrollable
+                    color="primary"
+                    @change="changeDate()"
+                  ></v-date-picker>
+                </v-menu>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field
+                  v-model="editedItem.employee_to_cover"
+                  label="Employee to Cover"
+                  prepend-icon=" mdi-account-outline"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="red" class="white--text" @click="dialog = false">Cancel</v-btn>
+          <v-btn color="success" @click="save">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- ************Delete Modal*************** -->
+    <ConfirmationDel
+      ref="confirmDel"
+      @onConfirm="confirmDel($event)"
+    ></ConfirmationDel>
+
+    <v-dialog v-model="fileDialog" width="700px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Attached File</span>
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card class="mx-auto" max-width="344">
+          <v-img :src="file_uri" width="500"></v-img>
+        </v-card>
+        <br>
+      </v-card>
+    </v-dialog>
+
+    <v-data-table
+      v-if="requests && (!user_type.includes('hr mngr') || !user_type.includes('finance mngr') || !user_type.includes('prp emp'))"
+      :headers="headers"
+      :items="travel"
+      :search="search"
+      class="elevation-3"
+    >
+      <template v-slot:top>
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+          <v-toolbar-title class="col pa-3 py-4 white--text" style="font-size: 16px">TRAVEL REQUEST</v-toolbar-title>
+          <v-text-field
+            v-model="search"
+            clearable
+            flat
+            solo-inverted
+            hide-details
+            prepend-inner-icon="mdi-magnify"
+            label="Search"
+          ></v-text-field>
+          <createTravel v-if="prp_assigned_id !== 'No Prp assign'"></createTravel>
+          <v-btn
+          v-if="prp_assigned_id === 'No Prp assign'"
+          color="light blue darken-2"
+          outlined
+          @click="messagePop()"
+        >
+        <v-icon>mdi-plus</v-icon>
+        <v-toolbar-title style="font-size: 16px"
+          >Make Request</v-toolbar-title
+        >
+        </v-btn>
+
+        <Reminder
+        ref="reminder"
+        :message="'Please set your PRP Assign'"
+        ></Reminder>
+
+        </v-toolbar>
+      </template>
+
+      <template v-slot:item.file_uri="{ item }">
+        <v-btn color="primary" @click="fileDialog = true; file_uri = item.file_uri">File</v-btn>
+      </template>
+      
+      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approve' ? 'APPROVE' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
+      <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
       <template v-slot:item.actions="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
         <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
       </template>
-      <template v-slot:no-data>
-        <v-btn color="primary" @click="initialize">Reset</v-btn>
-      </template>
     </v-data-table>
+    <SummaryTemplate
+    ref="summary"
+    ></SummaryTemplate>
   </div>
 </template>
+
 <script>
-import createShift from "./modals/create_shift.vue";
+import createTravel from "./modals/create_travel.vue";
+import moment from "moment";
+import Confirmation from "./modals/confirmation/confirm.vue";
+import ConfirmationDel from "./modals/confirmation/delete.vue";
+import Reminder from "./modals/confirmation/reminder.vue";
+import SummaryTemplate from "./modals/exports/travel_export.vue";
 export default {
   data: () => ({
+    file_uri: "",
     user_type: localStorage.getItem("user_type"),
-    employees: !localStorage.getItem("user_type").includes("finance mngr")
-      ? false
-      : true,
-    requests: !localStorage.getItem("user_type").includes("finance mngr")
-      ? true
-      : false,
+    user_id: localStorage.getItem("id"),
+    prp_assigned_id: localStorage.getItem("assigned_prp_id"),
+    employees: false,
+    requests: true,
+    feedback: false,
     dialog: false,
+    error: false,
+    error1: false,
+    fileDialog: false,
+    files: "",
+    uploadPercentage: 0,
+    disable: false,
+    end_date: null,
+    error2: false,
+    search: '',
+    deleteModal: false,
     dialogDelete: false,
-      headers: [
-            {
-                text: "DESTINATION",
-                align: "start",
-                sortable: false,
-                value: "destination"
-            },
-            { text: "START DATE", value: "start_date" },
-            { text: "END DATE", value: "end_date" },
-            { text: "EMERGENCY CONTACT", value: "emergency_contact" },
-            { text: "EMPLOYEE TO COVER", value: "employee_cover" },
-            { text: "DETAILS", value: "details" },
-            { text: "PRP IN CHARGE", value: "prp_assigned" },
-            { text: "STATUS", value: "status" },
-            { text: "ACTIONS", value: "actions", sortable: false }
-        ],
-
-    desserts: [],
-    editedIndex: -1,
+    headers: [
+      { text: "DESTINATION", align: "start", sortable: false, value: "destination" },
+      { text: "START DATE", value: "start_date" },
+      { text: "END DATE", value: "end_date" },
+      { text: "EMERGENCY CONTACT", value: "emergency_contact" },
+      { text: "EMPLOYEE TO COVER", value: "employee_to_cover" },
+      { text: "DOCUMENTS", value: "file_uri", sortable: false },
+      { text: "APPROVER", value: "approver_role.role_name" },
+      { text: "STATUS", value: "status.status_name" },
+      { text: "ACTIONS", value: "actions", sortable: false }
+    ],
+    headersEmp: [
+      { text: "REQUESTER", align: "start", value: "user.first_name" },
+      { text: "DESTINATION", value: "destination" },
+      { text: "START DATE", value: "start_date" },
+      { text: "END DATE", value: "end_date" },
+      { text: "EMERGENCY CONTACT", value: "emergency_contact" },
+      { text: "EMPLOYEE TO COVER", value: "employee_to_cover" },
+      { text: "DOCUMENTS", value: "file_uri", sortable: false },
+      { text: "APPROVER", value: "approver_role.role_name" },
+      { text: "STATUS", value: "status.status_name" },
+      { text: "ACTIONS", value: "actions", sortable: false }
+    ],
+    headersFeed: [
+      { text: "REQUESTER", align: "start", value: "user.first_name" },
+      { text: "DESTINATION", value: "destination" },
+      { text: "START DATE", value: "start_date" },
+      { text: "END DATE", value: "end_date" },
+      { text: "EMERGENCY CONTACT", value: "emergency_contact" },
+      { text: "EMPLOYEE TO COVER", value: "employee_to_cover" },
+      { text: "DOCUMENTS", value: "file_uri", sortable: false },
+      { text: "APPROVER", value: "approver_role.role_name" },
+      { text: "STATUS", value: "status.status_name" }
+    ],
+    travel: [],
+    travelPending: [],
+    feedbacks: [],
+    id: null,
+    editedIndex: null,
     editedItem: {
-      reason: "",
-      shift_date: 0,
-      shift_time: 0,
-      prp_assigned: "",
-      status: "",
+      destination: null,
+      substitute: null,
+      start_date: null,
+      end_date: null,
+      emergency_contact: null,
+      employee_cover: null,
+      prp_assigned_id: null,
+      details: null
     },
-    defaultItem: {
-      reason: "",
-      shift_date: 0,
-      end_date: 0,
-      prp_assigned: "",
-      status: "",
-    },
-    items: ["Foo", "Bar", "Fizz", "Buzz"]
+    dates: [new Date().toISOString().substr(0, 10), ],
+    approveThis: '',
+    user_id: localStorage.getItem("id")
   }),
   components: {
-    createShift,
+    createTravel,
+    Confirmation,
+    ConfirmationDel,
+    SummaryTemplate,
+    Reminder
+  },
+  computed: {
+    dateRangeText () {
+      return this.dates.join(' ~ ')
+    },
   },
   mounted() {
-    console.log(
-      "----------testing------------",
-      // this.user_type,
-      this.requests,
-      this.employees
-    );
+    if (
+      this.user_type.includes("hr mngr") ||
+      this.user_type.includes("prp emp") ||
+      this.user_type.includes("general mngr")
+    ) {
+      this.retrieveTravel();
+      this.retrieve();
+      this.getAllFeedback();
+    } else {
+      this.retrieve();
+    }
   },
   methods: {
-    initialize() {
-      this.desserts = [
-        {
-          reason: "Wlay kwarta",
-          shift_date: 159,
-          shift_time: 6,
-          prp_assigned: "claire",
-          status: "pending",
-        },
-      ];
+    changeDate() {
+      if (
+        this.editedItem.start_date !== null &&
+        this.editedItem.start_date !== ""
+      ) {
+        let start = moment(String(this.editedItem.start_date));
+        let end = moment(String(this.editedItem.end_date));
+        this.disable = false;
+      } else {
+        this.disable = true;
+      }
+    },
+    getAllPrp() {
+      this.$axios.get("http://localhost:8000/prp").then(response => {
+        this.prp = response.data;
+      });
+    },
+    retrieve() {
+      this.$axios
+        .get("http://localhost:8000/travel_auth_request/" + this.user_id)
+        .then(response => {
+          this.travel = response.data;
+          console.log(this.travel)
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    messagePop(){
+      this.$refs.reminder.show()
+    },
+    retrieveTravel() {
+      this.$axios
+        .get(
+          "http://localhost:8000/prp/travel_auth_request/pending/" +
+            this.user_id
+        )
+        .then(response => {
+          this.travelPending = response.data;
+        })
+        .catch(e => {
+          console.log(e);
+        });
     },
     editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
-      this.editedItem = Object.assign({}, item);
+      this.editedItem.id = item.id;
+      this.editedIndex = this.travel.indexOf(item);
+      this.editedItem.destination = item.destination;
+      this.editedItem.start_date = item.start_date;
+      this.editedItem.end_date = item.end_date;
+      this.editedItem.emergency_contact = item.emergency_contact;
+      // this.editedItem.file_uri = item.file_uri;
+      this.editedItem.employee_to_cover = item.employee_to_cover;
       this.dialog = true;
     },
-    deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialogDelete = true;
+    // remove(index) {
+    //   this.files.splice(index, 1);
+    // },
+    // handleFilesUpload() {
+    //   this.file = this.$refs.file.files[0];
+    // },
+    save() {
+      if (
+        this.editedItem.destination !== null &&
+        this.editedItem.start_date !== null &&
+        this.editedItem.end_date !== null &&
+        this.editedItem.emergency_contact !== null &&
+        this.editedItem.employee_to_cover !== null &&
+        this.editedItem.emergency_contact !== "" &&
+        this.editedItem.employee_to_cover !== "" &&
+        this.editedItem.start_date !== "" &&
+        this.editedItem.end_date !== "" &&
+        this.error2 === false
+      ) {
+        let params = {
+          destination: this.editedItem.destination,
+          start_date: this.editedItem.start_date,
+          end_date: this.editedItem.end_date,
+          emergency_contact: this.editedItem.emergency_contact,
+          employee_to_cover: this.editedItem.employee_to_cover,
+          file_uri: "test"
+        };
+        // console.log("params", params, this.editedItem.id);
+        this.$axios
+          .post(
+            "http://localhost:8000/travel_auth_request/" + this.editedItem.id,
+            params
+          )
+          .then(response => {
+            console.log(response.data)
+            this.retrieve();
+          });
+        this.dialog = false;
+      } else {
+        this.error = true;
+      }
     },
-    deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1);
-      this.closeDelete();
+    deleteItem(item) {
+      this.id = item.id;
+      this.$refs.confirmDel.show(item)
+    },
+
+    confirmDel() {
+      this.$axios
+        .delete("http://localhost:8000/travel_auth_request/" + this.id)
+        .then(response => {
+          this.retrieve();
+        });
     },
     close() {
       this.dialog = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
     },
-    closeDelete() {
-      this.dialogDelete = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
+    getColor(status) {
+      if (status === "pending") return "#ffa500";
+      else if (status === "approved") return "green";
+      else return "red";
     },
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
-      } else {
-        this.desserts.push(this.editedItem);
+    prpColor(approver_role) {
+      if (approver_role === "prp emp") return "#0047ab"
+      else if (approver_role === "hr mngr") return "blue"
+      else if (approver_role === "finance mngr") return "#00004d"
+      else if (approver_role === "emp") return "0f52ba"
+      else return "#002366";
+    },
+    approveModal(item) {
+      this.approveThis = 'approve'
+      this.id = item.id;
+      this.$refs.confirms.show(item)
+    },
+    confirm(){
+      if(this.approveThis === 'approve'){
+        this.approve()
+      }else{
+        this.disapprove()
       }
-      this.close();
     },
-  },
+    disapproveModal(item) {
+      this.approveThis = 'disapproved'
+      this.id = item.id;
+      this.$refs.confirms.show(item)
+    },
+    approve() {
+      let parameter = {
+        user_id: this.user_id,
+        status_id: 1
+      };
+      this.$axios
+        .post(
+          "http://localhost:8000/prp/travel_auth_request/feedback/" + this.id,
+          parameter
+        )
+        .then(response => {
+          this.retrieveTravel();
+          this.getAllFeedback();
+        });
+    },
+    disapprove() {
+      let parameter = {
+        user_id: this.user_id,
+        status_id: 3
+      };
+      this.$axios
+        .post(
+          "http://localhost:8000/prp/travel_auth_request/feedback/" + this.id,
+          parameter
+        )
+        .then(res => {
+          this.retrieveTravel();
+          this.getAllFeedback();
+        });
+    },
+    getAllFeedback() {
+      this.$axios
+        .get(
+          "http://localhost:8000/prp/travel_auth_request/feedbacked/" +
+            this.user_id
+        )
+        .then(response => {
+          this.feedbacks = response.data.feedbacked_travel_auth_requests;
+        });
+    },
+    disabledDates(date) {
+      return date > new Date().toISOString().substr(0, 10);
+    },
+    disabledDates2(date) {
+      return (
+        date > new Date(this.editedItem.start_date).toISOString().substr(0, 10)
+      );
+      this.differenceDates();
+    },
+    summary(){
+      console.log(this.dates[0], this.dates[1])
+      this.$refs.summary.show(this.dates[0], this.dates[1])
+    }
+  }
 };
 </script>

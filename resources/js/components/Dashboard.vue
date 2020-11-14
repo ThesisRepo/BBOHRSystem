@@ -8,8 +8,9 @@
               <div class="primary fill-height">&nbsp;</div>
             </div>
             <div class="col pa-3 py-4 primary--text">
-              <h5 class="text-truncate text-uppercase">Leave Request</h5>
-              <h1>7</h1>
+              <h5 class="text-truncate text-uppercase">Remaining Leave Request</h5>
+              <!-- <h1>{{ leave_number }}</h1> -->
+              <h1>{{ leave_number == null ? leave_number : 0 }}</h1>
             </div>
           </v-row>
         </v-card>
@@ -22,7 +23,7 @@
             </div>
             <div class="col pa-3 py-4 red--text">
               <h5 class="text-truncate text-uppercase">Pending Request</h5>
-              <h1>10</h1>
+              <h1>{{ pending }}</h1>
             </div>
           </v-row>
         </v-card>
@@ -36,14 +37,17 @@
             </div>
             <div class="col pa-3 py-4 green--text">
               <h5 class="text-truncate text-uppercase">Approve Request</h5>
-              <h1>53</h1>
+              <h1>{{ approve }}</h1>
             </div>
           </v-row>
         </v-card>
       </v-col>
-    </v-row><br><br>
-    <DashBoardtable></DashBoardtable>
+    </v-row>
     <br><br>
+    <DashBoardtable></DashBoardtable>
+    <v-spacer></v-spacer>
+    <br><br>
+    <CalendarAdd></CalendarAdd>
     <v-row class="fill-height">
       <v-col>
         <v-sheet height="45">
@@ -125,6 +129,8 @@
               </v-toolbar>
               <v-card-text>
                 <span v-html="selectedEvent.details"></span>
+                <p>{{selectedEvent.start}} - {{selectedEvent.end}}</p>
+                <v-text-field v-if="update" label="Start Date" type="datetime-local" v-model="start_date" color="primary"></v-text-field>              
               </v-card-text>
               <v-card-actions>
                 <v-btn text color="secondary" @click="selectedOpen = false">
@@ -140,11 +146,19 @@
 </template>
 <script>
 import DashBoardtable from "./Dashboard_table";
+import CalendarAdd from "./modals/addCalendar.vue";
 export default {
   components: {
     DashBoardtable,
+    CalendarAdd
   },
   data: () => ({
+    leave_number: localStorage.getItem("leave_number"),
+    user_id: localStorage.getItem("id"),
+    pending: null,
+    approve: null,
+    update: false,
+    // End
     focus: "",
     type: "month",
     typeToLabel: {
@@ -166,21 +180,25 @@ export default {
       "orange",
       "grey darken-1",
     ],
-    names: [
-      "Meeting",
-      "Holiday",
-      "PTO",
-      "Travel",
-      "Event",
-      "Birthday",
-      "Conference",
-      "Party",
-    ],
+    names: [],
   }),
   mounted() {
     this.$refs.calendar.checkChange();
+    this.getNoApprove()
+    this.getNoPending()
   },
   methods: {
+    getNoApprove(){
+      this.$axios.get('http://localhost:8000/user_info/approved_requests/count/' + this.user_id).then(response => {
+        this.approve = response.data
+      })
+    },
+    getNoPending(){
+      this.$axios.get('http://localhost:8000/user_info/pending_requests/count/' + this.user_id).then(response => {
+        this.pending = response.data
+      })
+    },
+    // End
     viewDay({ date }) {
       this.focus = date;
       this.type = "day";
@@ -213,24 +231,15 @@ export default {
       }
       nativeEvent.stopPropagation();
     },
-    updateRange({ start, end }) {
+    updateRange() {
       const events = [];
-      const min = new Date(`${start.date}T00:00:00`);
-      const max = new Date(`${end.date}T23:59:59`);
-      const days = (max.getTime() - min.getTime()) / 86400000;
-      const eventCount = this.rnd(days, days + 20);
-      for (let i = 0; i < eventCount; i++) {
-        const allDay = this.rnd(0, 3) === 0;
-        const firstTimestamp = this.rnd(min.getTime(), max.getTime());
-        const first = new Date(firstTimestamp - (firstTimestamp % 900000));
-        const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000;
-        const second = new Date(first.getTime() + secondTimestamp);
+      for (let i = 0; i < this.events.length; i++) {
         events.push({
-          name: this.names[this.rnd(0, this.names.length - 1)],
-          start: first,
-          end: second,
-          color: this.colors[this.rnd(0, this.colors.length - 1)],
-          timed: !allDay,
+          name: this.events[i].name,
+          start: this.events[i].start,
+          end: this.events[i].end,
+          color: this.events[i].color,
+          timed: this.events[i].timed,
         });
       }
       this.events = events;

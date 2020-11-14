@@ -28,6 +28,8 @@ trait CommandInput {
    */
   private $pwd;
 
+  private $password_confirmation;
+
   /**
    * set the private values.
    * 
@@ -40,5 +42,6 @@ trait CommandInput {
     $this->lastname = $this->askValid('enter Lastname?', 'lastname', ['required']);
     $this->email = $this->askValid('enter email?', 'email', ['required', 'email']);
     $this->pwd = $this->askValid('enter password', 'password', ['required', 'min:8'], true);
+    $this->password_confirmation = $this->askValid('confirm password', 'password_confirmation', ['password'=> $this->pwd], true);
   }
 }

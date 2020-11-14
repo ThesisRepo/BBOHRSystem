@@ -1,7 +1,10 @@
 <?php
 namespace App\Traits;
+use  App\Traits\CallForActionEmail;
 
-trait CommandAccRegister {
+trait CommandAccRegister
+{
+  use CallForActionEmail;
 
   private $model;
 
@@ -10,12 +13,13 @@ trait CommandAccRegister {
   }
 
   public function createSuperAdmin($type, $firstname, $lastname, $email, $pwd) {
-    $this->model->createWithRoles([
-        'role_id' => $type,
+    $res = $this->model->createWithRoles([
         'first_name' => $firstname,
         'last_name' => $lastname,
         'email' => $email,
         'password' => bcrypt($pwd),
-    ], [5, $type]);
+    ], $type);
+    $this->sendVerificationEmailOnRegister($res);
   }
+  
 }

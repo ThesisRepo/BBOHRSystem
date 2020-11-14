@@ -58,13 +58,13 @@ class CreateFinanceManAcc extends Command
      */
     public function handle()
     {
-        if(!$this->user->isRoleExisting(3)) {
+        if($this->user->isRoleExisting(3)) {
             $this->setRegisterValues();
             try {
                 DB::beginTransaction();
 
                 $this->setModel($this->user);
-                $this->createSuperAdmin(3, $this->firstname, $this->lastname, $this->email, $this->pwd);
+                $this->createSuperAdmin([1,2,3], $this->firstname, $this->lastname, $this->email, $this->pwd);
 
                 DB::commit();
                 $this->info('Finance Manager Account created for '.$this->firstname . ' ' . $this->lastname);

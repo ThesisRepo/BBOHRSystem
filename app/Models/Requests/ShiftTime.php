@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Requests;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,5 +12,9 @@ class ShiftTime extends Model
 
     public function user_informations() {
         return $this->hasMany(UserInformation::class);
+    }
+
+    public function shift_change_request() {
+        return $this->hasMany(ShiftChangeRequest::class);
     }
 }
