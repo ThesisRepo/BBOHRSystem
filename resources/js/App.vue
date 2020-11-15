@@ -31,11 +31,11 @@ export default {
     },
     mounted(){
         this.listenForChanges();
-        console.log(this.user);
+        // console.log(this.user);
         //  var params = {   
         //     first_name: 'mddion',
         //     last_name: 'balugo',
-        //     email: 'sssssdfefs@gail.com',
+        //     email: 'ssdfefs@gail.com',
         //     password: '123456789',
         //     password_confirmation: '123456789',
         //     role_id: 2,        
@@ -47,6 +47,7 @@ export default {
         //     date_hired: '2020-12-12',
         //     company_status:'regular',
         //     birthday: '2020-10-10',
+        //     company_position: 1,
         //     allowed_leave_number: 10,
         //     address: 'paa, hilongos, leyte',
         //     civil_status: 'single',
