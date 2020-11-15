@@ -20,7 +20,7 @@ class CreateTravelAuthRequestsTable extends Migration
             $table->date('start_date');
             $table->date('end_date');
             $table->string('emergency_contact');
-            $table->string('employee_to_cover');
+            $table->UnsignedBigInteger('employee_to_cover_id');
             $table->string('file_uri')->nullable();
             $table->UnsignedBigInteger('approver_role_id');
             $table->UnsignedBigInteger('status_id')->default(1);
@@ -28,6 +28,7 @@ class CreateTravelAuthRequestsTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('approver_role_id')->references('id')->on('roles')->onDelete('cascade');            
             $table->foreign('status_id')->references('id')->on('status')->onDelete('cascade');
+            $table->foreign('employee_to_cover_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
