@@ -36,6 +36,8 @@
               <v-col cols="12" sm="6" md="6">
                 <v-select
                   :items="coDepartment"
+                  :item-text="coDepartment => coDepartment.first_name + ' ' + coDepartment.last_name"
+                  item-value="id"
                   label="Employee to Cover*"
                   v-model="employee_to_cover"
                   prepend-icon=" mdi-account-outline"
@@ -220,8 +222,9 @@ export default {
     },
     getCoDepartment(){
       this.$axios.get("departments/employees").then (response => {
-        this.coDepartment = response.data
-        console.log('coDepartment', response.data)
+        response.data.forEach(element => {
+          this.coDepartment.push(element)
+        })
       })
     },
     removeData() {

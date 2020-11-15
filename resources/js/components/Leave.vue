@@ -67,7 +67,7 @@
                 v-for="(item, i) in items"
                 :key="i"
               >
-                <v-list-item-title @click="summary(item.title)">{{ item.title }}</v-list-item-title>
+                <v-list-item-title @click="summary(item.title)" style="cursor: pointer;">{{ item.title }}</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
