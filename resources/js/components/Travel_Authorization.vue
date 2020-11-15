@@ -427,7 +427,7 @@ export default {
       }
     },
     getAllPrp() {
-      this.$axios.get("http://localhost:8000/prp").then(response => {
+      this.$axios.get("prp").then(response => {
         this.prp = response.data;
       });
     },
@@ -440,7 +440,7 @@ export default {
     },
     retrieve() {
       this.$axios
-        .get("http://localhost:8000/travel_auth_request/" + this.user_id)
+        .get("travel_auth_request/" + this.user_id)
         .then(response => {
           this.travel = response.data;
           console.log(this.travel)
@@ -455,7 +455,7 @@ export default {
     retrieveTravel() {
       this.$axios
         .get(
-          "http://localhost:8000/prp/travel_auth_request/pending/" +
+          "prp/travel_auth_request/pending/" +
             this.user_id
         )
         .then(response => {
@@ -506,7 +506,7 @@ export default {
         // console.log("params", params, this.editedItem.id);
         this.$axios
           .post(
-            "http://localhost:8000/travel_auth_request/" + this.editedItem.id,
+            "travel_auth_request/" + this.editedItem.id,
             params
           )
           .then(response => {
@@ -525,7 +525,7 @@ export default {
 
     confirmDel() {
       this.$axios
-        .delete("http://localhost:8000/travel_auth_request/" + this.id)
+        .delete("travel_auth_request/" + this.id)
         .then(response => {
           this.retrieve();
         });
@@ -569,7 +569,7 @@ export default {
       };
       this.$axios
         .post(
-          "http://localhost:8000/prp/travel_auth_request/feedback/" + this.id,
+          "prp/travel_auth_request/feedback/" + this.id,
           parameter
         )
         .then(response => {
@@ -584,7 +584,7 @@ export default {
       };
       this.$axios
         .post(
-          "http://localhost:8000/prp/travel_auth_request/feedback/" + this.id,
+          "prp/travel_auth_request/feedback/" + this.id,
           parameter
         )
         .then(res => {
@@ -595,7 +595,7 @@ export default {
     getAllFeedback() {
       this.$axios
         .get(
-          "http://localhost:8000/prp/travel_auth_request/feedbacked/" +
+          "prp/travel_auth_request/feedbacked/" +
             this.user_id
         )
         .then(response => {

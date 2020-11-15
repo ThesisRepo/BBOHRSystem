@@ -29,6 +29,11 @@
         <div class="col-md-9" style="margin-top: 3%;">
             <div class="card" > 
                 <center> 
+                @if(session()->has('message'))
+                    <div class="alert alert-warning">
+                        {{session('message') }}
+                    </div>
+                @endif
                 @if(session()->has('success'))
                     <div class="alert alert-success">
                         {{session('success') }}
@@ -41,7 +46,7 @@
                 @endif   
                 </center>     
                 <center style="margin-top: 5%;">
-                    <img src="http://localhost:8000/img/user_logo.png" width="100" alt="logo">
+                    <img src="img/user_logo.png" width="100" alt="logo">
                 </center>
                 <br>
                 <div class="card-body" >
@@ -84,7 +89,7 @@
                         <div class="form-group row">
                             <div id ="gmail" class="col-md-10 mx-auto">
                                 <button type="button" onclick="window.location='{{ url("auth/google") }}'">
-                                    <img src="http://localhost:8000/img/google_logo.png" style="float:left;margin-left:25px;width:27px;height:27px" alt="">
+                                    <img src="img/google_logo.png" style="float:left;margin-left:25px;width:27px;height:27px" alt="">
                                     <strong style="margin-right:25px;">Login With Google</strong>
                                 </button>
                             </div>
@@ -128,7 +133,7 @@
             <div class="card" >
                
                 <center style="margin-top: 3%;">
-                    <img src="http://localhost:8000/img/logoCircle.png" width="100" alt="logo">
+                    <img src="img/logoCircle.png" width="100" alt="logo">
                 </center>
            
                 <div class="card-body">
@@ -177,7 +182,7 @@
                         </div> 
                         <div id ="gmailDiv" class="col-md-10 col-3 mx-auto">
                             <a href="{{ url('auth/google') }}" class="btn btn-lg btn-default btn-block">
-                                <img id ="gmail" src="http://localhost:8000/img/google_logo.png" alt="">
+                                <img id ="gmail" src="img/google_logo.png" alt="">
                                 <strong>Login With Google</strong>
                             </a> 
                         </div>

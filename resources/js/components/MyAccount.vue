@@ -170,7 +170,7 @@ export default {
     },
     getInfo() {
       this.$axios
-        .get("http://localhost:8000/user_info/" + this.user_id)
+        .get("user_info/" + this.user_id)
         .then(response => {
           this.prp_assign = localStorage.getItem("prp_assign");
           this.user_finance = localStorage.getItem("user_finance");
@@ -218,7 +218,7 @@ export default {
       };
       this.$axios
         .post(
-          "http://localhost:8000/update_profile_img/" + this.user_id,
+          "update_profile_img/" + this.user_id,
           formData
         )
         .then(response => {});

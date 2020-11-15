@@ -421,7 +421,7 @@ export default {
     },
     retrieve() {
       this.$axios
-        .get("http://localhost:8000/leave_request/" + this.user_id)
+        .get("leave_request/" + this.user_id)
         .then(response => {
           this.request = response.data;
           console.log(response.data)
@@ -432,7 +432,7 @@ export default {
     },
     retrievePendingPrp() {
       this.$axios
-        .get("http://localhost:8000/prp/leave_request/pending/" + this.user_id)
+        .get("prp/leave_request/pending/" + this.user_id)
         .then(response => {
           this.prpPending = response.data;
         })
@@ -472,7 +472,7 @@ export default {
         };
         this.$axios
           .post(
-            "http://localhost:8000/leave_request/" + this.editedItem.id,
+            "leave_request/" + this.editedItem.id,
             params
           )
           .then(response => {
@@ -499,7 +499,7 @@ export default {
     },
     confirmDel(){
       this.$axios
-        .delete("http://localhost:8000/leave_request/" + this.id)
+        .delete("leave_request/" + this.id)
         .then(response => {
           this.retrieve();
         });
@@ -546,7 +546,7 @@ export default {
       };
       this.$axios
         .post(
-          "http://localhost:8000/prp/leave_request/feedback/" + this.id,
+          "prp/leave_request/feedback/" + this.id,
           parameter
         )
         .then(response => {
@@ -561,7 +561,7 @@ export default {
       };
       this.$axios
         .post(
-          "http://localhost:8000/prp/leave_request/feedback/" + this.id,
+          "prp/leave_request/feedback/" + this.id,
           parameter
         )
         .then(res => {
@@ -572,7 +572,7 @@ export default {
     getAllFeedback() {
       this.$axios
         .get(
-          "http://localhost:8000/prp/leave_request/feedbacked/" + this.user_id
+          "prp/leave_request/feedbacked/" + this.user_id
         )
         .then(response => {
           this.feedbacks = response.data.feedbacked_leave_requests;

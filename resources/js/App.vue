@@ -31,7 +31,7 @@ export default {
     },
     mounted(){
         this.listenForChanges();
-        console.log(this.user);
+        // console.log(this.user);
         //  var params = {   
         //     first_name: 'mddion',
         //     last_name: 'balugo',
@@ -59,7 +59,7 @@ export default {
         // }
         // this.$axios
         // .post(
-        //   "http://localhost:8000/hr/manage/user", params)
+        //   "hr/manage/user", params)
         // .then(response => {
         //     console.log('dat', response)
         //   if (response.data === 1) {

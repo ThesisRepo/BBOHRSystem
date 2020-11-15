@@ -189,12 +189,12 @@ export default {
   },
   methods: {
     getNoApprove(){
-      this.$axios.get('http://localhost:8000/user_info/approved_requests/count/' + this.user_id).then(response => {
+      this.$axios.get('user_info/approved_requests/count/' + this.user_id).then(response => {
         this.approve = response.data
       })
     },
     getNoPending(){
-      this.$axios.get('http://localhost:8000/user_info/pending_requests/count/' + this.user_id).then(response => {
+      this.$axios.get('user_info/pending_requests/count/' + this.user_id).then(response => {
         this.pending = response.data
       })
     },

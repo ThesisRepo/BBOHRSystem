@@ -201,7 +201,7 @@ export default {
         formData.append("employee_to_cover", this.employee_to_cover);
         formData.append("prp_assigned_id", 1);
         this.$axios
-          .post("http://localhost:8000/travel_auth_request", formData, config)
+          .post("travel_auth_request", formData, config)
           .then(res => {
             this.$parent.$parent.$parent.$parent.$parent.retrieve();
           });

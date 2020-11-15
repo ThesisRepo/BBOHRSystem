@@ -26,7 +26,7 @@ trait EmployeeInfoList
           //   'date_hired'=> '2018-3-6',
           //   // 'contact_number'=> 
           //   'civil_status'=> 'single',
-          //   'company_status'=> 'regular',
+          //   'company_status_id'=> '3',
           //   'birthday'=>'1984-4-13',
           //   'address'=> 'Sta. Cruz, Liloan, Cebu',
           //   // 'tin_number'=> 
@@ -44,8 +44,8 @@ trait EmployeeInfoList
             // 'prp_assigned' => 3,
             // 'finance_assigned' => 4,
             'first_name' => 'Fenella',
-            'last_name' => 'Corriene',
-            'email' => 'Feneela@bbo.com.ph',
+            'last_name' => 'Corrine',
+            'email' => 'Fenella@bbo.com.ph',
             'password' => Hash::make('123456789')
           ],
           'user_info' => null,
@@ -59,7 +59,7 @@ trait EmployeeInfoList
           //   'date_hired'=> '2018-3-6',
           //   // 'contact_number'=> 
           //   'civil_status'=> 'single',
-          //   'company_status'=> 'regular',
+          //   'company_status_id'=> '3',
           //   'birthday'=>'1984-4-13',
           //   'address'=> 'Sta. Cruz, Liloan, Cebu',
           //   // 'tin_number'=> 
@@ -92,7 +92,7 @@ trait EmployeeInfoList
           //   'date_hired'=> '2018-3-6',
           //   // 'contact_number'=> 
           //   'civil_status'=> 'single',
-          //   'company_status'=> 'regular',
+          //   'company_status_id'=> 3,
           //   'birthday'=>'1984-4-13',
           //   'address'=> 'Sta. Cruz, Liloan, Cebu',
           //   // 'tin_number'=> 
@@ -101,7 +101,7 @@ trait EmployeeInfoList
           //   // 'philhealth_number'=>
           //   // 'allowed_leave_number'=>
           // ],
-          'user_roles' => [3],
+          'user_roles' => [1,2,3],
           'user_company_positions' => null
 
           // 'user_company_positions' => [15]
@@ -125,7 +125,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -156,7 +156,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -187,7 +187,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -218,7 +218,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -249,7 +249,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -280,7 +280,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -312,7 +312,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -343,7 +343,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -374,7 +374,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -405,7 +405,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> ,
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -436,7 +436,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -467,7 +467,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -498,7 +498,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -529,7 +529,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -560,7 +560,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -591,7 +591,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> ,
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -622,7 +622,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> ,
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -653,7 +653,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 

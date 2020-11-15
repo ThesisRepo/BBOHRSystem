@@ -20,7 +20,7 @@
       <v-card>
          <v-toolbar class="mb-2" color="blue darken-1" dark flat>
             <v-card-title>
-              <span class="headline-bold">SHIFT CHANGE REQUEST FORM</span>
+              <!-- <span class="headline-bold">SHIFT CHANGE REQUEST FORM</span> -->
             </v-card-title>
           </v-toolbar>
         <v-card-text>
@@ -113,7 +113,7 @@ export default {
           prp_assigned_id: this.prp_assigned_id
         }
         console.log(parameter)
-        this.$axios.post("http://localhost:8000/shift_change_request", parameter).then(res =>{
+        this.$axios.post("shift_change_request", parameter).then(res =>{
           this.$parent.$parent.$parent.$parent.$parent.retrieve()
           this.dialog = false
         })
@@ -123,8 +123,7 @@ export default {
       }
     },
     getShift(){
-      this.$axios.get("http://localhost:8000/shift_time").then(response => {
-        console.log('hi', response)
+      this.$axios.get("shift_time").then(response => {
         this.sTime = response.data
       })
     },

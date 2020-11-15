@@ -113,7 +113,7 @@ export default {
           reason: this.reason,
           prp_assigned_id: this.prp_assigned_id
         }
-        this.$axios.post("http://localhost:8000/overtime_request", parameter).then(res =>{
+        this.$axios.post("overtime_request", parameter).then(res =>{
           this.$parent.$parent.$parent.$parent.$parent.retrieve()
 
           this.dialog = false
