@@ -88,6 +88,7 @@ class UserInformationController extends Controller
         }      
         try {
             $res = $this->user->registerUser($user, $role, $user_info, $company_position);
+            // dd($res->makeVisible(['password'])->toArray());
             $this->sendVerificationEmailOnRegister($res);
             // $link = str_random(30);
             // $activation_data = [
@@ -150,6 +151,15 @@ class UserInformationController extends Controller
     public function delete($id)
     {
         $this->user->delete($id);
+    }
+
+    public function resetPasswordOfUser( Request $request, $id) {
+
+        $password = Hash::make($request->password);
+        $data = [
+            'password' => $password
+        ];
+        
     }
 
     public function getAllFeedbackedDateLeave( Request $request) {
