@@ -203,7 +203,7 @@ export default {
                     prp_assigned_id: this.prp_assigned_id
                 };
                 this.$axios
-                    .post("http://localhost:8000/leave_request", params)
+                    .post("leave_request", params)
                     .then(res => {
                         console.log("Successfully Added");
                         this.$parent.$parent.$parent.$parent.$parent.retrieve();
