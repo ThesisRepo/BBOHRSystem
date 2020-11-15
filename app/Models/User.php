@@ -183,4 +183,9 @@ class User extends Authenticatable implements MustVerifyEmail
     public function event_types() {
         return $this->hasMany(EventType::class);
     }
+
+    public function employee_to_substitute() {
+        return $this->hasMany(Requests\TravelAuthRequest::class, 'employee_to_cover_id');
+    }
+
 }
