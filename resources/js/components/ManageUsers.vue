@@ -381,7 +381,7 @@
 </style>
 
 <script>
-import createUser from "./modals/add_user.vue";
+import createUser from "./modals/personalInfo_user.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
 export default {
   data: () => ({
