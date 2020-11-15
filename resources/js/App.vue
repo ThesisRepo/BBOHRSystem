@@ -31,7 +31,7 @@ export default {
     },
     mounted(){
         this.listenForChanges();
-        // console.log(this.user);
+        console.log(this.user);
         //  var params = {   
         //     first_name: 'mddion',
         //     last_name: 'balugo',
