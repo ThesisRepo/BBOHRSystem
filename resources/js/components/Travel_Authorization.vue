@@ -43,7 +43,30 @@
               ></v-date-picker>
             </v-menu>
           </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <v-btn depressed @click="summary()" color="primary">SUMMARY</v-btn>
+          <v-menu
+            transition="slide-y-transition"
+            bottom
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                class="purple"
+                color="primary"
+                dark
+                v-bind="attrs"
+                v-on="on"
+              >
+                Summary
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item
+                v-for="(item, i) in items"
+                :key="i"
+              >
+                <v-list-item-title @click="summary(item.title)">{{ item.title }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
           <v-divider class="mx-4" vertical></v-divider>
           <v-spacer></v-spacer>
           <v-text-field
@@ -338,6 +361,10 @@ export default {
     travel: [],
     travelPending: [],
     feedbacks: [],
+    items: [
+      { title: 'Approved Requests' },
+      { title: 'Disapproved Requests' }
+    ],
     id: null,
     editedIndex: null,
     editedItem: {
@@ -375,8 +402,10 @@ export default {
       this.retrieveTravel();
       this.retrieve();
       this.getAllFeedback();
+      this.getCoDepartment()
     } else {
       this.retrieve();
+      this.getCoDepartment()
     }
   },
   methods: {
@@ -396,6 +425,11 @@ export default {
       this.$axios.get("http://localhost:8000/prp").then(response => {
         this.prp = response.data;
       });
+    },
+    getCoDepartment(){
+      this.$axios.get("departments/employees").then (response => {
+        console.log('coDepartment', console.log(response.data))
+      })
     },
     retrieve() {
       this.$axios
@@ -570,9 +604,9 @@ export default {
       );
       this.differenceDates();
     },
-    summary(){
+    summary(item){
       console.log(this.dates[0], this.dates[1])
-      this.$refs.summary.show(this.dates[0], this.dates[1])
+      this.$refs.summary.show(this.dates[0], this.dates[1], item)
     }
   }
 };

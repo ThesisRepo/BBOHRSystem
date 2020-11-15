@@ -39,7 +39,30 @@
               ></v-date-picker>
             </v-menu>
           </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <v-btn color="light blue darken-2" @click="summary()" outlined>SUMMARY</v-btn>
+          <v-menu
+            transition="slide-y-transition"
+            bottom
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                class="purple"
+                color="primary"
+                dark
+                v-bind="attrs"
+                v-on="on"
+              >
+                Summary
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item
+                v-for="(item, i) in items"
+                :key="i"
+              >
+                <v-list-item-title @click="summary(item.title)">{{ item.title }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
           <v-divider class="mx-4" vertical></v-divider>
           <v-spacer></v-spacer>
           <v-text-field
@@ -258,6 +281,10 @@ export default {
       { text: "STATUS", value: "status.status_name" }
     ],
     shifts: [],
+    items: [
+      { title: 'Approved Requests' },
+      { title: 'Disapproved Requests' }
+    ],
     shiftPending: [],
     feedbacks: [],
     approveThis: '',
@@ -455,9 +482,9 @@ export default {
           this.feedbacks = response.data.feedbacked_shift_change_requests;
         });
     },
-    summary(){
+    summary(item){
       console.log(this.dates[0], this.dates[1])
-      this.$refs.summary.show(this.dates[0], this.dates[1])
+      this.$refs.summary.show(this.dates[0], this.dates[1], item)
     }
   }
 };

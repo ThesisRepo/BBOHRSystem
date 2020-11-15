@@ -33,9 +33,9 @@ export default {
         this.listenForChanges();
         console.log(this.user);
          var params = {   
-            first_name: 'mddion',
+            first_name: 'mddwwwion',
             last_name: 'balugo',
-            email: 'sssssdfefs@gail.com',
+            email: 'ssdfefs@gail.com',
             password: '123456789',
             password_confirmation: '123456789',
             role_id: 2,        
@@ -49,6 +49,7 @@ export default {
             birthday: '2020-10-10',
             allowed_leave_number: 10,
             address: 'paa, hilongos, leyte',
+            company_position: 1,            
             civil_status: 'single',
             contact_number: '012346481',
             pag_ibig_number:'12313',

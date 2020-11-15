@@ -45,7 +45,30 @@
               ></v-date-picker>
             </v-menu>
           </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <v-btn color="light blue darken-2" @click="summary()" outlined>SUMMARY</v-btn>
+          <v-menu
+            transition="slide-y-transition"
+            bottom
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                class="purple"
+                color="primary"
+                dark
+                v-bind="attrs"
+                v-on="on"
+              >
+                Summary
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item
+                v-for="(item, i) in items"
+                :key="i"
+              >
+                <v-list-item-title @click="summary(item.title)">{{ item.title }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
           <v-divider class="mx-4" vertical></v-divider>
           <v-spacer></v-spacer>
           <v-text-field
@@ -276,6 +299,10 @@ export default {
     overtime: [],
     overtimePending: [],
     feedbacks: [],
+    items: [
+      { title: 'Approved Requests' },
+      { title: 'Disapproved Requests' }
+    ],
     approveThis: '',
     start_time: null,
     reason: null,
@@ -457,9 +484,9 @@ export default {
       else if (approver_role === "emp") return "0f52ba"
       else return "#002366";
     },
-    summary(){
+    summary(item){
       console.log(this.dates[0], this.dates[1])
-      this.$refs.summary.show(this.dates[0], this.dates[1])
+      this.$refs.summary.show(this.dates[0], this.dates[1], item)
     }
   }
 }
