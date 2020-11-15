@@ -100,7 +100,7 @@ export default {
             };
             this.$axios
                 .post(
-                    "http://localhost:8000/hr/summary/travel_auth_request",
+                    "hr/summary/travel_auth_request",
                     param
                 )
                 .then(response => {

@@ -113,7 +113,7 @@ export default {
           prp_assigned_id: this.prp_assigned_id
         }
         console.log(parameter)
-        this.$axios.post("http://localhost:8000/shift_change_request", parameter).then(res =>{
+        this.$axios.post("shift_change_request", parameter).then(res =>{
           this.$parent.$parent.$parent.$parent.$parent.retrieve()
           this.dialog = false
         })
@@ -123,7 +123,7 @@ export default {
       }
     },
     getShift(){
-      this.$axios.get("http://localhost:8000/shift_time").then(response => {
+      this.$axios.get("shift_time").then(response => {
         console.log('hi', response)
         this.sTime = response.data
       })

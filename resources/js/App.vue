@@ -58,7 +58,7 @@ export default {
         // }
         // this.$axios
         // .post(
-        //   "http://localhost:8000/hr/manage/user", params)
+        //   "hr/manage/user", params)
         // .then(response => {
         //     console.log('dat', response)
         //   if (response.data === 1) {

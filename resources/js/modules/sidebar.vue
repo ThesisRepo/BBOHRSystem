@@ -139,7 +139,7 @@ export default {
         .then(response => {
           location.reload();
           localStorage.clear()
-          window.location.replace("http://localhost:8000");
+          window.location.replace("/");
           // localStorage.removeItem('assigned_prp_id')
           // localStorage.removeItem('user_finance')
           // localStorage.removeItem('prp_assign')

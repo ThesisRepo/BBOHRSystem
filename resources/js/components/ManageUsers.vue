@@ -453,7 +453,7 @@ export default {
   },
   methods: {
     retrieve() {
-      this.$axios.get("http://localhost:8000/hr/manage/user").then(response => {
+      this.$axios.get("hr/manage/user").then(response => {
         this.user = response.data;
       });
     },
@@ -519,7 +519,7 @@ export default {
         company_number: this.editItem.company_number
       };
       this.$axios
-        .post("http://localhost:8000/hr/manage/user/" + this.editItem.id, params)
+        .post("hr/manage/user/" + this.editItem.id, params)
         .then(response => {
           this.retrieve()
         });
@@ -534,14 +534,14 @@ export default {
     },
     confirmDel() {
       this.$axios
-        .delete("http://localhost:8000/hr/manage/user/" + this.id)
+        .delete("hr/manage/user/" + this.id)
         .then(response => {
           this.retrieve();
         });
     },
     getAllPrp() {
       this.$axios
-        .get("http://localhost:8000/prp/")
+        .get("prp/")
         .then(response => {
           console.log(response.data)
           this.prp = response.data
@@ -549,14 +549,14 @@ export default {
     },
     getAllFinance() {
       this.$axios
-        .get("http://localhost:8000/finance")
+        .get("finance")
         .then(response => {
           console.log(response.data)
           this.finance = response.data;
         });
     },
     getShift() {
-      this.$axios.get("http://localhost:8000/shift_time").then(response => {
+      this.$axios.get("shift_time").then(response => {
         this.sTime = response.data;
       });
     },

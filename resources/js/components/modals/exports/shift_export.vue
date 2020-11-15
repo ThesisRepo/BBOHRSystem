@@ -100,7 +100,7 @@ export default {
             };
             this.$axios
                 .post(
-                    "http://localhost:8000/hr/summary/shift_change_request",
+                    "hr/summary/shift_change_request",
                     param
                 )
                 .then(response => {

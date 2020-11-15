@@ -97,7 +97,7 @@ export default {
                 end_date: param2
             };
             this.$axios
-                .post("http://localhost:8000/hr/summary/budget_request", param)
+                .post("hr/summary/budget_request", param)
                 .then(response => {
                     this.summary = response.data;
                 });

@@ -319,7 +319,7 @@ export default {
       return date >  new Date().toISOString().substr(0, 10)
     },
     retrieve(){
-      this.$axios.get("http://localhost:8000/overtime_request/" + this.user_id).then(response => {
+      this.$axios.get("overtime_request/" + this.user_id).then(response => {
         this.overtime = response.data
         console.log(this.overtime)
       })
@@ -333,7 +333,7 @@ export default {
     retrieveOvertime() {
       this.$axios
         .get(
-          "http://localhost:8000/prp/overtime_request/pending/" +
+          "prp/overtime_request/pending/" +
             this.user_id
         )
         .then(response => {
@@ -363,7 +363,7 @@ export default {
           reason: this.editedItem.reason,
           prp_assigned_id: this.prp_assigned_id
         }     
-        this.$axios.post('http://localhost:8000/overtime_request/' + this.editedItem.id, params).then(response=>{
+        this.$axios.post('overtime_request/' + this.editedItem.id, params).then(response=>{
           this.retrieve()
         })
         this.dialog = false;
@@ -379,7 +379,7 @@ export default {
 
     confirmDel() {
       this.$axios
-        .delete("http://localhost:8000/overtime_request/" + this.id)
+        .delete("overtime_request/" + this.id)
         .then(response => {
           this.retrieve();
         });
@@ -411,7 +411,7 @@ export default {
       };
       this.$axios
         .post(
-          "http://localhost:8000/prp/overtime_request/feedback/" + this.id,
+          "prp/overtime_request/feedback/" + this.id,
           parameter
         )
         .then(response => {
@@ -427,7 +427,7 @@ export default {
       };
       this.$axios
         .post(
-          "http://localhost:8000/prp/overtime_request/feedback/" + this.id,
+          "prp/overtime_request/feedback/" + this.id,
           parameter
         )
         .then(res => {
@@ -438,7 +438,7 @@ export default {
     getAllFeedback() {
       this.$axios
         .get(
-          "http://localhost:8000/prp/overtime_request/feedbacked/" +
+          "prp/overtime_request/feedbacked/" +
             this.user_id
         )
         .then(response => {

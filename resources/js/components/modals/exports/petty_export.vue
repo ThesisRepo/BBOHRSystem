@@ -98,7 +98,7 @@ export default {
              start_date: param1,
              end_date: param2
          }
-         this.$axios.post('http://localhost:8000/hr/summary/petty_cash_request', param).then( response =>{
+         this.$axios.post('hr/summary/petty_cash_request', param).then( response =>{
              this.summary = response.data
          })
          this.dialog = true

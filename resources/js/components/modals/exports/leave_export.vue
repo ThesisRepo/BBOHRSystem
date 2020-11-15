@@ -84,7 +84,7 @@ export default {
         end_date: param2
       };
       this.$axios
-        .post("http://localhost:8000/hr/summary/leave_request", param)
+        .post("hr/summary/leave_request", param)
         .then(response => {
             this.summary = response.data;
         });

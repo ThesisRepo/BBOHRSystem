@@ -112,7 +112,7 @@ export default {
             total_amount: this.total_amount,
             finance_mngr_assigned: this.user_finance
           }
-          this.$axios.post("http://localhost:8000/budget_request", parameter).then(res =>{
+          this.$axios.post("budget_request", parameter).then(res =>{
             this.$parent.$parent.$parent.$parent.$parent.retrieve()
             this.dialog = false
           })

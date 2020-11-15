@@ -98,7 +98,7 @@ export default {
             };
             this.$axios
                 .post(
-                    "http://localhost:8000/hr/summary/overtime_request",
+                    "hr/summary/overtime_request",
                     param
                 )
                 .then(response => {
