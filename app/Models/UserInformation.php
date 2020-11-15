@@ -22,7 +22,7 @@ class UserInformation extends Model
         'date_hired',
         'contact_number',
         'civil_status',
-        'company_status',
+        'company_status_id',
         'regularization_date',
         'birthday',
         'address',
@@ -76,4 +76,9 @@ class UserInformation extends Model
     public function company_positions() {
         return $this->belongstoMany(CompanyPosition::class, 'user_company_positions')->withTimestamps();
     }
+
+    public function company_status() {
+        return $this->belongsTo(CompanyStatus::class);
+    }
+
 }

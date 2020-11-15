@@ -26,6 +26,7 @@ class ShiftTimeController extends Controller
 
     public function getUserShiftTime() {
         $shift_time_id = Auth::user()->load('userInformation')->userInformation->shift_time_id;
-        return $this->shift_time->where('id','!=', $shift_time_id)->get();
+        $res = $this->shift_time->whereNative('id','!=', $shift_time_id)->get();
+        return $res;
     }
 }

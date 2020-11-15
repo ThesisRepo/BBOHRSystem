@@ -83,7 +83,7 @@ export default {
       };
       this.$axios
         .post(
-          "http://localhost:8000/user_info/" +
+          "user_info/" +
             this.user_id,
           params
         )

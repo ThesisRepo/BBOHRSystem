@@ -33,7 +33,7 @@ export default {
       return moment(date).format('MM/DD/YYYY')
     },
     getRequests(){
-      this.$axios.get('http://localhost:8000/user_info/pending_requests/' + this.user_id).then(response =>{
+      this.$axios.get('user_info/pending_requests/' + this.user_id).then(response =>{
         console.log('requests', response.data)
         this.requests = response.data
       })

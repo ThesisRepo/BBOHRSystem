@@ -174,22 +174,9 @@
                 </v-col>
                 <v-col cols="12" md="4">
                   <v-select
-                    :items="[
-                      'Customer Support Leader',
-                      'PHP DEV',
-                      'Reseller Support',
-                      'MKTG. Assistant',
-                      'Apps Developer',
-                      'Sales & Support',
-                      'Online Sales Associate',
-                      'Android DEV',
-                      'HR',
-                      'Accounting',
-                      'Admin Assistant',
-                      'Accounting Assistant',
-                      'Utility',
-                      'Marketing Staff'
-                    ]"
+                    :items="position"
+                    item-text="position_name"
+                    item-value="id"
                     label="Company Position*"
                     v-model="editItem.company_position"
                     prepend-icon="mdi-account"
@@ -238,14 +225,9 @@
                 </v-col>
                 <v-col cols="12" md="4">
                   <v-select
-                  :items="[
-                      'Accounting',
-                      'Admin',
-                      'CS(Sales)',
-                      'Marketing',
-                      'Apps',
-                      'PHP'
-                  ]"
+                  :items="departmentItem"
+                  item-text="department_name"
+                  item-value="id"
                   label="Department*"
                   v-model="editItem.department"
                   required
@@ -381,7 +363,7 @@
 </style>
 
 <script>
-import createUser from "./modals/add_user.vue";
+import createUser from "./modals/personalInfo_user.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
 export default {
   data: () => ({
@@ -434,7 +416,9 @@ export default {
     genderItem: [
       {text: 'Female', value: 0},
       {text: 'Male', value: 1}
-    ]
+    ],
+    position: [],
+    departmentItem: []
   }),
   components: {
     ConfirmationDel,
@@ -445,6 +429,8 @@ export default {
     this.getAllPrp()
     this.getAllFinance();
     this.getShift()
+    this.getPosition()
+    this.getAllDepartment()
   },
   watch: {
     menu (val) {
@@ -453,7 +439,7 @@ export default {
   },
   methods: {
     retrieve() {
-      this.$axios.get("http://localhost:8000/hr/manage/user").then(response => {
+      this.$axios.get("hr/manage/user").then(response => {
         this.user = response.data;
       });
     },
@@ -490,6 +476,21 @@ export default {
     getPrp(){
       console.log(this.editItem.selectPrp)
     },
+
+    getPosition(){
+      this.$axios.get("http://localhost:8000/hr/company_position").then(response => {
+        response.data.forEach(el => {
+          this.position.push(el)
+        })
+      })
+    },
+    getAllDepartment() {
+      this.$axios.get("http://localhost:8000/departments").then(response => {
+        response.data.forEach(element => {
+          this.departmentItem.push(element)
+        })
+      });
+    },
     update(){
       let params = {
         id: this.editItem.id,
@@ -519,7 +520,7 @@ export default {
         company_number: this.editItem.company_number
       };
       this.$axios
-        .post("http://localhost:8000/hr/manage/user/" + this.editItem.id, params)
+        .post("hr/manage/user/" + this.editItem.id, params)
         .then(response => {
           this.retrieve()
         });
@@ -534,14 +535,14 @@ export default {
     },
     confirmDel() {
       this.$axios
-        .delete("http://localhost:8000/hr/manage/user/" + this.id)
+        .delete("hr/manage/user/" + this.id)
         .then(response => {
           this.retrieve();
         });
     },
     getAllPrp() {
       this.$axios
-        .get("http://localhost:8000/prp/")
+        .get("prp/")
         .then(response => {
           console.log(response.data)
           this.prp = response.data
@@ -549,14 +550,14 @@ export default {
     },
     getAllFinance() {
       this.$axios
-        .get("http://localhost:8000/finance")
+        .get("finance")
         .then(response => {
           console.log(response.data)
           this.finance = response.data;
         });
     },
     getShift() {
-      this.$axios.get("http://localhost:8000/shift_time").then(response => {
+      this.$axios.get("shift_time").then(response => {
         this.sTime = response.data;
       });
     },

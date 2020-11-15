@@ -50,7 +50,7 @@
                                     <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}"  name="email"  value="{{ old('email') }}" required autocomplete="email" placeholder="Enter your email" autofocus>
                                     @if ($errors->has('email'))
                                         <span class="invalid-feedback" role="alert">
-                                            <strong>Invalid Email or Password</strong>
+                                            <strong>Invalid Email</strong>
                                         </span>
                                     @endif
                                 </div>

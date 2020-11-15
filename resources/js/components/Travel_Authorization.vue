@@ -43,7 +43,30 @@
               ></v-date-picker>
             </v-menu>
           </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <v-btn depressed @click="summary()" color="primary">SUMMARY</v-btn>
+          <v-menu
+            transition="slide-y-transition"
+            bottom
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                class="purple"
+                color="primary"
+                dark
+                v-bind="attrs"
+                v-on="on"
+              >
+                Summary
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item
+                v-for="(item, i) in items"
+                :key="i"
+              >
+                <v-list-item-title @click="summary(item.title)">{{ item.title }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
           <v-divider class="mx-4" vertical></v-divider>
           <v-spacer></v-spacer>
           <v-text-field
@@ -338,6 +361,10 @@ export default {
     travel: [],
     travelPending: [],
     feedbacks: [],
+    items: [
+      { title: 'Approved Requests' },
+      { title: 'Disapproved Requests' }
+    ],
     id: null,
     editedIndex: null,
     editedItem: {
@@ -375,8 +402,10 @@ export default {
       this.retrieveTravel();
       this.retrieve();
       this.getAllFeedback();
+      this.getCoDepartment()
     } else {
       this.retrieve();
+      this.getCoDepartment()
     }
   },
   methods: {
@@ -393,13 +422,18 @@ export default {
       }
     },
     getAllPrp() {
-      this.$axios.get("http://localhost:8000/prp").then(response => {
+      this.$axios.get("prp").then(response => {
         this.prp = response.data;
       });
     },
+    getCoDepartment(){
+      this.$axios.get("departments/employees").then (response => {
+        console.log('coDepartment', console.log(response.data))
+      })
+    },
     retrieve() {
       this.$axios
-        .get("http://localhost:8000/travel_auth_request/" + this.user_id)
+        .get("travel_auth_request/" + this.user_id)
         .then(response => {
           this.travel = response.data;
           console.log(this.travel)
@@ -414,7 +448,7 @@ export default {
     retrieveTravel() {
       this.$axios
         .get(
-          "http://localhost:8000/prp/travel_auth_request/pending/" +
+          "prp/travel_auth_request/pending/" +
             this.user_id
         )
         .then(response => {
@@ -465,7 +499,7 @@ export default {
         // console.log("params", params, this.editedItem.id);
         this.$axios
           .post(
-            "http://localhost:8000/travel_auth_request/" + this.editedItem.id,
+            "travel_auth_request/" + this.editedItem.id,
             params
           )
           .then(response => {
@@ -484,7 +518,7 @@ export default {
 
     confirmDel() {
       this.$axios
-        .delete("http://localhost:8000/travel_auth_request/" + this.id)
+        .delete("travel_auth_request/" + this.id)
         .then(response => {
           this.retrieve();
         });
@@ -528,7 +562,7 @@ export default {
       };
       this.$axios
         .post(
-          "http://localhost:8000/prp/travel_auth_request/feedback/" + this.id,
+          "prp/travel_auth_request/feedback/" + this.id,
           parameter
         )
         .then(response => {
@@ -543,7 +577,7 @@ export default {
       };
       this.$axios
         .post(
-          "http://localhost:8000/prp/travel_auth_request/feedback/" + this.id,
+          "prp/travel_auth_request/feedback/" + this.id,
           parameter
         )
         .then(res => {
@@ -554,7 +588,7 @@ export default {
     getAllFeedback() {
       this.$axios
         .get(
-          "http://localhost:8000/prp/travel_auth_request/feedbacked/" +
+          "prp/travel_auth_request/feedbacked/" +
             this.user_id
         )
         .then(response => {
@@ -570,9 +604,9 @@ export default {
       );
       this.differenceDates();
     },
-    summary(){
+    summary(item){
       console.log(this.dates[0], this.dates[1])
-      this.$refs.summary.show(this.dates[0], this.dates[1])
+      this.$refs.summary.show(this.dates[0], this.dates[1], item)
     }
   }
 };

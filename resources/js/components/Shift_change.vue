@@ -39,7 +39,30 @@
               ></v-date-picker>
             </v-menu>
           </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <v-btn color="light blue darken-2" @click="summary()" outlined>SUMMARY</v-btn>
+          <v-menu
+            transition="slide-y-transition"
+            bottom
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                class="purple"
+                color="primary"
+                dark
+                v-bind="attrs"
+                v-on="on"
+              >
+                Summary
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item
+                v-for="(item, i) in items"
+                :key="i"
+              >
+                <v-list-item-title @click="summary(item.title)">{{ item.title }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
           <v-divider class="mx-4" vertical></v-divider>
           <v-spacer></v-spacer>
           <v-text-field
@@ -258,6 +281,10 @@ export default {
       { text: "STATUS", value: "status.status_name" }
     ],
     shifts: [],
+    items: [
+      { title: 'Approved Requests' },
+      { title: 'Disapproved Requests' }
+    ],
     shiftPending: [],
     feedbacks: [],
     approveThis: '',
@@ -301,7 +328,7 @@ export default {
     },
     retrieve() {
       this.$axios
-        .get("http://localhost:8000/shift_change_request/" + this.user_id)
+        .get("shift_change_request/" + this.user_id)
         .then(response => {
           this.shifts = response.data;
         })
@@ -312,7 +339,7 @@ export default {
     retrieveShift() {
       this.$axios
         .get(
-          "http://localhost:8000/prp/shift_change_request/pending/" +
+          "prp/shift_change_request/pending/" +
             this.user_id
         )
         .then(response => {
@@ -350,7 +377,7 @@ export default {
         };
         this.$axios
           .post(
-            "http://localhost:8000/shift_change_request/" + this.editedItem.id,
+            "shift_change_request/" + this.editedItem.id,
             params
           )
           .then(response => {
@@ -369,7 +396,7 @@ export default {
 
     confirmDel() {
       this.$axios
-        .delete("http://localhost:8000/shift_change_request/" + this.id)
+        .delete("shift_change_request/" + this.id)
         .then(response => {
           this.retrieve();
           this.dialogDelete = false;
@@ -379,7 +406,7 @@ export default {
       this.dialog = false;
     },
     getShift() {
-      this.$axios.get("http://localhost:8000/shift_time").then(response => {
+      this.$axios.get("shift_time").then(response => {
         this.sTime = response.data;
       });
     },
@@ -422,7 +449,7 @@ export default {
       };
       this.$axios
         .post(
-          "http://localhost:8000/prp/shift_change_request/feedback/" + this.id,
+          "prp/shift_change_request/feedback/" + this.id,
           parameter
         )
         .then(response => {
@@ -437,7 +464,7 @@ export default {
       };
       this.$axios
         .post(
-          "http://localhost:8000/prp/shift_change_request/feedback/" + this.id,
+          "prp/shift_change_request/feedback/" + this.id,
           parameter
         )
         .then(res => {
@@ -448,16 +475,16 @@ export default {
     getAllFeedback() {
       this.$axios
         .get(
-          "http://localhost:8000/prp/shift_change_request/feedbacked/" +
+          "prp/shift_change_request/feedbacked/" +
             this.user_id
         )
         .then(response => {
           this.feedbacks = response.data.feedbacked_shift_change_requests;
         });
     },
-    summary(){
+    summary(item){
       console.log(this.dates[0], this.dates[1])
-      this.$refs.summary.show(this.dates[0], this.dates[1])
+      this.$refs.summary.show(this.dates[0], this.dates[1], item)
     }
   }
 };
