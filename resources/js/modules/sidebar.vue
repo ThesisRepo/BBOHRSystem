@@ -135,7 +135,7 @@ export default {
     logout() {
        this.$axios
         .post(
-          "https://bbomanagement.herokuapp.com/logout")
+          "http://bbomanagement.herokuapp.com/logout")
         .then(response => {
           location.reload();
           localStorage.clear()
