@@ -59,7 +59,7 @@
                 v-for="(item, i) in items"
                 :key="i"
               >
-                <v-list-item-title @click="summary(item.title)">{{ item.title }}</v-list-item-title>
+                <v-list-item-title @click="summary(item.title)" style="cursor: pointer;">{{ item.title }}</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -337,7 +337,7 @@ export default {
       return date >  new Date().toISOString().substr(0, 10)
     },
     retrieve(){
-      this.$axios.get("http://localhost:8000/petty_cash_request/" + this.user_id).then(response => {
+      this.$axios.get("petty_cash_request/" + this.user_id).then(response => {
         this.petty = response.data
         console.log(this.petty)
       })
@@ -348,7 +348,7 @@ export default {
     retrievePetty() {
       this.$axios
         .get(
-          "http://localhost:8000/prp/petty_cash_request/pending/" +
+          "prp/petty_cash_request/pending/" +
             this.user_id
         )
         .then(response => {
@@ -380,7 +380,7 @@ export default {
           total_amount: this.editedItem.total_amount,
           finance_mngr_assigned: this.user_finance
         }
-        this.$axios.post('http://localhost:8000/petty_cash_request/' + this.editedItem.id, params).then(response=>{
+        this.$axios.post('petty_cash_request/' + this.editedItem.id, params).then(response=>{
           this.retrieve()
           this.dialog = false
         })
@@ -399,7 +399,7 @@ export default {
 
     confirmDel() {
       this.$axios
-        .delete("http://localhost:8000/petty_cash_request/" + this.id)
+        .delete("petty_cash_request/" + this.id)
         .then(response => {
           this.retrieve();
         });
@@ -431,7 +431,7 @@ export default {
       };
       this.$axios
         .post(
-          "http://localhost:8000/prp/petty_cash_request/feedback/" + this.id,
+          "prp/petty_cash_request/feedback/" + this.id,
           parameter
         )
         .then(response => {
@@ -447,7 +447,7 @@ export default {
       };
       this.$axios
         .post(
-          "http://localhost:8000/prp/petty_cash_request/feedback/" + this.id,
+          "prp/petty_cash_request/feedback/" + this.id,
           parameter
         )
         .then(res => {
@@ -458,7 +458,7 @@ export default {
     getAllFeedback() {
       this.$axios
         .get(
-          "http://localhost:8000/prp/petty_cash_request/feedbacked/" +
+          "prp/petty_cash_request/feedbacked/" +
             this.user_id
         )
         .then(response => {

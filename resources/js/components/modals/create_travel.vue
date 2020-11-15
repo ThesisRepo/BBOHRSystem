@@ -36,6 +36,8 @@
               <v-col cols="12" sm="6" md="6">
                 <v-select
                   :items="coDepartment"
+                  :item-text="coDepartment => coDepartment.first_name + ' ' + coDepartment.last_name"
+                  item-value="id"
                   label="Employee to Cover*"
                   v-model="employee_to_cover"
                   prepend-icon=" mdi-account-outline"
@@ -199,7 +201,7 @@ export default {
         formData.append("employee_to_cover", this.employee_to_cover);
         formData.append("prp_assigned_id", 1);
         this.$axios
-          .post("http://localhost:8000/travel_auth_request", formData, config)
+          .post("travel_auth_request", formData, config)
           .then(res => {
             this.$parent.$parent.$parent.$parent.$parent.retrieve();
           });
@@ -220,8 +222,9 @@ export default {
     },
     getCoDepartment(){
       this.$axios.get("departments/employees").then (response => {
-        this.coDepartment = response.data
-        console.log('coDepartment', response.data)
+        response.data.forEach(element => {
+          this.coDepartment.push(element)
+        })
       })
     },
     removeData() {

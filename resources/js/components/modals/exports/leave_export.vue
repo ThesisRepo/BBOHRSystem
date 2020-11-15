@@ -9,7 +9,7 @@
                 <span style="font-size: 18px">SUMMARY OF LEAVE REQUEST:</span>
               </v-col>
               <span style="font-size: 15px">
-                {{start_date ? start_date : "No start date selected"}} / {{ end_date ? end_date : "END DATE" }}
+                {{start_date ? start_date : "No start date selected"}} / {{ end_date ? end_date : start_date }}
               </span>
             </v-card-title>
           </v-toolbar>
