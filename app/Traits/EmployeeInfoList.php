@@ -26,7 +26,7 @@ trait EmployeeInfoList
           //   'date_hired'=> '2018-3-6',
           //   // 'contact_number'=> 
           //   'civil_status'=> 'single',
-          //   'company_status'=> 'regular',
+          //   'company_status_id'=> '3',
           //   'birthday'=>'1984-4-13',
           //   'address'=> 'Sta. Cruz, Liloan, Cebu',
           //   // 'tin_number'=> 
@@ -59,7 +59,7 @@ trait EmployeeInfoList
           //   'date_hired'=> '2018-3-6',
           //   // 'contact_number'=> 
           //   'civil_status'=> 'single',
-          //   'company_status'=> 'regular',
+          //   'company_status_id'=> '3',
           //   'birthday'=>'1984-4-13',
           //   'address'=> 'Sta. Cruz, Liloan, Cebu',
           //   // 'tin_number'=> 
@@ -92,7 +92,7 @@ trait EmployeeInfoList
           //   'date_hired'=> '2018-3-6',
           //   // 'contact_number'=> 
           //   'civil_status'=> 'single',
-          //   'company_status'=> 'regular',
+          //   'company_status_id'=> 3,
           //   'birthday'=>'1984-4-13',
           //   'address'=> 'Sta. Cruz, Liloan, Cebu',
           //   // 'tin_number'=> 
@@ -125,7 +125,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -156,7 +156,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -187,7 +187,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -218,7 +218,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -249,7 +249,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -280,7 +280,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -312,7 +312,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -343,7 +343,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -374,7 +374,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -405,7 +405,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> ,
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -436,7 +436,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -467,7 +467,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -498,7 +498,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -529,7 +529,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -560,7 +560,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -591,7 +591,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> ,
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -622,7 +622,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> ,
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 
@@ -653,7 +653,7 @@ trait EmployeeInfoList
             'date_hired'=> '2018-3-6',
             // 'contact_number'=> 
             'civil_status'=> 'single',
-            'company_status'=> 'regular',
+            'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
             'address'=> 'Sta. Cruz, Liloan, Cebu',
             // 'tin_number'=> 

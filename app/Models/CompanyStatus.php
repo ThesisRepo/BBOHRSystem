@@ -11,7 +11,7 @@ class CompanyStatus extends Model
         'company_status_name'
     ];
     
-    // public function users() {
-    //     return $this->hasMany()
-    // }
+    public function users() {
+        return $this->hasMany(UserInformation::class);
+    }
 }
