@@ -63,7 +63,7 @@
                 v-for="(item, i) in items"
                 :key="i"
               >
-                <v-list-item-title @click="summary(item.title)">{{ item.title }}</v-list-item-title>
+                <v-list-item-title @click="summary(item.title)" style="cursor: pointer;">{{ item.title }}</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -203,11 +203,15 @@
                 </v-menu>
               </v-col>
               <v-col cols="12">
-                <v-text-field
+                <v-select
+                  :items="coDepartment"
+                  :item-text="coDepartment => coDepartment.first_name + ' ' + coDepartment.last_name"
+                  item-value="id"
+                  label="Employee to Cover*"
                   v-model="editedItem.employee_to_cover"
-                  label="Employee to Cover"
                   prepend-icon=" mdi-account-outline"
-                ></v-text-field>
+                  required
+                ></v-select>
               </v-col>
             </v-row>
           </v-container>
@@ -361,6 +365,7 @@ export default {
     travel: [],
     travelPending: [],
     feedbacks: [],
+    coDepartment: [],
     items: [
       { title: 'Approved Requests' },
       { title: 'Disapproved Requests' }
@@ -428,7 +433,9 @@ export default {
     },
     getCoDepartment(){
       this.$axios.get("departments/employees").then (response => {
-        console.log('coDepartment', console.log(response.data))
+        response.data.forEach(element => {
+          this.coDepartment.push(element)
+        })
       })
     },
     retrieve() {

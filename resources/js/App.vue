@@ -31,41 +31,7 @@ export default {
     },
     mounted(){
         this.listenForChanges();
-<<<<<<< HEAD
         console.log(this.user);
-         var params = {   
-            first_name: 'mddwwwion',
-            last_name: 'balugo',
-            email: 'ssdfefs@gail.com',
-            password: '123456789',
-            password_confirmation: '123456789',
-            role_id: 2,        
-            department_id :  1, 
-            shift_time_id: 1,
-            gender: 1,
-            company_number: '123456',
-            profile_url: null,
-            date_hired: '2020-12-12',
-            company_status:'regular',
-            birthday: '2020-10-10',
-            allowed_leave_number: 10,
-            address: 'paa, hilongos, leyte',
-            company_position: 1,            
-            civil_status: 'single',
-            contact_number: '012346481',
-            pag_ibig_number:'12313',
-            sss_number:'1563',
-            tin_number:'146512',
-            philhealth_number:'561'
-        }
-        this.$axios
-        .post(
-          "http://localhost:8000/hr/manage/user", params)
-        .then(response => {
-            console.log('dat', response)
-          if (response.data === 1) {
-=======
-        // console.log(this.user);
         //  var params = {   
         //     first_name: 'mddion',
         //     last_name: 'balugo',
@@ -97,7 +63,6 @@ export default {
         // .then(response => {
         //     console.log('dat', response)
         //   if (response.data === 1) {
->>>>>>> 99dee0fc82ea116adb96707c24563963e999c109
 
         //     this.$parent.$parent.getInfo()
         //     this.dialog = false
