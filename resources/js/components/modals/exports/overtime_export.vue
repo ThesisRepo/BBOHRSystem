@@ -20,7 +20,7 @@
                             </span>
                         </v-card-title>
                     </v-toolbar>
-                    <v-card-text>
+                    <v-card-text v-if="summary.length > 0">
                         <v-container>
                             <template>
                                 <v-data-table
@@ -34,6 +34,11 @@
                                 </v-data-table>
                             </template>
                         </v-container>
+                    </v-card-text>
+                    <v-card-text v-else>
+                        <center>
+                        <h1>No data</h1>
+                        </center>
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
@@ -54,9 +59,8 @@
                                     end_date
                             "
                         >
-                            <v-btn color="success" class="mr-8">
-                                Export as CSV
-                            </v-btn>
+                        <v-btn color="success" v-if="summary.length > 0" class="mr-8">Export as CSV</v-btn>
+                        <v-btn disabled v-else class="mr-8">Export as CSV</v-btn>
                         </vue-json-to-csv>
                     </v-card-actions>
                 </v-card>
@@ -89,14 +93,24 @@ export default {
         "vue-json-to-csv": VueJsonToCsv
     },
     methods: {
-        show(param1, param2) {
+        show(param1, param2, item) {
             this.start_date = param1;
             this.end_date = param2;
             let param = {
                 start_date: param1,
                 end_date: param2
             };
-            this.$axios
+            if(item === 'Approved Requests'){
+                this.$axios
+                .post(
+                    "http://localhost:8000/hr/summary/overtime_request",
+                    param
+                )
+                .then(response => {
+                    this.summary = response.data;
+                });
+            }else if(item === 'Disapproved Requests'){
+                this.$axios
                 .post(
                     "hr/summary/overtime_request",
                     param
@@ -104,6 +118,7 @@ export default {
                 .then(response => {
                     this.summary = response.data;
                 });
+            }
             this.dialog = true;
         }
     }

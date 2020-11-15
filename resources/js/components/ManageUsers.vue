@@ -174,22 +174,9 @@
                 </v-col>
                 <v-col cols="12" md="4">
                   <v-select
-                    :items="[
-                      'Customer Support Leader',
-                      'PHP DEV',
-                      'Reseller Support',
-                      'MKTG. Assistant',
-                      'Apps Developer',
-                      'Sales & Support',
-                      'Online Sales Associate',
-                      'Android DEV',
-                      'HR',
-                      'Accounting',
-                      'Admin Assistant',
-                      'Accounting Assistant',
-                      'Utility',
-                      'Marketing Staff'
-                    ]"
+                    :items="position"
+                    item-text="position_name"
+                    item-value="id"
                     label="Company Position*"
                     v-model="editItem.company_position"
                     prepend-icon="mdi-account"
@@ -238,14 +225,9 @@
                 </v-col>
                 <v-col cols="12" md="4">
                   <v-select
-                  :items="[
-                      'Accounting',
-                      'Admin',
-                      'CS(Sales)',
-                      'Marketing',
-                      'Apps',
-                      'PHP'
-                  ]"
+                  :items="departmentItem"
+                  item-text="department_name"
+                  item-value="id"
                   label="Department*"
                   v-model="editItem.department"
                   required
@@ -434,7 +416,9 @@ export default {
     genderItem: [
       {text: 'Female', value: 0},
       {text: 'Male', value: 1}
-    ]
+    ],
+    position: [],
+    departmentItem: []
   }),
   components: {
     ConfirmationDel,
@@ -445,6 +429,8 @@ export default {
     this.getAllPrp()
     this.getAllFinance();
     this.getShift()
+    this.getPosition()
+    this.getAllDepartment()
   },
   watch: {
     menu (val) {
@@ -489,6 +475,21 @@ export default {
     },
     getPrp(){
       console.log(this.editItem.selectPrp)
+    },
+
+    getPosition(){
+      this.$axios.get("http://localhost:8000/hr/company_position").then(response => {
+        response.data.forEach(el => {
+          this.position.push(el)
+        })
+      })
+    },
+    getAllDepartment() {
+      this.$axios.get("http://localhost:8000/departments").then(response => {
+        response.data.forEach(element => {
+          this.departmentItem.push(element)
+        })
+      });
     },
     update(){
       let params = {

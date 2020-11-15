@@ -252,7 +252,7 @@ class UserEloquent extends EloquentImplementation {
         $user = $this->model->create($user);
         $user->roles()->attach($roles);
         $user->userInformation()->create($user_info);
-        $user->userInformation->company_positions()->attach($company_position);
+        $user->userInformation->company_positions()->attach([$company_position]);
       DB::commit();
       return $user->load(['roles', 'userInformation']);
     }catch(\Exception $e) {
@@ -281,10 +281,12 @@ class UserEloquent extends EloquentImplementation {
       $relationship => function( $q) use( $table_name, $start_date, $end_date) {
         return $q->where( $table_name . '.created_at', '>', $start_date)
           ->where( $table_name .  '.created_at', '<', $end_date);
-      }
+      },
+      $relationship . '.' . 'user',
+      $relationship . '.' . 'leave_type',
+      $relationship . '.' . 'status'  
     ];
     $res = $this->findWith( $user_id, $new_relationship);
-
     return $res;
 
   }

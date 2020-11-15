@@ -175,4 +175,12 @@ class User extends Authenticatable implements MustVerifyEmail
     // public function recorded_travel_auth_requests() {
     //     return $this->morphedByMany(Requests\TravelAuthRequest::class, 'requestable');
     // }
+
+    public function calendar_events() {
+        return $this->hasMany(CalendarEvent::class);
+    }
+
+    public function event_types() {
+        return $this->hasMany(EventType::class);
+    }
 }

@@ -35,14 +35,7 @@
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-select
-                  :items="[
-                                        'Jocel Redotco Mendoza',
-                                        'Fenella Corinne Real Rosales',
-                                        'Cielo Fe Sasing',
-                                        'April Claire Chagas Podador',
-                                        'Nathaniel Cala Terdes',
-                                        'Carl Wyner Velasco Javier'
-                                    ]"
+                  :items="coDepartment"
                   label="Employee to Cover*"
                   v-model="employee_to_cover"
                   prepend-icon=" mdi-account-outline"
@@ -152,11 +145,14 @@ export default {
     files: [],
     user_id: localStorage.getItem("id"),
     val: [],
+    coDepartment: [],
     selectedFile: null
   }),
+  mounted() {
+    this.getCoDepartment()
+  },
   methods: {
     changeDate() {
-      console.log("sulod " + this.start_date);
       if (this.start_date !== null && this.start_date !== "") {
         let start = moment(String(this.start_date));
         let end = moment(String(this.end_date));
@@ -205,7 +201,6 @@ export default {
         this.$axios
           .post("travel_auth_request", formData, config)
           .then(res => {
-            console.log("Successfully Added", res.data);
             this.$parent.$parent.$parent.$parent.$parent.retrieve();
           });
         this.dialog = false;
@@ -222,6 +217,12 @@ export default {
     },
     disabledDates2(date) {
       return date > new Date(this.start_date).toISOString().substr(0, 10);
+    },
+    getCoDepartment(){
+      this.$axios.get("departments/employees").then (response => {
+        this.coDepartment = response.data
+        console.log('coDepartment', response.data)
+      })
     },
     removeData() {
       (this.destination = null),
