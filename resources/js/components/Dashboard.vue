@@ -23,7 +23,7 @@
             </div>
             <div class="col pa-3 py-4 red--text">
               <h5 class="text-truncate text-uppercase">Pending Request</h5>
-              <h1>{{ pending }}</h1>
+              <h1>{{ pending ? pending : 0 }}</h1>
             </div>
           </v-row>
         </v-card>
@@ -37,7 +37,7 @@
             </div>
             <div class="col pa-3 py-4 green--text">
               <h5 class="text-truncate text-uppercase">Approve Request</h5>
-              <h1>{{ approve }}</h1>
+              <h1>{{ approve ? approve : 0 }}</h1>
             </div>
           </v-row>
         </v-card>
