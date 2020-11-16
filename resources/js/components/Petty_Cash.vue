@@ -204,7 +204,7 @@
 
         <v-btn
           style="margin-left: 5%"
-          v-if="prp_assigned_id === 'No Prp assign'"
+          v-if="user_finance === 'No Prp assign'"
           color="light blue darken-2"
           rounded
           outlined
