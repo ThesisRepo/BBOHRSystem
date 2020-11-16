@@ -15,9 +15,11 @@ class CreateEventTypesTable extends Migration
     {
         Schema::create('event_types', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->UnsignedBigInteger('user_id');
             $table->string('event_name');
             $table->string('color');
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
