@@ -108,7 +108,7 @@ export default {
         let parameter = {
           user_id: this.user_id,
           shift_date: this.shift_date,
-        shift_time_id: this.shift_time,
+          shift_time_id: this.shift_time,
           reason: this.reason,
           prp_assigned_id: this.prp_assigned_id
         }

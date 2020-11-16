@@ -443,7 +443,7 @@ export default {
         .get("travel_auth_request/" + this.user_id)
         .then(response => {
           this.travel = response.data;
-          console.log(this.travel)
+          console.log('here', this.travel)
         })
         .catch(e => {
           console.log(e);

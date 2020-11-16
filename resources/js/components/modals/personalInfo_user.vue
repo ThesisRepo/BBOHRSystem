@@ -749,7 +749,6 @@ export default {
         return true;
       }
     },
-
     addNew() {
       console.log("sdfasdf", this.first_name);
       this.validate("lastname");
