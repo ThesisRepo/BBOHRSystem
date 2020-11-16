@@ -264,6 +264,18 @@
           ></v-text-field>
           <createTravel v-if="prp_assigned_id !== 'No Prp assign'"></createTravel>
           <v-btn
+          style="margin-left: 5%"
+          v-if="prp_assigned_id === 'No Prp assign'"
+          color="light blue darken-2"
+          rounded
+          outlined
+          dark
+          @click="messagePop()"
+        >
+          <v-icon>mdi-plus</v-icon>
+          <v-toolbar-title style="font-size: 16px">Make Request</v-toolbar-title>
+        </v-btn>
+          <!-- <v-btn
           v-if="prp_assigned_id === 'No Prp assign'"
           color="light blue darken-2"
           outlined
@@ -273,7 +285,7 @@
         <v-toolbar-title style="font-size: 16px"
           >Make Request</v-toolbar-title
         >
-        </v-btn>
+        </v-btn> -->
 
         <Reminder
         ref="reminder"
