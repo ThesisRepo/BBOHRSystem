@@ -6,7 +6,7 @@
           dark
           background-color="primary"
           fixed-tabs
-          v-if="(user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr')) && !user_type.includes('finance mngr')">
+          v-if="(user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr'))">
           <v-tabs-slider></v-tabs-slider>
           <v-tab @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
           <v-tab @click="requests = false, employees = true, feedback = false">Employees Requests</v-tab>
@@ -17,7 +17,7 @@
     <!-- Feedback -->
     <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" :search="search" class="elevation-3">
       <template v-slot:top>
-        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat v-if="(user_type.includes('hr mngr') || user_type.includes('general mngr'))">
           <v-col class="mt-8">
             <v-menu
               :close-on-content-click="false"
@@ -69,6 +69,17 @@
           </v-menu>
           <v-divider class="mx-4" vertical></v-divider>
           <v-spacer></v-spacer>
+          <v-text-field
+            v-model="search"
+            clearable
+            flat
+            solo-inverted
+            hide-details
+            prepend-inner-icon="mdi-magnify"
+            label="Search"
+          ></v-text-field>
+        </v-toolbar>
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat v-if="((user_type.includes('prp emp') || user_type.includes('finance mngr')) && !user_type.includes('hr mngr'))">
           <v-text-field
             v-model="search"
             clearable
@@ -275,17 +286,6 @@
           <v-icon>mdi-plus</v-icon>
           <v-toolbar-title style="font-size: 16px">Make Request</v-toolbar-title>
         </v-btn>
-          <!-- <v-btn
-          v-if="prp_assigned_id === 'No Prp assign'"
-          color="light blue darken-2"
-          outlined
-          @click="messagePop()"
-        >
-        <v-icon>mdi-plus</v-icon>
-        <v-toolbar-title style="font-size: 16px"
-          >Make Request</v-toolbar-title
-        >
-        </v-btn> -->
 
         <Reminder
         ref="reminder"

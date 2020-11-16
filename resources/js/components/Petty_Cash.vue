@@ -464,7 +464,7 @@ export default {
         )
         .then(response => {
           console.log(response.data)
-          // this.feedbacks = response.data;
+          this.feedbacks = response.data;
         });
     },
     getColor(status) {
