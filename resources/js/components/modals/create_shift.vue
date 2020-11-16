@@ -73,7 +73,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red" dark @click="dialog = false"
-            >Close</v-btn
+            >Cancel</v-btn
           >
           <v-btn color="success" @click="dialog = false, createShift()">Save</v-btn>
         </v-card-actions>
@@ -108,7 +108,7 @@ export default {
         let parameter = {
           user_id: this.user_id,
           shift_date: this.shift_date,
-        shift_time_id: this.shift_time,
+          shift_time_id: this.shift_time,
           reason: this.reason,
           prp_assigned_id: this.prp_assigned_id
         }

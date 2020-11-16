@@ -73,7 +73,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red" dark @click="dialog = false">
-            Close
+            Cancel
           </v-btn>
           <v-btn color="success"  @click="createBudget()">
             Save
