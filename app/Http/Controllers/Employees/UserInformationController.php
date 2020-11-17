@@ -167,4 +167,17 @@ class UserInformationController extends Controller
         $res = $this->user->getCountOfRequests($id, 1);
         return $res;
     }
+    public function getEventTypes($user_id) {
+        $res = $this->user->with('event_types')->find($user_id);
+        return $res;
+    }
+    
+    public function addEventTypes(Request $request, $user_id) {
+        $data = [
+            'event_name' => $request->event_name,
+            'color' => $request->color,
+        ];
+        $res = $this->user->find($user_id)->event_types()->create($data);
+        return $res;
+    }
 }
