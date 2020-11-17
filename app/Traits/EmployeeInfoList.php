@@ -36,7 +36,17 @@ trait EmployeeInfoList
           //   // 'allowed_leave_number'=>
           // ],
           'user_roles' => [1, 2, 5],
-          'user_company_positions' => null
+          'user_company_positions' => null,
+          'event_types' => [
+            [
+              'event_name' => 'holiday',
+              'color' => 'red'
+            ],
+            [
+              'event_name' => 'work',
+              'color' => 'yellow'
+            ]
+          ]
           // 'user_company_positions' => [15]
         ],
         [
@@ -69,7 +79,17 @@ trait EmployeeInfoList
           //   // 'allowed_leave_number'=>
           // ],
           'user_roles' => [1, 2, 4],
-          'user_company_positions' => null
+          'user_company_positions' => null,
+          'event_types' => [
+            [
+              'event_name' => 'holiday',
+              'color' => 'red'
+            ],
+            [
+              'event_name' => 'work',
+              'color' => 'yellow'
+            ]
+          ]
           // 'user_company_positions' => [15]
         ],
         [
@@ -102,7 +122,17 @@ trait EmployeeInfoList
           //   // 'allowed_leave_number'=>
           // ],
           'user_roles' => [1,2,3],
-          'user_company_positions' => null
+          'user_company_positions' => null,
+          'event_types' => [
+            [
+              'event_name' => 'holiday',
+              'color' => 'red'
+            ],
+            [
+              'event_name' => 'work',
+              'color' => 'yellow'
+            ]
+          ]
 
           // 'user_company_positions' => [15]
         ],
@@ -135,7 +165,17 @@ trait EmployeeInfoList
             // 'allowed_leave_number'=>
           ],
           'user_roles' => [1,2],
-          'user_company_positions' => [15]
+          'user_company_positions' => [15],
+          'event_types' => [
+            [
+              'event_name' => 'holiday',
+              'color' => 'red'
+            ],
+            [
+              'event_name' => 'work',
+              'color' => 'yellow'
+            ]
+          ]
         ],
         [
           'user' => [
@@ -166,7 +206,17 @@ trait EmployeeInfoList
             // 'allowed_leave_number'=>
           ],
           'user_roles' => [1,2],
-          'user_company_positions' => [11]
+          'user_company_positions' => [11],
+          'event_types' => [
+            [
+              'event_name' => 'holiday',
+              'color' => 'red'
+            ],
+            [
+              'event_name' => 'work',
+              'color' => 'yellow'
+            ]
+          ]
         ],
         [
           'user' => [
@@ -197,7 +247,17 @@ trait EmployeeInfoList
             // 'allowed_leave_number'=>
           ],
           'user_roles' => [1,2],
-          'user_company_positions' => [2]
+          'user_company_positions' => [2],
+          'event_types' => [
+            [
+              'event_name' => 'holiday',
+              'color' => 'red'
+            ],
+            [
+              'event_name' => 'work',
+              'color' => 'yellow'
+            ]
+          ]
         ],
         [
           'user' => [
@@ -228,7 +288,17 @@ trait EmployeeInfoList
             // 'allowed_leave_number'=>
           ],
           'user_roles' => [1],
-          'user_company_positions' => [13]
+          'user_company_positions' => [13],
+          'event_types' => [
+            [
+              'event_name' => 'holiday',
+              'color' => 'red'
+            ],
+            [
+              'event_name' => 'work',
+              'color' => 'yellow'
+            ]
+          ]
         ],
         [
           'user' => [
@@ -259,7 +329,17 @@ trait EmployeeInfoList
             // 'allowed_leave_number'=>
           ],
           'user_roles' => [1],
-          'user_company_positions' => [12]
+          'user_company_positions' => [12],
+          'event_types' => [
+            [
+              'event_name' => 'holiday',
+              'color' => 'red'
+            ],
+            [
+              'event_name' => 'work',
+              'color' => 'yellow'
+            ]
+          ]
         ],
         [
           'user' => [
@@ -290,7 +370,17 @@ trait EmployeeInfoList
             // 'allowed_leave_number'=>
           ],
           'user_roles' => [1],
-          'user_company_positions' => [10]
+          'user_company_positions' => [10],
+          'event_types' => [
+            [
+              'event_name' => 'holiday',
+              'color' => 'red'
+            ],
+            [
+              'event_name' => 'work',
+              'color' => 'yellow'
+            ]
+          ]
 
         ],   
         [
@@ -322,7 +412,17 @@ trait EmployeeInfoList
             // 'allowed_leave_number'=>
           ],
           'user_roles' => [1],
-          'user_company_positions' => [4]
+          'user_company_positions' => [4],
+          'event_types' => [
+            [
+              'event_name' => 'holiday',
+              'color' => 'red'
+            ],
+            [
+              'event_name' => 'work',
+              'color' => 'yellow'
+            ]
+          ]
         ],
         [
           'user' => [
@@ -353,7 +453,17 @@ trait EmployeeInfoList
             // 'allowed_leave_number'=>
           ],
           'user_roles' => [1],
-          'user_company_positions' => [1]
+          'user_company_positions' => [1],
+          'event_types' => [
+            [
+              'event_name' => 'holiday',
+              'color' => 'red'
+            ],
+            [
+              'event_name' => 'work',
+              'color' => 'yellow'
+            ]
+          ]
         ],
         [
           'user' => [
@@ -384,7 +494,17 @@ trait EmployeeInfoList
             // 'allowed_leave_number'=>
           ],
           'user_roles' => [1],
-          'user_company_positions' => [5]
+          'user_company_positions' => [5],
+          'event_types' => [
+            [
+              'event_name' => 'holiday',
+              'color' => 'red'
+            ],
+            [
+              'event_name' => 'work',
+              'color' => 'yellow'
+            ]
+          ]
         ],
         [
           'user' => [
@@ -415,7 +535,17 @@ trait EmployeeInfoList
             // 'allowed_leave_number'=>
           ],
           'user_roles' => [1],
-          'user_company_positions' => [11]
+          'user_company_positions' => [11],
+          'event_types' => [
+            [
+              'event_name' => 'holiday',
+              'color' => 'red'
+            ],
+            [
+              'event_name' => 'work',
+              'color' => 'yellow'
+            ]
+          ]
         ],
         [
           'user' => [
@@ -446,7 +576,17 @@ trait EmployeeInfoList
             // 'allowed_leave_number'=>
           ],
           'user_roles' => [1],
-          'user_company_positions' => [3]
+          'user_company_positions' => [3],
+          'event_types' => [
+            [
+              'event_name' => 'holiday',
+              'color' => 'red'
+            ],
+            [
+              'event_name' => 'work',
+              'color' => 'yellow'
+            ]
+          ]
         ],
         [
           'user' => [
@@ -477,7 +617,17 @@ trait EmployeeInfoList
             // 'allowed_leave_number'=>
           ],
           'user_roles' => [1],
-          'user_company_positions' => [3]
+          'user_company_positions' => [3],
+          'event_types' => [
+            [
+              'event_name' => 'holiday',
+              'color' => 'red'
+            ],
+            [
+              'event_name' => 'work',
+              'color' => 'yellow'
+            ]
+          ]
         ],
         [
           'user' => [
@@ -508,7 +658,17 @@ trait EmployeeInfoList
             // 'allowed_leave_number'=>
           ],
           'user_roles' => [1],
-          'user_company_positions' => [2]
+          'user_company_positions' => [2],
+          'event_types' => [
+            [
+              'event_name' => 'holiday',
+              'color' => 'red'
+            ],
+            [
+              'event_name' => 'work',
+              'color' => 'yellow'
+            ]
+          ]
         ],
         [
           'user' => [
@@ -539,7 +699,17 @@ trait EmployeeInfoList
             // 'allowed_leave_number'=>
           ],
           'user_roles' => [1],
-          'user_company_positions' => [15]
+          'user_company_positions' => [15],
+          'event_types' => [
+            [
+              'event_name' => 'holiday',
+              'color' => 'red'
+            ],
+            [
+              'event_name' => 'work',
+              'color' => 'yellow'
+            ]
+          ]
         ],
         [
           'user' => [
@@ -570,7 +740,17 @@ trait EmployeeInfoList
             // 'allowed_leave_number'=>
           ],
           'user_roles' => [1],
-          'user_company_positions' => [14]
+          'user_company_positions' => [14],
+          'event_types' => [
+            [
+              'event_name' => 'holiday',
+              'color' => 'red'
+            ],
+            [
+              'event_name' => 'work',
+              'color' => 'yellow'
+            ]
+          ]
         ],
         [
           'user' => [
@@ -601,7 +781,17 @@ trait EmployeeInfoList
             // 'allowed_leave_number'=>
           ],
           'user_roles' => [1],
-          'user_company_positions' => [2]
+          'user_company_positions' => [2],
+          'event_types' => [
+            [
+              'event_name' => 'holiday',
+              'color' => 'red'
+            ],
+            [
+              'event_name' => 'work',
+              'color' => 'yellow'
+            ]
+          ]
         ],
         [
           'user' => [
@@ -632,7 +822,17 @@ trait EmployeeInfoList
             // 'allowed_leave_number'=>
           ],
           'user_roles' => [1],
-          'user_company_positions' => [2]
+          'user_company_positions' => [2],
+          'event_types' => [
+            [
+              'event_name' => 'holiday',
+              'color' => 'red'
+            ],
+            [
+              'event_name' => 'work',
+              'color' => 'yellow'
+            ]
+          ]
         ],
         [
           'user' => [
@@ -663,7 +863,17 @@ trait EmployeeInfoList
             // 'allowed_leave_number'=>
           ],
           'user_roles' => [1],
-          'user_company_positions' => [2]
+          'user_company_positions' => [2],
+          'event_types' => [
+            [
+              'event_name' => 'holiday',
+              'color' => 'red'
+            ],
+            [
+              'event_name' => 'work',
+              'color' => 'yellow'
+            ]
+          ]
         ],
     ];
   } 

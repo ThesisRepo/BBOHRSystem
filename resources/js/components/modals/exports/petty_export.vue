@@ -16,7 +16,7 @@
                 : "No start date selected"
                 }}
                 /
-                {{ end_date ? end_date : "END DATE" }}
+                {{ end_date ? end_date : start_date }}
               </span>
             </v-card-title>
           </v-toolbar>

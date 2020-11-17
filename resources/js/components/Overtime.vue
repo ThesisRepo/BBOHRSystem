@@ -65,7 +65,7 @@
                 v-for="(item, i) in items"
                 :key="i"
               >
-                <v-list-item-title @click="summary(item.title)">{{ item.title }}</v-list-item-title>
+                <v-list-item-title @click="summary(item.title)" style="cursor: pointer;">{{ item.title }}</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -220,15 +220,16 @@
         ></createOvertime>
 
         <v-btn
+          style="margin-left: 5%"
           v-if="prp_assigned_id === 'No Prp assign'"
           color="light blue darken-2"
+          rounded
           outlined
+          dark
           @click="messagePop()"
         >
-        <v-icon>mdi-plus</v-icon>
-        <v-toolbar-title style="font-size: 16px"
-          >Make Request</v-toolbar-title
-        >
+          <v-icon>mdi-plus</v-icon>
+          <v-toolbar-title style="font-size: 16px">Make Request</v-toolbar-title>
         </v-btn>
 
           <Reminder

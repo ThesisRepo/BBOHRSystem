@@ -63,7 +63,7 @@
                 v-for="(item, i) in items"
                 :key="i"
               >
-                <v-list-item-title @click="summary(item.title)">{{ item.title }}</v-list-item-title>
+                <v-list-item-title @click="summary(item.title)" style="cursor: pointer;">{{ item.title }}</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -203,11 +203,15 @@
                 </v-menu>
               </v-col>
               <v-col cols="12">
-                <v-text-field
+                <v-select
+                  :items="coDepartment"
+                  :item-text="coDepartment => coDepartment.first_name + ' ' + coDepartment.last_name"
+                  item-value="id"
+                  label="Employee to Cover*"
                   v-model="editedItem.employee_to_cover"
-                  label="Employee to Cover"
                   prepend-icon=" mdi-account-outline"
-                ></v-text-field>
+                  required
+                ></v-select>
               </v-col>
             </v-row>
           </v-container>
@@ -260,6 +264,18 @@
           ></v-text-field>
           <createTravel v-if="prp_assigned_id !== 'No Prp assign'"></createTravel>
           <v-btn
+          style="margin-left: 5%"
+          v-if="prp_assigned_id === 'No Prp assign'"
+          color="light blue darken-2"
+          rounded
+          outlined
+          dark
+          @click="messagePop()"
+        >
+          <v-icon>mdi-plus</v-icon>
+          <v-toolbar-title style="font-size: 16px">Make Request</v-toolbar-title>
+        </v-btn>
+          <!-- <v-btn
           v-if="prp_assigned_id === 'No Prp assign'"
           color="light blue darken-2"
           outlined
@@ -269,7 +285,7 @@
         <v-toolbar-title style="font-size: 16px"
           >Make Request</v-toolbar-title
         >
-        </v-btn>
+        </v-btn> -->
 
         <Reminder
         ref="reminder"
@@ -361,6 +377,7 @@ export default {
     travel: [],
     travelPending: [],
     feedbacks: [],
+    coDepartment: [],
     items: [
       { title: 'Approved Requests' },
       { title: 'Disapproved Requests' }
@@ -428,7 +445,9 @@ export default {
     },
     getCoDepartment(){
       this.$axios.get("departments/employees").then (response => {
-        console.log('coDepartment', console.log(response.data))
+        response.data.forEach(element => {
+          this.coDepartment.push(element)
+        })
       })
     },
     retrieve() {
@@ -436,7 +455,7 @@ export default {
         .get("travel_auth_request/" + this.user_id)
         .then(response => {
           this.travel = response.data;
-          console.log(this.travel)
+          console.log('here', this.travel)
         })
         .catch(e => {
           console.log(e);
