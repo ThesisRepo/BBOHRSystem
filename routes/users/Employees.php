@@ -186,7 +186,10 @@ Route::delete('travel_auth_request/{id}','Requests\TravelAuthRequestController@d
 
 
 Route::get('user_info/event_types/{user_id}','UserInformationController@getEventTypes')->name('user_info.event_type.show');
+
 Route::post('user_info/event_types/{user_id}','UserInformationController@addEventTypes')->name('user_info.event_type.store');
+
 Route::post('event_types/{id}','EventTypeController@update')->name('event_type.update');
+
 Route::delete('event_types/{user_id}','EventTypeController@delete')->name('event_type.delete');
 
