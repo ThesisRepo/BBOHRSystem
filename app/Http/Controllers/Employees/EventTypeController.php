@@ -17,6 +17,7 @@ class EventTypeController extends Controller
         $this->middleware(['auth', 'verify.employee']);  
         $this->event_type = $event_type;
     }
+    
     public function index() {
         return $this->event_type->all();
     }

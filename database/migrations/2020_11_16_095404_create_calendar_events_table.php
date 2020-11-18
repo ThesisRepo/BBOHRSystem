@@ -15,6 +15,7 @@ class CreateCalendarEventsTable extends Migration
     {
         Schema::create('calendar_events', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
             $table->string('title');
             $table->string('content');
             $table->dateTime('start_date');
@@ -22,6 +23,7 @@ class CreateCalendarEventsTable extends Migration
             $table->boolean('is_private')->default(1);
             $table->unsignedBigInteger('event_type_id');
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('event_type_id')->references('id')->on('event_types');
         });
     }

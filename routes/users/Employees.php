@@ -193,3 +193,4 @@ Route::post('event_types/{id}','EventTypeController@update')->name('event_type.u
 
 Route::delete('event_types/{user_id}','EventTypeController@delete')->name('event_type.delete');
 
+Route::get('events','CalendarEventController@show')->name('events.show');
