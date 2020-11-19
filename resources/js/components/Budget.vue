@@ -178,7 +178,7 @@
     ></ConfirmationDel>
 
     <v-data-table
-      v-if="requests && (!user_type.includes('hr mngr') || !user_type.includes('prp emp') || user_type.includes('prp emp'))"
+      v-if="requests"
       :headers="headers"
       :items="budget"
       :search="search"
@@ -203,7 +203,7 @@
 
         <v-btn
           style="margin-left: 5%"
-          v-if="user_finance === 'No Prp assign'"
+          v-if="user_finance === 'No Finance assign'"
           color="light blue darken-2"
           rounded
           outlined
@@ -349,6 +349,7 @@ export default {
             this.user_id
         )
         .then(response => {
+          console.log('budgetadasdsd', response.data)
           this.budgetPending = response.data;
         })
         .catch(e => {
@@ -469,8 +470,10 @@ export default {
             this.user_id
         )
         .then(response => {
-          console.log(response.data)
-          this.feedbacks = response.data;
+          this.feedbacks = response.data.feedbacked_budget_requests
+          // this.feedbacks.forEach(element => {
+          //   console.log('feedbacksarray', element)
+          // })
         });
     },
     getColor(status) {

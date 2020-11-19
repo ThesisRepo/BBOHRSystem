@@ -76,7 +76,7 @@
           ></v-text-field>
         </v-toolbar>
         
-        <v-toolbar class="mb-2" color="blue darken-1" dark flat v-if="((user_type.includes('prp emp') || user_type.includes('finance mngr')) && !user_type.includes('hr mngr'))">
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat v-if="((user_type.includes('prp emp') || user_type.includes('finance mngr')) && (!user_type.includes('hr mngr') && !user_type.includes('general mngr')))">
           <v-text-field
             v-model="search"
             clearable
@@ -192,7 +192,7 @@
     ></ConfirmationDel>
 
     <v-data-table
-      v-if="requests && (!user_type.includes('hr mngr') || !user_type.includes('finance mngr') || !user_type.includes('prp emp'))"
+      v-if="requests"
       :headers="headers"
       :items="shifts"
       :search="search"
@@ -280,6 +280,7 @@ export default {
     ],
     headersEmp: [
       { text: "REQUESTER", align: "start", value: "user.first_name" },
+      { text: "REASON", value: "reason" },
       { text: "SHIFT DATE", value: "shift_date" },
       { text: "SHIFT TIME", value: "shift_time.shift_time_name" },
       { text: "APPROVER", value: "approver_role.role_name" },
@@ -288,6 +289,7 @@ export default {
     ],
     headersFeed: [
       { text: "REQUESTER", align: "start", value: "user.first_name" },
+      { text: "REASON", value: "reason" },
       { text: "SHIFT DATE", value: "shift_date" },
       { text: "SHIFT TIME", value: "shift_time.shift_time_name" },
       { text: "APPROVER", value: "approver_role.role_name" },

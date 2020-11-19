@@ -182,7 +182,7 @@
     ></ConfirmationDel>
 
     <!-- MyRequests -->
-    <v-data-table v-if="requests && (!user_type.includes('hr mngr') || !user_type.includes('prp emp') || user_type.includes('prp emp'))" :headers="headers" :items="petty" :search="search" class="elevation-3">
+    <v-data-table v-if="requests" :headers="headers" :items="petty" :search="search" class="elevation-3">
       <template v-slot:top>
       <v-toolbar class="mb-2" color="blue darken-1" dark flat>
         <v-toolbar-title class="col pa-3 py-4 white--text"  style="font-size:16px "
@@ -204,7 +204,7 @@
 
         <v-btn
           style="margin-left: 5%"
-          v-if="user_finance === 'No Prp assign'"
+          v-if="user_finance === 'No Finance assign'"
           color="light blue darken-2"
           rounded
           outlined
@@ -463,8 +463,8 @@ export default {
             this.user_id
         )
         .then(response => {
-          console.log(response.data)
-          this.feedbacks = response.data;
+          console.log('budgetFeedback', response.data)
+          this.feedbacks = response.data.feedbacked_petty_cash_requests;
         });
     },
     getColor(status) {

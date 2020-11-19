@@ -83,7 +83,7 @@
           ></v-text-field>
         </v-toolbar>
         
-        <v-toolbar class="mb-2" color="blue darken-1" dark flat v-if="((user_type.includes('prp emp') || user_type.includes('finance mngr')) && !user_type.includes('hr mngr'))">
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat v-if="((user_type.includes('prp emp') || user_type.includes('finance mngr')) && (!user_type.includes('hr mngr') && !user_type.includes('general mngr')))">
           <v-text-field
             v-model="search"
             clearable
@@ -242,7 +242,7 @@
     ></ConfirmationDel>
 
     <v-data-table
-      v-if="requests && (!user_type.includes('hr mngr') || !user_type.includes('finance mngr') || !user_type.includes('prp emp'))"
+      v-if="requests"
       :headers="headers"
       :items="request"
       :search="search"
