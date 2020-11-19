@@ -73,7 +73,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red" dark @click="dialog = false"
-            >Close</v-btn
+            >Cancel</v-btn
           >
           <v-btn color="success" @click="dialog = false, createShift()">Save</v-btn>
         </v-card-actions>

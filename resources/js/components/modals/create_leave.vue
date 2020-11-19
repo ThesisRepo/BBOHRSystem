@@ -114,7 +114,7 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="red" dark @click="hideModal()">Close</v-btn>
+                    <v-btn color="red" dark @click="hideModal()">Cancel</v-btn>
                     <v-btn color="success" @click="createRequest()">Save</v-btn>
                 </v-card-actions>
             </v-card>
