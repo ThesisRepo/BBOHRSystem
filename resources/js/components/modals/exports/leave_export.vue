@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row justify="center">
-      <v-dialog v-model="dialog" persistent max-width="650px">
+      <v-dialog v-model="dialog" persistent max-width="750px">
         <v-card>
           <v-toolbar class="mb-2" color="blue darken-1" dark flat>
             <v-card-title>
@@ -65,9 +65,9 @@ export default {
       {
         text: "REQUESTER",
         align: "start",
-        value: "user_id"
+        value: "user.email"
       },
-      { text: "TYPE OF LEAVE", value: "leave_type_id" },
+      { text: "TYPE OF LEAVE", value: "leave_type.leave_type_name" },
       { text: "TOTAL DAY/S LEAVE", value: "number_of_days" },
       { text: "START DATE", value: "start_date" },
       { text: "END DATE", value: "end_date" },
@@ -90,8 +90,9 @@ export default {
         this.$axios
           .post("http://localhost:8000/hr/summary/leave_request", param)
           .then(response => {
-              this.summary1 = response.data;
-              this.summary1.feedbacked_leave_requests.forEach(el => {
+              this.summary1 = response.data.feedbacked_leave_requests;
+              console.log('approve', this.summary1)
+              this.summary1.forEach(el => {
                 this.summary.push(el)
               });
           });  
@@ -99,7 +100,7 @@ export default {
         this.$axios
           .post("http://localhost:8000/hr/summary/leave_request", param)
           .then(response => {
-              this.summary1 = response.data;
+              this.summary1 = response.data.feedbacked_leave_requests;
               this.summary1.feedbacked_leave_requests.forEach(el => {
                 this.summary.push(el)
               });
