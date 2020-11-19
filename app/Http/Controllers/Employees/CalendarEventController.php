@@ -17,8 +17,43 @@ class CalendarEventController extends Controller
         $this->calendar_event = $calendar_event;
     }
 
-    public function show($user_id) {
-        $res = $this->calendar_event->where('user_id', $user_id);
+    public function getByUser($user_id) {
+        $relationship = 'event_type';
+        $res = $this->calendar_event->whereWith('user_id', $user_id, $relationship)->orWhere('is_private', 0);
         return $res;
     }
+
+    public function store(Request $request) {
+        $data = [
+            'user_id' => $request->user_id,
+            'title' => $request->title,
+            'content' => $request->content,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'is_private' => $request->is_private,
+            'event_type_id' => $request->event_type_id
+        ];
+        $res = $this->calendar_event->create($data);
+        return $res;
+    }
+
+    public function update(Request $request, $id) {
+        $data = [
+            'user_id' => $request->user_id,
+            'title' => $request->title,
+            'content' => $request->content,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'is_private' => $request->is_private,
+            'event_type_id' => $request->event_type_id
+        ];
+        $res = $this->calendar_event->find($id)->update($data);
+        return $res;
+    }
+
+    public function delete($id) {
+        $res = $this->calendar_event->delete($data);
+        return $res;
+    }
+
 }
