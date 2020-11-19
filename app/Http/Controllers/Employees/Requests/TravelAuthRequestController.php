@@ -33,7 +33,7 @@ class TravelAuthRequestController extends RequestBaseController
     }
 
     public function show( $id) {
-        $res = $this->showRequest('user_id', $id, ['approver_role', 'status', 'user.userInformation']);
+        $res = $this->showRequest('user_id', $id, ['approver_role', 'status', 'user.userInformation' , 'employee_to_cover']);
         return $res;
     }
     
@@ -54,7 +54,7 @@ class TravelAuthRequestController extends RequestBaseController
             'start_date'=> $request->start_date,
             'end_date'=> $request->end_date,
             'emergency_contact'=> $request->emergency_contact,
-            'employee_to_cover'=> $request->employee_to_cover,
+            'employee_to_cover_id'=> $request->employee_to_cover,
             'file_uri'=> $image,
             'approver_role_id'=> $this->nextApproverId($request->user_id),
             'status_id'=> 1

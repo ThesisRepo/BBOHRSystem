@@ -57,7 +57,7 @@ export default {
           prp_assigned_id: this.selectPrp
         };
         this.$axios
-          .post("http://localhost:8000/prp/" + this.user_id, parameter)
+          .post("prp/" + this.user_id, parameter)
           .then(res => {
             this.prp.forEach(element => {
               if (element.id === this.selectPrp) {
@@ -90,7 +90,7 @@ export default {
     },
     getAllPrp() {
       this.$axios
-        .get("http://localhost:8000/prp/" + this.user_id)
+        .get("prp/" + this.user_id)
         .then(response => {
           this.prp = response.data;
         });

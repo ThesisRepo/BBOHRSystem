@@ -68,27 +68,6 @@
 
 </template>
 <style>
-/* v-app {
-  overflow-y: hidden !important;
-} */
-.v-application--wrap {
-  overflow-y: scroll; /* Add the ability to scroll */
-}
-
-/* Hide scrollbar for Chrome, Safari and Opera */
-.v-application--wrap::-webkit-scrollbar {
-    display: none;
-}
-
-/* v-app-bar {
-  overflow: hidden !important;
-} */
-.v-list-item__title {
-  font-size: 15px;
-}
-/* .v-application--wrap{
-
-} */
 </style>
 
 <script>
@@ -116,7 +95,7 @@ export default {
   }),
   mounted(){
     console.log('gawas', this.user_pic, this.user_type, this.user_name)
-    if(this.user_type.includes('general mngr') || this.user_type.includes('hr mngr')){
+    if(this.user_type.includes('hr mngr')){
       this.employ.splice(this.employ.length-1, 0, { icon: "mdi-account-group", text: "Manage Users", route: "/ManageUsers" })
     }
   },
@@ -135,11 +114,11 @@ export default {
     logout() {
        this.$axios
         .post(
-          "http://localhost:8000/logout")
+          "logout")
         .then(response => {
           location.reload();
           localStorage.clear()
-          window.location.replace("http://localhost:8000");
+          window.location.replace("/");
           // localStorage.removeItem('assigned_prp_id')
           // localStorage.removeItem('user_finance')
           // localStorage.removeItem('prp_assign')

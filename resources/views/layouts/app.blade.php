@@ -6,18 +6,18 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" href="{!! asset('images/bbo.ico') !!}"/>
+    <link rel="icon" href="{!! asset('img/logoCircle.ico') !!}"/>
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="/js/app.js" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="/css/app.css" rel="stylesheet">
     <!-- <link href="{{ asset('css/form.css') }}" rel="stylesheet"> -->
 </head>
 @yield('style')
@@ -36,13 +36,13 @@
 #name {
     height:500px;
 }
-@media screen and (max-width: 800px) {
+/* @media screen and (max-width: 800px) {
     #name {
     height: 300px;
   }
-}
+} */
 #companyName, #appName{
-    font-size:50px;
+    font-size:250%;
 }
 #companyName{
     color:#3490dc
@@ -58,7 +58,7 @@
             <div class="row">
                 <div class="col-md-5" >
                     <main class="py-4" >
-                        <div class="container-fluid" id="name"  >
+                        <div  id="name">
                             <div class="row justify-content-center">
                                 <div class="col-md-9" >
                                     <!-- <img  src="{{url('img/logo.png')}}" width="400" height="auto" class="mb-3" alt="logo"> -->
@@ -70,7 +70,7 @@
                         </div>
                     </main>
                 </div>
-                <div id="app" class="col-md-7">
+                <div class="col-md-7">
                     <main class="py-4">
                         @yield('content')
                     </main>

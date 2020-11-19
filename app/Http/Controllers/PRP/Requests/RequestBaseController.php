@@ -33,7 +33,7 @@ class RequestBaseController extends Controller
         }else {
             $res = $this->model->getPendingRequestForApproverAdmin($id, $max_role, $relationship);            
         }
-
+        // dd($res, $user->toArray());getPendingRequestForApproverAdmin
         return $res;
 
     }
@@ -75,7 +75,6 @@ class RequestBaseController extends Controller
         $max_role = $this->request_service->getMaxRoles($user->roles);
         $current_request = $this->model->find($id);   
         $next_approver = $this->request_service->getNextApprover($max_role);
-
         if($current_request->approver_role_id == $max_role || ($current_request->approver_role_id == $next_approver && $current_request->status_id == 1)) {
             // if($request->status_id == 2) {
                 if($request->status_id == 3){

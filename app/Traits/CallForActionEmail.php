@@ -19,12 +19,12 @@ trait CallForActionEmail {
       'user' => $activation_data
     ];
     $to = $user_email;
-    $this->emailTemplate($data, $user);
-
+   $this->emailTemplate($data, $user);
   }      
 
   public function emailTemplate($data, $user) {
     $job = (new UserAccRegister($data, $user))->delay(Carbon::now()->addSeconds(5));
     dispatch($job);
   }
+
 }

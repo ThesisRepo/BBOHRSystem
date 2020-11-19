@@ -382,7 +382,7 @@ export default {
   methods: {
     getAllPrp() {
       this.$axios
-        .get("http://localhost:8000/prp/" + this.user_id)
+        .get("prp/" + this.user_id)
         .then(response => {
           console.log(response.data);
           this.prp = response.data;
@@ -390,13 +390,13 @@ export default {
     },
     getAllFinance() {
       this.$axios
-        .get("http://localhost:8000/finance/" + this.user_id)
+        .get("finance/" + this.user_id)
         .then(response => {
           this.finance = response.data;
         });
     },
     getShift() {
-      this.$axios.get("http://localhost:8000/shift_time").then(response => {
+      this.$axios.get("shift_time").then(response => {
         console.log("hi", response);
         this.sTime = response.data;
       });
@@ -460,7 +460,7 @@ export default {
         company_number: this.company_number
       };
       this.$axios
-        .post("http://localhost:8000/hr/manage/user", params)
+        .post("hr/manage/user", params)
         .then(response => {
           this.$parent.$parent.$parent.$parent.$parent.$parent.retrieve()
         });

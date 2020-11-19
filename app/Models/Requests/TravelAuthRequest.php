@@ -12,7 +12,7 @@ class TravelAuthRequest extends Model
     'start_date',
     'end_date',
     'emergency_contact',
-    'employee_to_cover',
+    'employee_to_cover_id',
     'file_uri',
     'approver_role_id',
     'status_id'
@@ -36,4 +36,9 @@ class TravelAuthRequest extends Model
   public function approver_role() {
       return $this->belongsTo(\App\Models\Role::class);
   }
+
+  public function employee_to_cover() {
+    return $this->belongsTo(\App\Models\User::class, 'employee_to_cover_id');
+  }
+
 }

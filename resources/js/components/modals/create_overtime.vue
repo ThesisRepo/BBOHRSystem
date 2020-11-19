@@ -113,7 +113,7 @@ export default {
           reason: this.reason,
           prp_assigned_id: this.prp_assigned_id
         }
-        this.$axios.post("http://localhost:8000/overtime_request", parameter).then(res =>{
+        this.$axios.post("overtime_request", parameter).then(res =>{
           this.$parent.$parent.$parent.$parent.$parent.retrieve()
 
           this.dialog = false
@@ -125,8 +125,9 @@ export default {
     },
     removeData(){
       this.reason = null,
-      this.shift_time = null,
-      this.shift_date = null
+      this.start_time = null,
+      this.end_time = null,
+      this.overtime_date = null
     }
   }
 }

@@ -60,7 +60,7 @@ export default {
           finance_mngr_assigned: this.selectFinance
         };
         this.$axios
-          .post("http://localhost:8000/finance/" + this.user_id, parameter)
+          .post("finance/" + this.user_id, parameter)
           .then(res => {
             this.finance.forEach(element => {
               if (element.id === this.selectFinance) {
@@ -93,7 +93,7 @@ export default {
     },
     getAllFinance() {
       this.$axios
-        .get("http://localhost:8000/finance")
+        .get("finance")
         .then(response => {
           this.finance = response.data;
         });

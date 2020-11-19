@@ -110,7 +110,7 @@ export default {
           finance_mngr_assigned: this.user_finance
         };
         this.$axios
-          .post("http://localhost:8000/petty_cash_request", parameter)
+          .post("petty_cash_request", parameter)
           .then(res => {
             console.log("Successfully Added", res.data);
             this.$parent.$parent.$parent.$parent.$parent.retrieve();

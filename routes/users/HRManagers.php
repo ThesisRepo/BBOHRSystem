@@ -52,3 +52,5 @@ Route::get('hr/company_position','CompanyPositionController@index')->name('hr.co
 Route::post('hr/company_position','CompanyPositionController@create')->name('hr.company_position.create');
 Route::post('hr/company_position/{id}','CompanyPositionController@update')->name('hr.company_position.update');
 Route::delete('hr/company_position','CompanyPositionController@delete')->name('hr.company_position.delete');
+
+Route::get('hr/department_status','CompanyStatusController@index')->name('hr.company_status.all');

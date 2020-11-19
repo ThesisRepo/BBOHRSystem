@@ -23,7 +23,7 @@
             </div>
             <div class="col pa-3 py-4 red--text">
               <h5 class="text-truncate text-uppercase">Pending Request</h5>
-              <h1>{{ pending }}</h1>
+              <h1>{{ pending ? pending : 0 }}</h1>
             </div>
           </v-row>
         </v-card>
@@ -37,7 +37,7 @@
             </div>
             <div class="col pa-3 py-4 green--text">
               <h5 class="text-truncate text-uppercase">Approve Request</h5>
-              <h1>{{ approve }}</h1>
+              <h1>{{ approve ? approve : 0 }}</h1>
             </div>
           </v-row>
         </v-card>
@@ -189,12 +189,12 @@ export default {
   },
   methods: {
     getNoApprove(){
-      this.$axios.get('http://localhost:8000/user_info/approved_requests/count/' + this.user_id).then(response => {
+      this.$axios.get('user_info/approved_requests/count/' + this.user_id).then(response => {
         this.approve = response.data
       })
     },
     getNoPending(){
-      this.$axios.get('http://localhost:8000/user_info/pending_requests/count/' + this.user_id).then(response => {
+      this.$axios.get('user_info/pending_requests/count/' + this.user_id).then(response => {
         this.pending = response.data
       })
     },

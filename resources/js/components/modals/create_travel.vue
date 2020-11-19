@@ -35,14 +35,9 @@
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-select
-                  :items="[
-                                        'Jocel Redotco Mendoza',
-                                        'Fenella Corinne Real Rosales',
-                                        'Cielo Fe Sasing',
-                                        'April Claire Chagas Podador',
-                                        'Nathaniel Cala Terdes',
-                                        'Carl Wyner Velasco Javier'
-                                    ]"
+                  :items="coDepartment"
+                  :item-text="coDepartment => coDepartment.first_name + ' ' + coDepartment.last_name"
+                  item-value="id"
                   label="Employee to Cover*"
                   v-model="employee_to_cover"
                   prepend-icon=" mdi-account-outline"
@@ -152,11 +147,14 @@ export default {
     files: [],
     user_id: localStorage.getItem("id"),
     val: [],
+    coDepartment: [],
     selectedFile: null
   }),
+  mounted() {
+    this.getCoDepartment()
+  },
   methods: {
     changeDate() {
-      console.log("sulod " + this.start_date);
       if (this.start_date !== null && this.start_date !== "") {
         let start = moment(String(this.start_date));
         let end = moment(String(this.end_date));
@@ -203,9 +201,8 @@ export default {
         formData.append("employee_to_cover", this.employee_to_cover);
         formData.append("prp_assigned_id", 1);
         this.$axios
-          .post("http://localhost:8000/travel_auth_request", formData, config)
+          .post("travel_auth_request", formData, config)
           .then(res => {
-            console.log("Successfully Added", res.data);
             this.$parent.$parent.$parent.$parent.$parent.retrieve();
           });
         this.dialog = false;
@@ -223,6 +220,14 @@ export default {
     disabledDates2(date) {
       return date > new Date(this.start_date).toISOString().substr(0, 10);
     },
+    getCoDepartment(){
+      this.$axios.get("departments/employees").then (response => {
+        response.data.forEach(element => {
+          console.log('Budget', element)
+          this.coDepartment.push(element)
+        })
+      })
+    },
     removeData() {
       (this.destination = null),
         (this.employee_to_cover = null),
@@ -230,6 +235,7 @@ export default {
         (this.end_date = null),
         (this.emergency_contact = null),
         (this.prp_assigned_id = null);
+        this.selectedFile = null
       this.changeDate();
     }
   }
