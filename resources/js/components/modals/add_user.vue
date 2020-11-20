@@ -210,6 +210,95 @@
                 </v-col>
                 <v-col cols="12" md="3">
                   <span
+<<<<<<< HEAD
+                    v-if="errorMessage6 !== null"
+                    class="text-danger text-center"
+                  >{{ errorMessage6 }}</span>
+                </i>
+                <v-text-field label="Contact Number*" @keyup="validate('contact_number')" v-model="contact_number" dense required></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="3">
+                <v-select
+                  :items="genderItem"
+                  item-text="text"
+                  item-value="value"
+                  label="Gender*"
+                  @keyup="validate('gender')"
+                  v-model="gender"
+                  dense
+                  required
+                ></v-select>
+              </v-col>
+              <v-col cols="12" sm="6" md="3">
+                <v-menu
+                  ref="menu"
+                  v-model="menu"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="birthday"
+                      label="Birthday*"
+                      readonly
+                      dense
+                      v-bind="attrs"
+                      v-on="on"
+                      required
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    ref="picker"
+                    v-model="birthday"
+                    :max="
+                          new Date()
+                          .toISOString()
+                          .substr(0, 10)
+                      "
+                    min="1950-01-01"
+                    @change="save"
+                  ></v-date-picker>
+                </v-menu>
+              </v-col>
+              <!-- Firstname, Lastname, Contact Number, Address, Gender, Birthday, Email, Password, Confirm -->
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field label="Address*" v-model="address" dense required></v-text-field>
+              </v-col>
+              <!-- End --------------------------------------------------->
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field label="Email*" type="email" v-model="email" dense required></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field label="Password*" type="password" v-model="password" dense required></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field
+                  label="Confirm Password*"
+                  type="password"
+                  v-model="confirm_password"
+                  dense
+                  required
+                ></v-text-field>
+              </v-col>
+              <!-- <v-col cols="12" sm="6">
+                <v-autocomplete
+                  :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
+                  label="Interests"
+                  multiple
+                ></v-autocomplete>
+              </v-col>-->
+            </v-row>
+          </v-container>
+          <small>*indicates required field</small>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="dialog = false">Cancel</v-btn>
+          <v-btn color="blue darken-1" text @click="addNew()">Save</v-btn>
+        </v-card-actions>
+=======
                     v-if="successMessage !== null"
                     class="text-success text-center"
                   >{{ successMessage }}</span>
@@ -456,6 +545,7 @@
             </div>
           </v-card>
         </v-container>
+>>>>>>> 2d2bf85d36163fcfe2fd12430a05530d3214e892
       </v-card>
     </v-dialog>
   </div>
