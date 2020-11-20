@@ -95,15 +95,24 @@ export default {
         console.log('listening');
         Echo.private('newrequest.' + this.user.id)
           .listen('NewRequest', notif => {
+            this.browserPopUp(notif);
+          })
+
+        // Echo.private('feedbackrequest.' + this.user.id)
+        //   .listen('FeebackRequest', notif => {
+        //     this.browserPopUp(notif);
+        //   })
+        },
+        browserPopUp(notif) {
             // console.log('NewRequest', notif)
             if (! ('Notification' in window)) {
               alert('Web Notification is not supported');
               return;
             }
             Notification.requestPermission( permission => {
-              let notification = new Notification('New Notificaion from BBO Request Management!', {
+              let notification = new Notification('New Notification from BBO Request Management!', {
                 body: notif.message, // content for the alert
-                icon: "https://pusher.com/static_logos/320x320.png" // optional image url
+                icon: "img/logoCircle.png" // optional image url
               });
 
               // link to page on clicking the notification
@@ -111,7 +120,6 @@ export default {
                 window.open(window.location.href);
               };
             });
-          })
         }
     }
 }

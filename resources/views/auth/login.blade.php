@@ -40,12 +40,12 @@
                     </div>
                 @endif
                 @if(session()->has('invalidToken'))
-                    <div class="alert alert-warning">
+                    <div class="alert alert-danger">
                         {{session('invalidToken') }}
                     </div>
                 @endif   
                 </center>     
-                <center style="margin-top: 5%;">
+                <center style="margin-top: 10%;">
                     <img src="img/user_logo.png" width="100" alt="logo">
                 </center>
                 <br>
@@ -69,12 +69,12 @@
                             <div class="col-md-10 mb-3 mx-auto">
                                 <div class="md-form form-group">
                                     <label for="password">Password</label>
-                                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" value="123456789" required autocomplete="current-password" >
-                                            @error('password')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
+                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" value="123456789" required autocomplete="current-password" >
+                                    @error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
                                 </div>
                             </div>
                         </div>

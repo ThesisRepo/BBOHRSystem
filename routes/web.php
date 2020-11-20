@@ -47,10 +47,6 @@ Route::group(
 );
 Route::get('user/activation/{token}','Auth\LoginController@userActivationToken');
 
-Route::get('*', function () {
-    return redirect()->route('login');
-}); 
-
 Route::get('google', function () {
     return view('googleAuth');
 });
