@@ -34,8 +34,8 @@ return [
         'secret' => env('SPARKPOST_SECRET'),
     ],
     'google' => [
-        'client_id' => '272360026064-mf2r9nq7ibgubdsqn8hnpt1epsnj6rnt.apps.googleusercontent.com',
-        'client_secret' => 'Ml1JnDqu6ivxHhtK_FzF8aHg',
-        'redirect' => 'http://localhost:8000/login/google/callback',
+        'client_id' => '826322574451-ocp799afgjfruqmib8u65oal43nu3qbp.apps.googleusercontent.com',
+        'client_secret' => 'eqaLVoM8XXorqOIwyf1PevHc',
+        'redirect' => 'http://bbomanagement.herokuapp.com/login/google/callback',
     ],
 ];
