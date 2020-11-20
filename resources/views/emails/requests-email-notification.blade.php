@@ -4,7 +4,7 @@
 {{ $message }} .
 
 @component('mail::button', ['url' => 'http://localhost:8000/'])
-Click Here To Take An Action For The Request
+Click Here To Take An Action
 @endcomponent
 
 Thanks,<br>
