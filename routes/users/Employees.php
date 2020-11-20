@@ -95,7 +95,7 @@ Route::get('shift_time/mine','Dependencies\ShiftTimeController@getUserShiftTime'
 // user_id: 1,
 // reason: 'over over',
 // date: '2020-12-12',
-// start_time: '12:30',
+// start_time: '12:30
 // end_time: '14:00',
 
 // add overtime request
