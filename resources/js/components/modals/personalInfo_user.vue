@@ -313,11 +313,14 @@
                             </v-col>
                             <v-col cols="12" md="4">
                                 <v-select
-                                    :items="['Probationary', 'OJT', 'Regular']"
+                                    :items="comStatus"
+                                    item-text="company_status_name"
+                                    item-value="id"
                                     label="Company Status*"
-                                    prepend-icon="mdi-account"
-                                    v-model="company_status"
                                     @keyup="validate('company_status')"
+                                    v-model="company_status"
+                                    prepend-icon="mdi-account"
+                                    dense
                                     required
                                 ></v-select>
                             </v-col>
@@ -406,27 +409,13 @@
                             </v-col>
                             <v-col cols="12" md="6">
                                 <v-select
-                                    :items="[
-                                        'Customer Support Leader',
-                                        'PHP DEV',
-                                        'Reseller Support',
-                                        'MKTG. Assistant',
-                                        'Apps Developer',
-                                        'Sales & Support',
-                                        'Online Sales Associate',
-                                        'Android DEV',
-                                        'HR',
-                                        'Accounting',
-                                        'Admin Assistant',
-                                        'Accounting Assistant',
-                                        'Utility',
-                                        'Marketing Staff'
-                                    ]"
-                                    label="Company Position*"
-                                    v-model="company_position"
-                                    @keyup="validate('company_position')"
-                                    prepend-icon="mdi-account"
-                                    required
+                                :items="position"
+                                item-text="position_name"
+                                item-value="id"
+                                label="Company Position*"
+                                v-model="company_position"
+                                prepend-icon="mdi-account"
+                                required
                                 ></v-select>
                             </v-col>
                             <v-col cols="12" md="6">
@@ -660,6 +649,8 @@ export default {
             { text: "Married", value: 1 },
             { text: "Widow", value: 2 }
         ],
+        comStatus: [],
+        position: [],
         successMessage: null,
         errorMessage1: null,
         errorMessage2: null,
@@ -691,7 +682,9 @@ export default {
         this.getAllPrp();
         this.getAllFinance();
         this.getShift();
+        this.getPosition();
         this.getAllDepartment();
+        this.getCompanyStatus();
     },
     watch: {
         menu(val) {
@@ -757,6 +750,14 @@ export default {
                 this.errorMessage17 = "Please fill up all fields";
             }
         },
+        getCompanyStatus() {
+            this.$axios.get("hr/department").then(response => {
+                console.log("company status", response.data);
+                response.data.forEach(element => {
+                    this.comStatus.push(element);
+                });
+            });
+        },
         backPersonal() {
             this.dialogPersonal = true;
             this.dialogBusiness = false;
@@ -775,6 +776,15 @@ export default {
             this.$axios.get("finance").then(response => {
                 this.finance = response.data;
             });
+        },
+        getPosition() {
+            this.$axios
+                .get("http://localhost:8000/hr/company_position")
+                .then(response => {
+                    response.data.forEach(el => {
+                        this.position.push(el);
+                    });
+                });
         },
         getAllDepartment() {
             this.$axios.get("departments").then(response => {
@@ -851,10 +861,10 @@ export default {
                 this.errorMessage5 = null;
                 this.successMessage6 = null;
                 if (this.contact_number.length > 11) {
-                    this.errorMessage5 = "Contact number must not exceed 11 numbers";
+                    this.errorMessage5 =
+                        "Contact number must not exceed 11 numbers";
                 } else if (this.contact_number.length == 0) {
-                    this.errorMessage6 =
-                        "Contact number is required";
+                    this.errorMessage6 = "Contact number is required";
                 } else if (this.contact_number.slice(0, 2) != "09") {
                     this.errorMessage6 = "Contact number must start with 09";
                 } else {
@@ -966,24 +976,24 @@ export default {
                     this.errorMessage22 = "TIN number must be 12 digit number";
                 } else if (this.tin_number.length == 0) {
                     this.errorMessage23 = "TIN number is required";
-                // } else if (this.tin_number.slice(9,12) != "000") {
+                    // } else if (this.tin_number.slice(9,12) != "000") {
 
-                //     this.errorMessage23 = "TIN number must end with the digit 000";
+                    //     this.errorMessage23 = "TIN number must end with the digit 000";
                 } else {
                     this.errorMessage22 = null;
                     this.errorMessage23 = null;
                 }
-            
-            }else if( input === "philhealth_number"){
-                this.errorMessage24 = null ;
+            } else if (input === "philhealth_number") {
+                this.errorMessage24 = null;
                 this.errorMessage25 = null;
-                if( this.philhealth_number.length > 12){
-                    this.errorMessage24 = "PhilHealth number must be 12 digit numbers";
-                }else if(this.philhealth_number == 0){
-                    this.errorMessage25 = "PhilHealth is required"
-                }else if(this.tin_number.length < 12){
+                if (this.philhealth_number.length > 12) {
+                    this.errorMessage24 =
+                        "PhilHealth number must be 12 digit numbers";
+                } else if (this.philhealth_number == 0) {
+                    this.errorMessage25 = "PhilHealth is required";
+                } else if (this.tin_number.length < 12) {
                     this.errorMessage25 = "PhilHealth number is invalid";
-                }else{
+                } else {
                     this.errorMessage24 = null;
                     this.errorMessage25 = null;
                 }
@@ -998,7 +1008,7 @@ export default {
             }
         },
         addNew() {
-            console.log("sdfasdf", this.first_name);
+            console.log("hoi");
             this.validate("lastname");
             this.validate("firstname");
             this.validate("contact_number");
@@ -1012,33 +1022,6 @@ export default {
             this.validate("tin_number");
             this.validate("philhealth_number");
             this.validate("pag_ibig_number");
-
-            let params = {
-                address: this.address,
-                civil_status: this.civil_status,
-                contact_number: this.contact_number,
-                pag_ibig_number: this.pag_ibig_number,
-                sss_number: this.sss_number,
-                tin_number: this.tin_number,
-                philhealth_number: this.philhealth_number,
-                prp_assigned: this.prp_assigned,
-                finance_assigned: this.finance_assigned,
-                first_name: this.first_name,
-                last_name: this.last_name,
-                email: this.email,
-                password: this.password,
-                regularization_date: this.regularization_date,
-                password_confirmation: this.confirm_password,
-                department: this.department,
-                shift_time: this.shift_time,
-                gender: this.gender,
-                allowed_leave_number: this.allowed_leave_number,
-                company_position: this.company_position,
-                date_hired: this.date_hired,
-                company_status: this.company_status,
-                birthday: this.birthday,
-                company_number: this.company_number
-            };
             if (
                 this.errorMessage1 === null &&
                 this.errorMessage2 === null &&
@@ -1066,7 +1049,35 @@ export default {
                 this.errorMessage24 === null &&
                 this.errorMessage25 === null
             ) {
+                let params = {
+                    address: this.address,
+                    civil_status: this.civil_status,
+                    contact_number: this.contact_number,
+                    pag_ibig_number: this.pag_ibig_number,
+                    sss_number: this.sss_number,
+                    tin_number: this.tin_number,
+                    philhealth_number: this.philhealth_number,
+                    prp_assigned: this.prp_assigned,
+                    finance_assigned: this.finance_assigned,
+                    first_name: this.first_name,
+                    last_name: this.last_name,
+                    email: this.email,
+                    password: this.password,
+                    regularization_date: this.regularization_date,
+                    password_confirmation: this.confirm_password,
+                    department: this.department,
+                    shift_time: this.shift_time,
+                    gender: this.gender,
+                    allowed_leave_number: this.allowed_leave_number,
+                    company_position: this.company_position,
+                    date_hired: this.date_hired,
+                    company_status: this.company_status,
+                    birthday: this.birthday,
+                    company_number: this.company_number
+                };
+                console.log("params here", params);
                 this.$axios.post("hr/manage/user", params).then(response => {
+                    console.log("here", response.data);
                     this.$parent.$parent.$parent.$parent.$parent.$parent.retrieve();
                 });
             } else {

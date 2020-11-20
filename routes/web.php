@@ -47,7 +47,7 @@ Route::group(
 );
 Route::get('user/activation/{token}','Auth\LoginController@userActivationToken');
 
-Route::get('/', function () {
+Route::get('*', function () {
     return redirect()->route('login');
 }); 
 
