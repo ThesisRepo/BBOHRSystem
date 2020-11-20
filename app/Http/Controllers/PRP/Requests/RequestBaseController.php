@@ -33,7 +33,7 @@ class RequestBaseController extends Controller
         }else {
             $res = $this->model->getPendingRequestForApproverAdmin($id, $max_role, $relationship);            
         }
-
+        // dd($res, $user->toArray());getPendingRequestForApproverAdmin
         return $res;
 
     }

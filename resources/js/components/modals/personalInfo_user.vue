@@ -93,11 +93,15 @@
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-text-field
-                  label="Civil Status*"
-                  v-model="civil_status"
-                  prepend-icon="mdi-account"
-                  dense
-                  required
+                    :items="comStatus"
+                    item-text="company_status_name"
+                    item-value="id"
+                    label="Company Status*"
+                    @keyup="validate('civil_status')"
+                    v-model="civil_status"
+                    prepend-icon="mdi-account"
+                    dense
+                    required
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
@@ -834,6 +838,7 @@ export default {
             { text: "Married", value: 1 },
             { text: "Widow", value: 2 }
         ],
+        comStatus: [],
         successMessage: null,
         errorMessage1: null,
         errorMessage2: null,
@@ -859,6 +864,7 @@ export default {
         this.getAllFinance();
         this.getShift();
         this.getAllDepartment();
+        this.getCompanyStatus()
     },
     // hideDialogue: false,
 //     genderItem: [{ text: "Female", value: 0 }, { text: "Male", value: 1 }],
@@ -950,6 +956,14 @@ export default {
             this.$axios.get("finance").then(response => {
                 this.finance = response.data;
             });
+        },
+        getCompanyStatus(){
+            this.$axios.get("hr/department_status").then(response => {
+                console.log('company status', response.data)
+                response.data.forEach(element => {
+                this.comStatus.push(element)
+                })
+            })
         },
         getAllDepartment() {
             this.$axios.get("departments").then(response => {

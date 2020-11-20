@@ -162,11 +162,9 @@
                 </v-col>
                 <v-col cols="12" md="4">
                   <v-select
-                    :items="[
-                      'probationary',
-                      'OJT',
-                      'regular'
-                    ]"
+                    :items="comStatus"
+                    item-text="company_status_name"
+                    item-value="id"
                     label="Company Status*"
                     v-model="editItem.company_status"
                     required
@@ -417,6 +415,7 @@ export default {
       {text: 'Female', value: 0},
       {text: 'Male', value: 1}
     ],
+    comStatus: [],
     position: [],
     departmentItem: []
   }),
@@ -431,6 +430,7 @@ export default {
     this.getShift()
     this.getPosition()
     this.getAllDepartment()
+    this.getCompanyStatus()
   },
   watch: {
     menu (val) {
@@ -475,6 +475,14 @@ export default {
     },
     getPrp(){
       console.log(this.editItem.selectPrp)
+    },
+
+    getCompanyStatus(){
+      this.$axios.get("hr/department_status").then(response => {
+        response.data.forEach(element => {
+          this.comStatus.push(element)
+        })
+      })
     },
 
     getPosition(){
