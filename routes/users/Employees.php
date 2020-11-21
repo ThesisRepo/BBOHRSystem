@@ -2,6 +2,9 @@
 
 // home
 // Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
+Route::get('/home', function () {
+  return redirect()->route('home');
+});
 Route::get('/', 'HomeController@index')->name('home');
 
 
@@ -199,7 +202,12 @@ Route::post('events','CalendarEventController@store')->name('events.store');
 
 Route::post('events/{id}','CalendarEventController@update')->name('events.update');
 
-
 Route::delete('events','CalendarEventController@delete')->name('events.delete');
+
+Route::get('civil_status','CivilStatusController@index')->name('civil_status.index');
+
+Route::get('civil_status/other/{id}','CivilStatusController@showNotMine')->name('civil_status.showNotMine');
+
+
 
 

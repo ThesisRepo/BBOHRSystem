@@ -24,6 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        // $schedule->command('notification:unreadmessages')->hourly();
         // $schedule->command('inspire')
         //          ->hourly();
     }
