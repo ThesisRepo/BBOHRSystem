@@ -63,7 +63,7 @@ class UserInformationController extends Controller
             'company_number' => $request->company_number,
             'profile_url' => $request->profile_url,
             'date_hired' => $request->date_hired,
-            'company_status' => $request->company_status,
+            'company_status_id' => $request->company_status_id,
             'regularization_date' => $request->regularization_date,
             'birthday' => $request->birthday,
             'allowed_leave_number' => $request->allowed_leave_number,
@@ -112,8 +112,10 @@ class UserInformationController extends Controller
     {
 
         $user = [
-            'prp_assigned' => $this->user_service->getPRPId(),
-            'finance_mngr_assigned' => $this->user_service->getFinanceMngrAssignedId(),
+            // 'prp_assigned' => $this->user_service->getPRPId(),
+            // 'finance_mngr_assigned' => $this->user_service->getFinanceMngrAssignedId(),
+            'prp_assigned' => $request->prp_assigned,
+            'finance_mngr_assigned' => $request->finance_assigned,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
@@ -122,8 +124,8 @@ class UserInformationController extends Controller
             $user['password'] = $request->password;
         }
         $user_info = [
-            'department_id' => $request->department_id,
-            'shift_time_id' => $request->shift_time_id,
+            'department_id' => $request->department,
+            'shift_time_id' => $request->shift_time,
             'gender'=> $request->gender,
             'company_number' => $request->company_number,
             'profile_url' => $request->profile_url,
@@ -141,7 +143,8 @@ class UserInformationController extends Controller
             'philhealth_number' => $request->philhealth_number
         ];
         $company_position = $request->company_position;
-        return $this->user->updateUserWithInfo($id, $user, $user_info, $company_position);        
+        // dd($user_info);
+        return $this->user->updateUserWithInfo($id, $user, $user_info, $company_position['id']);        
     }
 
     /**

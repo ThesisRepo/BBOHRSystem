@@ -159,11 +159,11 @@
                                     >{{ errorMessage8 }}</span
                                 >
                             </v-col>
-                            <v-col cols="12" sm="6" md="6">
+                            <!-- <v-col cols="12" sm="6" md="6">
                                 <v-text-field
-                                    label="Password*"
+                                    label="Current Password*"
                                     type="password"
-                                    v-model="editItem.password"
+                                    v-model="test"
                                     @keyup="validate('password')"
                                     prepend-icon="mdi-eye"
                                     dense
@@ -204,7 +204,7 @@
                                     style="color: red; font-size: 12px"
                                     >{{ errorMessage11 }}</span
                                 >
-                            </v-col>
+                            </v-col> -->
                             <v-col cols="12">
                                 <v-text-field
                                     label="Address*"
@@ -572,7 +572,7 @@
                     </v-btn>
                     <v-btn
                         color="blue darken-1"
-                        dark@click="update(), (dialog = false)"
+                        dark @click="update()"
                     >
                         Save
                     </v-btn>
@@ -633,6 +633,7 @@ import createUser from "./modals/personalInfo_user.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
 export default {
     data: () => ({
+        test: 'test',
         showModal: false,
         dialogPersonal: false,
         dialogBusiness: false,
@@ -693,7 +694,7 @@ export default {
                 value: "user_information.department.department_name"
             },
             { text: "PRP IN CHARGE", value: "assigned_prp.first_name" },
-            { text: "STATUS", value: "user_information.company_status_id" },
+            { text: "STATUS", value: "user_information.company_status.company_status_name" },
             { text: "ACTIONS", value: "actions", sortable: false }
         ],
         user: [],
@@ -711,16 +712,10 @@ export default {
             philhealth_number: null,
             selectPrp: null,
             selectFinance: null,
-            first_name: null,
-            last_name: null,
-            email: null,
-            password: null,
-            regularization_date: null,
             prp_assigned: null,
             prp: null,
             finance: null,
             selectFinance: null,
-            password_confirmation: null,
             department: null,
             shift_time: null,
             gender: null,
@@ -767,20 +762,19 @@ export default {
             this.$axios.get("hr/manage/user").then(response => {
                 this.user = response.data;
                 console.log("user", this.user);
+                
             });
         },
         next() {
             if (
-                this.first_name != null &&
-                this.last_name != null &&
-                this.gender != null &&
-                this.contact_number != null &&
-                this.civil_status != null &&
-                this.birthday != null &&
-                this.email != null &&
-                this.password != null &&
-                this.confirm_password != null &&
-                this.address != null &&
+                this.editItem.first_name != null &&
+                this.editItem.last_name != null &&
+                this.editItem.gender != null &&
+                this.editItem.contact_number != null &&
+                this.editItem.civil_status != null &&
+                this.editItem.birthday != null &&
+                this.editItem.email != null &&
+                this.editItem.address != null &&
                 this.errorMessage1 === null &&
                 this.errorMessage2 === null &&
                 this.errorMessage3 === null &&
@@ -806,16 +800,16 @@ export default {
                 this.errorMessage13 === null &&
                 this.errorMessage14 === null &&
                 this.errorMessage15 === null &&
-                this.company_number !== null &&
-                this.regularization_date !== null &&
-                this.company_status !== null &&
-                this.department !== null &&
-                this.shift_time !== null &&
-                this.date_hired !== null &&
-                this.selectFinance !== null &&
-                this.selectPrp !== null &&
-                this.company_position !== null &&
-                this.allowed_leave_number !== null
+                this.editItem.company_number !== null &&
+                this.editItem.regularization_date !== null &&
+                this.editItem.company_status !== null &&
+                this.editItem.department !== null &&
+                this.editItem.shift_time !== null &&
+                this.editItem.date_hired !== null &&
+                this.editItem.selectFinance !== null &&
+                this.editItem.selectPrp !== null &&
+                this.editItem.company_position !== null &&
+                this.editItem.allowed_leave_number !== null
             ) {
                 this.dialogBusiness = false;
                 this.dialogOthers = true;
@@ -1046,7 +1040,7 @@ export default {
             console.log("lbolbol", item);
             this.editItem.id = item.id;
             this.editItem.address = item.user_information.address;
-            this.editItem.civil_status = item.civil_status;
+            this.editItem.civil_status = parseInt(item.user_information.civil_status);
             this.editItem.contact_number = item.user_information.contact_number;
             this.editItem.pag_ibig_number =
                 item.user_information.pag_ibig_number;
@@ -1056,33 +1050,31 @@ export default {
                 item.user_information.philhealth_number;
             this.editItem.selectPrp = item.assigned_prp.id;
             this.editItem.selectFinance = item.assigned_finance.id;
-            this.editItem.first_name = item.first_name;
+            this.editItem.first_name = item.first_name;                                             
             this.editItem.last_name = item.last_name;
             this.editItem.email = item.email;
-            this.editItem.password = item.password;
+            this.editItem.current_password = item.password;
             this.editItem.regularization_date =
                 item.user_information.regularization_date;
             this.editItem.password_confirmation = item.confirm_password;
             this.editItem.department =
-                item.user_information.department.department_name;
+                item.user_information.department;
             this.editItem.shift_time = item.user_information.shift_time_id;
             this.editItem.gender = parseInt(item.user_information.gender);
             this.editItem.allowed_leave_number =
                 item.user_information.allowed_leave_number;
             this.editItem.company_position =
-                item.user_information.company_position;
+                item.user_information.company_positions[0];
             this.editItem.date_hired = item.user_information.date_hired;
             this.editItem.company_status = item.user_information.company_status;
             this.editItem.birthday = item.user_information.birthday;
             this.editItem.company_number = item.user_information.company_number;
-            this.dialogOthers = false;
-            this.dialogPersonal = false;
-            this.dialogBusiness = false;
-            console.log(
-                this.editItem.shift_time,
-                this.editItem.department,
-                this.editItem.selectFinance,
-                this.editItem.selectPrp
+            this.dialogPersonal = true;
+            // this.dialogBusiness = true;
+            // this.dialogOthers = true;
+           
+            console.log('asfd', 
+                this.editItem.company_position
             );
         },
         getPrp() {
@@ -1143,16 +1135,20 @@ export default {
                 birthday: this.editItem.birthday,
                 company_number: this.editItem.company_number
             };
+            console.log('params ako', this.params)
             this.$axios
                 .post("hr/manage/user/" + this.editItem.id, params)
                 .then(response => {
                     this.retrieve();
+                    console.log('retrieve me', response.data)
                 });
-            this.dialog = false;
+            this.dialogPersonal = false;
+            this.dialogBusiness = false;
+            this.dialogOthers = false;
         },
-        close() {
-            this.dialog = false;
-        },
+        // close() {
+        //     this.dialog = false;
+        // },
         deleteItem(item) {
             this.id = item.id;
             this.$refs.confirmDel.show(item);

@@ -403,6 +403,7 @@
                                     v-model="selectPrp"
                                     @keyup="validate('prp_assign')"
                                     prepend-icon="mdi-account"
+                                    @change="getPrp()"
                                     required
                                 ></v-select>
                             </v-col>
@@ -698,6 +699,9 @@ export default {
     //     businessInfo
     //   },
     methods: {
+        getPrp(){
+            console.log('prp ko', this.selectPrp)
+        },
         next() {
             if (
                 this.first_name != null &&
@@ -1068,7 +1072,7 @@ export default {
                     sss_number: this.sss_number,
                     tin_number: this.tin_number,
                     philhealth_number: this.philhealth_number,
-                    prp_assigned: this.prp_assigned,
+                    prp_assigned: this.selectPrp,
                     finance_assigned: this.selectFinance,
                     first_name: this.first_name,
                     last_name: this.last_name,
