@@ -47,8 +47,10 @@ class UserInformationController extends Controller
     {
         // login na ni diri 
         $user = [
-            'prp_assigned' => $this->user_service->getPRPId(),
-            'finance_mngr_assigned' => $this->user_service->getFinanceMngrAssignedId(),
+            // 'prp_assigned' => $this->user_service->getPRPId(),
+            // 'finance_mngr_assigned' => $this->user_service->getFinanceMngrAssignedId(),
+            'prp_assigned' => $request->prp_assigned,
+            'finance_mngr_assigned' => $request->finance_assigned,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
@@ -85,7 +87,7 @@ class UserInformationController extends Controller
             case 2:
                 $role = [1, 2];
                 break;
-        }      
+        }    
         try {
             $res = $this->user->registerUser($user, $role, $user_info, $company_position);
             // dd($res->makeVisible(['password'])->toArray());

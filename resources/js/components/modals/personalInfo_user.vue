@@ -188,7 +188,7 @@
                                 <span
                                     class="ml-8"
                                     v-if="successMessage !== null"
-                                    style="color: red; font-size: 12px"
+                                    style="color: green; font-size: 12px"
                                     >{{ successMessage }}</span
                                 >
                                 <span
@@ -270,10 +270,10 @@
                             <v-col cols="12" md="4">
                                 <v-text-field
                                     class="input-name"
-                                    v-model="company_id"
+                                    v-model="company_number"
                                     label="Company ID"
                                     prepend-icon="mdi-id-card"
-                                    @keyup="validate('company_id')"
+                                    @keyup="validate('company_number')"
                                 ></v-text-field>
                                 <span
                                     v-if="errorMessage12 !== null"
@@ -320,7 +320,6 @@
                                     @keyup="validate('company_status')"
                                     v-model="company_status"
                                     prepend-icon="mdi-account"
-                                    dense
                                     required
                                 ></v-select>
                             </v-col>
@@ -409,13 +408,13 @@
                             </v-col>
                             <v-col cols="12" md="6">
                                 <v-select
-                                :items="position"
-                                item-text="position_name"
-                                item-value="id"
-                                label="Company Position*"
-                                v-model="company_position"
-                                prepend-icon="mdi-account"
-                                required
+                                    :items="position"
+                                    item-text="position_name"
+                                    item-value="id"
+                                    label="Company Position*"
+                                    v-model="company_position"
+                                    prepend-icon="mdi-account"
+                                    required
                                 ></v-select>
                             </v-col>
                             <v-col cols="12" md="6">
@@ -466,6 +465,7 @@
                         Next
                     </v-btn>
                 </v-card-actions>
+                <!-- <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === '"approved"' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template> -->
             </v-card>
         </v-dialog>
         <!-- ******************End of Business Info********************* -->
@@ -581,6 +581,9 @@
                         Back
                     </v-btn>
                     <v-spacer></v-spacer>
+                    <v-btn color="red" dark @click="dialogOthers = false">
+                        Cancel
+                    </v-btn>
                     <v-btn color="blue darken-1" dark @click="addNew()">
                         Save
                     </v-btn>
@@ -632,7 +635,7 @@ export default {
         company_position: null,
         date_hired: null,
         company_status: null,
-        company_id: null,
+        company_number: null,
 
         rules: {
             required: value => !!value || "Required",
@@ -732,7 +735,7 @@ export default {
                 this.errorMessage13 === null &&
                 this.errorMessage14 === null &&
                 this.errorMessage15 === null &&
-                this.company_id !== null &&
+                this.company_number !== null &&
                 this.regularization_date !== null &&
                 this.company_status !== null &&
                 this.department !== null &&
@@ -751,7 +754,7 @@ export default {
             }
         },
         getCompanyStatus() {
-            this.$axios.get("hr/department").then(response => {
+            this.$axios.get("hr/department_status").then(response => {
                 console.log("company status", response.data);
                 response.data.forEach(element => {
                     this.comStatus.push(element);
@@ -867,7 +870,10 @@ export default {
                     this.errorMessage6 = "Contact number is required";
                 } else if (this.contact_number.slice(0, 2) != "09") {
                     this.errorMessage6 = "Contact number must start with 09";
-                } else {
+                }else if (this.contact_number.length <= 10) {
+                    this.errorMessage6 = "Contact number is invalid";
+                } 
+                 else {
                     this.errorMessage5 = null;
                     this.errorMessage6 = null;
                 }
@@ -916,15 +922,14 @@ export default {
                     this.errorMessage11 = null;
                     this.successMessage = null;
                 }
-            } else if (input === "company_id") {
+            } else if (input === "company_number") {
                 this.errorMessage12 = null;
                 this.errorMessage13 = null;
-                if (this.company_id.slice > 12) {
-                    this.errorMessage12 =
-                        "Company ID must have 2 letter and 9 digit numbers.";
-                } else if (this.company_id.length == 0) {
+                if (this.company_number.length > 12) {
+                    this.errorMessage12 = "Company ID must have 12 characters ";
+                } else if (this.company_number.length === 0) {
                     this.errorMessage13 = "Company ID is required";
-                } else if (this.company_id.length < 9) {
+                } else if (this.company_number.length < 12) {
                     this.errorMessage13 = "Company ID is invalid";
                 } else {
                     this.errorMessage12 = null;
@@ -948,7 +953,7 @@ export default {
                 if (this.pag_ibig_number.length > 12) {
                     this.errorMessage18 =
                         "Pag-IBIG number must be 12 digit number";
-                } else if (this.pag_ibig_number.length == 0) {
+                } else if (this.pag_ibig_number.length === 0) {
                     this.errorMessage19 = "Pag-IBIG number is required";
                 } else if (this.pag_ibig_number.length < 12) {
                     this.errorMessage19 = "Pag-IBIG number is invalid";
@@ -961,7 +966,7 @@ export default {
                 this.errorMessage21 = null;
                 if (this.sss_number.length > 10) {
                     this.errorMessage20 = "SSS number must be 10 digit number";
-                } else if (this.sss_number.length == 0) {
+                } else if (this.sss_number.length === 0) {
                     this.errorMessage21 = "SSS number is required";
                 } else if (this.sss_number.length < 10) {
                     this.errorMessage21 = "SSS number is invalid";
@@ -972,13 +977,18 @@ export default {
             } else if (input === "tin_number") {
                 this.errorMessage22 = null;
                 this.errorMessage23 = null;
-                if (this.tin_number.length > 12) {
+                if (this.tin_number.length > 9 && this.tin_number.length < 13) {
+                    if (this.tin_number[9] !== "0") {
+                        this.errorMessage23 = "TIN 10th number must be 0";
+                    } else if (this.tin_number[10] !== "0") {
+                        this.errorMessage23 = "TIN 11th number must be 0";
+                    } else if (this.tin_number[11] !== "0") {
+                        this.errorMessage23 = "TIN 12th number must be 0";
+                    }
+                } else if (this.tin_number.length > 12) {
                     this.errorMessage22 = "TIN number must be 12 digit number";
-                } else if (this.tin_number.length == 0) {
+                } else if (this.tin_number.length === 0) {
                     this.errorMessage23 = "TIN number is required";
-                    // } else if (this.tin_number.slice(9,12) != "000") {
-
-                    //     this.errorMessage23 = "TIN number must end with the digit 000";
                 } else {
                     this.errorMessage22 = null;
                     this.errorMessage23 = null;
@@ -989,9 +999,9 @@ export default {
                 if (this.philhealth_number.length > 12) {
                     this.errorMessage24 =
                         "PhilHealth number must be 12 digit numbers";
-                } else if (this.philhealth_number == 0) {
+                } else if (this.philhealth_number.length === 0) {
                     this.errorMessage25 = "PhilHealth is required";
-                } else if (this.tin_number.length < 12) {
+                } else if (this.philhealth_number.length < 12) {
                     this.errorMessage25 = "PhilHealth number is invalid";
                 } else {
                     this.errorMessage24 = null;
@@ -1016,7 +1026,7 @@ export default {
             this.validate("password");
             this.validate("confirm_password");
             this.validate("address");
-            this.validate("company_id");
+            this.validate("company_number");
             this.validate("allowed_leave_number");
             this.validate("sss_number");
             this.validate("tin_number");
@@ -1048,7 +1058,8 @@ export default {
                 this.errorMessage23 === null &&
                 this.errorMessage24 === null &&
                 this.errorMessage25 === null
-            ) {
+            )
+            {
                 let params = {
                     address: this.address,
                     civil_status: this.civil_status,
@@ -1058,30 +1069,59 @@ export default {
                     tin_number: this.tin_number,
                     philhealth_number: this.philhealth_number,
                     prp_assigned: this.prp_assigned,
-                    finance_assigned: this.finance_assigned,
+                    finance_assigned: this.selectFinance,
                     first_name: this.first_name,
                     last_name: this.last_name,
                     email: this.email,
                     password: this.password,
                     regularization_date: this.regularization_date,
                     password_confirmation: this.confirm_password,
-                    department: this.department,
-                    shift_time: this.shift_time,
+                    department_id: this.department,
+                    shift_time_id: this.shift_time,
                     gender: this.gender,
                     allowed_leave_number: this.allowed_leave_number,
                     company_position: this.company_position,
                     date_hired: this.date_hired,
-                    company_status: this.company_status,
+                    company_status_id: this.company_status,
                     birthday: this.birthday,
                     company_number: this.company_number
                 };
                 console.log("params here", params);
                 this.$axios.post("hr/manage/user", params).then(response => {
+                    // this.errorMessage8 =
                     console.log("here", response.data);
+                    console.log("here", response.data.message);
+                    this.$emit("create",  response.data)
+
                     this.$parent.$parent.$parent.$parent.$parent.$parent.retrieve();
+                    this.dialogOthers = false;
+                    this.dialogPersonal = false;
+                    this.dialogBusiness = false;
+                    
+                })
+                .catch(error => {
+                    console.log("here", error);
+                    console.log("here", error.response.data.errors);
+                    let errors = error.response.data.errors;
+                    console.log("type", typeof errors);
+
+                    Object.entries(errors).forEach(message => {
+                        switch (message[0]) {
+                            case "email":
+                                this.errorMessage8 = "You have entered a taken email address.";
+                                 alert('Email is already taken')
+                                break;
+                            case "password":
+                                this.errorMessage10 = "Password must be alphanumeric characters. It should contain 1 number, 1 special character and 1 capital letter";
+                                break;
+                            case "password_confirmation":
+                                 this.errorMessage11 = "Password did not match";
+                                break;
+                        }
+                    });
                 });
             } else {
-                this.errorMessage17 = "Please put valid information";
+                this.errorMessage17 = null;
             }
         },
 
