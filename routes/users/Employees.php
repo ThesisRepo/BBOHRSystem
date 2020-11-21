@@ -208,7 +208,3 @@ Route::delete('events/{id}','CalendarEventController@delete')->name('events.dele
 Route::get('civil_status','CivilStatusController@index')->name('civil_status.index');
 
 Route::get('civil_status/other/{id}','CivilStatusController@showNotMine')->name('civil_status.showNotMine');
-
-
-
-
