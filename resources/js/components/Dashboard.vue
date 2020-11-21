@@ -352,7 +352,7 @@ export default {
           this.retrieve();
           this.selectedOpen = false
         });
-    },
+    },    
     editItem(selectedEvent) {
       console.log('editItem', selectedEvent)
       this.editedItem.id = selectedEvent.id;
