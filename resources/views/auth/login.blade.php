@@ -97,7 +97,7 @@
                         @error('invalid')
                             <div style="width:100%;text-align:center">
                             <span style="color:red;">
-                                    {{ $message }}
+                                    Incorrect email or password
                                 </span>
                             </div>
                         @enderror
