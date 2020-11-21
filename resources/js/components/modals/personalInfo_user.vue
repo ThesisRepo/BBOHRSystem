@@ -324,78 +324,73 @@
                                 ></v-select>
                             </v-col>
 
-                            <v-col cols="12" md="4">
-                                <v-select
-                                    :items="departmentItem"
-                                    label="Department*"
-                                    prepend-icon="mdi-account-group"
-                                    :item-text="
+              <v-col cols="12" md="4">
+                <v-select
+                  :items="departmentItem"
+                  label="Department*"
+                  prepend-icon="mdi-account-group"
+                  :item-text="
                                         departmentItem =>
                                             departmentItem.department_name
                                     "
-                                    item-value="id"
-                                    v-model="department"
-                                    required
-                                ></v-select>
-                            </v-col>
-                            <v-col cols="12" md="4">
-                                <v-select
-                                    :items="sTime"
-                                    label="Shift Time*"
-                                    item-text="shift_time_name"
-                                    item-value="id"
-                                    v-model="shift_time"
-                                    prepend-icon="mdi-timelapse"
-                                    required
-                                ></v-select>
-                            </v-col>
-                            <v-col cols="12" md="4">
-                                <v-menu
-                                    :close-on-content-click="true"
-                                    transition="scale-transition"
-                                    offset-y
-                                    min-width="290px"
-                                >
-                                    <template v-slot:activator="{ on, attrs }">
-                                        <v-text-field
-                                            v-model="date_hired"
-                                            label="Date Hired"
-                                            prepend-icon="mdi-calendar"
-                                            readonly
-                                            v-bind="attrs"
-                                            v-on="on"
-                                        ></v-text-field>
-                                    </template>
-                                    <v-date-picker
-                                        v-model="date_hired"
-                                        no-title
-                                        scrollable
-                                        color="primary"
-                                    ></v-date-picker>
-                                </v-menu>
-                            </v-col>
-                            <v-col cols="12" md="6">
-                                <v-select
-                                    :items="finance"
-                                    label="Finance Assign"
-                                    prepend-icon="mdi-account"
-                                    @keyup="validate('finance_assign')"
-                                    :item-text="
+                  item-value="id"
+                  v-model="department"
+                  required
+                ></v-select>
+              </v-col>
+              <v-col cols="12" md="4">
+                <v-select
+                  :items="sTime"
+                  label="Shift Time*"
+                  item-text="shift_time_name"
+                  item-value="id"
+                  v-model="shift_time"
+                  prepend-icon="mdi-timelapse"
+                  required
+                ></v-select>
+              </v-col>
+              <v-col cols="12" md="4">
+                <v-menu
+                  :close-on-content-click="true"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="date_hired"
+                      label="Date Hired"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker v-model="date_hired" no-title scrollable color="primary"></v-date-picker>
+                </v-menu>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-select
+                  :items="finance"
+                  label="Finance Assign"
+                  prepend-icon="mdi-account"
+                  @keyup="validate('finance_assign')"
+                  :item-text="
                                         finance =>
                                             finance.first_name +
                                             ' ' +
                                             finance.last_name
                                     "
-                                    item-value="id"
-                                    v-model="selectFinance"
-                                    required
-                                ></v-select>
-                            </v-col>
-                            <v-col cols="12" md="6">
-                                <v-select
-                                    :items="prp"
-                                    label="PRP Assign"
-                                    :item-text="
+                  item-value="id"
+                  v-model="selectFinance"
+                  required
+                ></v-select>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-select
+                  :items="prp"
+                  label="PRP Assign"
+                  :item-text="
                                         prp =>
                                             prp.first_name + ' ' + prp.last_name
                                     "
@@ -434,11 +429,10 @@
                                     >{{ errorMessage14 }}</span
                                 >
 
-                                <span
-                                    v-if="errorMessage15 !== null"
-                                    style="color: red; font-size: 13px"
-                                    >{{ errorMessage15 }}</span
-                                >
+                <span
+                  v-if="errorMessage15 !== null"
+                  style="color: red; font-size: 13px"
+                >{{ errorMessage15 }}</span>
 
                                 <span
                                     class="ml-8"
@@ -479,6 +473,11 @@
                 </v-toolbar>
                 <v-card-text>
                     <v-container>
+                         <span
+                            v-if="errorMessage18 !== null"
+                            style="color: red; font-size: 14px"
+                            >{{ errorMessage18 }}</span
+                        >
                         <v-row>
                             <v-col cols="12" md="6">
                                 <v-text-field
@@ -1125,11 +1124,11 @@ export default {
                     });
                 });
             } else {
-                this.errorMessage17 = null;
+                this.errorMessage18 = "Please put a valid information";
             }
         },
 
-        removeData() {
+     removeData() {
             (this.address = null),
                 (this.civil_status = null),
                 (this.contact_number = null),
