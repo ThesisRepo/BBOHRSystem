@@ -9,7 +9,6 @@
             </div>
             <div class="col pa-3 py-4 primary--text">
               <h5 class="text-truncate text-uppercase">Remaining Leave Request</h5>
-              <!-- <h1>{{ leave_number }}</h1> -->
               <h1>{{ leave_number == null ? leave_number : 0 }}</h1>
             </div>
           </v-row>
@@ -43,38 +42,31 @@
         </v-card>
       </v-col>
     </v-row>
-    <br><br>
+    <br>
+    <br>
     <DashBoardtable></DashBoardtable>
     <v-spacer></v-spacer>
-    <br><br>
+    <br>
+    <br>
     <CalendarAdd></CalendarAdd>
     <v-row class="fill-height">
       <v-col>
         <v-sheet height="45">
           <v-toolbar flat>
-            <v-btn
-              outlined
-              class="mr-4"
-              color="grey darken-2"
-              @click="setToday"
-            >
-              Today
-            </v-btn>
+            <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">Today</v-btn>
             <v-btn fab text small color="grey darken-2" @click="prev">
-              <v-icon small> mdi-chevron-left </v-icon>
+              <v-icon small>mdi-chevron-left</v-icon>
             </v-btn>
             <v-btn fab text small color="grey darken-2" @click="next">
-              <v-icon small> mdi-chevron-right </v-icon>
+              <v-icon small>mdi-chevron-right</v-icon>
             </v-btn>
-            <v-toolbar-title v-if="$refs.calendar">
-              {{ $refs.calendar.title }}
-            </v-toolbar-title>
+            <v-toolbar-title v-if="$refs.calendar">{{ $refs.calendar.title }}</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-menu bottom right>
               <template v-slot:activator="{ on, attrs }">
                 <v-btn outlined color="grey darken-2" v-bind="attrs" v-on="on">
                   <span>{{ typeToLabel[type] }}</span>
-                  <v-icon right> mdi-menu-down </v-icon>
+                  <v-icon right>mdi-menu-down</v-icon>
                 </v-btn>
               </template>
               <v-list>
@@ -94,7 +86,7 @@
             </v-menu>
           </v-toolbar>
         </v-sheet>
-        <v-sheet height="600">
+        <v-sheet height="550">
           <v-calendar
             ref="calendar"
             v-model="focus"
@@ -113,44 +105,105 @@
             :activator="selectedElement"
             offset-x
           >
-            <v-card color="grey lighten-4" min-width="350px" flat>
+            <v-card color="grey lighten-4" width="350px" flat>
               <v-toolbar :color="selectedEvent.color" dark>
                 <v-btn icon>
-                  <v-icon>mdi-pencil</v-icon>
+                  <v-icon @click="editItem(selectedEvent)">mdi-pencil</v-icon>
                 </v-btn>
                 <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-btn icon>
-                  <v-icon>mdi-heart</v-icon>
+                  <v-icon @click="deleteItem(selectedEvent)">mdi-delete</v-icon>
                 </v-btn>
-                <v-btn icon>
+
+                <ConfirmationDel
+                  ref="confirmDel"
+                  @onConfirm="confirmDel($event)"
+                ></ConfirmationDel>
+
+                <!-- <v-btn icon>
                   <v-icon>mdi-dots-vertical</v-icon>
-                </v-btn>
+                </v-btn> -->
               </v-toolbar>
               <v-card-text>
                 <span v-html="selectedEvent.details"></span>
                 <p>{{selectedEvent.start}} - {{selectedEvent.end}}</p>
-                <v-text-field v-if="update" label="Start Date" type="datetime-local" v-model="start_date" color="primary"></v-text-field>              
+                <p><b>Content:</b> {{selectedEvent.content}}</p>
+                <!-- <v-text-field
+                  v-if="update"
+                  label="Start Date"
+                  type="datetime-local"
+                  v-model="start_date"
+                  color="primary"
+                ></v-text-field> -->
               </v-card-text>
               <v-card-actions>
-                <v-btn text color="secondary" @click="selectedOpen = false">
-                  Cancel
-                </v-btn>
+                <v-btn color="red" dark @click="selectedOpen = false">Close</v-btn>
               </v-card-actions>
             </v-card>
           </v-menu>
         </v-sheet>
       </v-col>
     </v-row>
+    <v-dialog v-model="dialog" persistent max-width="600px">
+      <v-card>
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+          <v-card-title>
+            <span class="headline-bold">ADD EVENT</span>
+          </v-card-title>
+        </v-toolbar>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12" sm="6">
+                <v-text-field label="Title*" v-model="editedItem.title" required></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <v-select label="Event Type*" :items="event_types" item-text="event_name" item-value="id" v-model="editedItem.event_type" required></v-select>
+              </v-col>
+              <v-col cols="12">
+                <!-- <v-text-field label="Content*" v-model="content" required></v-text-field> -->
+                <v-textarea
+                  outlined
+                  label="Content*"
+                  v-model="editedItem.content"
+                  rows="3"
+                  required
+                ></v-textarea>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <v-text-field label="Start Date" type="datetime-local" v-model="editedItem.start_date" color="primary"></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <v-text-field label="End Date" type="datetime-local" v-model="editedItem.end_date" color="primary"></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-checkbox
+                  v-model="editedItem.checkbox"
+                  label="Private"
+                ></v-checkbox>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="red" dark @click="dialog = false">Cancel</v-btn>
+          <v-btn color="success" @click="dialog = false, save()">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-app>
 </template>
 <script>
 import DashBoardtable from "./Dashboard_table";
 import CalendarAdd from "./modals/addCalendar.vue";
+import ConfirmationDel from "./modals/confirmation/delete.vue";
 export default {
   components: {
     DashBoardtable,
-    CalendarAdd
+    CalendarAdd,
+    ConfirmationDel
   },
   data: () => ({
     leave_number: localStorage.getItem("leave_number"),
@@ -158,45 +211,51 @@ export default {
     pending: null,
     approve: null,
     update: false,
-    // End
+    dialog: false,
+    event_types: [],
     focus: "",
     type: "month",
     typeToLabel: {
       month: "Month",
       week: "Week",
       day: "Day",
-      "4day": "4 Days",
+      "4day": "4 Days"
     },
     selectedEvent: {},
     selectedElement: null,
     selectedOpen: false,
     events: [],
-    colors: [
-      "blue",
-      "indigo",
-      "deep-purple",
-      "cyan",
-      "green",
-      "orange",
-      "grey darken-1",
-    ],
-    names: [],
+    title: [],
+    editedItem: {
+      content: null,
+      title: null,
+      start_date: null,
+      end_date: null,
+      // color: null,
+      event_type: null
+    },
   }),
   mounted() {
     this.$refs.calendar.checkChange();
-    this.getNoApprove()
-    this.getNoPending()
+    this.getNoApprove();
+    this.getNoPending();
+    this.getEventType();
+    this.retrieve();
   },
   methods: {
-    getNoApprove(){
-      this.$axios.get('user_info/approved_requests/count/' + this.user_id).then(response => {
-        this.approve = response.data
-      })
+    getNoApprove() {
+      this.$axios
+        .get("user_info/approved_requests/count/" + this.user_id)
+        .then(response => {
+          this.approve = response.data;
+        });
     },
-    getNoPending(){
-      this.$axios.get('user_info/pending_requests/count/' + this.user_id).then(response => {
-        this.pending = response.data
-      })
+    getNoPending() {
+      this.$axios
+        .get("user_info/pending_requests/count/" + this.user_id)
+        .then(response => {
+          this.pending = response.data;
+        });
     },
     // End
     viewDay({ date }) {
@@ -233,13 +292,16 @@ export default {
     },
     updateRange() {
       const events = [];
+      console.log("asdfas");
       for (let i = 0; i < this.events.length; i++) {
         events.push({
-          name: this.events[i].name,
-          start: this.events[i].start,
-          end: this.events[i].end,
-          color: this.events[i].color,
-          timed: this.events[i].timed,
+          name: this.events[i].title,
+          content: this.events[i].content,
+          start: this.events[i].start_date,
+          end: this.events[i].end_date,
+          color: this.events[i].event_type.color,
+          event_type: this.events[i].event_type.event_name,
+          timed: this.events[i].timed
         });
       }
       this.events = events;
@@ -247,6 +309,61 @@ export default {
     rnd(a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a;
     },
-  },
+    getEventType() {
+      this.$axios
+        .get("user_info/event_types/" + this.user_id)
+        .then(response => {
+          response.data.event_types.forEach(element => {
+            // this.event_types.push(element)
+          });
+        });
+    },
+    retrieve() {
+      let parameter = {
+        user_id: this.user_id
+      };
+      this.$axios.get("events", parameter).then(response => {
+        this.events = []
+        response.data.forEach(element => {
+          var temp = {
+            id: element.id,
+            name: element.title,
+            content: element.content,
+            start: element.start_date,
+            end: element.end_date,
+            color: element.event_type.color,
+            event_type: element.event_type.event_name,
+            timed: true
+          };
+          this.events.push(temp)
+          console.log('hahah', this.events)
+        });
+      });
+    },
+    deleteItem(selectedEvent) {
+      console.log('item', selectedEvent)
+      this.id = selectedEvent.id;
+      this.$refs.confirmDel.show(selectedEvent)
+    },
+    confirmDel() {
+      this.$axios
+        .delete("events/" + this.id)
+        .then(response => {
+          this.retrieve();
+          this.selectedOpen = false
+        });
+    },    
+    editItem(selectedEvent) {
+      console.log('editItem', selectedEvent)
+      this.editedItem.id = selectedEvent.id;
+      this.editedIndex = this.events.indexOf(selectedEvent);
+      this.editedItem.content = selectedEvent.content;
+      this.editedItem.start_date = selectedEvent.start;
+      this.editedItem.end_date = selectedEvent.end;
+      this.editedItem.title = selectedEvent.name;
+      this.editedItem.event_type = {event_name: selectedEvent.event_type, id: selectedEvent.id};
+      this.dialog = true;
+    },
+  }
 };
 </script>
