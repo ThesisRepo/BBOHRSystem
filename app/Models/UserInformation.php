@@ -80,5 +80,8 @@ class UserInformation extends Model
     public function company_status() {
         return $this->belongsTo(CompanyStatus::class);
     }
-
+    
+    public function civil_status() {
+        return $this->belongsTo(CivilStatus::class);
+    }
 }
