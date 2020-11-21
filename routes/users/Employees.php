@@ -202,17 +202,9 @@ Route::post('events','CalendarEventController@store')->name('events.store');
 
 Route::post('events/{id}','CalendarEventController@update')->name('events.update');
 
-<<<<<<< HEAD
 
 Route::delete('events/{id}','CalendarEventController@delete')->name('events.delete');
-=======
-Route::delete('events','CalendarEventController@delete')->name('events.delete');
->>>>>>> 94e13fa3fd732c46ef1c566f0ea332b5e20ec7f9
 
 Route::get('civil_status','CivilStatusController@index')->name('civil_status.index');
 
 Route::get('civil_status/other/{id}','CivilStatusController@showNotMine')->name('civil_status.showNotMine');
-
-
-
-
