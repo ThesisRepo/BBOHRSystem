@@ -27,7 +27,7 @@
 //   tin_number:'146512',
 //   philhealth_number:'561'
 // }
-Route::get('hr/manage/user','UserInformationController@index')->name('user.manage.show');
+Route::get('hr/manage/user','UserInformationController@index')->name('user.manage.index');
 Route::get('hr/manage/user/{id}','UserInformationController@show')->name('user.manage.find');
 Route::post('hr/manage/user','UserInformationController@store')->name('user.manage.store');
 Route::post('hr/manage/user/{id}','UserInformationController@update')->name('user.manage.update');
