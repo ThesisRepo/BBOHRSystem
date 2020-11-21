@@ -151,7 +151,7 @@ class RequestBaseController extends Controller
 
             $res = response()->json($this->model->update($data, $id), 200);
             $employee_name = $this->getFullName();
-            $prp_assigned_id = $this->getPRPId();
+            $prp_assigned_id = $this->getApproverId($this->request_name);
             $this->notifyNewRequest('edited', $employee_name, $prp_assigned_id, $this->request_name);
 
         }else{
@@ -162,9 +162,9 @@ class RequestBaseController extends Controller
 
     }
 
-    public function notifyNewRequest($action, $user, $id, $type) {
+    public function notifyNewRequest($action, $user, $id, $type, $data) {
 
-        return $this->user_request_service->notifyNewRequest($action, $user, $id,$type);  
+        return $this->user_request_service->notifyNewRequest($action, $user, $id, $type, $data);  
 
     }
 
@@ -186,12 +186,17 @@ class RequestBaseController extends Controller
 
     public function storeRequest($data) {
 
-        $res = response()->json($this->model->create($data), 200);
+        $res = $this->model->create($data);
         $employee_name = $this->getFullName();
-        $prp_assigned_id = $this->getPRPId();
-        $this->notifyNewRequest('added', $employee_name, $prp_assigned_id, $this->request_name);
+        $prp_assigned_id = $this->getApproverId($this->request_name);
+        if($this->request_name != 'Petty Cash Request' && $this->request_name != 'Budget Request') {
+            $data = $res->load('user.assignedPrp');
+        }else {
+            $data = $res->load('user.assignedFinance');
+        }
+        $this->notifyNewRequest('added', $employee_name, $prp_assigned_id, $this->request_name, $data);
 
-        return $res;
+        return response()->json($res, 200);
 
     }
 
@@ -203,12 +208,13 @@ class RequestBaseController extends Controller
 
     public function deleteRequest($id) {
         
-        $prp_assigned_id = $this->getPRPId();
-        $res = response()->json($this->model->delete($id), 200);
+        $prp_assigned_id = $this->getApproverId($this->request_name);
+        $res = $this->model->delete($id);
+        // dd($this->model->delete($id));
         $employee_name = $this->getFullName();
-        $this->notifyNewRequest('deleted', $employee_name, $prp_assigned_id, $this->request_name);
+        // $this->notifyNewRequest('deleted', $employee_name, $prp_assigned_id, $this->request_name);
 
-        return $res;
+        return response()->json($res, 200);
 
     }
 
@@ -230,9 +236,9 @@ class RequestBaseController extends Controller
 
     }
 
-    public function getUserId(){
+    public function getApproverId($request_name){
         
-        return $this->user_service->getUserId();
+        return $this->user_service->getApproverId($request_name);
 
     }
     

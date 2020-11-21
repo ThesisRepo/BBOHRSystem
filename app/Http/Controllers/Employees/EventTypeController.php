@@ -17,6 +17,7 @@ class EventTypeController extends Controller
         $this->middleware(['auth', 'verify.employee']);  
         $this->event_type = $event_type;
     }
+    
     public function index() {
         return $this->event_type->all();
     }
@@ -26,7 +27,8 @@ class EventTypeController extends Controller
     }
 
     public function delete($id) {
-        return $this->event_type->delete($id);
+        $res = $this->event_type->delete($id);
+        return response()->json($res);
     }
     public function update($id, Request $request) {
         $data = [
@@ -34,6 +36,6 @@ class EventTypeController extends Controller
             'color' => $request->color
         ];
         $res = $this->event_type->find($id)->update($data);
-        return $res;
+        return response()->json($res);
     }
 }

@@ -6,7 +6,7 @@
           dark
           background-color="primary"
           fixed-tabs
-          v-if="(user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr')) && !user_type.includes('finance mngr')"
+          v-if="(user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr'))"
         >
           <v-tabs-slider></v-tabs-slider>
           <v-tab @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
@@ -17,10 +17,9 @@
     </v-toolbar>
 
     <!-- Feedback -->
-    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" 
-      :search="search" class="elevation-3">
+    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" :search="search" class="elevation-3">
       <template v-slot:top>
-        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat v-if="(user_type.includes('hr mngr') || user_type.includes('general mngr'))">
           <v-col class="mt-8">
             <v-menu
               :close-on-content-click="false"
@@ -83,8 +82,20 @@
             label="Search"
           ></v-text-field>
         </v-toolbar>
+        
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat v-if="((user_type.includes('prp emp') || user_type.includes('finance mngr')) && (!user_type.includes('hr mngr') && !user_type.includes('general mngr')))">
+          <v-text-field
+            v-model="search"
+            clearable
+            flat
+            solo-inverted
+            hide-details
+            prepend-inner-icon="mdi-magnify"
+            label="Search"
+          ></v-text-field>
+        </v-toolbar>
       </template>
-      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approve' ? 'APPROVE' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
+      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
     </v-data-table>
 
@@ -104,7 +115,7 @@
           ></v-text-field>
         </v-toolbar>
       </template>
-      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approve' ? 'APPROVE' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
+      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === '"approved"' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
       <template v-slot:item.actions="{ item }">
         <v-icon small class="mr-2" @click="approveModal(item)">mdi-check-decagram</v-icon>
@@ -231,7 +242,7 @@
     ></ConfirmationDel>
 
     <v-data-table
-      v-if="requests && (!user_type.includes('hr mngr') || !user_type.includes('finance mngr') || !user_type.includes('prp emp'))"
+      v-if="requests"
       :headers="headers"
       :items="request"
       :search="search"
@@ -528,32 +539,52 @@ export default {
     messagePop(){
       this.$refs.reminder.show()
     },
-    confirm(){
+    confirm(item){
       if(this.approveThis === 'approve'){
-        this.approve()
+        this.approve(item)
       }else{
         this.disapprove()
       }
     },
     disapproveModal(item) {
+      console.log('hahah', item)
       this.approveThis = 'disapproved'
       this.id = item.id;
       this.$refs.confirms.show(item)
     },
-    approve() {
-      let parameter = {
-        user_id: this.user_id,
-        status_id: 1
-      };
-      this.$axios
-        .post(
-          "prp/leave_request/feedback/" + this.id,
-          parameter
-        )
-        .then(response => {
-          this.retrievePendingPrp();
-          this.getAllFeedback();
-        });
+    approve(item) {
+      console.log('item here', item)
+      if(item.id.approver_role_id === 5) {
+        console.log('asdf')
+        let parameter = {
+          user_id: this.user_id,
+          status_id: 2
+        };
+        this.$axios
+          .post(
+            "prp/leave_request/feedback/" + this.id,
+            parameter
+          )
+          .then(response => {
+            this.retrievePendingPrp();
+            this.getAllFeedback();
+          });
+      }else{
+        console.log('asgasfadfsdfdf')
+        let parameter = {
+          user_id: this.user_id,
+          status_id: 1
+        };
+        this.$axios
+          .post(
+            "prp/leave_request/feedback/" + this.id,
+            parameter
+          )
+          .then(response => {
+            this.retrievePendingPrp();
+            this.getAllFeedback();
+          });
+      }
     },
     disapprove() {
       let parameter = {
@@ -577,6 +608,7 @@ export default {
         )
         .then(response => {
           this.feedbacks = response.data.feedbacked_leave_requests;
+          console.log(this.feedbacks)
         });
     },
     summary(item){

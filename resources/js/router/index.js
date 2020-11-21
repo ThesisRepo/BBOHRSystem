@@ -14,7 +14,17 @@ import ManageUsers from "../components/ManageUsers.vue";
 
 Vue.use(Router);
 Vue.use(Vuetify);
-
+function isLoggedIn(to, from, next)
+{
+ if(localStorage.getItem('isloggedin')) 
+ {
+  next('/Dashboard');
+ } 
+ else
+ {
+  next();
+ }
+}
 const router = new Router({
   mode: "hash",
   base: process.env.BASE_URL,
@@ -25,16 +35,16 @@ const router = new Router({
       name: "MyAccount",
       component: MyAccount
     },
-    // {
-    //   path: "/",
-    //   name: "home",
-    // },
     {
-      path: '*',
-      redirect: 'Dashboard'
+      path: '/',
+      beforeEnter : isLoggedIn
     },
     {
-      path: "/",
+      path: '*',
+      redirect: '/'
+    },
+    {
+      path: "/Dashboard",
       name: "Dashboard",
       component: Dashboard
     },

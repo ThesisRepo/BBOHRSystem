@@ -29,14 +29,19 @@ class UserEloquent extends EloquentImplementation {
       return  $this->with($relationship)->get();
    }
     public function updateUserWithInfo($id, $user, $user_info, $company_position){
+      // dd($user_info, $company_position); 
+      $company_position = [
 
+      ];
       try {
         DB::beginTransaction();
           $res = $this->model->findorFail($id);
           $res->update($user);
-          $res->userInformation()->update($user_info);
-          $user->userInformation->company_positions()->attach($company_position);
+          $res->userInformation->update($user_info);
+          // dd($res->userInformation());
+          $res->userInformation->company_positions()->attach($company_position);
         DB::commit();
+        // dd($res->toArray());
         return $res;
       }catch(\Exception $e) {
         DB::rollback();
@@ -83,7 +88,7 @@ class UserEloquent extends EloquentImplementation {
 
     public function getAllNonAdminEmployees() {
       
-      $res = $this->model->with(['userInformation', 'userInformation.department', 'assignedPrp', 'assignedFinance', 'roles'])->whereDoesntHave('roles', function($q){
+      $res = $this->model->with(['userInformation', 'userInformation.department', 'userInformation.company_status', 'assignedPrp', 'assignedFinance', 'roles', 'userInformation.company_positions'])->whereDoesntHave('roles', function($q){
         $q->whereIn('role_id', [3, 4, 5]);
       })->get();
       

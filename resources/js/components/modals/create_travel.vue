@@ -222,9 +222,15 @@ export default {
     },
     getCoDepartment(){
       this.$axios.get("departments/employees").then (response => {
-        response.data.forEach(element => {
-          this.coDepartment.push(element)
-        })
+        // if(response.data > 0){
+          response.data.forEach(element => {
+            console.log('Budget', element)
+            this.coDepartment.push(element)
+          })
+        // }else{
+        //   response.data = nulll
+        //   console.log('wala')
+        // }
       })
     },
     removeData() {
@@ -234,6 +240,7 @@ export default {
         (this.end_date = null),
         (this.emergency_contact = null),
         (this.prp_assigned_id = null);
+        this.selectedFile = null
       this.changeDate();
     }
   }
