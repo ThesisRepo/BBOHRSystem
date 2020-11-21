@@ -14,7 +14,7 @@
           <v-container>
             <v-row>
               <v-col cols="12" sm="6">
-                <v-text-field label="Event*" v-model="event" required></v-text-field>
+                <v-text-field label="Title*" v-model="title" required></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
                 <v-select label="Event Type*" :items="event_types" item-text="event_name" item-value="id" v-model="event_type" required></v-select>
@@ -69,9 +69,10 @@ export default {
     time: null,
     content: null,
     event_type: null,
-    event: null,
+    title: null,
     checkbox: false,
-    event_types: []
+    event_types: [],
+    retrieveRequest: []
   }),
   mounted() {
     this.getEventType()
@@ -79,30 +80,23 @@ export default {
   methods: {
     save(){
       let params = {
-        title: this.event,
+        title: this.title,
         start_date: this.start_date,
         end_date: this.end_date,
         content: this.content,
         is_private: this.checkbox,
-        event_type_id: this.event_type
+        event_type_id: this.event_type,
+        user_id: this.user_id
       }
-      console.log('parameter', this.params)
-      this.$axios.post("events").then(response => {
-        console.log('ayo', response.data)
+      console.log('parameter', params)
+      this.$axios.post("events", params).then(response => {
+        this.$parent.$parent.retrieve()
       })
-      // this.$parent.$parent.events.push({
-      //     name: this.event,
-      //     start: this.start_date,
-      //     end: this.end_date,
-      //     color: 'blue',
-      //     timed: true,
-      // })
     },
     getEventType(){
       this.$axios.get("user_info/event_types/" + this.user_id).then(response => {
-        // console.log('event type', response.data.event_types)
         response.data.event_types.forEach(element => {
-          this.event_types.push(element.event_name)
+          this.event_types.push(element)
         })
       })
     }

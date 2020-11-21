@@ -355,9 +355,6 @@
   </div>
 </template>
 <style>
-.v-overlay__scrim{
-  display: none !important;
-}
 </style>
 
 <script>
