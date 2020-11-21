@@ -15,7 +15,7 @@ class CreateCivilStatusTable extends Migration
     {
         Schema::create('civil_status', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigIncrements('status_name');
+            $table->string('civil_status_name');
             $table->timestamps();
         });
     }
