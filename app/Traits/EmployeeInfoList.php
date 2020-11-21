@@ -12,7 +12,7 @@ trait EmployeeInfoList
             // 'finance_assigned' => 4,
             'first_name' => 'Shin',
             'last_name' => 'Shan',
-            'email' => 'ShinShane@bbo.com.ph',
+            'email' => 'jessavel.toring@student.passerellesnumeriques.org',
             'password' => Hash::make('123456789')
           ],
           'user_info' => null,
