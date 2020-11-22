@@ -121,9 +121,9 @@
                   @onConfirm="confirmDel($event)"
                 ></ConfirmationDel>
 
-                <!-- <v-btn icon>
+                <v-btn icon>
                   <v-icon>mdi-dots-vertical</v-icon>
-                </v-btn> -->
+                </v-btn>
               </v-toolbar>
               <v-card-text>
                 <span v-html="selectedEvent.details"></span>
