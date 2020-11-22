@@ -196,7 +196,7 @@ Route::post('event_types/{id}','EventTypeController@update')->name('event_type.u
 
 Route::delete('event_types/{user_id}','EventTypeController@delete')->name('event_type.delete');
 
-Route::get('events','CalendarEventController@getByUser')->name('events.show');
+Route::get('events/{user_id}','CalendarEventController@getByUser')->name('events.show');
 
 Route::post('events','CalendarEventController@store')->name('events.store');
 

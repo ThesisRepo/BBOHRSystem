@@ -129,13 +129,6 @@
                 <span v-html="selectedEvent.details"></span>
                 <p>{{selectedEvent.start}} - {{selectedEvent.end}}</p>
                 <p><b>Content:</b> {{selectedEvent.content}}</p>
-                <!-- <v-text-field
-                  v-if="update"
-                  label="Start Date"
-                  type="datetime-local"
-                  v-model="start_date"
-                  color="primary"
-                ></v-text-field> -->
               </v-card-text>
               <v-card-actions>
                 <v-btn color="red" dark @click="selectedOpen = false">Close</v-btn>
@@ -172,7 +165,7 @@
                 ></v-textarea>
               </v-col>
               <v-col cols="12" sm="6">
-                <v-text-field label="Start Date" type="datetime-local" v-model="editedItem.start_date" color="primary"></v-text-field>
+                <v-text-field label="Start Date" type="datetime-local" v-model="editedItem.start_date" @change="test()" color="primary"></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
                 <v-text-field label="End Date" type="datetime-local" v-model="editedItem.end_date" color="primary"></v-text-field>
@@ -189,7 +182,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red" dark @click="dialog = false">Cancel</v-btn>
-          <v-btn color="success" @click="dialog = false, save()">Save</v-btn>
+          <v-btn color="success" @click="updateCalendar()">Update</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -199,6 +192,7 @@
 import DashBoardtable from "./Dashboard_table";
 import CalendarAdd from "./modals/addCalendar.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
+import moment from "moment";
 export default {
   components: {
     DashBoardtable,
@@ -231,7 +225,7 @@ export default {
       title: null,
       start_date: null,
       end_date: null,
-      // color: null,
+      checkbox: false,
       event_type: null
     },
   }),
@@ -243,6 +237,9 @@ export default {
     this.retrieve();
   },
   methods: {
+    test(){
+      console.log(this.editedItem.start_date)
+    },
     getNoApprove() {
       this.$axios
         .get("user_info/approved_requests/count/" + this.user_id)
@@ -301,6 +298,7 @@ export default {
           end: this.events[i].end_date,
           color: this.events[i].event_type.color,
           event_type: this.events[i].event_type.event_name,
+          checkbox: this.events[i].is_private,
           timed: this.events[i].timed
         });
       }
@@ -314,7 +312,7 @@ export default {
         .get("user_info/event_types/" + this.user_id)
         .then(response => {
           response.data.event_types.forEach(element => {
-            // this.event_types.push(element)
+            this.event_types.push(element)  
           });
         });
     },
@@ -322,7 +320,8 @@ export default {
       let parameter = {
         user_id: this.user_id
       };
-      this.$axios.get("events", parameter).then(response => {
+      this.$axios.get("events/"+  this.user_id).then(response => {
+        console.log('retireve', response.data)
         this.events = []
         response.data.forEach(element => {
           var temp = {
@@ -333,6 +332,7 @@ export default {
             end: element.end_date,
             color: element.event_type.color,
             event_type: element.event_type.event_name,
+            checkbox: element.is_private,
             timed: true
           };
           this.events.push(temp)
@@ -358,12 +358,39 @@ export default {
       this.editedItem.id = selectedEvent.id;
       this.editedIndex = this.events.indexOf(selectedEvent);
       this.editedItem.content = selectedEvent.content;
-      this.editedItem.start_date = selectedEvent.start;
-      this.editedItem.end_date = selectedEvent.end;
+      this.editedItem.checkbox = selectedEvent.checkbox;
+      this.editedItem.start_date = moment(selectedEvent.start).format('YYYY-MM-DDTHH:mm');
+      this.editedItem.end_date = moment(selectedEvent.end).format('YYYY-MM-DDTHH:mm');
       this.editedItem.title = selectedEvent.name;
-      this.editedItem.event_type = {event_name: selectedEvent.event_type, id: selectedEvent.id};
       this.dialog = true;
+      this.event_types.forEach(el => {
+        if(el.event_name === selectedEvent.event_type){
+          this.editedItem.event_type = el
+        }
+      })
     },
+    updateCalendar(){
+      let params = {
+          id: this.editedItem.id,
+          user_id: this.user_id,
+          content: this.editedItem.content,
+          is_private: this.editedItem.checkbox,
+          start_date: this.editedItem.start_date,
+          end_date: this.editedItem.end_date,
+          event_type_id: this.editedItem.event_type.id ? this.editedItem.event_type.id : this.editedItem.event_type,
+          title: this.editedItem.title
+        };
+        console.log('hahahahhah', params)
+        this.$axios
+          .post(
+            "events/" + this.editedItem.id,
+            params
+          )
+          .then(response => {
+            this.retrieve();
+          });
+        this.dialog = false;
+      }
   }
 };
 </script>
