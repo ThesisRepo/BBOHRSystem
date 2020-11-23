@@ -16,10 +16,27 @@
         background-color:#F4F6F6 ;
         color:black;
     }
+    .field-icon {
+        float: right;
+        margin-left: -25px;
+        margin-top: -25px;
+        position: relative;
+        z-index: 2;
+}
     </style>
 @endsection
 @section('js')
    <script>
+   $(".toggle-password").click(function() {
+
+      $(this).toggleClass("fa-eye fa-eye-slash");
+     var input = $($(this).attr("toggle"));
+     if (input.attr("type") == "password") {
+        input.attr("type", "text");
+} else {
+  input.attr("type", "password");
+}
+});
    </script>
 @endsection
 @section('content')
@@ -70,11 +87,12 @@
                                 <div class="md-form form-group">
                                     <label for="password">Password</label>
                                     <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" value="123456789" required autocomplete="current-password" >
+                                    <span toggle="#password-field" class="fa fa-eye field-icon toggle-password"></span>
                                     @error('password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                    @enderror
+                                    @enderror 
                                 </div>
                             </div>
                         </div>

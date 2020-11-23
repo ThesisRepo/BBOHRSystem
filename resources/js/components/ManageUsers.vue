@@ -302,25 +302,10 @@
                                     :items="comStatus"
                                     item-text="company_status_name"
                                     item-value="id"
-                                    label="Company Status*"
+                                    label="Status*"
                                     @keyup="validate('company_status')"
                                     v-model="editItem.company_status"
                                     prepend-icon="mdi-account"
-                                    required
-                                ></v-select>
-                            </v-col>
-
-                            <v-col cols="12" md="4">
-                                <v-select
-                                    :items="departmentItem"
-                                    label="Department*"
-                                    prepend-icon="mdi-account-group"
-                                    :item-text="
-                                        departmentItem =>
-                                            departmentItem.department_name
-                                    "
-                                    item-value="id"
-                                    v-model="editItem.department"
                                     required
                                 ></v-select>
                             </v-col>
@@ -360,7 +345,61 @@
                                     ></v-date-picker>
                                 </v-menu>
                             </v-col>
-                            <v-col cols="12" md="6">
+                            <v-col cols="12" md="4">
+                                <v-select
+                                    :items="rolesItem"
+                                    item-text="text"
+                                    item-value="value"
+                                    label="Roles*"
+                                    prepend-icon="mdi-account-group"
+                                    v-model="editItem.roles"
+                                    required
+                                ></v-select>
+                            </v-col>
+                            <v-col cols="12" md="4">
+                                <v-text-field
+                                    class="input-name"
+                                    v-model="editItem.allowed_leave_number"
+                                    label="Allowed Leave No."
+                                    prepend-icon="mdi-calendar-check"
+                                    type="number"
+                                    @keyup="validate('allowed_leave_number')"
+                                ></v-text-field>
+                                <span
+                                    class="ml-8"
+                                    v-if="errorMessage14 !== null"
+                                    style="color: red; font-size: 12px"
+                                    >{{ errorMessage14 }}</span
+                                >
+
+                                <span
+                                    v-if="errorMessage15 !== null"
+                                    style="color: red; font-size: 13px"
+                                    >{{ errorMessage15 }}</span
+                                >
+
+                                <span
+                                    class="ml-8"
+                                    v-if="errorMessage16 !== null"
+                                    style="color: red; font-size: 12px"
+                                    >{{ errorMessage16 }}</span
+                                >
+                            </v-col>
+                            <v-col cols="12" md="4">
+                                <v-select
+                                    :items="departmentItem"
+                                    label="Department*"
+                                    prepend-icon="mdi-account-group"
+                                    :item-text="
+                                        departmentItem =>
+                                            departmentItem.department_name
+                                    "
+                                    item-value="id"
+                                    v-model="editItem.department"
+                                    required
+                                ></v-select>
+                            </v-col>
+                            <v-col cols="12" md="4">
                                 <v-select
                                     :items="finance"
                                     label="Finance Assign"
@@ -389,6 +428,7 @@
                                     v-model="editItem.selectPrp"
                                     @keyup="validate('prp_assign')"
                                     prepend-icon="mdi-account"
+                                    @change="getPrp()"
                                     required
                                 ></v-select>
                             </v-col>
@@ -402,35 +442,6 @@
                                     prepend-icon="mdi-account"
                                     required
                                 ></v-select>
-                            </v-col>
-                            <v-col cols="12" md="6">
-                                <v-text-field
-                                    class="input-name"
-                                    v-model="editItem.allowed_leave_number"
-                                    label="Allowed Leave No."
-                                    prepend-icon="mdi-calendar-check"
-                                    type="number"
-                                    @keyup="validate('allowed_leave_number')"
-                                ></v-text-field>
-                                <span
-                                    class="ml-8"
-                                    v-if="errorMessage14 !== null"
-                                    style="color: red; font-size: 12px"
-                                    >{{ errorMessage14 }}</span
-                                >
-
-                                <span
-                                    v-if="errorMessage15 !== null"
-                                    style="color: red; font-size: 13px"
-                                    >{{ errorMessage15 }}</span
-                                >
-
-                                <span
-                                    class="ml-8"
-                                    v-if="errorMessage16 !== null"
-                                    style="color: red; font-size: 12px"
-                                    >{{ errorMessage16 }}</span
-                                >
                             </v-col>
                         </v-row>
                     </v-container>
@@ -570,10 +581,7 @@
                     <v-btn color="red" dark @click="dialogOthers = false">
                         Cancel
                     </v-btn>
-                    <v-btn
-                        color="blue darken-1"
-                        dark @click="update()"
-                    >
+                    <v-btn color="blue darken-1" dark @click="update()">
                         Save
                     </v-btn>
                 </v-card-actions>
@@ -627,18 +635,13 @@
         </v-data-table>
     </v-row>
 </template>
-<<<<<<< HEAD
-=======
-<style>
-</style>
->>>>>>> d8faa781fdabc5b402d8c307ab890fad82506856
 
 <script>
 import createUser from "./modals/personalInfo_user.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
 export default {
     data: () => ({
-        test: 'test',
+        test: "test",
         showModal: false,
         dialogPersonal: false,
         dialogBusiness: false,
@@ -685,6 +688,12 @@ export default {
             { text: "Female", value: 0 },
             { text: "Male", value: 1 }
         ],
+        rolesItem: [
+            { text: "Admin", value: 0 },
+            { text: "Finance", value: 1 },
+            { text: "Employee", value: 2 },
+            { text: "Manager", value: 3 }
+        ],
         headers: [
             {
                 text: "NAME",
@@ -699,7 +708,10 @@ export default {
                 value: "user_information.department.department_name"
             },
             { text: "PRP IN CHARGE", value: "assigned_prp.first_name" },
-            { text: "STATUS", value: "user_information.company_status.company_status_name" },
+            {
+                text: "STATUS",
+                value: "user_information.company_status.company_status_name"
+            },
             { text: "ACTIONS", value: "actions", sortable: false }
         ],
         user: [],
@@ -767,7 +779,6 @@ export default {
             this.$axios.get("hr/manage/user").then(response => {
                 this.user = response.data;
                 console.log("user", this.user);
-                
             });
         },
         next() {
@@ -797,6 +808,7 @@ export default {
                 this.dialogOthers = false;
             } else {
                 this.errorMessage17 = "Please fill up all fields";
+                this.errorMessage17 = null;
             }
         },
         next1() {
@@ -1045,7 +1057,9 @@ export default {
             console.log("lbolbol", item);
             this.editItem.id = item.id;
             this.editItem.address = item.user_information.address;
-            this.editItem.civil_status = parseInt(item.user_information.civil_status);
+            this.editItem.civil_status = parseInt(
+                item.user_information.civil_status
+            );
             this.editItem.contact_number = item.user_information.contact_number;
             this.editItem.pag_ibig_number =
                 item.user_information.pag_ibig_number;
@@ -1055,15 +1069,14 @@ export default {
                 item.user_information.philhealth_number;
             this.editItem.selectPrp = item.assigned_prp.id;
             this.editItem.selectFinance = item.assigned_finance.id;
-            this.editItem.first_name = item.first_name;                                             
+            this.editItem.first_name = item.first_name;
             this.editItem.last_name = item.last_name;
             this.editItem.email = item.email;
             this.editItem.current_password = item.password;
             this.editItem.regularization_date =
                 item.user_information.regularization_date;
             this.editItem.password_confirmation = item.confirm_password;
-            this.editItem.department =
-                item.user_information.department;
+            this.editItem.department = item.user_information.department;
             this.editItem.shift_time = item.user_information.shift_time_id;
             this.editItem.gender = parseInt(item.user_information.gender);
             this.editItem.allowed_leave_number =
@@ -1077,10 +1090,8 @@ export default {
             this.dialogPersonal = true;
             // this.dialogBusiness = true;
             // this.dialogOthers = true;
-           
-            console.log('asfd', 
-                this.editItem.company_position
-            );
+
+            console.log("asfd", this.editItem.company_position);
         },
         getPrp() {
             console.log(this.editItem.selectPrp);
@@ -1140,12 +1151,12 @@ export default {
                 birthday: this.editItem.birthday,
                 company_number: this.editItem.company_number
             };
-            console.log('params ako', this.params)
+            console.log("params ako", this.params);
             this.$axios
                 .post("hr/manage/user/" + this.editItem.id, params)
                 .then(response => {
                     this.retrieve();
-                    console.log('retrieve me', response.data)
+                    console.log("retrieve me", response.data);
                 });
             this.dialogPersonal = false;
             this.dialogBusiness = false;

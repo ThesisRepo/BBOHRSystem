@@ -20,7 +20,7 @@
       <v-card>
          <v-toolbar class="mb-2" color="blue darken-1" dark flat>
             <v-card-title>
-              <!-- <span class="headline-bold">SHIFT CHANGE REQUEST FORM</span> -->
+              <span class="headline-bold">SHIFT CHANGE REQUEST FORM</span>
             </v-card-title>
           </v-toolbar>
         <v-card-text>
