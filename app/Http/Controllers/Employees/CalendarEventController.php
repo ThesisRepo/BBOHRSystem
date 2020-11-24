@@ -17,10 +17,11 @@ class CalendarEventController extends Controller
         $this->calendar_event = $calendar_event;
     }
 
-    public function getByUser(Request $request) {
-        $user_id = $request->user_id;
+    public function getByUser($user_id) {
+        // $user_id = $request->user_id;
         $relationship = 'event_type';
-        $res = $this->calendar_event->whereWith('user_id', $user_id, $relationship)->orWhere('is_private', 0)->get();
+        $res = $this->calendar_event->whereWith('user_id', $user_id, $relationship)->orWhere('is_private', 1)->get();
+        // dd($user_id);
         return $res;
     }
 
@@ -49,7 +50,7 @@ class CalendarEventController extends Controller
             'event_type_id' => $request->event_type_id
         ];
         $res = $this->calendar_event->find($id)->update($data);
-        return $res;
+        return response()->json($res, 200);
     }
 
     public function delete($id) {

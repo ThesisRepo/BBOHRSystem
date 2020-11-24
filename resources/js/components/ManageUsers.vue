@@ -627,11 +627,6 @@
         </v-data-table>
     </v-row>
 </template>
-<<<<<<< HEAD
-=======
-<style>
-</style>
->>>>>>> d8faa781fdabc5b402d8c307ab890fad82506856
 
 <script>
 import createUser from "./modals/personalInfo_user.vue";
