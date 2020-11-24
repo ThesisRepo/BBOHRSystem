@@ -57,14 +57,14 @@
 </style>
 @yield('js')
 <body>
-    <div id="app" class="container-fluid">
+    <div id="app" class="container-fluid" >
         @guest
-        <div class="d-md-flex h-md-100 align-items-center">
+        <div class=" row d-md-flex h-md-100 align-items-center">
 
             <!-- First Half -->
 
             <div class="col-md-6 p-0 h-md-100">
-                <div class="text-white d-md-flex align-items-center h-100 text-center justify-content-center" style="background-color:red"> 
+                <div class="text-white d-md-flex align-items-center h-100 text-center justify-content-center" style="background-image:url('images/background1.jpg');background-size: cover;"> 
                     <!-- <div class="logoarea pt-0 pb-0">
                         <img src="{{url('images/background1.jpg')}}" width="630" height="670">
                     </div> -->
