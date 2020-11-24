@@ -34,7 +34,7 @@ class UserInformationController extends Controller
      */
     public function show($id)
     {
-        $res = $this->user->findWith($id, 'userInformation.department','userInformation.shift_time');
+        $res = $this->user->findWith($id, ['userInformation.department','userInformation.shift_time', 'userInformation.company_positions']);
         return $res;
     }
 
