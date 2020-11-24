@@ -42,7 +42,7 @@
     height: 300px;
   }
 } */
-#companyName, #appName{
+/* #companyName, #appName{
     font-size:250%;
 }
 #companyName{
@@ -50,33 +50,58 @@
 }
 .col-md-7 {
     background-color:#3490dc;
+} */
+@media (min-width: 768px) {
+    .h-md-100 { height: 100vh; }
 }
+.bg-indigo { background: indigo; }
 </style>
 @yield('js')
 <body>
     <div id="app" class="container-fluid">
         @guest
-            <div class="row">
+        <div class="d-md-flex h-md-100 align-items-center">
+
+            <!-- First Half -->
+
+            <div class="col-md-6 p-0 h-md-100">
+                <div class="text-white d-md-flex align-items-center h-100 text-center justify-content-center">
+                    <div class="logoarea pt-0 pb-0">
+                        <img src="{{url('images/background1.jpg')}}" width="630" height="670">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Second Half -->
+
+            <div class="col-md-6 p-0 h-md-100 loginarea" style="background-color:#3490dc">
+                <div class="d-md-flex align-items-center h-100 justify-content-center">
+                    @yield('content')
+                </div>
+            </div>
+                
+        </div>
+            <!-- <div class="row">
                 <div class="col-md-5" >
                     <main class="py-4" >
                         <div  id="name">
                             <div class="row justify-content-center">
-                                <div class="col-md-9" >
-                                    <!-- <img  src="{{url('img/logo.png')}}" width="400" height="auto" class="mb-3" alt="logo"> -->
-                                    <p id="companyName">BLUE BEE ONE </p>
+                                <div class="col-md-9" style="top:0%;">
+                                    <img  src="{{url('images/background.png')}}" width="500" height="500"> -->
+                                    <!-- <p id="companyName">BLUE BEE ONE </p>
                                     <p id="tag"><i>"The name of our company comes from Blue Bee. The blue bee is said to bring happiness and make a path of happiness, which exists in each one of us."</i></p>
-                                    <p id="appName">REQUEST MANAGEMENT SYSTEM</p>
-                                </div>
+                                    <p id="appName">REQUEST MANAGEMENT SYSTEM</p> -->
+                                <!-- </div>
                             </div>
                         </div>
                     </main>
                 </div>
                 <div class="col-md-7">
-                    <main class="py-4">
+                    <main class="py-1">
                         @yield('content')
                     </main>
                 </div>       
-            </div>
+            </div> -->
         @endguest 
         @auth
             <div id="app">

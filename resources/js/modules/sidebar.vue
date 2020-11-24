@@ -86,7 +86,7 @@ export default {
       { icon: "mdi-calendar-account", text: "Shift Change", route: "/ShiftChange" },
       { icon: "mdi-calendar-clock", text: "Overtime", route: "/Overtime" },
       { icon: "mdi-account-cash", text: "Petty Cash", route: "/PettyCash" },
-      { icon: "mdi-account-cash-outline", text: "Budget ", route: "/Budget" },
+      { icon: "mdi-account-cash-outline", text: "Budget", route: "/Budget" },
       { icon: "mdi-airplane", text: "Travel Authorization", route: "/TravelAuthorization" },
       { icon: "mdi-logout", text: "LogOut"}
       // { icon: "mdi-logout", text: "LogOut", route: "/logout" }
