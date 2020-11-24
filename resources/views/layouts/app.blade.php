@@ -64,10 +64,10 @@
             <!-- First Half -->
 
             <div class="col-md-6 p-0 h-md-100">
-                <div class="text-white d-md-flex align-items-center h-100 text-center justify-content-center">
-                    <div class="logoarea pt-0 pb-0">
-                        <img src="{{url('images/background1.jpg')}}" width="630" height="100vh">
-                    </div>
+                <div class="text-white d-md-flex align-items-center h-100 text-center justify-content-center" style="background-color:red"> 
+                    <!-- <div class="logoarea pt-0 pb-0">
+                        <img src="{{url('images/background1.jpg')}}" width="630" height="670">
+                    </div> -->
                 </div>
             </div>
 
