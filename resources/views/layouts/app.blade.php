@@ -63,7 +63,7 @@
 
             <!-- First Half -->
 
-            <div class="col-md-5 p-0 h-md-100">
+            <div class="col-md-6 p-0 h-md-100">
                 <div class="text-white d-md-flex align-items-center h-100 text-center justify-content-center">
                     <div class="logoarea pt-0 pb-0">
                         <img src="{{url('images/background1.jpg')}}" width="630" height="670">
@@ -73,7 +73,7 @@
 
             <!-- Second Half -->
 
-            <div class="col-md-7 p-0 h-md-100 loginarea" style="background-color:#3490dc">
+            <div class="col-md-6 p-0 h-md-100 loginarea" style="background-color:#3490dc">
                 <div class="d-md-flex align-items-center h-100 justify-content-center">
                     @yield('content')
                 </div>

@@ -128,7 +128,7 @@
               <v-card-text>
                 <span v-html="selectedEvent.details"></span>
                 <p>{{selectedEvent.start}} - {{selectedEvent.end}}</p>
-                <p><b>Content:</b> {{selectedEvent.content}}</p>
+                <p><b>Details:</b> {{selectedEvent.content}}</p>
               </v-card-text>
               <v-card-actions>
                 <v-btn color="red" dark @click="selectedOpen = false">Close</v-btn>
@@ -170,10 +170,10 @@
               <v-col cols="12" sm="6">
                 <v-text-field label="End Date" type="datetime-local" v-model="editedItem.end_date" color="primary"></v-text-field>
               </v-col>
-              <v-col cols="12">
+              <v-col cols="12" v-if="user_type.includes('hr mngr')">
                 <v-checkbox
                   v-model="editedItem.checkbox"
-                  label="Private"
+                  label="Public"
                 ></v-checkbox>
               </v-col>
             </v-row>
@@ -200,6 +200,7 @@ export default {
     ConfirmationDel
   },
   data: () => ({
+    user_type: localStorage.getItem("user_type"),
     leave_number: localStorage.getItem("leave_number"),
     user_id: localStorage.getItem("id"),
     pending: null,

@@ -23,7 +23,7 @@
                 <!-- <v-text-field label="Content*" v-model="content" required></v-text-field> -->
                 <v-textarea
                   outlined
-                  label="Content*"
+                  label="Details*"
                   v-model="content"
                   rows="3"
                   required
@@ -35,10 +35,10 @@
               <v-col cols="12" sm="6">
                 <v-text-field label="End Date" type="datetime-local" v-model="end_date" color="primary"></v-text-field>
               </v-col>
-              <v-col cols="12">
+              <v-col cols="12" v-if="user_type.includes('hr mngr')">
                 <v-checkbox
                   v-model="checkbox"
-                  label="Private"
+                  label="Public"
                 ></v-checkbox>
               </v-col>
             </v-row>
@@ -62,6 +62,7 @@
 <script>
 export default {
   data: () => ({
+    user_type: localStorage.getItem("user_type"),
     dialog: false,
     user_id: localStorage.getItem("id"),
     start_date: null,
