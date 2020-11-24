@@ -227,12 +227,12 @@
         ></v-text-field>
 
         <createOvertime
-        v-if="prp_assigned_id !== 'No Prp assign' && informationCheck !== null"
+        v-if="prp_assigned_id !== 'No PRP assign' && informationCheck !== null"
         ></createOvertime>
 
         <v-btn
           style="margin-left: 5%"
-          v-if="prp_assigned_id !== 'No Prp assign' || informationCheck === null"
+          v-if="prp_assigned_id === 'No PRP assign' || informationCheck === null"
           color="light blue darken-2"
           rounded
           outlined
@@ -261,7 +261,7 @@
         <v-icon medium disabled v-if="((user_type.includes('emp') && user_type.includes('prp emp') && user_type.includes('hr mngr')) && item.status.status_name === 'approved')">mdi-delete</v-icon>  
         <v-icon medium disabled v-else-if="((user_type.includes('emp') && user_type.includes('prp emp') && !(user_type.includes('hr mngr'))) && item.approver_role.role_name === 'general mngr')">mdi-delete</v-icon>  
         <v-icon medium disabled v-else-if="((user_type.includes('emp') && !user_type.includes('prp emp') && !user_type.includes('hr mngr')) && ((item.approver_role.role_name === 'hr mngr') || item.approver_role.role_name === 'general mngr'))">mdi-delete</v-icon>  
-        <v-icon medium @click="deleteItem(item)" style="color:red" v-else>mdi-delete</v-icon> 
+        <v-icon medium @click="deleteItem(item)" style="color:red" v-else>mdi-delete</v-icon>
       </template>
     </v-data-table>
     <SummaryTemplate
@@ -350,11 +350,7 @@ export default {
     },
   },
   mounted(){
-    if (
-      this.user_type.includes("hr mngr") ||
-      this.user_type.includes("prp emp") ||
-      this.user_type.includes("general mngr")
-    ) {
+    if ((this.user_type.includes("hr mngr") || this.user_type.includes("prp emp") || this.user_type.includes("general mngr")) && !(this.user_type.includes("finance mngr"))) {
       this.retrieveOvertime();
       this.getAllFeedback();
       this.retrieve();
@@ -391,7 +387,7 @@ export default {
     },
     messagePop(){
       console.log(this.prp_assigned_id, this.informationCheck)
-      if(this.prp_assigned_id === 'No Prp assign' && this.informationCheck === null){
+      if(this.prp_assigned_id === 'No PRP assign' && this.informationCheck === null){
         this.messageCheck = 'combine'
         this.$refs.reminder.show()
       }else if(this.informationCheck === null){
