@@ -28,6 +28,11 @@
                         <span v-if="error" style="color: red; font-size: 13px"
                             >All data are required</span
                         >
+                        <span
+                            v-if="errorMessage1"
+                            style="color: red; font-size: 13px"
+                            >{{ errorMessage1 }}</span
+                        >
                         <v-row>
                             <v-col cols="12">
                                 <v-select
@@ -98,8 +103,7 @@
                                     class="ml-7"
                                     style="color: red; font-size: 13px"
                                     >Higher the End Date
-                                    </span
-                                >
+                                </span>
                             </v-col>
                             <v-col cols="12" sm="4">
                                 <v-text-field
@@ -131,6 +135,7 @@ export default {
             prp_assigned_id: localStorage.getItem("assigned_prp_id"),
             error1: false,
             disable: true,
+            errorMessage1: null,
             leaveType: [
                 { value: 1, name: "Sick Leave" },
                 { value: 2, name: "Solo Parent Leave" },
@@ -162,6 +167,9 @@ export default {
                     this.total_days_with_text =
                         differenceInDay + " days of leave";
                     this.error1 = false;
+                    if (diff == 0) {
+                        this.error1 = true;
+                    }
                 } else {
                     this.error1 = true;
                 }
@@ -172,6 +180,7 @@ export default {
         },
         hideModal() {
             this.dialog = false;
+            this.error = false;
         },
         disabledDates(date) {
             return date > new Date().toISOString().substr(0, 10);
@@ -188,11 +197,13 @@ export default {
             this.differenceInDay = differenceInDay;
         },
         createRequest() {
+            console.log("ASDD", this.error1);
             if (
                 this.selectedLeaveType !== null &&
                 this.total_days !== null &&
                 this.start_date !== null &&
-                this.end_date !== null
+                this.end_date !== null &&
+                this.error1 === false
             ) {
                 let params = {
                     user_id: this.user_id,
@@ -202,16 +213,21 @@ export default {
                     number_of_days: this.total_days,
                     prp_assigned_id: this.prp_assigned_id
                 };
-                this.$axios
-                    .post("leave_request", params)
-                    .then(res => {
-                        console.log("Successfully Added");
-                        this.$parent.$parent.$parent.$parent.$parent.retrieve();
-                        this.dialog = false;
-                    });
-            } else {
+                this.$axios.post("leave_request", params).then(res => {
+                    console.log("Successfully Added");
+                    this.$parent.$parent.$parent.$parent.$parent.retrieve();
+                    // this.error = false;
+                    this.dialog = false;
+                });
+            } else if (
+                this.selectedLeaveType === null &&
+                this.total_days === null &&
+                this.start_date === null &&
+                this.end_date === null
+            ) {
                 this.error = true;
-                this.dialog = true;
+            } else {
+                this.errorMessage1 = "Please fill valid information";
             }
         },
         removeData() {
@@ -219,8 +235,9 @@ export default {
                 (this.total_days = null),
                 (this.total_days_with_text = null),
                 (this.start_date = null),
-                (this.end_date = null);
-            this.changeDate();
+                (this.end_date = null),
+                (this.error = null),
+                (this.errorMessage1 = null);
         }
     }
 };
