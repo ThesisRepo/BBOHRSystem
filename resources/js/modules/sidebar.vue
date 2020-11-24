@@ -82,11 +82,11 @@ export default {
     employ: [
       { icon: "mdi-account", text: "My Account", route: "/MyAccount" },
       { icon: "mdi-apps", text: "Dashboard", route: "/" },
-      { icon: "mdi-calendar-edit", text: "Leave Request", route: "/Leave" },
-      { icon: "mdi-calendar-account", text: "Shift Change Request", route: "/ShiftChange" },
-      { icon: "mdi-calendar-clock", text: "Overtime Request", route: "/Overtime" },
-      { icon: "mdi-account-cash", text: "Petty Cash Request", route: "/PettyCash" },
-      { icon: "mdi-account-cash-outline", text: "Budget Request", route: "/Budget" },
+      { icon: "mdi-calendar-edit", text: "Leave", route: "/Leave" },
+      { icon: "mdi-calendar-account", text: "Shift Change", route: "/ShiftChange" },
+      { icon: "mdi-calendar-clock", text: "Overtime", route: "/Overtime" },
+      { icon: "mdi-account-cash", text: "Petty Cash", route: "/PettyCash" },
+      { icon: "mdi-account-cash-outline", text: "Budget", route: "/Budget" },
       { icon: "mdi-airplane", text: "Travel Authorization", route: "/TravelAuthorization" },
       { icon: "mdi-logout", text: "LogOut"}
       // { icon: "mdi-logout", text: "LogOut", route: "/logout" }

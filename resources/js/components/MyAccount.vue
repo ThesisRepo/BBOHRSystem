@@ -37,7 +37,7 @@
             </v-col>
             <v-col>
               <h1 class="title-h4 text-md-h4 text-sm-h4 text-truncate mt-8 primary--text"><b>{{ user_name ? user_name : 'No User Name' }}</b></h1>
-              <h2 class="title-h6 text-md-h6 text-sm-h6 text-truncate"><v-icon class="primary--text">mdi-account-cog</v-icon> {{ datas ? datas.company_position : 'No Position' }}</h2>
+              <h2 class="title-h6 text-md-h6 text-sm-h6 text-truncate"><v-icon class="primary--text">mdi-account-cog</v-icon> {{ company_position ? company_position : 'No Position' }}</h2>
 
               <h3
                 class="text--primary text-caption text-sm-body-2 text-md-body-1"
@@ -98,6 +98,7 @@
                 </v-col>
                 <v-col cols="6">
                   <p class="black--text"><v-icon class="primary--text">mdi-calendar-check</v-icon> {{ date_hired ? date_hired : 'No Date Hired'}}</p>
+                  <p class="black--text"><v-icon class="primary--text">mdi-timetable</v-icon> {{ shift ? shift : 'No Shift Time'}}</p>
                 </v-col>
               </v-row>
               <!-- end Business Info -->
@@ -134,9 +135,11 @@ export default {
       company_number: localStorage.getItem("company_id"),
       dialog: false,
       department: null,
+      company_position: null,
       employment_status: null,
       position: null,
       company_status: null,
+      shift: null,
       date_hired: null,
       address: null,
       status: null,
@@ -177,6 +180,8 @@ export default {
           this.user_finance = localStorage.getItem("user_finance");
           if(response.data.user_information !== null){
             this.datas = response.data.user_information;
+            this.company_position = response.data.user_information.company_positions[0].position_name;
+            this.shift = response.data.user_information.shift_time.shift_time_name;
             this.department = response.data.user_information.department.department_name;
             this.date_hired = response.data.user_information.date_hired;
             this.address = response.data.user_information.address;

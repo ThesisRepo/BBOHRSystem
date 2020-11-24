@@ -115,8 +115,8 @@
       <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon small class="mr-2" @click="approveModal(item)">mdi-check-decagram</v-icon>
-        <v-icon small @click="disapproveModal(item)">mdi-close-circle</v-icon>
+        <v-icon medium class="mr-2" @click="approveModal(item)" style="color:green">mdi-check-decagram</v-icon>
+        <v-icon medium @click="disapproveModal(item)" style="color:red">mdi-close-circle</v-icon>
       </template>
     </v-data-table>
 
@@ -227,12 +227,12 @@
         ></v-text-field>
 
         <createOvertime
-        v-if="prp_assigned_id !== 'No Prp assign'"
+        v-if="prp_assigned_id !== 'No Prp assign' && informationCheck !== null"
         ></createOvertime>
 
         <v-btn
           style="margin-left: 5%"
-          v-if="prp_assigned_id === 'No Prp assign'"
+          v-if="prp_assigned_id !== 'No Prp assign' || informationCheck === null"
           color="light blue darken-2"
           rounded
           outlined
@@ -245,7 +245,7 @@
 
           <Reminder
           ref="reminder"
-          :message="'Please set your PRP Assign'"
+          :message="messageCheck === 'prp' ? 'Please set your PRP Assign' : messageCheck === 'user' ? 'Please set your personal information' : messageCheck === 'combine' ? 'Please set your PRP assign and your Personal Information' : ''"
           ></Reminder>
 
       </v-toolbar>
@@ -253,8 +253,15 @@
       <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-        <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+        <v-icon medium disabled class="mr-2" v-if="((user_type.includes('emp') && user_type.includes('prp emp') && user_type.includes('hr mngr')) && item.status.status_name === 'approved')">mdi-pencil</v-icon>
+        <v-icon medium disabled class="mr-2" v-else-if="((user_type.includes('emp') && user_type.includes('prp emp') && !(user_type.includes('hr mngr'))) && item.approver_role.role_name === 'general mngr')">mdi-pencil</v-icon>
+        <v-icon medium disabled class="mr-2" v-else-if="((user_type.includes('emp') && !user_type.includes('prp emp') && !user_type.includes('hr mngr')) && ((item.approver_role.role_name === 'hr mngr') || item.approver_role.role_name === 'general mngr'))">mdi-pencil</v-icon>
+        <v-icon medium class="mr-2" @click="editItem(item)" style="color:blue" v-else>mdi-pencil</v-icon>
+        
+        <v-icon medium disabled v-if="((user_type.includes('emp') && user_type.includes('prp emp') && user_type.includes('hr mngr')) && item.status.status_name === 'approved')">mdi-delete</v-icon>  
+        <v-icon medium disabled v-else-if="((user_type.includes('emp') && user_type.includes('prp emp') && !(user_type.includes('hr mngr'))) && item.approver_role.role_name === 'general mngr')">mdi-delete</v-icon>  
+        <v-icon medium disabled v-else-if="((user_type.includes('emp') && !user_type.includes('prp emp') && !user_type.includes('hr mngr')) && ((item.approver_role.role_name === 'hr mngr') || item.approver_role.role_name === 'general mngr'))">mdi-delete</v-icon>  
+        <v-icon medium @click="deleteItem(item)" style="color:red" v-else>mdi-delete</v-icon> 
       </template>
     </v-data-table>
     <SummaryTemplate
@@ -279,6 +286,8 @@ export default {
     dialog: false,
     error: false,
     overtime_date: null,
+    messageCheck: '',
+    informationCheck: null,
     search: '',
     headers: [
       { text: "REASON", align: "start", value: "reason" },
@@ -349,8 +358,10 @@ export default {
       this.retrieveOvertime();
       this.getAllFeedback();
       this.retrieve();
+      this.checkUser()
     } else {
       this.retrieve();
+      this.checkUser()
     }
   },
   methods: {
@@ -366,8 +377,30 @@ export default {
         console.log(e);
       })
     },
+    checkUser(){
+      this.$axios
+        .get("user_info/" + this.user_id)
+        .then(response => {
+          console.log('hahah', response.data)
+          if(response.data.user_information === null){
+            this.informationCheck = null
+          }else{
+            this.informationCheck = true
+          }
+        })
+    },
     messagePop(){
-      this.$refs.reminder.show()
+      console.log(this.prp_assigned_id, this.informationCheck)
+      if(this.prp_assigned_id === 'No Prp assign' && this.informationCheck === null){
+        this.messageCheck = 'combine'
+        this.$refs.reminder.show()
+      }else if(this.informationCheck === null){
+        this.messageCheck = 'user'
+        this.$refs.reminder.show()
+      }else {
+        this.messageCheck = 'prp'
+        this.$refs.reminder.show()
+      }
     },
     retrieveOvertime() {
       this.$axios
