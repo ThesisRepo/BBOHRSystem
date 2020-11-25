@@ -23,7 +23,7 @@ class CreateUserInformations extends Migration
             $table->string('profile_url', 80)->nullable();
             $table->date('date_hired')->nullable();
             $table->string('contact_number')->nullable();
-            $table->string('civil_status')->nullable();
+            $table->unsignedBigInteger('civil_status_id')->nullable();
             $table->unsignedBigInteger('company_status_id')->nullable();
             $table->string('regularization_date')->nullable();
             $table->date('birthday')->nullable();
@@ -36,7 +36,8 @@ class CreateUserInformations extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
             $table->foreign('shift_time_id')->references('id')->on('shift_times')->onDelete('cascade');
-            $table->foreign('company_status_id')->references('id')->on('company_status')->onDelete('cascade');           
+            $table->foreign('civil_status_id')->references('id')->on('civil_status')->onDelete('cascade');           
+            $table->foreign('company_status_id')->references('id')->on('company_status')->onDelete('cascade');                       
             $table->timestamps();
         });
     }

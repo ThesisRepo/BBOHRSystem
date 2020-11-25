@@ -34,8 +34,8 @@ class UserEloquent extends EloquentImplementation {
         DB::beginTransaction();
           $res = $this->model->findorFail($id);
           $res->update($user);
-          $res->userInformation()->update($user_info);
-          $user->userInformation->company_positions()->attach($company_position);
+          $res->userInformation->update($user_info);
+          $res->userInformation->company_positions()->attach($company_position);
         DB::commit();
         return $res;
       }catch(\Exception $e) {
@@ -279,13 +279,15 @@ class UserEloquent extends EloquentImplementation {
   public function getRequestFeedbackedDate($user_id, $table_name, $relationship, $start_date, $end_date) {
     $new_relationship = [
       $relationship => function( $q) use( $table_name, $start_date, $end_date) {
-        return $q->where( $table_name . '.created_at', '>', $start_date)
-          ->where( $table_name .  '.created_at', '<', $end_date);
+        return $q->where( $table_name . '.created_at','>', $start_date)
+          ->where( $table_name . '.created_at','<', $end_date);
       },
       $relationship . '.' . 'user',
-      $relationship . '.' . 'leave_type',
       $relationship . '.' . 'status'  
     ];
+    if($relationship == 'feedbacked_leave_requests') {
+      array_push( $new_relationship, $relationship . '.' . 'leave_type' );
+    }
     $res = $this->findWith( $user_id, $new_relationship);
     return $res;
 
