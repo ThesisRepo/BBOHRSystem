@@ -29,14 +29,22 @@ class UserEloquent extends EloquentImplementation {
       return  $this->with($relationship)->get();
    }
     public function updateUserWithInfo($id, $user, $user_info, $company_position){
+      // dd($user_info, $company_position); 
+      $company_position = [
 
+      ];
       try {
         DB::beginTransaction();
           $res = $this->model->findorFail($id);
           $res->update($user);
           $res->userInformation->update($user_info);
+<<<<<<< HEAD
+=======
+          // dd($res->userInformation());
+>>>>>>> c40c87504b74896542f4af9b7013ae991d31d634
           $res->userInformation->company_positions()->attach($company_position);
         DB::commit();
+        // dd($res->toArray());
         return $res;
       }catch(\Exception $e) {
         DB::rollback();
@@ -83,7 +91,7 @@ class UserEloquent extends EloquentImplementation {
 
     public function getAllNonAdminEmployees() {
       
-      $res = $this->model->with(['userInformation', 'userInformation.department', 'userInformation.company_status', 'assignedPrp', 'assignedFinance', 'roles'])->whereDoesntHave('roles', function($q){
+      $res = $this->model->with(['userInformation', 'userInformation.department', 'userInformation.company_status', 'assignedPrp', 'assignedFinance', 'roles', 'userInformation.company_positions'])->whereDoesntHave('roles', function($q){
         $q->whereIn('role_id', [3, 4, 5]);
       })->get();
       
@@ -277,17 +285,28 @@ class UserEloquent extends EloquentImplementation {
   }
 
   public function getRequestFeedbackedDate($user_id, $table_name, $relationship, $start_date, $end_date) {
+    // dd($start_date, $end_date);
+    
     $new_relationship = [
       $relationship => function( $q) use( $table_name, $start_date, $end_date) {
+<<<<<<< HEAD
         return $q->where( $table_name . '.created_at','>', $start_date)
           ->where( $table_name . '.created_at','<', $end_date);
+=======
+        return $q->where( $table_name . '.created_at', '>=', $start_date)
+          ->where( $table_name .  '.created_at', '=<', $end_date);
+>>>>>>> c40c87504b74896542f4af9b7013ae991d31d634
       },
       $relationship . '.' . 'user',
       $relationship . '.' . 'status'  
     ];
+<<<<<<< HEAD
     if($relationship == 'feedbacked_leave_requests') {
       array_push( $new_relationship, $relationship . '.' . 'leave_type' );
     }
+=======
+    // dd($new_relationship);
+>>>>>>> c40c87504b74896542f4af9b7013ae991d31d634
     $res = $this->findWith( $user_id, $new_relationship);
     return $res;
 

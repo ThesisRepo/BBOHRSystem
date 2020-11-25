@@ -12,7 +12,7 @@
               <v-col cols="12">
                 <v-select
                   :items="prp"
-                  label="Prp Assign"
+                  label="PRP Assign"
                   :item-text="
                   prp =>
                   prp.first_name + ' ' + prp.last_name
