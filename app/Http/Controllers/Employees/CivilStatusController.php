@@ -11,7 +11,7 @@ class CivilStatusController extends Controller
     protected $civil_status;
 
     public function __construct(
-        CalendarEventEloquent $civil_status
+        CivilStatusEloquent $civil_status
     ) {
         $this->middleware(['auth', 'verify.employee']);  
         $this->civil_status = $civil_status;

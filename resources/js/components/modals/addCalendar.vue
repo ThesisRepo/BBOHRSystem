@@ -1,6 +1,6 @@
 <template>
-  <v-row justify='end' id="move">
-    <v-btn rounded color="light blue darken-2" outlined @click="dialog = true">
+  <v-row justify='end' id="move" >
+    <v-btn color="light blue darken-2" outlined @click="dialog = true">
       <v-icon>mdi-plus</v-icon>Add Event
     </v-btn>
     <v-dialog v-model="dialog" persistent max-width="600px">
@@ -56,6 +56,7 @@
 <style>
 #move{
     margin-right: 3%;
+
 }
 </style>
 

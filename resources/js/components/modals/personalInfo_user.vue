@@ -385,7 +385,7 @@
                                     ></v-date-picker>
                                 </v-menu>
                             </v-col>
-                            <v-col cols="12" md="6">
+                            <v-col cols="12" md="4">
                                 <v-select
                                     :items="finance"
                                     label="Finance Assign"
@@ -402,7 +402,20 @@
                                     required
                                 ></v-select>
                             </v-col>
-                            <v-col cols="12" md="6">
+                              <v-col cols="12" sm="6" md="4">
+                                <v-select
+                                    :items="roleItem"
+                                    item-text="text"
+                                    item-value="value"
+                                    label="Role Assign*"
+                                    @keyup="validate('role')"
+                                    v-model="role"
+                                    prepend-icon="mdi-account-group"
+                                    required
+                                ></v-select>
+                            </v-col>
+                            </v-col>
+                            <v-col cols="12" md="4">
                                 <v-select
                                     :items="prp"
                                     label="PRP Assign"
@@ -667,6 +680,10 @@ export default {
             { text: "Single", value: 0 },
             { text: "Married", value: 1 },
             { text: "Widow", value: 2 }
+        ],
+         roleItem: [
+            { text: "Employee", value: 0},
+            { text: "Employee", value: 1}
         ],
         comStatus: [],
         position: [],
