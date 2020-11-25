@@ -38,7 +38,10 @@ class UserEloquent extends EloquentImplementation {
           $res = $this->model->findorFail($id);
           $res->update($user);
           $res->userInformation->update($user_info);
+<<<<<<< HEAD
+=======
           // dd($res->userInformation());
+>>>>>>> c40c87504b74896542f4af9b7013ae991d31d634
           $res->userInformation->company_positions()->attach($company_position);
         DB::commit();
         // dd($res->toArray());
@@ -286,14 +289,24 @@ class UserEloquent extends EloquentImplementation {
     
     $new_relationship = [
       $relationship => function( $q) use( $table_name, $start_date, $end_date) {
+<<<<<<< HEAD
+        return $q->where( $table_name . '.created_at','>', $start_date)
+          ->where( $table_name . '.created_at','<', $end_date);
+=======
         return $q->where( $table_name . '.created_at', '>=', $start_date)
           ->where( $table_name .  '.created_at', '=<', $end_date);
+>>>>>>> c40c87504b74896542f4af9b7013ae991d31d634
       },
       $relationship . '.' . 'user',
-      $relationship . '.' . 'leave_type',
       $relationship . '.' . 'status'  
     ];
+<<<<<<< HEAD
+    if($relationship == 'feedbacked_leave_requests') {
+      array_push( $new_relationship, $relationship . '.' . 'leave_type' );
+    }
+=======
     // dd($new_relationship);
+>>>>>>> c40c87504b74896542f4af9b7013ae991d31d634
     $res = $this->findWith( $user_id, $new_relationship);
     return $res;
 

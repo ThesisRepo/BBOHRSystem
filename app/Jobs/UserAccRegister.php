@@ -24,7 +24,7 @@ class UserAccRegister implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($data, $user)
+    public function __construct($user)
     {
         $this->user = $user;
         $this->data = $data;
