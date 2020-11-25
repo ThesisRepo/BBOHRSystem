@@ -252,7 +252,11 @@ export default {
       this.$axios
         .get("user_info/pending_requests/count/" + this.user_id)
         .then(response => {
-          this.pending = response.data;
+          if(response.data !== null){
+            this.pending = response.data;
+          }else{
+            console.log('ha')
+          }
         });
     },
     // End

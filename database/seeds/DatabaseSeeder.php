@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call(StatusSeeder::class);
         $this->call(ShiftTimeSeeder::class);
         $this->call(LeaveTypeSeeder::class);
-        $this->call(CompanyStatusSeeder::class);
+        $this->call(CompanyStatusSeeder::class);    ]
+        $this->call(CivilStatusSeeder::class);
     }
 }
