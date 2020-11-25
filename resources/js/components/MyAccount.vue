@@ -40,7 +40,7 @@
               <h2 class="title-h6 text-md-h6 text-sm-h6 text-truncate"><v-icon class="primary--text">mdi-account-cog</v-icon> {{ company_position ? company_position : 'No Position' }}</h2>
 
               <h3
-                class="text--primary text-caption text-sm-body-2 text-md-body-1"
+                class="text--primary text-caption text-sm-body-2 text-md-body-1 "
               ><v-icon class="primary--text">mdi-email</v-icon> {{ user_email ? user_email : 'No email' }}</h3>
               <h4
                 class="text--primary text-caption text-sm-body-2 text-md-body-1"
@@ -80,37 +80,37 @@
             <v-container>
               <h4 class="primary--text" mb-1 style="margin-left: 3%;">Personal Information:</h4>
               <v-row style="margin-left: 5%;">
-                <v-col cols="6">
-                  <p class="black--text"><v-icon class="primary--text">mdi-map-marker</v-icon> {{ address ? address : 'No Address' }}</p>
-                  <p class="black--text"><v-icon class="primary--text">mdi-calendar</v-icon> {{ birthdate ? birthdate : 'No Birthdate'}}</p>
+                <v-col cols="6 sm-6 md-6">
+                  <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-map-marker</v-icon> {{ address ? address : 'No Address' }}</p>
+                  <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-calendar</v-icon> {{ birthdate ? birthdate : 'No Birthdate'}}</p>
                 </v-col>
                 <v-col cols="6">
-                  <p class="black--text"><v-icon class="primary--text">mdi-contacts</v-icon> {{ contact_number ? contact_number : 'No Contact No.' }}</p>
-                  <p class="black--text"><v-icon class="primary--text">mdi-account</v-icon> {{ status === 'single' ? 'Single' : status === 'married' ? 'Married' : status ? status : 'No Status' }}</p>
+                  <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-contacts</v-icon> {{ contact_number ? contact_number : 'No Contact No.' }}</p>
+                  <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-account</v-icon> {{ status === 'single' ? 'Single' : status === 'married' ? 'Married' : status ? status : 'No Status' }}</p>
                 </v-col>
               </v-row>
               <!-- end Personal Info -->
               <h4 class="primary--text" mb-1 style="margin-left: 3%;">Business Information:</h4>
               <v-row style="margin-left: 5%;">
                 <v-col cols="6">
-                  <p class="black--text"><v-icon class="primary--text">mdi-account-group</v-icon> {{ department ? department : 'No Department' }}</p>
-                  <p class="black--text"><v-icon class="primary--text">mdi-google-street-view</v-icon> {{ company_status === 'regular' ? 'Regular' : company_status ? company_status : 'No Company Status' }}</p>
+                  <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-account-group</v-icon> {{ department ? department : 'No Department' }}</p>
+                  <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-google-street-view</v-icon> {{ company_status === 'regular' ? 'Regular' : company_status ? company_status : 'No Company Status' }}</p>
                 </v-col>
                 <v-col cols="6">
-                  <p class="black--text"><v-icon class="primary--text">mdi-calendar-check</v-icon> {{ date_hired ? date_hired : 'No Date Hired'}}</p>
-                  <p class="black--text"><v-icon class="primary--text">mdi-timetable</v-icon> {{ shift ? shift : 'No Shift Time'}}</p>
+                  <p class="black--text"  style="font-size:20px"><v-icon class="primary--text">mdi-calendar-check</v-icon> {{ date_hired ? date_hired : 'No Date Hired'}}</p>
+                  <p class="black--text"  style="font-size:20px"><v-icon class="primary--text">mdi-timetable</v-icon> {{ shift ? shift : 'No Shift Time'}}</p>
                 </v-col>
               </v-row>
               <!-- end Business Info -->
               <h4 class="primary--text" mb-1 style="margin-left: 3%;">Others:</h4>
               <v-row style="margin-left: 5%;">
                 <v-col cols="6">
-                  <p class="black--text"><v-icon class="primary--text">mdi-calculator</v-icon> {{ pag_ibig ? pag_ibig : 'No Pag-ibig Account' }}</p>
-                  <p class="black--text"><v-icon class="primary--text">mdi-calculator</v-icon> {{ tin_number ? tin_number : 'No TIN'}}</p>
+                  <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-calculator</v-icon> {{ pag_ibig ? pag_ibig : 'No Pag-ibig Account' }}</p>
+                  <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-calculator</v-icon> {{ tin_number ? tin_number : 'No TIN'}}</p>
                 </v-col>
                 <v-col cols="6">
-                  <p class="black--text"><v-icon class="primary--text">mdi-calculator</v-icon> {{ philhealth_num ? philhealth_num : 'No PhilHealth'}}</p>
-                  <p class="black--text"><v-icon class="primary--text">mdi-calculator</v-icon> {{ sss_num ? sss_num : 'No SSS'}}</p>
+                  <p class="black--text"  style="font-size:20px"><v-icon class="primary--text">mdi-calculator</v-icon> {{ philhealth_num ? philhealth_num : 'No PhilHealth'}}</p>
+                  <p class="black--text"  style="font-size:20px"><v-icon class="primary--text">mdi-calculator</v-icon> {{ sss_num ? sss_num : 'No SSS'}}</p>
                 </v-col>
               </v-row>
             </v-container>

@@ -232,7 +232,7 @@
 
         <v-btn
           style="margin-left: 5%"
-          v-if="prp_assigned_id !== 'No Prp assign' || informationCheck === null"
+          v-if="prp_assigned_id === 'No Prp assign' || informationCheck === null"
           color="light blue darken-2"
           rounded
           outlined
