@@ -181,7 +181,7 @@
                                     prepend-icon="mdi-lock"
                                     label="Password*"
                                     :append-icon="
-                                        value ? 'mdi-eye-off' : 'mdi-eye'
+                                        value ? 'mdi-eye' : 'mdi-eye-off'
                                     "
                                     :type="value ? 'password' : 'text'"
                                     @keyup="validate('password')"
@@ -212,7 +212,7 @@
                                 <v-text-field
                                     label="Confirm Password"
                                     :append-icon="
-                                        valuePass ? 'mdi-eye-off' : 'mdi-eye'
+                                        valuePass ? 'mdi-eye' : 'mdi-eye-off'
                                     "
                                     @click:append="
                                         () => (valuePass = !valuePass)
