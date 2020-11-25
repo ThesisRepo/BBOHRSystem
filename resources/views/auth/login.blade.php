@@ -25,18 +25,30 @@
     position: relative;
     z-index: 2;
 }
+
+span.field-icon {
+    position: absolute;
+    display: inline-block;
+    cursor: pointer;
+    right: 0.5rem;
+    color: $input-label-color;
+    z-index: 2;
+}
 </style>
 @endsection
 @section('js')
-<script  src="http://code.jquery.com/jquery-1.11.0.min.js">
-$('.toggle-password').on('click', function() {
-    $(this).toggleClass('fa-eye fa-eye-slash');
-    let input = $($(this).attr('toggle'));
-    if (input.attr('type') == 'password') {
-        input.attr('type', 'text');
-    } else {
-        input.attr('type', 'password');
-    }
+<script>
+$(document).ready(function() {
+    console.log("ready!");
+    $('.toggle-password').on('click', function() {
+        $(this).toggleClass('fa-eye fa-eye-slash');
+        let input = $($(this).attr('toggle'));
+        if (input.attr('type') == 'password') {
+            input.attr('type', 'text');
+        } else {
+            input.attr('type', 'password');
+        }
+    });
 });
 </script>
 @endsection
@@ -93,7 +105,7 @@ $('.toggle-password').on('click', function() {
                                     <input type="password" id="password"
                                         class="form-control @error('password') is-invalid @enderror" name="password"
                                         value="123456789" required autocomplete="current-password">
-                                    <span toggle="#input-pwd" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                                    <span toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                                     @error('password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>

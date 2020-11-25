@@ -220,9 +220,9 @@ export default {
                     this.dialog = false;
                 });
             } else if (
-                this.selectedLeaveType === null &&
-                this.total_days === null &&
-                this.start_date === null &&
+                this.selectedLeaveType === null ||
+                this.total_days === null ||
+                this.start_date === null ||
                 this.end_date === null
             ) {
                 this.error = true;
