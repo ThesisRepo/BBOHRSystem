@@ -179,7 +179,7 @@ $(document).ready(function() {
                         @error('invalid')
                             <div style="width:100%;text-align:center">
                             <span style="color:red;">
-                                    <strong>{{ $message }}</strong>
+                                    <strong>Incorrect email or password</strong>
                                 </span>
                             </div>
                         @enderror
