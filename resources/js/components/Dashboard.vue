@@ -49,6 +49,7 @@
     <br>
     <br>
     <CalendarAdd></CalendarAdd>
+    <AddEvent></AddEvent>
     <v-row class="fill-height">
       <v-col>
         <v-sheet height="45">
@@ -191,13 +192,15 @@
 <script>
 import DashBoardtable from "./Dashboard_table";
 import CalendarAdd from "./modals/addCalendar.vue";
+import AddEvent from "./modals/add_event_title.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
 import moment from "moment";
 export default {
   components: {
     DashBoardtable,
     CalendarAdd,
-    ConfirmationDel
+    ConfirmationDel,
+    AddEvent
   },
   data: () => ({
     user_type: localStorage.getItem("user_type"),
