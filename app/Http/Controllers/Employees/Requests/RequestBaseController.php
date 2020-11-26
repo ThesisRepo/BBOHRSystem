@@ -105,6 +105,7 @@ class RequestBaseController extends Controller
 
         if($data->status_id == 1) {
             $this->setMaxRoles($this->getRoles($data->user_id));
+            dd($this->max_role);
             $approver_role_id = $data->approver_role_id;
             $status_id = $data->status_id;
             if($this->request_name == 'petty_cash_request' || $this->request_name == 'budget_request' && $this->max_role != 2) {
@@ -155,7 +156,7 @@ class RequestBaseController extends Controller
             $this->notifyNewRequest('edited', $employee_name, $prp_assigned_id, $this->request_name);
 
         }else{
-            $res =  response()->json([], 404);
+            $res =  response()->json(['message'=> 'This request was already approved by initial approver.'], 400);
         }
 
         return $res;

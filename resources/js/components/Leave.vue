@@ -465,6 +465,7 @@ export default {
         });
     },
     editItem(item) {
+      console.log('ahahhahah', item)
       this.editedItem.id = item.id;
       this.editedIndex = this.request.indexOf(item);
       this.editedItem.selectedLeaveType = item.leave_type_id;
@@ -494,6 +495,7 @@ export default {
           end_date: this.editedItem.end_date,
           prp_assigned_id: this.prp_assigned_id
         };
+        console.log('adfasdf', params)
         this.$axios
           .post(
             "leave_request/" + this.editedItem.id,
