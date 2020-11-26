@@ -20,7 +20,7 @@ class CalendarEventController extends Controller
     public function getByUser($user_id) {
         // $user_id = $request->user_id;
         $relationship = 'event_type';
-        $res = $this->calendar_event->whereWith('user_id', $user_id, $relationship)->orWhere('is_private', 1)->get();
+        $res = $this->calendar_event->whereWith('user_id', $user_id, $relationship)->orWhere('is_public', 1)->get();
         // dd($user_id);
         return $res;
     }
@@ -32,7 +32,7 @@ class CalendarEventController extends Controller
             'content' => $request->content,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
-            'is_private' => $request->is_private,
+            'is_public' => $request->is_public,
             'event_type_id' => $request->event_type_id
         ];
         $res = $this->calendar_event->create($data);
@@ -46,7 +46,7 @@ class CalendarEventController extends Controller
             'content' => $request->content,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
-            'is_private' => $request->is_private,
+            'is_public' => $request->is_public,
             'event_type_id' => $request->event_type_id
         ];
         $res = $this->calendar_event->find($id)->update($data);

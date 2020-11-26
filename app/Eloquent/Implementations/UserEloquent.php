@@ -38,6 +38,7 @@ class UserEloquent extends EloquentImplementation {
           $res = $this->model->findorFail($id);
           $res->update($user);
           $res->userInformation->update($user_info);
+          // dd($res->userInformation());
           $res->userInformation->company_positions()->attach($company_position);
         DB::commit();
         // dd($res->toArray());
@@ -287,6 +288,8 @@ class UserEloquent extends EloquentImplementation {
       $relationship => function( $q) use( $table_name, $start_date, $end_date) {
         return $q->where( $table_name . '.created_at','>', $start_date)
           ->where( $table_name . '.created_at','<', $end_date);
+        // return $q->where( $table_name . '.created_at', '>=', $start_date)
+        //   ->where( $table_name .  '.created_at', '=<', $end_date);
       },
       $relationship . '.' . 'user',
       $relationship . '.' . 'status'  
