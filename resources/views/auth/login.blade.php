@@ -40,7 +40,7 @@ $(document).ready(function() {
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-9" style="margin-top: 3%;">
-            <div class="card">
+            <div class="card" style="padding-bottom:-2% !important" >
                 <center>
                     @if(session()->has('message'))
                     <div class="alert alert-warning">
@@ -58,12 +58,11 @@ $(document).ready(function() {
                     </div>
                     @endif
                 </center>
-                <center style="margin-top: 10%;">
+                <center style="margin-top: 7%;">
                     <img src="img/user_logo.png" width="100" alt="logo">
                 </center>
                 <br>
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ route('login') }}" style="margin-top: 7%;">
                         @csrf
                         <div class="form-group  row">
                             <div class="col-md-10 mb-3  mx-auto">
@@ -145,7 +144,6 @@ $(document).ready(function() {
                             </div>
                         </div>
                     </form>
-                </div>
             </div>
         </div>
     </div>
