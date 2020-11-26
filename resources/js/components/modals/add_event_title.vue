@@ -1,6 +1,6 @@
 <template>
   <v-row justify="end" id="event">
-    <v-btn color="light blue darken-2" outlined @click="dialog = true">
+    <v-btn color="light blue darken-2" rounded outlined @click="dialog = true">
       <v-icon>mdi-plus</v-icon>Event Type
     </v-btn>
     <v-dialog v-model="dialog" persistent max-width="600px">
