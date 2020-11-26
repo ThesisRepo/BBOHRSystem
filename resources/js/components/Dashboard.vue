@@ -48,8 +48,8 @@
     <v-spacer></v-spacer>
     <br>
     <br>
-    <CalendarAdd></CalendarAdd>
     <AddEvent></AddEvent>
+    <CalendarAdd></CalendarAdd>
     <v-row class="fill-height">
       <v-col>
         <v-sheet height="45">
