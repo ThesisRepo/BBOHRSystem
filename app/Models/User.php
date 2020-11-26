@@ -164,15 +164,23 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Notification::class);
     }
     public function request_ignored() {
-        $time_in_24_hour_format  = date("H:i", strtotime("1pm"));
 
-        $user = $this->with([ 'roles', 'userInformation.shift_time'])->whereHas('roles', function($q){
+        $this->timezone = 'Asia/Manila';
+        $user = $this->with('roles')->has('userInformation.shift_time')->whereHas('roles', function($q){
             $q->whereIn('role_id', [2]);
           })->get()->filter(function($q) {
-            $this->expression = '56 20 * * *';
-            dd($this->isDue());
-          return !$this->isDue();
-        })->toArray();
+            $isDue = false;
+            $shift_time = explode("-", $q->userInformation->shift_time->shift_time_name);
+            foreach($shift_time as $shift) {
+                $shift_in_24_hour_format  = date("H", strtotime($shift));
+                $this->expression = '* ' . $shift_in_24_hour_format . ' * * *';
+                if( $this->isDue()){
+                    $isDue = true;
+                    break;
+                }
+            };
+          return !$isDue;
+        });
         return $user;
     }
 }

@@ -117,6 +117,10 @@ class EloquentImplementation implements EloquentContract {
     return $res;
   }
 
+  public function count() {
+    return $this->model->count();
+  }
+
   /**
    * @param string $relationship
    * creates a relationship
@@ -128,4 +132,6 @@ class EloquentImplementation implements EloquentContract {
     return $this->model->with( $relationship);
 
   }
+
+
 }

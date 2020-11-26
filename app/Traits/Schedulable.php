@@ -22,6 +22,8 @@ trait Schedulable{
             $date->setTimezone($this->timezone);
         }
 
+        // dd($date->toDateTimeString());
+        // dd(CronExpression::factory($this->expression), $date->toDateTimeString());
         return CronExpression::factory($this->expression)->isDue($date->toDateTimeString());
     }
 
