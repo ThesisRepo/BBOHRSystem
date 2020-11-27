@@ -18,7 +18,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+    <script src="https://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
     <!-- Styles -->
     <link href="/css/app.css" rel="stylesheet">
     <!-- <link href="{{ asset('css/form.css') }}" rel="stylesheet"> -->
@@ -76,9 +76,12 @@
 
             <!-- First Half -->
 
-            <div class="col-md-6 p-0 h-md-100"  >
-                <div class="text-white d-md-flex align-items-center h-100 text-center justify-content-center">
-                    <img src="{{url('images/background1.jpg')}}" width="100%" height="100%"> 
+            <div class="col-md-6 p-0 h-md-100">
+                <div class="text-white d-md-flex align-items-center h-100 text-center justify-content-center"
+                    style="background-image:url('images/background1.jpg');background-size: cover;">
+                    <!-- <div class="logoarea pt-0 pb-0">
+                        <img src="{{url('images/background1.jpg')}}" width="630" height="670">
+                    </div> -->
                 </div>
             </div>
 
