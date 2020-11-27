@@ -25,9 +25,6 @@ trait CallForActionEmail {
   public function emailTemplate($data, $user) {
     $job = (new UserAccRegister($data, $user))->delay(Carbon::now()->addSeconds(5));
     dispatch($job);
-    if(env('MAIL_HOST', false) == 'smtp.mailtrap.io'){
-        sleep(1); //use usleep(500000) for half a second or less
-    }
   }
 
 }
