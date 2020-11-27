@@ -17,7 +17,7 @@
     </v-toolbar>
 
     <!-- Feedback -->
-    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" :search="search" class="elevation-3">
+    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" :search="search" loading-text="Loading... Please wait" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat v-if="(user_type.includes('hr mngr') || user_type.includes('general mngr'))">
           <v-col class="mt-8">
@@ -82,7 +82,7 @@
             label="Search"
           ></v-text-field>
         </v-toolbar>
-        
+        \
         <v-toolbar class="mb-2" color="blue darken-1" dark flat v-if="((user_type.includes('prp emp') || user_type.includes('finance mngr')) && (!user_type.includes('hr mngr') && !user_type.includes('general mngr')))">
           <v-text-field
             v-model="search"
@@ -101,7 +101,7 @@
 
     <!-- Pending Requests -->
     <v-data-table v-if="employees" :headers="headersEmp" :items="prpPending" 
-      :search="search" class="elevation-3">
+      :search="search" loading loading-text="Loading... Please wait" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-text-field
@@ -261,11 +261,11 @@
             label="Search"
           ></v-text-field>
 
-          <createLeave v-if="prp_assigned_id !== 'No Prp assign' && informationCheck !== null"></createLeave>
+          <createLeave v-if="prp_assigned_id !== 'No PRP assign' && informationCheck !== null"></createLeave>
           
           <v-btn
           style="margin-left: 5%"
-          v-if="prp_assigned_id === 'No Prp assign' || informationCheck === null"
+          v-if="prp_assigned_id === 'No PRP assign' || informationCheck === null"
           color="light blue darken-2"
           rounded
           outlined
@@ -408,7 +408,7 @@ export default {
     },
   },
   mounted() {
-    if ( this.user_type.includes("hr mngr") || this.user_type.includes("prp emp") || this.user_type.includes("general mngr")) {
+    if ((this.user_type.includes("hr mngr") || this.user_type.includes("prp emp") || this.user_type.includes("general mngr")) && !(this.user_type.includes("finance mngr"))) {
       this.retrievePendingPrp();
       this.retrieve();
       this.getAllFeedback();
@@ -417,7 +417,6 @@ export default {
       this.retrieve();
       this.checkUser()
     }
-    console.log(this.user_type)
   },
   methods: {
     changeDate() {
@@ -448,6 +447,7 @@ export default {
         .get("leave_request/" + this.user_id)
         .then(response => {
           this.request = response.data;
+          this.loading =  true
           console.log('sgwesfsdfsdf', response.data)
         })
         .catch(e => {
@@ -455,9 +455,11 @@ export default {
         });
     },
     retrievePendingPrp() {
+      this.loading = true
       this.$axios
         .get("prp/leave_request/pending/" + this.user_id)
         .then(response => {
+          this.loading = false
           this.prpPending = response.data;
         })
         .catch(e => {
@@ -563,7 +565,7 @@ export default {
     messagePop(){
       // this.checkUser()
       console.log(this.prp_assigned_id, this.informationCheck)
-      if(this.prp_assigned_id === 'No Prp assign' && this.informationCheck === null){
+      if(this.prp_assigned_id === 'No PRP assign' && this.informationCheck === null){
         this.messageCheck = 'combine'
         this.$refs.reminder.show()
       }else if(this.informationCheck === null){

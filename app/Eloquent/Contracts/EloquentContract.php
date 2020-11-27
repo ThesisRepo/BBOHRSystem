@@ -20,6 +20,8 @@ interface EloquentContract {
    */
   public function find($id);
 
+  public function count();
+
   public function findOrFail( $id);
 
   public function findWith( $id, $relationship);

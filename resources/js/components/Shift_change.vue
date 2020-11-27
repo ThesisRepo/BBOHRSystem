@@ -210,10 +210,10 @@
             prepend-inner-icon="mdi-magnify"
             label="Search"
           ></v-text-field>
-          <createShift v-if="prp_assigned_id !== 'No Prp assign' && informationCheck !== null"></createShift>
+          <createShift v-if="prp_assigned_id !== 'No PRP assign' && informationCheck !== null"></createShift>
           <v-btn
           style="margin-left: 5%"
-          v-if="prp_assigned_id === 'No Prp assign' || informationCheck === null"
+          v-if="prp_assigned_id === 'No PRP assign' || informationCheck === null"
           color="light blue darken-2"
           rounded
           outlined
@@ -334,11 +334,7 @@ export default {
     },
   },
   mounted() {
-    if (
-      this.user_type.includes("hr mngr") ||
-      this.user_type.includes("prp emp") ||
-      this.user_type.includes("general mngr")
-    ) {
+    if ((this.user_type.includes("hr mngr") || this.user_type.includes("prp emp") || this.user_type.includes("general mngr")) && !(this.user_type.includes("finance mngr"))) {
       this.retrieveShift();
       this.getAllFeedback();
       this.retrieve();
@@ -467,7 +463,7 @@ export default {
     },
     messagePop(){
       console.log(this.prp_assigned_id, this.informationCheck)
-      if(this.prp_assigned_id === 'No Prp assign' && this.informationCheck === null){
+      if(this.prp_assigned_id === 'No PRP assign' && this.informationCheck === null){
         this.messageCheck = 'combine'
         this.$refs.reminder.show()
       }else if(this.informationCheck === null){

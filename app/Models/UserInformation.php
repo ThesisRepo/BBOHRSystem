@@ -21,7 +21,7 @@ class UserInformation extends Model
         'profile_url',
         'date_hired',
         'contact_number',
-        'civil_status',
+        'civil_status_id',
         'company_status_id',
         'regularization_date',
         'birthday',

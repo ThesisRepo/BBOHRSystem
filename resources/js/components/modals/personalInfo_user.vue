@@ -177,13 +177,17 @@
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
                                 <v-text-field
-                                    label="Password*"
-                                    type="password"
                                     v-model="password"
+                                    prepend-icon="mdi-lock"
+                                    label="Password*"
+                                    :append-icon="
+                                        value ? 'mdi-eye-off' : 'mdi-eye'
+                                    "
+                                    :type="value ? 'password' : 'text'"
                                     @keyup="validate('password')"
-                                    prepend-icon="mdi-eye"
                                     dense
                                     required
+                                    @click:append="() => (value = !value)"
                                 ></v-text-field>
                                 <span
                                     class="ml-8"
@@ -206,11 +210,18 @@
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
                                 <v-text-field
-                                    label="Confirm Password*"
-                                    type="password"
-                                    v-model="confirm_password"
+                                    label="Confirm Password"
+                                    :append-icon="
+                                        valuePass ? 'mdi-eye-off' : 'mdi-eye'
+                                    "
+                                    @click:append="
+                                        () => (valuePass = !valuePass)
+                                    "
+                                    :type="valuePass ? 'password' : 'text'"
                                     @keyup="validate('confirm_password')"
-                                    prepend-icon="mdi-eye"
+                                    name="password"
+                                    prepend-icon="mdi-lock"
+                                    v-model="confirm_password"
                                     dense
                                     required
                                 ></v-text-field>
@@ -324,73 +335,78 @@
                                 ></v-select>
                             </v-col>
 
-              <v-col cols="12" md="4">
-                <v-select
-                  :items="departmentItem"
-                  label="Department*"
-                  prepend-icon="mdi-account-group"
-                  :item-text="
+                            <v-col cols="12" md="4">
+                                <v-select
+                                    :items="departmentItem"
+                                    label="Department*"
+                                    prepend-icon="mdi-account-group"
+                                    :item-text="
                                         departmentItem =>
                                             departmentItem.department_name
                                     "
-                  item-value="id"
-                  v-model="department"
-                  required
-                ></v-select>
-              </v-col>
-              <v-col cols="12" md="4">
-                <v-select
-                  :items="sTime"
-                  label="Shift Time*"
-                  item-text="shift_time_name"
-                  item-value="id"
-                  v-model="shift_time"
-                  prepend-icon="mdi-timelapse"
-                  required
-                ></v-select>
-              </v-col>
-              <v-col cols="12" md="4">
-                <v-menu
-                  :close-on-content-click="true"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      v-model="date_hired"
-                      label="Date Hired"
-                      prepend-icon="mdi-calendar"
-                      readonly
-                      v-bind="attrs"
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker v-model="date_hired" no-title scrollable color="primary"></v-date-picker>
-                </v-menu>
-              </v-col>
-              <v-col cols="12" md="6">
-                <v-select
-                  :items="finance"
-                  label="Finance Assign"
-                  prepend-icon="mdi-account"
-                  @keyup="validate('finance_assign')"
-                  :item-text="
+                                    item-value="id"
+                                    v-model="department"
+                                    required
+                                ></v-select>
+                            </v-col>
+                            <v-col cols="12" md="4">
+                                <v-select
+                                    :items="sTime"
+                                    label="Shift Time*"
+                                    item-text="shift_time_name"
+                                    item-value="id"
+                                    v-model="shift_time"
+                                    prepend-icon="mdi-timelapse"
+                                    required
+                                ></v-select>
+                            </v-col>
+                            <v-col cols="12" md="4">
+                                <v-menu
+                                    :close-on-content-click="true"
+                                    transition="scale-transition"
+                                    offset-y
+                                    min-width="290px"
+                                >
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-text-field
+                                            v-model="date_hired"
+                                            label="Date Hired"
+                                            prepend-icon="mdi-calendar"
+                                            readonly
+                                            v-bind="attrs"
+                                            v-on="on"
+                                        ></v-text-field>
+                                    </template>
+                                    <v-date-picker
+                                        v-model="date_hired"
+                                        no-title
+                                        scrollable
+                                        color="primary"
+                                    ></v-date-picker>
+                                </v-menu>
+                            </v-col>
+                            <v-col cols="12" md="6">
+                                <v-select
+                                    :items="finance"
+                                    label="Finance Assign"
+                                    prepend-icon="mdi-account"
+                                    @keyup="validate('finance_assign')"
+                                    :item-text="
                                         finance =>
                                             finance.first_name +
                                             ' ' +
                                             finance.last_name
                                     "
-                  item-value="id"
-                  v-model="selectFinance"
-                  required
-                ></v-select>
-              </v-col>
-              <v-col cols="12" md="6">
-                <v-select
-                  :items="prp"
-                  label="PRP Assign"
-                  :item-text="
+                                    item-value="id"
+                                    v-model="selectFinance"
+                                    required
+                                ></v-select>
+                            </v-col>
+                            <v-col cols="12" md="6">
+                                <v-select
+                                    :items="prp"
+                                    label="PRP Assign"
+                                    :item-text="
                                         prp =>
                                             prp.first_name + ' ' + prp.last_name
                                     "
@@ -429,10 +445,11 @@
                                     >{{ errorMessage14 }}</span
                                 >
 
-                <span
-                  v-if="errorMessage15 !== null"
-                  style="color: red; font-size: 13px"
-                >{{ errorMessage15 }}</span>
+                                <span
+                                    v-if="errorMessage15 !== null"
+                                    style="color: red; font-size: 13px"
+                                    >{{ errorMessage15 }}</span
+                                >
 
                                 <span
                                     class="ml-8"
@@ -473,7 +490,7 @@
                 </v-toolbar>
                 <v-card-text>
                     <v-container>
-                         <span
+                        <span
                             v-if="errorMessage18 !== null"
                             style="color: red; font-size: 14px"
                             >{{ errorMessage18 }}</span
@@ -610,8 +627,8 @@ export default {
         password: "",
         confirm_password: "",
         email: "",
-        // business: false,
-        // Boolean
+        valuePass: true,
+        value: true,
         dialogPersonal: false,
         dialogBusiness: false,
         dialogOthers: false,
@@ -636,7 +653,6 @@ export default {
         date_hired: null,
         company_status: null,
         company_number: null,
-
         rules: {
             required: value => !!value || "Required",
             min: v => v.length >= 8 || "Minumum of 8 characters",
@@ -698,8 +714,8 @@ export default {
     //     businessInfo
     //   },
     methods: {
-        getPrp(){
-            console.log('prp ko', this.selectPrp)
+        getPrp() {
+            console.log("prp ko", this.selectPrp);
         },
         next() {
             if (
@@ -768,7 +784,6 @@ export default {
             this.dialogPersonal = true;
             this.dialogBusiness = false;
         },
-
         backBusiness() {
             this.dialogOthers = false;
             this.dialogBusiness = true;
@@ -807,7 +822,6 @@ export default {
         save(birthday) {
             this.$refs.menu.save(birthday);
         },
-
         validate(input) {
             this.successMessage = null;
             let reqWhiteSpace = /\d/;
@@ -832,7 +846,6 @@ export default {
             // this.errorMessage17 = "";
             // this.errorMessage18 = "";
             // this.errorMessage19 = "";
-
             if (input === "firstname") {
                 this.errorMessage1 = null;
                 this.errorMessage2 = null;
@@ -873,10 +886,9 @@ export default {
                     this.errorMessage6 = "Contact number is required";
                 } else if (this.contact_number.slice(0, 2) != "09") {
                     this.errorMessage6 = "Contact number must start with 09";
-                }else if (this.contact_number.length <= 10) {
+                } else if (this.contact_number.length <= 10) {
                     this.errorMessage6 = "Contact number is invalid";
-                } 
-                 else {
+                } else {
                     this.errorMessage5 = null;
                     this.errorMessage6 = null;
                 }
@@ -1061,8 +1073,7 @@ export default {
                 this.errorMessage23 === null &&
                 this.errorMessage24 === null &&
                 this.errorMessage25 === null
-            )
-            {
+            ) {
                 let params = {
                     address: this.address,
                     civil_status: this.civil_status,
@@ -1090,45 +1101,46 @@ export default {
                     company_number: this.company_number
                 };
                 console.log("params here", params);
-                this.$axios.post("hr/manage/user", params).then(response => {
-                    // this.errorMessage8 =
-                    console.log("here", response.data);
-                    console.log("here", response.data.message);
-                    this.$emit("create",  response.data)
-
-                    this.$parent.$parent.$parent.$parent.$parent.$parent.retrieve();
-                    this.dialogOthers = false;
-                    this.dialogPersonal = false;
-                    this.dialogBusiness = false;
-                    
-                })
-                .catch(error => {
-                    console.log("here", error);
-                    console.log("here", error.response.data.errors);
-                    let errors = error.response.data.errors;
-                    console.log("type", typeof errors);
-
-                    Object.entries(errors).forEach(message => {
-                        switch (message[0]) {
-                            case "email":
-                                this.errorMessage8 = "You have entered a taken email address.";
-                                 alert('Email is already taken')
-                                break;
-                            case "password":
-                                this.errorMessage10 = "Password must be alphanumeric characters. It should contain 1 number, 1 special character and 1 capital letter";
-                                break;
-                            case "password_confirmation":
-                                 this.errorMessage11 = "Password did not match";
-                                break;
-                        }
+                this.$axios
+                    .post("hr/manage/user", params)
+                    .then(response => {
+                        // this.errorMessage8 =
+                        console.log("here", response.data);
+                        console.log("here", response.data.message);
+                        this.$emit("create", response.data);
+                        this.$parent.$parent.$parent.$parent.$parent.$parent.retrieve();
+                        this.dialogOthers = false;
+                        this.dialogPersonal = false;
+                        this.dialogBusiness = false;
+                    })
+                    .catch(error => {
+                        console.log("here", error);
+                        console.log("here", error.response.data.errors);
+                        let errors = error.response.data.errors;
+                        console.log("type", typeof errors);
+                        Object.entries(errors).forEach(message => {
+                            switch (message[0]) {
+                                case "email":
+                                    this.errorMessage8 =
+                                        "You have entered a taken email address.";
+                                    alert("Email is already taken");
+                                    break;
+                                case "password":
+                                    this.errorMessage10 =
+                                        "Password must be alphanumeric characters. It should contain 1 number, 1 special character and 1 capital letter";
+                                    break;
+                                case "password_confirmation":
+                                    this.errorMessage11 =
+                                        "Password did not match";
+                                    break;
+                            }
+                        });
                     });
-                });
             } else {
                 this.errorMessage18 = "Please put a valid information";
             }
         },
-
-     removeData() {
+        removeData() {
             (this.address = null),
                 (this.civil_status = null),
                 (this.contact_number = null),
