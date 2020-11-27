@@ -250,8 +250,8 @@ export default {
       end_date: null,
       checkbox: false,
       event_type: null,
-      loading: false
     },
+    loading: false
   }),
   mounted() {
     this.$refs.calendar.checkChange();
@@ -318,7 +318,6 @@ export default {
     },
     updateRange() {
       const events = [];
-      console.log("asdfas");
       for (let i = 0; i < this.events.length; i++) {
         events.push({
           name: this.events[i].title,
@@ -354,7 +353,6 @@ export default {
       };
       this.$axios.get("events/"+  this.user_id).then(response => {
         this.loading = false
-        console.log('retireve', response.data)
         this.events = []
         response.data.forEach(element => {
           var temp = {
@@ -369,12 +367,10 @@ export default {
             timed: true
           };
           this.events.push(temp)
-          console.log('hahah', this.events)
         });
       });
     },
     deleteItem(selectedEvent) {
-      console.log('item', selectedEvent)
       this.id = selectedEvent.id;
       this.$refs.confirmDel.show(selectedEvent)
     },
@@ -389,7 +385,6 @@ export default {
         });
     },    
     editItem(selectedEvent) {
-      console.log('editItem', selectedEvent)
       this.editedItem.id = selectedEvent.id;
       this.editedIndex = this.events.indexOf(selectedEvent);
       this.editedItem.content = selectedEvent.content;
@@ -416,7 +411,6 @@ export default {
           event_type_id: this.editedItem.event_type.id ? this.editedItem.event_type.id : this.editedItem.event_type,
           title: this.editedItem.title
         };
-        console.log('hahahahhah', params)
         this.$axios
           .post(
             "events/" + this.editedItem.id,

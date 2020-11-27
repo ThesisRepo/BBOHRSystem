@@ -447,7 +447,6 @@ export default {
         .get("leave_request/" + this.user_id)
         .then(response => {
           this.request = response.data;
-          console.log('sgwesfsdfsdf', response.data)
         })
         .catch(e => {
           console.log(e);
@@ -551,7 +550,6 @@ export default {
       this.$axios
         .get("user_info/" + this.user_id)
         .then(response => {
-          console.log('hahah', response.data)
           if(response.data.user_information === null){
             this.informationCheck = null
           }else{
@@ -560,8 +558,6 @@ export default {
         })
     },
     messagePop(){
-      // this.checkUser()
-      console.log(this.prp_assigned_id, this.informationCheck)
       if(this.prp_assigned_id === 'No PRP assign' && this.informationCheck === null){
         this.messageCheck = 'combine'
         this.$refs.reminder.show()
@@ -581,15 +577,12 @@ export default {
       }
     },
     disapproveModal(item) {
-      console.log('hahah', item)
       this.approveThis = 'disapproved'
       this.id = item.id;
       this.$refs.confirms.show(item)
     },
     approve(item) {
-      console.log('item here', item)
       if(item.id.approver_role_id === 5) {
-        console.log('asdf')
         let parameter = {
           user_id: this.user_id,
           status_id: 2
@@ -604,7 +597,6 @@ export default {
             this.getAllFeedback();
           });
       }else{
-        console.log('asgasfadfsdfdf')
         let parameter = {
           user_id: this.user_id,
           status_id: 1
@@ -642,7 +634,6 @@ export default {
         )
         .then(response => {
           this.feedbacks = response.data.feedbacked_leave_requests;
-          console.log(this.feedbacks)
         });
     },
     summary(item){

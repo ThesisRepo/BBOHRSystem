@@ -175,7 +175,6 @@ export default {
       this.$axios
         .get("user_info/" + this.user_id)
         .then(response => {
-          console.log('i am here', response.data)
           this.prp_assign = localStorage.getItem("prp_assign");
           this.user_finance = localStorage.getItem("user_finance");
           if(response.data.user_information !== null){
@@ -194,8 +193,6 @@ export default {
             this.tin_number = response.data.user_information.tin_number;
             this.philhealth_num = response.data.user_information.philhealth_number;
             this.sss_num = response.data.user_information.sss_number;
-          }else{
-            console.log('wlay sulod')
           }
         })
         .catch(e => {

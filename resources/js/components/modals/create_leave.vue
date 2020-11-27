@@ -233,8 +233,6 @@ export default {
       this.differenceInDay = differenceInDay;
     },
     createRequest() {
-
-      console.log("ASDD", this.error1);
       if (
         this.selectedLeaveType !== null &&
         this.total_days !== null &&
@@ -251,7 +249,7 @@ export default {
           prp_assigned_id: this.prp_assigned_id
         };
         this.$axios.post("leave_request", params).then(res => {
-          console.log("Successfully Added");
+          // console.log("Successfully Added");
           this.$parent.$parent.$parent.$parent.$parent.retrieve();
           // this.error = false;
           this.dialog = false;

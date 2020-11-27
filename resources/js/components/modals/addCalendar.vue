@@ -88,7 +88,7 @@ export default {
         start_date: this.start_date,
         end_date: this.end_date,
         content: this.content,
-        is_private: this.checkbox,
+        is_public: this.checkbox,
         event_type_id: this.event_type,
         user_id: this.user_id
       }

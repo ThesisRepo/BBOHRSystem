@@ -112,7 +112,6 @@ export default {
           reason: this.reason,
           prp_assigned_id: this.prp_assigned_id
         }
-        console.log(parameter)
         this.$axios.post("shift_change_request", parameter).then(res =>{
           this.$parent.$parent.$parent.$parent.$parent.retrieve()
           this.dialog = false

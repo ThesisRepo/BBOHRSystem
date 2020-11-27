@@ -345,7 +345,6 @@ export default {
         .get("budget_request/" + this.user_id)
         .then(response => {
           this.budget = response.data;
-          console.log(this.budget)
         })
         .catch(e => {
           console.log(e);
@@ -358,7 +357,6 @@ export default {
             this.user_id
         )
         .then(response => {
-          console.log('budgetadasdsd', response.data)
           this.budgetPending = response.data;
         })
         .catch(e => {
@@ -430,7 +428,6 @@ export default {
       this.$axios
         .get("user_info/" + this.user_id)
         .then(response => {
-          console.log('hahah', response.data)
           if(response.data.user_information === null){
             this.informationCheck = null
           }else{
@@ -439,7 +436,6 @@ export default {
         })
     },
     messagePop(){
-      console.log(this.user_finance, this.informationCheck)
       if(this.user_finance === 'No Finance assign' && this.informationCheck === null){
         this.messageCheck = 'combine'
         this.$refs.reminder.show()
@@ -475,7 +471,6 @@ export default {
             parameter
           )
           .then(response => {
-            console.log(response.data)
             this.retrieveBudget();
             this.getAllFeedback();
           });
@@ -490,7 +485,6 @@ export default {
               parameter
             )
             .then(response => {
-              console.log(response.data)
               this.retrieveBudget();
               this.getAllFeedback();
             });
@@ -537,7 +531,6 @@ export default {
       else return "#002366";
     },
     summary(item){
-      console.log(this.dates[0], this.dates[1])
       this.$refs.summary.show(this.dates[0], this.dates[1], item)
     }
   }
