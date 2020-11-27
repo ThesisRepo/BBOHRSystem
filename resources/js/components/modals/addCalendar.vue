@@ -1,8 +1,8 @@
 <template>
   <v-row justify='end' id="move">
-    <v-btn rounded color="light blue darken-2" outlined @click="dialog = true">
+    <!-- <v-btn rounded color="light blue darken-2" outlined @click="dialog = true">
       <v-icon>mdi-plus</v-icon>Add Event
-    </v-btn>
+    </v-btn> -->
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-card>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
@@ -79,6 +79,9 @@ export default {
     this.getEventType()
   },
   methods: {
+    show(){
+      this.dialog = true
+    },
     save(){
       let params = {
         title: this.title,

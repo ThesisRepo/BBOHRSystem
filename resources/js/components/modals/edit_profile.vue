@@ -29,7 +29,7 @@
                   style="color: red; font-size: 12px"
                 >{{ errorMessage1 }}</span>
               </v-col>
-              <v-col cols="12" sm="6" md="4">
+              <v-col cols="12" sm="6" md="12">
                 <v-text-field
                   label="Contact No.*"
                   type="number"
@@ -46,88 +46,59 @@
                   style="color: red; font-size: 12px"
                 >{{ errorMessage3 }}</span>
               </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-select
-                  :items="civilItem"
-                  label="Civil Status*"
-                  item-text="text"
-                  item-value="value"
-                  @keyup="validate('datas.civil_status')"
-                  v-model="datas.civil_status"
-                  required
-                ></v-select>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
+              <!-- <div>Manage Password</div> -->
+              <v-col cols="6">
                 <v-text-field
-                  class="input-name"
-                  label="PagIbig No.*"
-                  v-model="datas.pag_ibig_number"
-                  type="number"
-                  @keyup="validate('datas.pag_ibig_number')"
+                  v-model="datas.password"
+                  prepend-icon="mdi-lock"
+                  label="New Password*"
+                  :append-icon="
+                                        value ? 'mdi-eye' : 'mdi-eye-off'
+                                    "
+                  :type="value ? 'password' : 'text'"
+                  @keyup="validate('datas.password')"
+                  dense
                   required
+                  @click:append="() => (value = !value)"
                 ></v-text-field>
                 <span
+                  class="ml-8"
+                  v-if="successMessage !== null"
+                  style="color: green; font-size: 12px"
+                >{{ successMessage }}</span>
+                <span
+                  class="ml-8"
                   v-if="errorMessage4 !== null"
                   style="color: red; font-size: 12px"
                 >{{ errorMessage4 }}</span>
                 <span
+                  class="ml-8"
                   v-if="errorMessage5 !== null"
                   style="color: red; font-size: 12px"
                 >{{ errorMessage5 }}</span>
               </v-col>
-              <v-col cols="12" sm="6" md="4">
+              <v-col cols="6">
                 <v-text-field
-                  class="input-name"
-                  label="SSS No.*"
-                  v-model="datas.sss_number"
-                  type="number"
-                  @keyup="validate('datas.sss_number')"
+                  label="Confirm Password"
+                  :append-icon="
+                                        valuePass ? 'mdi-eye' : 'mdi-eye-off'
+                                    "
+                  @click:append="
+                                        () => (valuePass = !valuePass)
+                                    "
+                  :type="valuePass ? 'password' : 'text'"
+                  @keyup="validate('datas.confirm_password')"
+                  name="password"
+                  prepend-icon="mdi-lock"
+                  v-model="datas.confirm_password"
+                  dense
                   required
                 ></v-text-field>
                 <span
+                  class="ml-8"
                   v-if="errorMessage6 !== null"
                   style="color: red; font-size: 12px"
                 >{{ errorMessage6 }}</span>
-                <span
-                  v-if="errorMessage7 !== null"
-                  style="color: red; font-size: 12px"
-                >{{ errorMessage7 }}</span>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  class="input-name"
-                  label="TIN*"
-                  v-model="datas.tin_number"
-                  @keyup="validate('datas.tin_number')"
-                  type="number"
-                  required
-                ></v-text-field>
-                <span
-                  v-if="errorMessage8 !== null"
-                  style="color: red; font-size: 12px"
-                >{{ errorMessage8 }}</span>
-                <span
-                  v-if="errorMessage9 !== null"
-                  style="color: red; font-size: 12px"
-                >{{ errorMessage9 }}</span>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  class="input-name"
-                  label="PhilHealth No.*"
-                  v-model="datas.philhealth_number"
-                  @keyup="validate('datas.philhealth_number')"
-                  type="number"
-                  required
-                ></v-text-field>
-                <span
-                  v-if="errorMessage10 !== null"
-                  style="color: red; font-size: 12px"
-                >{{ errorMessage10 }}</span>
-                <span
-                  v-if="errorMessage11 !== null"
-                  style="color: red; font-size: 12px"
-                >{{ errorMessage11 }}</span>
               </v-col>
             </v-row>
           </v-container>
@@ -151,11 +122,9 @@ export default {
     errorMessage4: null,
     errorMessage5: null,
     errorMessage6: null,
-    errorMessage7: null,
-    errorMessage8: null,
-    errorMessage9: null,
-    errorMessage10: null,
-    errorMessage11: null,
+    successMessage: null,
+    valuePass: true,
+    value: true,
     user_id: localStorage.getItem("id"),
     civilItem: [
       { text: "Single", value: 0 },
@@ -196,77 +165,107 @@ export default {
           this.errorMessage3 = null;
         }
       }
-
-      if (input === "datas.pag_ibig_number") {
+      if (input === "datas.password") {
         this.errorMessage4 = null;
         this.errorMessage5 = null;
-        if (this.datas.pag_ibig_number.length > 12) {
-          this.errorMessage4 = "Pag-IBIG number must be 12 digit number";
-        } else if (this.datas.pag_ibig_number.length === 0) {
-          this.errorMessage4 = "Pag-IBIG number is required";
-        } else if (this.datas.pag_ibig_number.length < 12) {
-          this.errorMessage5 = "Pag-IBIG number is invalid ";
-        } else {
+        if (this.datas.password.length < 8) {
+          this.errorMessage4 = "Password must be atleast 8 characters.";
+        } else if (
+          /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/.test(
+            this.datas.password
+          )
+        ) {
+          this.successMessage = "Strong password";
           this.errorMessage4 = null;
           this.errorMessage5 = null;
+        } else {
+          this.errorMessage5 =
+            "Password must be alphanumeric characters. It should contain 1 number, 1 special character and 1 capital letter";
         }
-      }
-
-      if (input === "datas.sss_number") {
+      } else if (input === "datas.confirm_password") {
         this.errorMessage6 = null;
-        this.errorMessage7 = null;
-        if (this.datas.sss_number.length > 10) {
-          this.errorMessage6 = "SSS number must be 10 digit number";
-        } else if (this.datas.sss_number.length === 0) {
-          this.errorMessage6 = "SSS number is required";
-        } else if (this.datas.sss_number.length < 10) {
-          this.errorMessage7 = "SSS number is invalid ";
+        this.successMessage = null;
+        if (this.password.localeCompare(this.confirm_password) !== 0) {
+          this.errorMessage6 = "Password did not match";
         } else {
           this.errorMessage6 = null;
-          this.errorMessage7 = null;
+          this.successMessage = null;
         }
-      }
-      if (input === "datas.tin_number") {
-        this.errorMessage8 = null;
-        this.errorMessage9 = null;
-        if (
-          this.datas.tin_number.length > 9 &&
-          this.datas.tin_number.length < 13
-        ) {
-          if (this.datas.tin_number[9] !== "0") {
-            this.errorMessage8 = "TIN 10th number must be 0";
-          } else if (this.datas.tin_number[10] !== "0") {
-            this.errorMessage8 = "TIN 11th number must be 0";
-          } else if (this.datas.tin_number[11] !== "0") {
-            this.errorMessage8 = "TIN 12th number must be 0";
-            console.log(this.datas.tin_number.toString().length);
-          }
-        } else if (
-          this.datas.tin_number.toString().length > 12 ||
-          this.datas.tin_number.toString().length < 12
-        ) {
-          this.errorMessage8 = "TIN number must be 12 digit number";
-        } else if (this.datas.tin_number.toString().length === 0) {
-          this.errorMessage9 = "TIN number is required";
-        } else {
-          this.errorMessage8 = null;
-          this.errorMessage9 = null;
-        }
-      } else if (input === "datas.philhealth_number") {
-        this.errorMessage10 = null;
-        this.errorMessage11 = null;
-      }
-      if (this.datas.philhealth_number.length > 12) {
-        this.errorMessage10 = "PhilHealth number must be 12 digit numbers";
-      } else if (this.datas.philhealth_number.length === 0) {
-        this.errorMessage10 = "PhilHealth is required";
-      } else if (this.datas.philhealth_number.length < 12) {
-        this.errorMessage11 = "PhilHealth number is invalid";
-      } else {
-        this.errorMessage10 = null;
-        this.errorMessage11 = null;
       }
     },
+
+    //     if (input === "datas.pag_ibig_number") {
+    //         this.errorMessage4 = null;
+    //         this.errorMessage5 = null;
+    //         if (this.datas.pag_ibig_number.length > 12) {
+    //             this.errorMessage4 =
+    //                 "Pag-IBIG number must be 12 digit number";
+    //         } else if (this.datas.pag_ibig_number.length === 0) {
+    //             this.errorMessage4 = "Pag-IBIG number is required";
+    //         } else if (this.datas.pag_ibig_number.length < 12) {
+    //             this.errorMessage5 = "Pag-IBIG number is invalid ";
+    //         } else {
+    //             this.errorMessage4 = null;
+    //             this.errorMessage5 = null;
+    //         }
+    //     }
+
+    //     if (input === "datas.sss_number") {
+    //         this.errorMessage6 = null;
+    //         this.errorMessage7 = null;
+    //         if (this.datas.sss_number.length > 10) {
+    //             this.errorMessage6 = "SSS number must be 10 digit number";
+    //         } else if (this.datas.sss_number.length === 0) {
+    //             this.errorMessage6 = "SSS number is required";
+    //         } else if (this.datas.sss_number.length < 10) {
+    //             this.errorMessage7 = "SSS number is invalid ";
+    //         } else {
+    //             this.errorMessage6 = null;
+    //             this.errorMessage7 = null;
+    //         }
+    //     }
+    //     if (input === "datas.tin_number") {
+    //         this.errorMessage8 = null;
+    //         this.errorMessage9 = null;
+    //         if (
+    //             this.datas.tin_number.length > 9 &&
+    //             this.datas.tin_number.length < 13
+    //         ) {
+    //             if (this.datas.tin_number[9] !== "0") {
+    //                 this.errorMessage8 = "TIN 10th number must be 0";
+    //             } else if (this.datas.tin_number[10] !== "0") {
+    //                 this.errorMessage8 = "TIN 11th number must be 0";
+    //             } else if (this.datas.tin_number[11] !== "0") {
+    //                 this.errorMessage8 = "TIN 12th number must be 0";
+    //                 console.log(this.datas.tin_number.toString().length);
+    //             }
+    //         } else if (
+    //             this.datas.tin_number.toString().length > 12 ||
+    //             this.datas.tin_number.toString().length < 12
+    //         ) {
+    //             this.errorMessage8 = "TIN number must be 12 digit number";
+    //         } else if (this.datas.tin_number.toString().length === 0) {
+    //             this.errorMessage9 = "TIN number is required";
+    //         } else {
+    //             this.errorMessage8 = null;
+    //             this.errorMessage9 = null;
+    //         }
+    //     } else if (input === "datas.philhealth_number") {
+    //         this.errorMessage10 = null;
+    //         this.errorMessage11 = null;
+    //     }
+    //     if (this.datas.philhealth_number.length > 12) {
+    //         this.errorMessage10 =
+    //             "PhilHealth number must be 12 digit numbers";
+    //     } else if (this.datas.philhealth_number.length === 0) {
+    //         this.errorMessage10 = "PhilHealth is required";
+    //     } else if (this.datas.philhealth_number.length < 12) {
+    //         this.errorMessage11 = "PhilHealth number is invalid";
+    //     } else {
+    //         this.errorMessage10 = null;
+    //         this.errorMessage11 = null;
+    //     }
+    // },
     update() {
       this.validate("datas.address");
       this.validate("datas.contact_number");

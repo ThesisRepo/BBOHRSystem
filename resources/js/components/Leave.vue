@@ -17,7 +17,7 @@
     </v-toolbar>
 
     <!-- Feedback -->
-    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" :search="search" loading-text="Loading... Please wait" class="elevation-3">
+    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat v-if="(user_type.includes('hr mngr') || user_type.includes('general mngr'))">
           <v-col class="mt-8">
@@ -101,7 +101,7 @@
 
     <!-- Pending Requests -->
     <v-data-table v-if="employees" :headers="headersEmp" :items="prpPending" 
-      :search="search" loading loading-text="Loading... Please wait" class="elevation-3">
+      :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-text-field
@@ -326,7 +326,7 @@ export default {
     prp_assigned_id: localStorage.getItem("assigned_prp_id"),
     employees: false,
     requests: true,
-    feedback: false,
+    feedback: false,  
     dialog: false,
     error: false,
     error1: false,
@@ -447,7 +447,6 @@ export default {
         .get("leave_request/" + this.user_id)
         .then(response => {
           this.request = response.data;
-          this.loading =  true
           console.log('sgwesfsdfsdf', response.data)
         })
         .catch(e => {
@@ -455,11 +454,9 @@ export default {
         });
     },
     retrievePendingPrp() {
-      this.loading = true
       this.$axios
         .get("prp/leave_request/pending/" + this.user_id)
         .then(response => {
-          this.loading = false
           this.prpPending = response.data;
         })
         .catch(e => {

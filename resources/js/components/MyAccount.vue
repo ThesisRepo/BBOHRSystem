@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-container>
-        <v-card class="mx-auto" elevation="6">
+        <v-card class="mx-auto" elevation="3">
           <v-card-title class="primary fill-height" >
             <span class="headline white--text">USER PROFILE</span>
           </v-card-title>
@@ -75,7 +75,7 @@
         </v-card>
     </v-container>
     <v-container cols="4">
-        <v-card class="mx-auto" elevation="6">
+        <v-card class="mx-auto" elevation="3">
           <v-card-text>
             <v-container>
               <h4 class="primary--text" mb-1 style="margin-left: 3%;">Personal Information:</h4>

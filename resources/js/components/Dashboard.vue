@@ -48,11 +48,27 @@
     <v-spacer></v-spacer>
     <br>
     <br>
-    <AddEvent></AddEvent>
-    <CalendarAdd></CalendarAdd>
+    <!-- <AddEvent></AddEvent>
+    <CalendarAdd></CalendarAdd> -->
+    <div class="text-right">
+      <v-btn color="light blue darken-2" rounded outlined @click="eventType()">
+        <v-icon>mdi-plus</v-icon>Event Type
+      </v-btn>&nbsp;&nbsp;&nbsp;
+      <v-btn color="light blue darken-2" rounded outlined @click="eventAdd()">
+        <v-icon>mdi-plus</v-icon>Add Event
+      </v-btn>
+    </div>
+
+    <AddEvent
+    ref="addType"
+    ></AddEvent>
+    <CalendarAdd
+    ref="addEvent"
+    ></CalendarAdd>
+
     <v-row class="fill-height">
       <v-col>
-        <v-sheet height="45">
+        <v-sheet height="64">
           <v-toolbar flat>
             <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">Today</v-btn>
             <v-btn fab text small color="grey darken-2" @click="prev">
@@ -166,7 +182,7 @@
                 ></v-textarea>
               </v-col>
               <v-col cols="12" sm="6">
-                <v-text-field label="Start Date" type="datetime-local" v-model="editedItem.start_date" @change="test()" color="primary"></v-text-field>
+                <v-text-field label="Start Date" type="datetime-local" v-model="editedItem.start_date" color="primary"></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
                 <v-text-field label="End Date" type="datetime-local" v-model="editedItem.end_date" color="primary"></v-text-field>
@@ -187,6 +203,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <Loading v-if="loading"></Loading>
   </v-app>
 </template>
 <script>
@@ -194,13 +211,15 @@ import DashBoardtable from "./Dashboard_table";
 import CalendarAdd from "./modals/addCalendar.vue";
 import AddEvent from "./modals/add_event_title.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
+import Loading from "./Loading.vue";
 import moment from "moment";
 export default {
   components: {
     DashBoardtable,
     CalendarAdd,
     ConfirmationDel,
-    AddEvent
+    AddEvent,
+    Loading
   },
   data: () => ({
     user_type: localStorage.getItem("user_type"),
@@ -230,7 +249,8 @@ export default {
       start_date: null,
       end_date: null,
       checkbox: false,
-      event_type: null
+      event_type: null,
+      loading: false
     },
   }),
   mounted() {
@@ -241,8 +261,11 @@ export default {
     this.retrieve();
   },
   methods: {
-    test(){
-      console.log(this.editedItem.start_date)
+    eventAdd(){
+      this.$refs.addEvent.show()
+    },
+    eventType(){
+      this.$refs.addType.show()
     },
     getNoApprove() {
       this.$axios
@@ -252,9 +275,11 @@ export default {
         });
     },
     getNoPending() {
+      this.loading = true
       this.$axios
         .get("user_info/pending_requests/count/" + this.user_id)
         .then(response => {
+          this.loading = false
           this.pending = response.data;
         });
     },
@@ -312,19 +337,23 @@ export default {
       return Math.floor((b - a + 1) * Math.random()) + a;
     },
     getEventType() {
+      this.loading = true
       this.$axios
         .get("user_info/event_types/" + this.user_id)
         .then(response => {
+          this.loading = false
           response.data.event_types.forEach(element => {
             this.event_types.push(element)  
           });
         });
     },
     retrieve() {
+      this.loading = true
       let parameter = {
         user_id: this.user_id
       };
       this.$axios.get("events/"+  this.user_id).then(response => {
+        this.loading = false
         console.log('retireve', response.data)
         this.events = []
         response.data.forEach(element => {
@@ -350,9 +379,11 @@ export default {
       this.$refs.confirmDel.show(selectedEvent)
     },
     confirmDel() {
+      this.loading = true
       this.$axios
         .delete("events/" + this.id)
         .then(response => {
+          this.loading = false
           this.retrieve();
           this.selectedOpen = false
         });
@@ -374,6 +405,7 @@ export default {
       })
     },
     updateCalendar(){
+      this.loading = true
       let params = {
           id: this.editedItem.id,
           user_id: this.user_id,
@@ -391,6 +423,7 @@ export default {
             params
           )
           .then(response => {
+            this.loading = false
             this.retrieve();
           });
         this.dialog = false;
