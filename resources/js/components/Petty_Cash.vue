@@ -350,7 +350,6 @@ export default {
     retrieve(){
       this.$axios.get("petty_cash_request/" + this.user_id).then(response => {
         this.petty = response.data
-        console.log(this.petty)
       })
       .catch(e => {
         console.log(e);
@@ -408,7 +407,6 @@ export default {
       this.$axios
         .get("user_info/" + this.user_id)
         .then(response => {
-          console.log('hahah', response.data)
           if(response.data.user_information === null){
             this.informationCheck = null
           }else{
@@ -417,7 +415,6 @@ export default {
         })
     },
     messagePop(){
-      console.log(this.user_finance, this.informationCheck)
       if(this.user_finance === 'No Finance assign' && this.informationCheck === null){
         this.messageCheck = 'combine'
         this.$refs.reminder.show()
@@ -469,7 +466,6 @@ export default {
           parameter
         )
         .then(response => {
-          console.log(response.data)
           this.retrievePetty();
           this.getAllFeedback();
         });
@@ -484,7 +480,6 @@ export default {
             parameter
           )
           .then(response => {
-            console.log(response.data)
             this.retrievePetty();
             this.getAllFeedback();
           });
@@ -512,7 +507,6 @@ export default {
             this.user_id
         )
         .then(response => {
-          console.log('budgetFeedback', response.data)
           this.feedbacks = response.data.feedbacked_petty_cash_requests;
         });
     },
@@ -529,7 +523,6 @@ export default {
       else return "#002366";
     },
     summary(item){
-      console.log(this.dates[0], this.dates[1])
       this.$refs.summary.show(this.dates[0], this.dates[1], item)
     }
   }

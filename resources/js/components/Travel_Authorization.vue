@@ -462,7 +462,6 @@ export default {
         .get("travel_auth_request/" + this.user_id)
         .then(response => {
           this.travel = response.data;
-          console.log('here', this.travel)
         })
         .catch(e => {
           console.log(e);
@@ -472,7 +471,6 @@ export default {
       this.$axios
         .get("user_info/" + this.user_id)
         .then(response => {
-          console.log('hahah', response.data)
           if(response.data.user_information === null){
             this.informationCheck = null
           }else{
@@ -481,7 +479,6 @@ export default {
         })
     },
     messagePop(){
-      console.log(this.prp_assigned_id, this.informationCheck)
       if(this.prp_assigned_id === 'No PRP assign' && this.informationCheck === null){
         this.messageCheck = 'combine'
         this.$refs.reminder.show()
@@ -538,14 +535,12 @@ export default {
           employee_to_cover: this.editedItem.employee_to_cover,
           file_uri: "test"
         };
-        // console.log("params", params, this.editedItem.id);
         this.$axios
           .post(
             "travel_auth_request/" + this.editedItem.id,
             params
           )
           .then(response => {
-            console.log(response.data)
             this.retrieve();
           });
         this.dialog = false;
@@ -663,7 +658,6 @@ export default {
       this.differenceDates();
     },
     summary(item){
-      console.log(this.dates[0], this.dates[1])
       this.$refs.summary.show(this.dates[0], this.dates[1], item)
     }
   }

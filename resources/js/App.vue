@@ -132,6 +132,13 @@ v-main {
 #sidebar{
     position:absolute;
 }
+.container-fluid{
+    width: 100%;
+    padding-right: 3px;
+    padding-left: 3px;
+    margin-right: auto;
+    margin-left: auto;
+}
 
 </style>
 
