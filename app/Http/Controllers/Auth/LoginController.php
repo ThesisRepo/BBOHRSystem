@@ -87,15 +87,7 @@ class LoginController extends Controller
         }
         return redirect('login')->with('invalidToken','token invalid');
     }
-
-    // public function logout(Request $request)
-    // {
-    //     $request->user()->token()->revoke();
-
-    //     return response()->json([
-    //         'message' => 'Successfully logged out'
-    //     ]);
-    // }
+    
     public function redirectToGoogle()
     {
         return Socialite::driver('google')->redirect();
