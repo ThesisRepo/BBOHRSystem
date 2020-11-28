@@ -109,12 +109,8 @@ class LoginController extends Controller
                     $newUser->update([
                         'google_id'=> $user->id
                     ]);
-                    $data= [
-                        'email' => $newUser->email,
-                        'password' => $newUser->getAuthPassword()
-                    ];
-                    if(Auth::attempt($data)){
-                        return redirect('/');
+                    if(Auth::attempt($newUser)){
+                        return redirect()->intended('/');
                     }
                 }else{
                     return redirect('/login')->withErrors(['email'=>'Cannot verify current email.']);
