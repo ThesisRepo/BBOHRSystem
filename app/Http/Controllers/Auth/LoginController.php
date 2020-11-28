@@ -113,7 +113,7 @@ class LoginController extends Controller
                         'email' => $newUser->email,
                         'password' => $newUser->getAuthPassword()
                     ];
-                    if(Auth::attempt($newUser)){
+                    if(Auth::attempt($data)){
                         return redirect()->intended('/');
                     }
                 }else{
