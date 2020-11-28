@@ -376,30 +376,30 @@ export default {
   },
   methods: {
     getAllPrp() {
-      this.$axios.get("http://localhost:8000/prp").then(response => {
+      this.$axios.get("prp").then(response => {
         this.prp = response.data;
       });
     },
     getAllFinance() {
-      this.$axios.get("http://localhost:8000/finance").then(response => {
+      this.$axios.get("finance").then(response => {
         this.finance = response.data;
       });
     },
     getAllDepartment() {
-      this.$axios.get("http://localhost:8000/departments").then(response => {
+      this.$axios.get("departments").then(response => {
         response.data.forEach(element => {
           this.departmentItem.push(element)
         })
       });
     },
     getShift() {
-      this.$axios.get("http://localhost:8000/shift_time").then(response => {
+      this.$axios.get("shift_time").then(response => {
         this.sTime = response.data;
       });
     },
 
     getPosition(){
-      this.$axios.get("http://localhost:8000/hr/company_position").then(response => {
+      this.$axios.get("hr/company_position").then(response => {
         response.data.forEach(el => {
           this.position.push(el)
         })
@@ -587,7 +587,7 @@ export default {
           company_number: this.company_number
       };
       this.$axios
-        .post("http://localhost:8000/hr/manage/user", params)
+        .post("hr/manage/user", params)
         .then(response => {
           console.log(response.data)
           this.$parent.$parent.$parent.$parent.$parent.$parent.retrieve();

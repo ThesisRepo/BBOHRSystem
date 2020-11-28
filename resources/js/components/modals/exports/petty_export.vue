@@ -84,13 +84,13 @@ export default {
       };
       if(item === 'Approved Requests'){
         this.$axios
-        .post("http://localhost:8000/hr/summary/petty_cash_request", param)
+        .post("hr/summary/petty_cash_request", param)
         .then(response => {
           this.summary = response.data;
         });
       }else if(item === 'Disapproved Requests'){
         this.$axios
-        .post("http://localhost:8000/hr/summary/petty_cash_request", param)
+        .post("hr/summary/petty_cash_request", param)
         .then(response => {
             this.summary = response.data;
         });
