@@ -114,7 +114,7 @@ class LoginController extends Controller
                         'password' => $newUser->getAuthPassword()
                     ];
                     if(Auth::attempt($data)){
-                        return redirect()->intended('/');
+                        return redirect('/');
                     }
                 }else{
                     return redirect('/login')->withErrors(['email'=>'Cannot verify current email.']);
