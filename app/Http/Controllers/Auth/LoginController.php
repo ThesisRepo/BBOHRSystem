@@ -85,7 +85,7 @@ class LoginController extends Controller
             DB::table('user_acc_activations')->where('token', $token)->delete();
             return redirect('login')->with('success','User verified successfully');        
         }
-        return redirect('login')->with('invalidToken','token invalid');
+        return redirect('login')->with('invalidToken','sorry, but token is invalid');
     }
     
     public function redirectToGoogle()
