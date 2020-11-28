@@ -82,7 +82,7 @@ class LoginController extends Controller
                 'email_verified_at' => $current_time->toDateTimeString()
             ];  
             $usertable->where('id', $user_id)->update($data);
-            DB::table('user_acc_activations')->where('token', $token)->delete();
+            DB::table('user_acc_activations')->where('token', $token);
             return redirect('login')->with('success','User verified successfully');        
         }
         return redirect('login')->with('invalidToken','sorry, but token is invalid');
