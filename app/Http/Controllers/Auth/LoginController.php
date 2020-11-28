@@ -108,8 +108,8 @@ class LoginController extends Controller
                 if($newUser) {
                     $newUser->update([
                         'google_id'=> $user->id
-                    ]);
-                    if(Auth::attempt($newUser)){
+                    ]); 
+                    if(Auth::login($newUser)){
                         return redirect()->intended('/');
                     }
                 }else{
