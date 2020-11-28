@@ -98,7 +98,7 @@ trait EmployeeInfoList
             // 'finance_assigned' => 4,
             'first_name' => 'Claire',
             'last_name' => 'khan',
-            'email' => 'claire@bbo.com.ph',
+            'email' => 'balugomarionjay@gmail.com',
             'password' => Hash::make('123456789')
           ],
           'user_info' => null,
