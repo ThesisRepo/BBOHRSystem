@@ -98,22 +98,18 @@ class LoginController extends Controller
         try {
 
             $user = Socialite::driver('google')->user();
-            dd($user);
-            return $user;
             $finduser = User::where('google_id', $user->id)->first();
 
             if($finduser){
-                dd($user, $finduser);
                 Auth::login($finduser);
-
                 return redirect('/');
-
             }else{
                 $newUser = User::where('email', $user->email)->first();
                 if($newUser) {
                     $newUser->update([
                         'google_id'=> $user->id
                     ]);
+                    dd($newUser);
                     if(Auth::attempt($newUser)){
                         return redirect()->intended('home');
                     }
