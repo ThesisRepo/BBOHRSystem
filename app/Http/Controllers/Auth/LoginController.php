@@ -109,8 +109,7 @@ class LoginController extends Controller
                     $newUser->update([
                         'google_id'=> $user->id
                     ]);
-                    dd($newUser);
-                    if(Auth::attempt($newUser)){
+                    if(Auth::login($newUser)){
                         return redirect()->intended('home');
                     }
                 }else{
