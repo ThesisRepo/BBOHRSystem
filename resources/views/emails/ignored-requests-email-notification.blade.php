@@ -1,7 +1,7 @@
 @component('mail::message')
 # Hi This is just a sample !
 
-@component('mail::button', ['url' => 'http://localhost:8000/'])
+@component('mail::button', ['url' => config('app.url')])
 Click Here To Take An Action
 @endcomponent
 
