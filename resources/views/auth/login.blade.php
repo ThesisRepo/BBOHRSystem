@@ -66,7 +66,7 @@ $(document).ready(function() {
                     @endif
                 </center>
                 <center style="margin-top: 7%;">
-                    <img src="img/user_logo.png" width="100" alt="logo">
+                    <img src="img/bboLoginIcon.png" width="100" alt="logo">
                 </center>
                 <br>
                 <form method="POST" class="container" action="{{ route('login') }}" style="margin-top: 7%;">
