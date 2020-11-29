@@ -72,7 +72,7 @@
     <div id="app" class="container-fluid">
         @guest
         <script>
-            storage.clear();
+            localStorage.clear()
         </script>
         <div class=" row d-md-flex h-md-100 align-items-center">
 
