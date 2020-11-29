@@ -110,7 +110,7 @@ class LoginController extends Controller
                         'google_id'=> $user->id
                     ]); 
                     Auth::login($newUser);
-                    return redirect('/');
+                    return redirect('/login')->withErrors(['email'=>'Something went wrong.']);
                 }else{
                     return redirect('/login')->withErrors(['email'=>'Cannot verify current email.']);
                 }   
