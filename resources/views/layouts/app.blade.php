@@ -71,10 +71,7 @@
 <body>
     <div id="app" class="container-fluid">
         @guest
-        <script>
-            localStorage.clear()
-        </script>
-        <div class=" row d-md-flex h-md-100 align-items-center">
+        <div class=" row d-md-flex h-md-100 align-items-center" onload="clearLocalStorage()">
 
             <!-- First Half -->
 
@@ -103,5 +100,9 @@
         @endauth
     </div>
 </body>
-
+<script>
+    function clearLocalStorage() {
+        localStorage.clear();
+    }
+</script>
 </html>
