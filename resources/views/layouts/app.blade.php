@@ -68,13 +68,7 @@
 }
 </style>
 @yield('js')
-<script  type="text/javascript">
-    console.log('dfdddd');
-    if(document.getElementById('guest')) {
-        console.log('dfdf');
-        localStorage.clear();
-    }
-</script>
+
 <body>  
     <div id="app" class="container-fluid">
         @guest
@@ -107,5 +101,11 @@
         @endauth
     </div>
 </body>
-
+<script  type="text/javascript">
+    console.log('dfdd');
+    if(document.getElementById('guest')) {
+        console.log('dfdf');
+        localStorage.clear();
+    }
+</script>
 </html>
