@@ -68,7 +68,13 @@
 }
 </style>
 @yield('js')
-<body>
+<script>
+    function clearLocalStorage() {
+        console.log('dfd');
+        localStorage.clear();
+    }
+</script>
+<body>  
     <div id="app" class="container-fluid">
         @guest
         <div class=" row d-md-flex h-md-100 align-items-center" onload="clearLocalStorage()">
@@ -100,9 +106,5 @@
         @endauth
     </div>
 </body>
-<script>
-    function clearLocalStorage() {
-        localStorage.clear();
-    }
-</script>
+
 </html>
