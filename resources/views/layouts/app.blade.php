@@ -68,10 +68,12 @@
 }
 </style>
 @yield('js')
-
 <body>
     <div id="app" class="container-fluid">
         @guest
+        <script>
+            storage.clear();
+        </script>
         <div class=" row d-md-flex h-md-100 align-items-center">
 
             <!-- First Half -->
