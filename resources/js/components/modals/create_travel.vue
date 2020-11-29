@@ -191,6 +191,7 @@ export default {
         this.$axios
           .post("travel_auth_request", formData, config)
           .then(res => {
+            console.log(res.data)
             this.$parent.$parent.$parent.$parent.$parent.retrieve();
           });
         this.dialog = false;

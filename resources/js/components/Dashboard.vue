@@ -326,7 +326,7 @@ export default {
           end: this.events[i].end_date,
           color: this.events[i].event_type.color,
           event_type: this.events[i].event_type.event_name,
-          checkbox: this.events[i].is_private,
+          checkbox: this.events[i].is_public,
           timed: this.events[i].timed
         });
       }
@@ -342,6 +342,7 @@ export default {
         .then(response => {
           this.loading = false
           response.data.event_types.forEach(element => {
+            console.log('here', element)
             this.event_types.push(element)  
           });
         });
@@ -363,7 +364,7 @@ export default {
             end: element.end_date,
             color: element.event_type.color,
             event_type: element.event_type.event_name,
-            checkbox: element.is_private,
+            checkbox: element.is_public,
             timed: true
           };
           this.events.push(temp)
@@ -405,7 +406,7 @@ export default {
           id: this.editedItem.id,
           user_id: this.user_id,
           content: this.editedItem.content,
-          is_private: this.editedItem.checkbox,
+          is_public: this.editedItem.checkbox,
           start_date: this.editedItem.start_date,
           end_date: this.editedItem.end_date,
           event_type_id: this.editedItem.event_type.id ? this.editedItem.event_type.id : this.editedItem.event_type,
