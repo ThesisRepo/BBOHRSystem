@@ -75,9 +75,11 @@ class RouteServiceProvider extends ServiceProvider
     {
         foreach (glob(base_path('routes/users/*.php')) as $file) {
             $folder = explode('/', $file);
-            if(explode('.', $folder[count($folder) - 1])[0] == 'PRP' || explode('.', $folder[count($folder) - 1])[0] == 'prp') {
-                dd($this->namespace . '\\' . explode('.', $folder[count($folder) - 1])[0] );
-            }
+            print_r($this->namespace . '\\' . explode('.', $folder[count($folder) - 1])[0] );
+
+            // if(explode('.', $folder[count($folder) - 1])[0] == 'PRP' || explode('.', $folder[count($folder) - 1])[0] == 'prp') {
+            //     dd($this->namespace . '\\' . explode('.', $folder[count($folder) - 1])[0] );
+            // }
             Route::middleware('web')
                 ->namespace($this->namespace . '\\' . explode('.', $folder[count($folder) - 1])[0] )
                 ->group($file);
