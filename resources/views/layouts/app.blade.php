@@ -73,6 +73,7 @@
         @guest
         <script>
             localStorage.clear()
+            window.location.replace("/")
         </script>
         <div class=" row d-md-flex h-md-100 align-items-center">
 
