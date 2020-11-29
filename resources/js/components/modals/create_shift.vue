@@ -59,7 +59,7 @@
               </v-col>
               <v-col cols="12" sm="6">
                 <v-select
-                  :items="this.sTime"
+                  :items="sTime"
                   label="Shift Time*"
                   item-text="shift_time_name"
                   item-value="id"

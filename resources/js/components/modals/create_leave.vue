@@ -127,21 +127,16 @@
               </v-col>
               <v-col cols="4">
                 <v-select
-                  :items="halfSched"
-                  label="Start Time*"
-                  v-model="start_time"
-                  item-text="name"
-                  item-value="value"
-                  @change="timeClick()"
+                  label="Date*"
+                  v-model="end_time"
                   required
                 ></v-select>
               </v-col>
               <v-col cols="4">
                 <v-select
-                  :items="halfSchedCorrespond"
-                  disabled
-                  label="End Time*"
-                  v-model="end_time"
+                  :items="halfSched"
+                  label="Start Time*"
+                  v-model="start_time"
                   item-text="name"
                   item-value="value"
                   required
@@ -191,15 +186,12 @@ export default {
         { value: 6, name: "Maternity Leave" }
       ],
       halfSched: [
-        {value: 1, name: "10am"}, 
-        {value: 2, name: "2pm"}
-      ],
-      halfSchedCorrespond: [
-        {value: 1, name: "2pm"}, 
-        {value: 2, name: "7pm"}
+        {value: 1, name: "10am - 2pm"}, 
+        {value: 2, name: "2pm - 7pm"}
       ],
       dialog: false,
       reason: null,
+      total_days: null,
       total_days: null,
       total_days_with_text: null,
       half_days_with_text: 0.5 + ' ' + 'days of leave',
@@ -211,14 +203,6 @@ export default {
   },
   mounted() {},
   methods: {
-    timeClick(){
-      if(this.start_time === 1){
-        this.end_time = this.halfSchedCorrespond[0]
-      }else{
-        this.end_time = this.halfSchedCorrespond[1]
-      }
-      console.log(this.end_time)
-    },
     changeDate() {
       if (this.start_date !== null && this.start_date !== "") {
         let start = moment(String(this.start_date));
