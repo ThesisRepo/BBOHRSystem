@@ -102,10 +102,11 @@
     </div>
 </body>
 <script  type="text/javascript">
-    console.log('dfdd');
-    if(document.getElementById('guest')) {
-        console.log('dfdf');
-        localStorage.clear();
+    window.onload = function() {
+        if(document.getElementById('guest')) {
+            console.log('storage cleared!');
+            localStorage.clear();
+        }
     }
 </script>
 </html>
