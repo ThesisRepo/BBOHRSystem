@@ -125,17 +125,29 @@
                   required
                 ></v-select>
               </v-col>
-              <v-col cols="6">
+              <v-col cols="4">
                 <v-select
                   :items="halfSched"
-                  label="Time*"
-                  v-model="selectedLeaveType"
+                  label="Start Time*"
+                  v-model="start_time"
+                  item-text="name"
+                  item-value="value"
+                  @change="timeClick()"
+                  required
+                ></v-select>
+              </v-col>
+              <v-col cols="4">
+                <v-select
+                  :items="halfSchedCorrespond"
+                  disabled
+                  label="End Time*"
+                  v-model="end_time"
                   item-text="name"
                   item-value="value"
                   required
                 ></v-select>
               </v-col>
-              <v-col cols="6">
+              <v-col cols="4">
                 <v-text-field
                   label="Total Day/s of Leave*"
                   type="text"
@@ -163,6 +175,8 @@ export default {
       whole: true,
       half: false,
       selectedLeaveType: null,
+      start_time: null,
+      end_time: null,
       error: false,
       prp_assigned_id: localStorage.getItem("assigned_prp_id"),
       error1: false,
@@ -177,8 +191,12 @@ export default {
         { value: 6, name: "Maternity Leave" }
       ],
       halfSched: [
-        {value: 1, name: "10am-2pm"}, 
-        {value: 2, name: "2am-7pm"}
+        {value: 1, name: "10am"}, 
+        {value: 2, name: "2pm"}
+      ],
+      halfSchedCorrespond: [
+        {value: 1, name: "2pm"}, 
+        {value: 2, name: "7pm"}
       ],
       dialog: false,
       reason: null,
@@ -193,6 +211,14 @@ export default {
   },
   mounted() {},
   methods: {
+    timeClick(){
+      if(this.start_time === 1){
+        this.end_time = this.halfSchedCorrespond[0]
+      }else{
+        this.end_time = this.halfSchedCorrespond[1]
+      }
+      console.log(this.end_time)
+    },
     changeDate() {
       if (this.start_date !== null && this.start_date !== "") {
         let start = moment(String(this.start_date));
@@ -233,36 +259,67 @@ export default {
       this.differenceInDay = differenceInDay;
     },
     createRequest() {
-      if (
-        this.selectedLeaveType !== null &&
-        this.total_days !== null &&
-        this.start_date !== null &&
-        this.end_date !== null &&
-        this.error1 === false
-      ) {
-        let params = {
-          user_id: this.user_id,
-          leave_type_id: this.selectedLeaveType,
-          start_date: this.start_date,
-          end_date: this.end_date,
-          number_of_days: this.total_days,
-          prp_assigned_id: this.prp_assigned_id
-        };
-        this.$axios.post("leave_request", params).then(res => {
-          // console.log("Successfully Added");
-          this.$parent.$parent.$parent.$parent.$parent.retrieve();
-          // this.error = false;
-          this.dialog = false;
-        });
-      } else if (
-        this.selectedLeaveType === null ||
-        this.total_days === null ||
-        this.start_date === null ||
-        this.end_date === null
-      ) {
-        this.error = true;
-      } else {
-        this.errorMessage1 = "Please fill valid information";
+      if(this.half === true){
+        if (
+          this.selectedLeaveType !== null &&
+          this.start_time !== null &&
+          this.error1 === false
+        ) {
+          let parameter = {
+            user_id: this.user_id,
+            leave_type_id: this.selectedLeaveType,
+            start_date: this.start_time === 1 ? '10am' : '2pm',
+            end_date: this.end_time.name,
+            number_of_days: this.half_days_with_text,
+            prp_assigned_id: this.prp_assigned_id
+          };
+          console.log(parameter);
+          this.$axios.post("leave_request", parameter).then(res => {
+            console.log(res.data);
+            this.$parent.$parent.$parent.$parent.$parent.retrieve();
+            this.dialog = false;
+          });
+        } else if (
+          this.selectedLeaveType === null ||
+          this.total_days === null ||
+          this.start_date === null ||
+          this.end_date === null
+        ) {
+          this.error = true;
+        } else {
+          this.errorMessage1 = "Please fill valid information";
+        }
+      }else{
+        if (
+          this.selectedLeaveType !== null &&
+          this.total_days !== null &&
+          this.start_date !== null &&
+          this.end_date !== null &&
+          this.error1 === false
+        ) {
+          let params = {
+            user_id: this.user_id,
+            leave_type_id: this.selectedLeaveType,
+            start_date: this.start_date,
+            end_date: this.end_date,
+            number_of_days: this.total_days,
+            prp_assigned_id: this.prp_assigned_id
+          };
+          this.$axios.post("leave_request", params).then(res => {
+            // console.log("Successfully Added");
+            this.$parent.$parent.$parent.$parent.$parent.retrieve();
+            this.dialog = false;
+          });
+        } else if (
+          this.selectedLeaveType === null ||
+          this.total_days === null ||
+          this.start_date === null ||
+          this.end_date === null
+        ) {
+          this.error = true;
+        } else {
+          this.errorMessage1 = "Please fill valid information";
+        }
       }
     },
     removeData() {

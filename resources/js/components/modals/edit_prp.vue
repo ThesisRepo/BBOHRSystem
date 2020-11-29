@@ -65,6 +65,7 @@ export default {
                   "prp_assign",
                   element.first_name + " " + element.last_name
                 );
+                console.log('asdf', element)
                 this.$parent.$parent.getInfo();
               }
             });
@@ -93,6 +94,7 @@ export default {
         .get("prp/" + this.user_id)
         .then(response => {
           this.prp = response.data;
+          console.log('asdfasdfasdf', this.prp)
         });
     }
   }

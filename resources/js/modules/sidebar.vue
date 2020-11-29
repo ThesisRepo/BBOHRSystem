@@ -3,10 +3,10 @@
     <v-navigation-drawer v-model="drawer" app color="light-blue darken-4" class="example">
       <center>
         <v-sheet color="light-blue darken-4" class="pa-5">
-          <v-avatar v-if="user_pic === null" class="mb-10" size="64">
+          <!-- <v-avatar v-if="user_pic === null" class="mb-10" size="64">
             <img src="images/user.png" alt="profile pic">
-          </v-avatar>
-          <v-avatar v-else class="mb-10" color="grey darken-1" size="64">
+          </v-avatar> -->
+          <v-avatar class="mb-10" color="grey darken-1" size="64">
             <img :src="user_pic" alt="profile pic">
           </v-avatar>
           <div style="color:white">{{ user_name }}</div>
@@ -94,9 +94,12 @@ export default {
     ],
   }),
   mounted(){
-    console.log('gawas', this.user_pic, this.user_type, this.user_name)
     if(this.user_type.includes('hr mngr')){
       this.employ.splice(this.employ.length-1, 0, { icon: "mdi-account-group", text: "Manage Users", route: "/ManageUsers" })
+    }
+    console.log('adfasdf', this.user_pic)
+    if(this.user_pic === 'null'){
+      this.user_pic = 'http://localhost:8000/images/user.png'
     }
   },
 
