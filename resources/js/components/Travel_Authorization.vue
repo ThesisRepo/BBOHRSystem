@@ -299,6 +299,7 @@
         <v-btn color="primary" @click="fileDialog = true; file_uri = item.file_uri">File</v-btn>
       </template>
       
+      <template v-slot:item.destination="{ item }"> {{convertData(item)}} </template>
       <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
       <template v-slot:item.actions="{ item }">
@@ -354,7 +355,7 @@ export default {
       { text: "START DATE", value: "start_date" },
       { text: "END DATE", value: "end_date" },
       { text: "EMERGENCY CONTACT", value: "emergency_contact" },
-      { text: "EMPLOYEE TO COVER", value: "employee_to_cover" },
+      { text: "EMPLOYEE TO COVER", value: "employee_to_cover.email" },
       { text: "DOCUMENTS", value: "file_uri", sortable: false },
       { text: "APPROVER", value: "approver_role.role_name" },
       { text: "STATUS", value: "status.status_name" },
@@ -366,7 +367,7 @@ export default {
       { text: "START DATE", value: "start_date" },
       { text: "END DATE", value: "end_date" },
       { text: "EMERGENCY CONTACT", value: "emergency_contact" },
-      { text: "EMPLOYEE TO COVER", value: "employee_to_cover" },
+      { text: "EMPLOYEE TO COVER", value: "employee_to_cover.email" },
       { text: "DOCUMENTS", value: "file_uri", sortable: false },
       { text: "APPROVER", value: "approver_role.role_name" },
       { text: "STATUS", value: "status.status_name" },
@@ -378,7 +379,7 @@ export default {
       { text: "START DATE", value: "start_date" },
       { text: "END DATE", value: "end_date" },
       { text: "EMERGENCY CONTACT", value: "emergency_contact" },
-      { text: "EMPLOYEE TO COVER", value: "employee_to_cover" },
+      { text: "EMPLOYEE TO COVER", value: "employee_to_cover.email" },
       { text: "DOCUMENTS", value: "file_uri", sortable: false },
       { text: "APPROVER", value: "approver_role.role_name" },
       { text: "STATUS", value: "status.status_name" }
@@ -433,6 +434,9 @@ export default {
     }
   },
   methods: {
+    convertData(item){
+      return item.destination.toUpperCase()
+    },
     changeDate() {
       if (
         this.editedItem.start_date !== null &&
@@ -461,8 +465,8 @@ export default {
       this.$axios
         .get("travel_auth_request/" + this.user_id)
         .then(response => {
+          console.log(response.data)
           this.travel = response.data;
-          console.log('here', this.travel)
         })
         .catch(e => {
           console.log(e);
@@ -472,7 +476,6 @@ export default {
       this.$axios
         .get("user_info/" + this.user_id)
         .then(response => {
-          console.log('hahah', response.data)
           if(response.data.user_information === null){
             this.informationCheck = null
           }else{
@@ -481,7 +484,6 @@ export default {
         })
     },
     messagePop(){
-      console.log(this.prp_assigned_id, this.informationCheck)
       if(this.prp_assigned_id === 'No PRP assign' && this.informationCheck === null){
         this.messageCheck = 'combine'
         this.$refs.reminder.show()
@@ -538,14 +540,12 @@ export default {
           employee_to_cover: this.editedItem.employee_to_cover,
           file_uri: "test"
         };
-        // console.log("params", params, this.editedItem.id);
         this.$axios
           .post(
             "travel_auth_request/" + this.editedItem.id,
             params
           )
           .then(response => {
-            console.log(response.data)
             this.retrieve();
           });
         this.dialog = false;
@@ -663,7 +663,6 @@ export default {
       this.differenceDates();
     },
     summary(item){
-      console.log(this.dates[0], this.dates[1])
       this.$refs.summary.show(this.dates[0], this.dates[1], item)
     }
   }

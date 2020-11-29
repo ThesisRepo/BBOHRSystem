@@ -112,7 +112,7 @@ export default {
         this.$axios
           .post("petty_cash_request", parameter)
           .then(res => {
-            console.log("Successfully Added", res.data);
+            // console.log("Successfully Added", res.data);
             this.$parent.$parent.$parent.$parent.$parent.retrieve();
           });
         this.dialog = false;

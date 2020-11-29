@@ -167,17 +167,6 @@ export default {
       this.selectedFile = e.target.files[0];
       this.file_uri = URL.createObjectURL(e.target.files[0]);
     },
-    // onButtonClick() {
-    //     this.isSelecting = false;
-    //     window.addEventListener(
-    //         "focus",
-    //         () => {
-    //             this.isSelecting = false;
-    //         },
-    //         { once: true }
-    //     );
-    //     this.$refs.uploader.click();
-    // },
     createTravel() {
       if (
         this.destination !== null &&
@@ -185,7 +174,6 @@ export default {
         this.end_date !== null &&
         this.emergency_contact !== null &&
         this.employee_to_cover !== null
-        // this.img !== null
       ) {
         let obj = this;
         const config = {
@@ -203,6 +191,7 @@ export default {
         this.$axios
           .post("travel_auth_request", formData, config)
           .then(res => {
+            console.log(res.data)
             this.$parent.$parent.$parent.$parent.$parent.retrieve();
           });
         this.dialog = false;
@@ -222,24 +211,18 @@ export default {
     },
     getCoDepartment(){
       this.$axios.get("departments/employees").then (response => {
-        // if(response.data > 0){
           response.data.forEach(element => {
-            console.log('Budget', element)
             this.coDepartment.push(element)
           })
-        // }else{
-        //   response.data = nulll
-        //   console.log('wala')
-        // }
       })
     },
     removeData() {
-      (this.destination = null),
-        (this.employee_to_cover = null),
-        (this.start_date = null),
-        (this.end_date = null),
-        (this.emergency_contact = null),
-        (this.prp_assigned_id = null);
+      this.destination = null,
+        this.employee_to_cover = null,
+        this.start_date = null,
+        this.end_date = null,
+        this.emergency_contact = null,
+        this.prp_assigned_id = null;
         this.selectedFile = null
       this.changeDate();
     }

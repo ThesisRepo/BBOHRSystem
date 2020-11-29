@@ -48,11 +48,27 @@
     <v-spacer></v-spacer>
     <br>
     <br>
-    <AddEvent></AddEvent>
-    <CalendarAdd></CalendarAdd>
+    <!-- <AddEvent></AddEvent>
+    <CalendarAdd></CalendarAdd> -->
+    <div class="text-right">
+      <v-btn color="light blue darken-2" rounded outlined @click="eventType()">
+        <v-icon>mdi-plus</v-icon>Event Type
+      </v-btn>&nbsp;&nbsp;&nbsp;
+      <v-btn color="light blue darken-2" rounded outlined @click="eventAdd()">
+        <v-icon>mdi-plus</v-icon>Add Event
+      </v-btn>
+    </div>
+
+    <AddEvent
+    ref="addType"
+    ></AddEvent>
+    <CalendarAdd
+    ref="addEvent"
+    ></CalendarAdd>
+
     <v-row class="fill-height">
       <v-col>
-        <v-sheet height="45">
+        <v-sheet height="64">
           <v-toolbar flat>
             <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">Today</v-btn>
             <v-btn fab text small color="grey darken-2" @click="prev">
@@ -166,7 +182,7 @@
                 ></v-textarea>
               </v-col>
               <v-col cols="12" sm="6">
-                <v-text-field label="Start Date" type="datetime-local" v-model="editedItem.start_date" @change="test()" color="primary"></v-text-field>
+                <v-text-field label="Start Date" type="datetime-local" v-model="editedItem.start_date" color="primary"></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
                 <v-text-field label="End Date" type="datetime-local" v-model="editedItem.end_date" color="primary"></v-text-field>
@@ -187,6 +203,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <Loading v-if="loading"></Loading>
   </v-app>
 </template>
 <script>
@@ -194,13 +211,15 @@ import DashBoardtable from "./Dashboard_table";
 import CalendarAdd from "./modals/addCalendar.vue";
 import AddEvent from "./modals/add_event_title.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
+import Loading from "./Loading.vue";
 import moment from "moment";
 export default {
   components: {
     DashBoardtable,
     CalendarAdd,
     ConfirmationDel,
-    AddEvent
+    AddEvent,
+    Loading
   },
   data: () => ({
     user_type: localStorage.getItem("user_type"),
@@ -230,8 +249,9 @@ export default {
       start_date: null,
       end_date: null,
       checkbox: false,
-      event_type: null
+      event_type: null,
     },
+    loading: false
   }),
   mounted() {
     this.$refs.calendar.checkChange();
@@ -241,8 +261,11 @@ export default {
     this.retrieve();
   },
   methods: {
-    test(){
-      console.log(this.editedItem.start_date)
+    eventAdd(){
+      this.$refs.addEvent.show()
+    },
+    eventType(){
+      this.$refs.addType.show()
     },
     getNoApprove() {
       this.$axios
@@ -252,9 +275,11 @@ export default {
         });
     },
     getNoPending() {
+      this.loading = true
       this.$axios
         .get("user_info/pending_requests/count/" + this.user_id)
         .then(response => {
+          this.loading = false
           this.pending = response.data;
         });
     },
@@ -293,7 +318,6 @@ export default {
     },
     updateRange() {
       const events = [];
-      console.log("asdfas");
       for (let i = 0; i < this.events.length; i++) {
         events.push({
           name: this.events[i].title,
@@ -302,7 +326,7 @@ export default {
           end: this.events[i].end_date,
           color: this.events[i].event_type.color,
           event_type: this.events[i].event_type.event_name,
-          checkbox: this.events[i].is_private,
+          checkbox: this.events[i].is_public,
           timed: this.events[i].timed
         });
       }
@@ -312,20 +336,24 @@ export default {
       return Math.floor((b - a + 1) * Math.random()) + a;
     },
     getEventType() {
+      this.loading = true
       this.$axios
         .get("user_info/event_types/" + this.user_id)
         .then(response => {
+          this.loading = false
           response.data.event_types.forEach(element => {
+            console.log('here', element)
             this.event_types.push(element)  
           });
         });
     },
     retrieve() {
+      this.loading = true
       let parameter = {
         user_id: this.user_id
       };
       this.$axios.get("events/"+  this.user_id).then(response => {
-        console.log('retireve', response.data)
+        this.loading = false
         this.events = []
         response.data.forEach(element => {
           var temp = {
@@ -336,29 +364,28 @@ export default {
             end: element.end_date,
             color: element.event_type.color,
             event_type: element.event_type.event_name,
-            checkbox: element.is_private,
+            checkbox: element.is_public,
             timed: true
           };
           this.events.push(temp)
-          console.log('hahah', this.events)
         });
       });
     },
     deleteItem(selectedEvent) {
-      console.log('item', selectedEvent)
       this.id = selectedEvent.id;
       this.$refs.confirmDel.show(selectedEvent)
     },
     confirmDel() {
+      this.loading = true
       this.$axios
         .delete("events/" + this.id)
         .then(response => {
+          this.loading = false
           this.retrieve();
           this.selectedOpen = false
         });
     },    
     editItem(selectedEvent) {
-      console.log('editItem', selectedEvent)
       this.editedItem.id = selectedEvent.id;
       this.editedIndex = this.events.indexOf(selectedEvent);
       this.editedItem.content = selectedEvent.content;
@@ -374,23 +401,24 @@ export default {
       })
     },
     updateCalendar(){
+      this.loading = true
       let params = {
           id: this.editedItem.id,
           user_id: this.user_id,
           content: this.editedItem.content,
-          is_private: this.editedItem.checkbox,
+          is_public: this.editedItem.checkbox,
           start_date: this.editedItem.start_date,
           end_date: this.editedItem.end_date,
           event_type_id: this.editedItem.event_type.id ? this.editedItem.event_type.id : this.editedItem.event_type,
           title: this.editedItem.title
         };
-        console.log('hahahahhah', params)
         this.$axios
           .post(
             "events/" + this.editedItem.id,
             params
           )
           .then(response => {
+            this.loading = false
             this.retrieve();
           });
         this.dialog = false;

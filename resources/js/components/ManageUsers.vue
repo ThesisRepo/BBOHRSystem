@@ -428,7 +428,6 @@
                                     v-model="editItem.selectPrp"
                                     @keyup="validate('prp_assign')"
                                     prepend-icon="mdi-account"
-                                    @change="getPrp()"
                                     required
                                 ></v-select>
                             </v-col>
@@ -772,13 +771,11 @@ export default {
     },
     methods: {
         add(data) {
-            console.log("data", data);
             this.user.push(data);
         },
         retrieve() {
             this.$axios.get("hr/manage/user").then(response => {
                 this.user = response.data;
-                console.log("user", this.user);
             });
         },
         next() {
@@ -922,7 +919,6 @@ export default {
                     this.errorMessage8 = null;
                 }
             } else if (input === "password") {
-                console.log("password");
                 this.errorMessage9 = null;
                 this.errorMessage10 = null;
                 if (this.password.length < 8) {
@@ -1054,7 +1050,6 @@ export default {
             this.dialogBusiness = true;
         },
         editedItem(item) {
-            console.log("lbolbol", item);
             this.editItem.id = item.id;
             this.editItem.address = item.user_information.address;
             this.editItem.civil_status = parseInt(
@@ -1088,13 +1083,6 @@ export default {
             this.editItem.birthday = item.user_information.birthday;
             this.editItem.company_number = item.user_information.company_number;
             this.dialogPersonal = true;
-            // this.dialogBusiness = true;
-            // this.dialogOthers = true;
-
-            console.log("asfd", this.editItem.company_position);
-        },
-        getPrp() {
-            console.log(this.editItem.selectPrp);
         },
 
         getCompanyStatus() {
@@ -1151,12 +1139,10 @@ export default {
                 birthday: this.editItem.birthday,
                 company_number: this.editItem.company_number
             };
-            console.log("params ako", this.params);
             this.$axios
                 .post("hr/manage/user/" + this.editItem.id, params)
                 .then(response => {
                     this.retrieve();
-                    console.log("retrieve me", response.data);
                 });
             this.dialogPersonal = false;
             this.dialogBusiness = false;
@@ -1176,13 +1162,11 @@ export default {
         },
         getAllPrp() {
             this.$axios.get("prp/").then(response => {
-                console.log(response.data);
                 this.prp = response.data;
             });
         },
         getAllFinance() {
             this.$axios.get("finance").then(response => {
-                console.log(response.data);
                 this.finance = response.data;
             });
         },

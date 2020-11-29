@@ -17,7 +17,7 @@
     </v-toolbar>
 
     <!-- Feedback -->
-    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" :search="search" loading-text="Loading... Please wait" class="elevation-3">
+    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat v-if="(user_type.includes('hr mngr') || user_type.includes('general mngr'))">
           <v-col class="mt-8">
@@ -101,7 +101,7 @@
 
     <!-- Pending Requests -->
     <v-data-table v-if="employees" :headers="headersEmp" :items="prpPending" 
-      :search="search" loading loading-text="Loading... Please wait" class="elevation-3">
+      :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-text-field
@@ -326,7 +326,7 @@ export default {
     prp_assigned_id: localStorage.getItem("assigned_prp_id"),
     employees: false,
     requests: true,
-    feedback: false,
+    feedback: false,  
     dialog: false,
     error: false,
     error1: false,
@@ -447,19 +447,15 @@ export default {
         .get("leave_request/" + this.user_id)
         .then(response => {
           this.request = response.data;
-          this.loading =  true
-          console.log('sgwesfsdfsdf', response.data)
         })
         .catch(e => {
           console.log(e);
         });
     },
     retrievePendingPrp() {
-      this.loading = true
       this.$axios
         .get("prp/leave_request/pending/" + this.user_id)
         .then(response => {
-          this.loading = false
           this.prpPending = response.data;
         })
         .catch(e => {
@@ -554,7 +550,6 @@ export default {
       this.$axios
         .get("user_info/" + this.user_id)
         .then(response => {
-          console.log('hahah', response.data)
           if(response.data.user_information === null){
             this.informationCheck = null
           }else{
@@ -563,8 +558,6 @@ export default {
         })
     },
     messagePop(){
-      // this.checkUser()
-      console.log(this.prp_assigned_id, this.informationCheck)
       if(this.prp_assigned_id === 'No PRP assign' && this.informationCheck === null){
         this.messageCheck = 'combine'
         this.$refs.reminder.show()
@@ -584,15 +577,12 @@ export default {
       }
     },
     disapproveModal(item) {
-      console.log('hahah', item)
       this.approveThis = 'disapproved'
       this.id = item.id;
       this.$refs.confirms.show(item)
     },
     approve(item) {
-      console.log('item here', item)
       if(item.id.approver_role_id === 5) {
-        console.log('asdf')
         let parameter = {
           user_id: this.user_id,
           status_id: 2
@@ -607,7 +597,6 @@ export default {
             this.getAllFeedback();
           });
       }else{
-        console.log('asgasfadfsdfdf')
         let parameter = {
           user_id: this.user_id,
           status_id: 1
@@ -645,7 +634,6 @@ export default {
         )
         .then(response => {
           this.feedbacks = response.data.feedbacked_leave_requests;
-          console.log(this.feedbacks)
         });
     },
     summary(item){
