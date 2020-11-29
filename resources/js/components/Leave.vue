@@ -82,7 +82,6 @@
             label="Search"
           ></v-text-field>
         </v-toolbar>
-        \
         <v-toolbar class="mb-2" color="blue darken-1" dark flat v-if="((user_type.includes('prp emp') || user_type.includes('finance mngr')) && (!user_type.includes('hr mngr') && !user_type.includes('general mngr')))">
           <v-text-field
             v-model="search"
@@ -136,13 +135,22 @@
       <v-card class="mt-5">
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
             <v-card-title>
-                <span class="headline-bold ">LEAVE REQUEST FORM</span>
+                <span class="headline-bold">LEAVE REQUEST FORM</span>
             </v-card-title>
         </v-toolbar>
         <v-card-text>
           <v-container>
             <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
-            <v-row>
+            <v-tabs
+            dark
+            background-color="primary"
+            fixed-tabs
+            >
+                <v-tabs-slider></v-tabs-slider>
+                <v-tab @click="half = false, whole = true">Whole Day</v-tab>
+                <v-tab @click="whole = false, half = true">Half Day</v-tab>
+            </v-tabs>
+            <v-row v-if="whole">
               <v-col cols="12" sm="6" md="6">
                 <v-select
                   :items="leaveType"
@@ -225,6 +233,48 @@
                 </v-menu>
               </v-col>
             </v-row>
+            <v-row v-if="half">
+              <v-col cols="12">
+                <v-select
+                  :items="leaveType"
+                  label="Reason*"
+                  v-model="editedItem.selectedLeaveType"
+                  item-text="name"
+                  item-value="value"
+                  required
+                ></v-select>
+              </v-col>
+              <v-col cols="4">
+                <v-select
+                  :items="halfSched"
+                  label="Start Time*"
+                  v-model="editedItem.start_time"
+                  item-text="name"
+                  item-value="value"
+                  @change="timeClick()"
+                  required
+                ></v-select>
+              </v-col>
+              <v-col cols="4">
+                <v-select
+                  :items="halfSchedCorrespond"
+                  disabled
+                  label="End Time*"
+                  v-model="editedItem.end_time"
+                  item-text="name"
+                  item-value="value"
+                  required
+                ></v-select>
+              </v-col>
+              <v-col cols="4">
+                <v-text-field
+                  label="Total Day/s of Leave*"
+                  type="text"
+                  v-model="half_days_with_text"
+                  disabled
+                ></v-text-field>
+              </v-col>
+            </v-row>
           </v-container>
         </v-card-text>
         <v-card-actions>
@@ -283,7 +333,8 @@
 
         </v-toolbar>
       </template>
-      <template v-slot:item.status.status_name="{ item }"> 
+      <template v-slot:item.number_of_days="{ item }">{{item.number_of_days === 0 ? 'Half Day' : item.number_of_days + ' ' + 'Day/s' }}</template>
+      <template v-slot:item.status.status_name="{ item }">
         <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
       <template v-slot:item.actions="{ item }">
@@ -377,12 +428,22 @@ export default {
       selectedLeaveType: null,
       total_days: null,
       start_date: null,
-      end_date: null
+      end_date: null,
+      start_time: null,
+      end_time: null
     },
     items: [
       { title: 'Approved Requests' },
       { title: 'Disapproved Requests' }
     ],
+    halfSched: [
+        {value: 1, name: "10am"}, 
+        {value: 2, name: "2pm"}
+      ],
+      halfSchedCorrespond: [
+        {value: 1, name: "2pm"}, 
+        {value: 2, name: "7pm"}
+      ],
     dates: [new Date().toISOString().substr(0, 10), ],
     leaveType: [
       { value: 1, name: "Sick Leave" },
@@ -419,6 +480,14 @@ export default {
     }
   },
   methods: {
+    timeClick(){
+      if(this.start_time === 1){
+        this.end_time = this.halfSchedCorrespond[0]
+      }else{
+        this.end_time = this.halfSchedCorrespond[1]
+      }
+      console.log(this.end_time)
+    },
     changeDate() {
       if (
         this.editedItem.start_date !== null &&
@@ -463,14 +532,27 @@ export default {
         });
     },
     editItem(item) {
-      this.editedItem.id = item.id;
-      this.editedIndex = this.request.indexOf(item);
-      this.editedItem.selectedLeaveType = item.leave_type_id;
-      this.editedItem.total_days = item.number_of_days;
-      this.total_days_with_text = item.number_of_days + " days of leave";
-      this.editedItem.start_date = item.start_date;
-      this.editedItem.end_date = item.end_date;
-      this.dialog = true;
+      if(this.whole === true){
+        this.editedItem.id = item.id;
+        this.editedIndex = this.request.indexOf(item);
+        this.editedItem.selectedLeaveType = item.leave_type_id;
+        this.editedItem.total_days = item.number_of_days;
+        this.total_days_with_text = item.number_of_days + " days of leave";
+        this.editedItem.start_date = item.start_date;
+        this.editedItem.end_date = item.end_date;
+        this.dialog = true;
+      }else{
+        this.editedItem.id = item.id;
+        this.editedIndex = this.request.indexOf(item);
+          this.start_time !== null &&
+          this.error1 === false
+        this.editedItem.selectedLeaveType = item.leave_type_id;
+        this.editedItem.total_days = item.number_of_days;
+        this.total_days_with_text = item.number_of_days + " days of leave";
+        this.editedItem.start_date = item.start_date;
+        this.editedItem.end_date = item.end_date;
+        this.dialog = true;
+      }
     },
     save() {
       if (

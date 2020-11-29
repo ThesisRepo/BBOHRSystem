@@ -334,6 +334,7 @@ export default {
     },
   },
   mounted() {
+    this.getShift()
     if ((this.user_type.includes("hr mngr") || this.user_type.includes("prp emp") || this.user_type.includes("general mngr")) && !(this.user_type.includes("finance mngr"))) {
       this.retrieveShift();
       this.getAllFeedback();
@@ -375,7 +376,7 @@ export default {
     editItem(item) {
       this.editedItem.id = item.id;
       this.editedIndex = this.shifts.indexOf(item);
-      this.editedItem.shift_time = item.shift_time_id;
+      this.editedItem.shift_time = item.shift_time;
       this.editedItem.shift_date = item.shift_date;
       this.editedItem.reason = item.reason;
       this.dialog = true;
@@ -391,18 +392,20 @@ export default {
         this.editedItem.reason !== ""
       ) {
         let params = {
-          user_id: this.user_id,
-          shift_time_id: this.editedItem.shift_time,
+          id: this.editedItem.id,
+          shift_time_id: this.editedItem.shift_time.id,
           shift_date: this.editedItem.shift_date,
           reason: this.editedItem.reason,
           prp_assigned_id: 1
         };
+        console.log(params)
         this.$axios
           .post(
             "shift_change_request/" + this.editedItem.id,
             params
           )
           .then(response => {
+            console.log(response.data)
             this.retrieve();
           });
         this.dialog = false;
@@ -429,6 +432,7 @@ export default {
     },
     getShift() {
       this.$axios.get("shift_time").then(response => {
+        console.log(response.data)
         this.sTime = response.data;
       });
     },
