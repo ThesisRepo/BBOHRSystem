@@ -23,8 +23,17 @@ trait CallForActionEmail {
   }      
 
   public function emailTemplate($data, $user) {
+    $baseDelay = json_encode(now());
+    $getDelay = json_decode(cache('jobs.' . UserAccRegister::class, $baseDelay));
+    $setDelay = Carbon::parse(
+        $getDelay
+    )->addSeconds(20);
+    // dd($setDelay );
+    cache([
+        'jobs.' . UserAccRegister::class => json_encode($setDelay)
+    ], 5);
     $job = new UserAccRegister($data, $user);
-    dispatch($job)->delay(Carbon::now()->addSeconds(50));
+    dispatch($job)->delay($setDelay);
   }
 
 }
