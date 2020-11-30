@@ -27,8 +27,7 @@ trait CallForActionEmail {
     $getDelay = json_decode(cache('jobs.' . UserAccRegister::class, $baseDelay));
     $setDelay = Carbon::parse(
         $getDelay
-    )->addSeconds(20);
-    // dd($setDelay );
+    )->addSeconds(5);
     cache([
         'jobs.' . UserAccRegister::class => json_encode($setDelay)
     ], 5);
