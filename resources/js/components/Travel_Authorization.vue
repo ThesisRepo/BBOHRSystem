@@ -144,13 +144,6 @@
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
-                <v-text-field
-                  v-model="editedItem.emergency_contact"
-                  label="Emergency Contact"
-                  prepend-icon="mdi-account-outline"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="6">
                 <span v-if="error2" style="color: red; font-style: italic">
                   Start date must not be higher than End
                   date!
@@ -213,7 +206,7 @@
                   ></v-date-picker>
                 </v-menu>
               </v-col>
-              <v-col cols="12">
+              <v-col cols="6">
                 <v-select
                   :items="coDepartment"
                   :item-text="coDepartment => coDepartment.first_name + ' ' + coDepartment.last_name"
@@ -223,6 +216,13 @@
                   prepend-icon=" mdi-account-outline"
                   required
                 ></v-select>
+              </v-col>
+              <v-col cols="6">
+                <v-text-field
+                  v-model="editedItem.emergency_contact"
+                  label="Emergency Contact"
+                  prepend-icon="mdi-account-outline"
+                ></v-text-field>
               </v-col>
             </v-row>
           </v-container>
@@ -342,6 +342,7 @@ export default {
     fileDialog: false,
     files: "",
     uploadPercentage: 0,
+    contact_number: null,
     disable: false,
     end_date: null,
     error2: false,
@@ -356,6 +357,7 @@ export default {
       { text: "END DATE", value: "end_date" },
       { text: "EMERGENCY CONTACT", value: "emergency_contact" },
       { text: "EMPLOYEE TO COVER", value: "employee_to_cover.email" },
+      { text: "EMPLOYEE TO COVER'S NUMBER", value: "contact_number" },
       { text: "DOCUMENTS", value: "file_uri", sortable: false },
       { text: "APPROVER", value: "approver_role.role_name" },
       { text: "STATUS", value: "status.status_name" },
@@ -368,6 +370,7 @@ export default {
       { text: "END DATE", value: "end_date" },
       { text: "EMERGENCY CONTACT", value: "emergency_contact" },
       { text: "EMPLOYEE TO COVER", value: "employee_to_cover.email" },
+      { text: "EMPLOYEE TO COVER'S NUMBER", value: "contact_number" },
       { text: "DOCUMENTS", value: "file_uri", sortable: false },
       { text: "APPROVER", value: "approver_role.role_name" },
       { text: "STATUS", value: "status.status_name" },
@@ -380,6 +383,7 @@ export default {
       { text: "END DATE", value: "end_date" },
       { text: "EMERGENCY CONTACT", value: "emergency_contact" },
       { text: "EMPLOYEE TO COVER", value: "employee_to_cover.email" },
+      { text: "EMPLOYEE TO COVER'S NUMBER", value: "contact_number" },
       { text: "DOCUMENTS", value: "file_uri", sortable: false },
       { text: "APPROVER", value: "approver_role.role_name" },
       { text: "STATUS", value: "status.status_name" }
@@ -401,6 +405,7 @@ export default {
       end_date: null,
       emergency_contact: null,
       employee_cover: null,
+      contact_number: null,
       prp_assigned_id: null,
       details: null
     },
@@ -516,6 +521,7 @@ export default {
       this.editedItem.end_date = item.end_date;
       this.editedItem.emergency_contact = item.emergency_contact;
       // this.editedItem.file_uri = item.file_uri;
+      this.editedItem.contact_number = item.contact_number;
       this.editedItem.employee_to_cover = item.employee_to_cover;
       this.dialog = true;
     },
@@ -526,6 +532,8 @@ export default {
         this.editedItem.end_date !== null &&
         this.editedItem.emergency_contact !== null &&
         this.editedItem.employee_to_cover !== null &&
+        this.editedItem.contact_number !== "" &&
+        this.editedItem.contact_number !== null &&
         this.editedItem.emergency_contact !== "" &&
         this.editedItem.employee_to_cover !== "" &&
         this.editedItem.start_date !== "" &&
@@ -538,6 +546,7 @@ export default {
           end_date: this.editedItem.end_date,
           emergency_contact: this.editedItem.emergency_contact,
           employee_to_cover: this.editedItem.employee_to_cover,
+          contact_number: this.editedItem.contact_number,
           file_uri: "test"
         };
         this.$axios

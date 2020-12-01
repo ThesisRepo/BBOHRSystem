@@ -51,7 +51,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red" dark @click="dialog = false">Cancel</v-btn>
-          <v-btn color="success" @click="save()">Save</v-btn>
+          <v-btn color="success" @click="save()">Add</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -130,6 +130,7 @@ export default {
       this.content = '',
       this.checkbox = '',
       this.event_type = ''
+      this.getEventType()
     },
     save(){
       if(this.user_type === 'hr mngr') {
@@ -187,6 +188,7 @@ export default {
       }
     },
     getEventType(){
+      this.event_types = []
       this.$axios.get("user_info/event_types/" + this.user_id).then(response => {
         response.data.event_types.forEach(element => {
           this.event_types.push(element)
