@@ -382,6 +382,8 @@ export default {
     error: false,
     error1: false,
     informationCheck: null,
+    whole: true,
+    half: false,
     error2: false,
     disable: false,
     end_date: null,

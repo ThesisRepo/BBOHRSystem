@@ -103,14 +103,14 @@
             </v-menu>
           </v-toolbar>
         </v-sheet>
-        <v-sheet height="550">
+        <v-sheet height="600">
           <v-calendar
             ref="calendar"
             v-model="focus"
             color="primary"
             :events="events"
-            :event-color="getEventColor"
             :type="type"
+            :event-color="getEventColor"
             @click:event="showEvent"
             @click:more="viewDay"
             @click:date="viewDay"
@@ -127,7 +127,7 @@
                 <v-btn icon>
                   <v-icon @click="editItem(selectedEvent)">mdi-pencil</v-icon>
                 </v-btn>
-                <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+                <v-toolbar-title v-html="selectedEvent.name + ' ' + '(' + selectedEvent.event_type + ')'"></v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-btn icon>
                   <v-icon @click="deleteItem(selectedEvent)">mdi-delete</v-icon>
@@ -138,9 +138,9 @@
                   @onConfirm="confirmDel($event)"
                 ></ConfirmationDel>
 
-                <v-btn icon>
+                <!-- <v-btn icon>
                   <v-icon>mdi-dots-vertical</v-icon>
-                </v-btn>
+                </v-btn> -->
               </v-toolbar>
               <v-card-text>
                 <span v-html="selectedEvent.details"></span>
@@ -298,6 +298,7 @@ export default {
       this.$refs.calendar.prev();
     },
     next() {
+      // console.log(this.$refs.calendar);
       this.$refs.calendar.next();
     },
     showEvent({ nativeEvent, event }) {
@@ -320,7 +321,7 @@ export default {
       const events = [];
       for (let i = 0; i < this.events.length; i++) {
         events.push({
-          name: this.events[i].title,
+          name: this.events[i].name,
           content: this.events[i].content,
           start: this.events[i].start_date,
           end: this.events[i].end_date,
@@ -336,13 +337,10 @@ export default {
       return Math.floor((b - a + 1) * Math.random()) + a;
     },
     getEventType() {
-      this.loading = true
       this.$axios
         .get("user_info/event_types/" + this.user_id)
         .then(response => {
-          this.loading = false
           response.data.event_types.forEach(element => {
-            console.log('here', element)
             this.event_types.push(element)  
           });
         });
@@ -420,8 +418,8 @@ export default {
           .then(response => {
             this.loading = false
             this.retrieve();
+            this.dialog = false;
           });
-        this.dialog = false;
       }
   }
 };

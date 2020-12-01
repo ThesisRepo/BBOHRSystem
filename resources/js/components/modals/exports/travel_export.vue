@@ -74,6 +74,7 @@ export default {
       { text: "END DATE", value: "end_date" },
       { text: "EMERGENCY CONTACT", value: "emergency_contact" },
       { text: "EMPLOYEE TO COVER", value: "employee_to_cover" },
+      { text: "EMPLOYEE TO COVER'S NUMBER", value: "contact_number" },
       { text: "DOCUMENT", value: "file_uri" },
       { text: "STATUS", value: "status.status_name" }
     ]
