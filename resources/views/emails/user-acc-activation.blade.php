@@ -3,7 +3,8 @@
 
 The body of your message.
 data
-@component('mail::button', ['url' => 'http://localhost:8000/user/activation/'.$user['token']])
+{{$user['token']}}
+@component('mail::button', ['url' => config('app.url') . '/user/activation/'.$user['token']])
 Login and Verify Email
 @endcomponent
 
