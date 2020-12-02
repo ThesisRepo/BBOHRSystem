@@ -21,7 +21,7 @@ class UserInformation extends Model
         'profile_url',
         'date_hired',
         'contact_number',
-        'civil_status',
+        'civil_status_id',
         'company_status_id',
         'regularization_date',
         'birthday',
@@ -80,5 +80,8 @@ class UserInformation extends Model
     public function company_status() {
         return $this->belongsTo(CompanyStatus::class);
     }
-
+    
+    public function civil_status() {
+        return $this->belongsTo(CivilStatus::class);
+    }
 }

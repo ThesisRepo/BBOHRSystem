@@ -82,7 +82,6 @@
             label="Search"
           ></v-text-field>
         </v-toolbar>
-        
         <v-toolbar class="mb-2" color="blue darken-1" dark flat v-if="((user_type.includes('prp emp') || user_type.includes('finance mngr')) && (!user_type.includes('hr mngr') && !user_type.includes('general mngr')))">
           <v-text-field
             v-model="search"
@@ -118,8 +117,8 @@
       <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === '"approved"' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon small class="mr-2" @click="approveModal(item)">mdi-check-decagram</v-icon>
-        <v-icon small @click="disapproveModal(item)">mdi-close-circle</v-icon>
+        <v-icon medium class="mr-2" @click="approveModal(item)" style="color:green">mdi-check-decagram</v-icon>
+        <v-icon medium @click="disapproveModal(item)" style="color:red">mdi-close-circle</v-icon>
       </template>
     </v-data-table>
 
@@ -136,13 +135,22 @@
       <v-card class="mt-5">
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
             <v-card-title>
-                <span class="headline-bold ">LEAVE REQUEST FORM</span>
+                <span class="headline-bold">LEAVE REQUEST FORM</span>
             </v-card-title>
         </v-toolbar>
         <v-card-text>
           <v-container>
             <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
-            <v-row>
+            <v-tabs
+            dark
+            background-color="primary"
+            fixed-tabs
+            >
+                <v-tabs-slider></v-tabs-slider>
+                <v-tab @click="half = false, whole = true">Whole Day</v-tab>
+                <v-tab @click="whole = false, half = true">Half Day</v-tab>
+            </v-tabs>
+            <v-row v-if="whole">
               <v-col cols="12" sm="6" md="6">
                 <v-select
                   :items="leaveType"
@@ -225,6 +233,48 @@
                 </v-menu>
               </v-col>
             </v-row>
+            <v-row v-if="half">
+              <v-col cols="12">
+                <v-select
+                  :items="leaveType"
+                  label="Reason*"
+                  v-model="editedItem.selectedLeaveType"
+                  item-text="name"
+                  item-value="value"
+                  required
+                ></v-select>
+              </v-col>
+              <v-col cols="4">
+                <v-select
+                  :items="halfSched"
+                  label="Start Time*"
+                  v-model="editedItem.start_time"
+                  item-text="name"
+                  item-value="value"
+                  @change="timeClick()"
+                  required
+                ></v-select>
+              </v-col>
+              <v-col cols="4">
+                <v-select
+                  :items="halfSchedCorrespond"
+                  disabled
+                  label="End Time*"
+                  v-model="editedItem.end_time"
+                  item-text="name"
+                  item-value="value"
+                  required
+                ></v-select>
+              </v-col>
+              <v-col cols="4">
+                <v-text-field
+                  label="Total Day/s of Leave*"
+                  type="text"
+                  v-model="half_days_with_text"
+                  disabled
+                ></v-text-field>
+              </v-col>
+            </v-row>
           </v-container>
         </v-card-text>
         <v-card-actions>
@@ -261,11 +311,11 @@
             label="Search"
           ></v-text-field>
 
-          <createLeave v-if="prp_assigned_id !== 'No Prp assign'"></createLeave>
+          <createLeave v-if="prp_assigned_id !== 'No PRP assign' && informationCheck !== null"></createLeave>
           
           <v-btn
           style="margin-left: 5%"
-          v-if="prp_assigned_id === 'No Prp assign'"
+          v-if="prp_assigned_id === 'No PRP assign' || informationCheck === null"
           color="light blue darken-2"
           rounded
           outlined
@@ -278,17 +328,25 @@
 
           <Reminder
           ref="reminder"
-          :message="'Please set your PRP Assign'"
+          :message="messageCheck === 'prp' ? 'Please set your PRP Assign' : messageCheck === 'user' ? 'Please set your personal information' : messageCheck === 'combine' ? 'Please set your PRP assign and your Personal Information' : ''"
           ></Reminder>
 
         </v-toolbar>
       </template>
-      <template v-slot:item.status.status_name="{ item }"> 
+      <template v-slot:item.number_of_days="{ item }">{{item.number_of_days === 0 ? 'Half Day' : item.number_of_days + ' ' + 'Day/s' }}</template>
+      <template v-slot:item.status.status_name="{ item }">
         <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-        <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+        <v-icon medium disabled class="mr-2" v-if="((user_type.includes('emp') && user_type.includes('prp emp') && user_type.includes('hr mngr')) && item.status.status_name === 'approved')">mdi-pencil</v-icon>
+        <v-icon medium disabled class="mr-2" v-else-if="((user_type.includes('emp') && user_type.includes('prp emp') && !(user_type.includes('hr mngr'))) && item.approver_role.role_name === 'general mngr')">mdi-pencil</v-icon>
+        <v-icon medium disabled class="mr-2" v-else-if="((user_type.includes('emp') && !user_type.includes('prp emp') && !user_type.includes('hr mngr')) && ((item.approver_role.role_name === 'hr mngr') || item.approver_role.role_name === 'general mngr'))">mdi-pencil</v-icon>
+        <v-icon medium class="mr-2" @click="editItem(item)" style="color:blue" v-else>mdi-pencil</v-icon>
+        
+        <v-icon medium disabled v-if="((user_type.includes('emp') && user_type.includes('prp emp') && user_type.includes('hr mngr')) && item.status.status_name === 'approved')">mdi-delete</v-icon>  
+        <v-icon medium disabled v-else-if="((user_type.includes('emp') && user_type.includes('prp emp') && !(user_type.includes('hr mngr'))) && item.approver_role.role_name === 'general mngr')">mdi-delete</v-icon>  
+        <v-icon medium disabled v-else-if="((user_type.includes('emp') && !user_type.includes('prp emp') && !user_type.includes('hr mngr')) && ((item.approver_role.role_name === 'hr mngr') || item.approver_role.role_name === 'general mngr'))">mdi-delete</v-icon>  
+        <v-icon medium @click="deleteItem(item)" style="color:red" v-else>mdi-delete</v-icon>
       </template>
     </v-data-table>
 
@@ -319,10 +377,13 @@ export default {
     prp_assigned_id: localStorage.getItem("assigned_prp_id"),
     employees: false,
     requests: true,
-    feedback: false,
+    feedback: false,  
     dialog: false,
     error: false,
     error1: false,
+    informationCheck: null,
+    whole: true,
+    half: false,
     error2: false,
     disable: false,
     end_date: null,
@@ -369,12 +430,22 @@ export default {
       selectedLeaveType: null,
       total_days: null,
       start_date: null,
-      end_date: null
+      end_date: null,
+      start_time: null,
+      end_time: null
     },
     items: [
       { title: 'Approved Requests' },
       { title: 'Disapproved Requests' }
     ],
+    halfSched: [
+        {value: 1, name: "10am"}, 
+        {value: 2, name: "2pm"}
+      ],
+      halfSchedCorrespond: [
+        {value: 1, name: "2pm"}, 
+        {value: 2, name: "7pm"}
+      ],
     dates: [new Date().toISOString().substr(0, 10), ],
     leaveType: [
       { value: 1, name: "Sick Leave" },
@@ -385,6 +456,7 @@ export default {
       { value: 6, name: "Maternity Leave" }
     ],
     approveThis: '',
+    messageCheck: '',
   }),
   components: {
     createLeave,
@@ -399,15 +471,25 @@ export default {
     },
   },
   mounted() {
-    if ( this.user_type.includes("hr mngr") || this.user_type.includes("prp emp") || this.user_type.includes("general mngr")) {
+    if ((this.user_type.includes("hr mngr") || this.user_type.includes("prp emp") || this.user_type.includes("general mngr")) && !(this.user_type.includes("finance mngr"))) {
       this.retrievePendingPrp();
       this.retrieve();
       this.getAllFeedback();
+      this.checkUser()
     } else {
       this.retrieve();
+      this.checkUser()
     }
   },
   methods: {
+    timeClick(){
+      if(this.start_time === 1){
+        this.end_time = this.halfSchedCorrespond[0]
+      }else{
+        this.end_time = this.halfSchedCorrespond[1]
+      }
+      console.log(this.end_time)
+    },
     changeDate() {
       if (
         this.editedItem.start_date !== null &&
@@ -436,7 +518,6 @@ export default {
         .get("leave_request/" + this.user_id)
         .then(response => {
           this.request = response.data;
-          console.log(response.data)
         })
         .catch(e => {
           console.log(e);
@@ -453,14 +534,27 @@ export default {
         });
     },
     editItem(item) {
-      this.editedItem.id = item.id;
-      this.editedIndex = this.request.indexOf(item);
-      this.editedItem.selectedLeaveType = item.leave_type_id;
-      this.editedItem.total_days = item.number_of_days;
-      this.total_days_with_text = item.number_of_days + " days of leave";
-      this.editedItem.start_date = item.start_date;
-      this.editedItem.end_date = item.end_date;
-      this.dialog = true;
+      if(this.whole === true){
+        this.editedItem.id = item.id;
+        this.editedIndex = this.request.indexOf(item);
+        this.editedItem.selectedLeaveType = item.leave_type_id;
+        this.editedItem.total_days = item.number_of_days;
+        this.total_days_with_text = item.number_of_days + " days of leave";
+        this.editedItem.start_date = item.start_date;
+        this.editedItem.end_date = item.end_date;
+        this.dialog = true;
+      }else{
+        this.editedItem.id = item.id;
+        this.editedIndex = this.request.indexOf(item);
+          this.start_time !== null &&
+          this.error1 === false
+        this.editedItem.selectedLeaveType = item.leave_type_id;
+        this.editedItem.total_days = item.number_of_days;
+        this.total_days_with_text = item.number_of_days + " days of leave";
+        this.editedItem.start_date = item.start_date;
+        this.editedItem.end_date = item.end_date;
+        this.dialog = true;
+      }
     },
     save() {
       if (
@@ -536,8 +630,28 @@ export default {
       this.id = item.id;
       this.$refs.confirms.show(item)
     },
+    checkUser(){
+      this.$axios
+        .get("user_info/" + this.user_id)
+        .then(response => {
+          if(response.data.user_information === null){
+            this.informationCheck = null
+          }else{
+            this.informationCheck = true
+          }
+        })
+    },
     messagePop(){
-      this.$refs.reminder.show()
+      if(this.prp_assigned_id === 'No PRP assign' && this.informationCheck === null){
+        this.messageCheck = 'combine'
+        this.$refs.reminder.show()
+      }else if(this.informationCheck === null){
+        this.messageCheck = 'user'
+        this.$refs.reminder.show()
+      }else {
+        this.messageCheck = 'prp'
+        this.$refs.reminder.show()
+      }
     },
     confirm(item){
       if(this.approveThis === 'approve'){
@@ -547,15 +661,12 @@ export default {
       }
     },
     disapproveModal(item) {
-      console.log('hahah', item)
       this.approveThis = 'disapproved'
       this.id = item.id;
       this.$refs.confirms.show(item)
     },
     approve(item) {
-      console.log('item here', item)
       if(item.id.approver_role_id === 5) {
-        console.log('asdf')
         let parameter = {
           user_id: this.user_id,
           status_id: 2
@@ -570,7 +681,6 @@ export default {
             this.getAllFeedback();
           });
       }else{
-        console.log('asgasfadfsdfdf')
         let parameter = {
           user_id: this.user_id,
           status_id: 1
@@ -608,7 +718,6 @@ export default {
         )
         .then(response => {
           this.feedbacks = response.data.feedbacked_leave_requests;
-          console.log(this.feedbacks)
         });
     },
     summary(item){

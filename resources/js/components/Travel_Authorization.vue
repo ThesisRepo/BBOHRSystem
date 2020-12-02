@@ -113,8 +113,8 @@
       <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon small class="mr-2" @click="approveModal(item)">mdi-check-decagram</v-icon>
-        <v-icon small @click="disapproveModal(item)">mdi-close-circle</v-icon>
+        <v-icon medium class="mr-2" @click="approveModal(item)" style="color:green">mdi-check-decagram</v-icon>
+        <v-icon medium @click="disapproveModal(item)" style="color:red">mdi-close-circle</v-icon>
       </template>
     </v-data-table>
 
@@ -141,13 +141,6 @@
                   v-model="editedItem.destination"
                   label="Destination"
                   prepend-icon=" mdi-home-modern"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="6">
-                <v-text-field
-                  v-model="editedItem.emergency_contact"
-                  label="Emergency Contact"
-                  prepend-icon="mdi-account-outline"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
@@ -213,7 +206,7 @@
                   ></v-date-picker>
                 </v-menu>
               </v-col>
-              <v-col cols="12">
+              <v-col cols="6">
                 <v-select
                   :items="coDepartment"
                   :item-text="coDepartment => coDepartment.first_name + ' ' + coDepartment.last_name"
@@ -223,6 +216,13 @@
                   prepend-icon=" mdi-account-outline"
                   required
                 ></v-select>
+              </v-col>
+              <v-col cols="6">
+                <v-text-field
+                  v-model="editedItem.emergency_contact"
+                  label="Emergency Contact"
+                  prepend-icon="mdi-account-outline"
+                ></v-text-field>
               </v-col>
             </v-row>
           </v-container>
@@ -273,10 +273,10 @@
             prepend-inner-icon="mdi-magnify"
             label="Search"
           ></v-text-field>
-          <createTravel v-if="prp_assigned_id !== 'No Prp assign'"></createTravel>
+          <createTravel v-if="prp_assigned_id !== 'No PRP assign' && informationCheck !== null"></createTravel>
           <v-btn
           style="margin-left: 5%"
-          v-if="prp_assigned_id === 'No Prp assign'"
+          v-if="prp_assigned_id === 'No PRP assign' || informationCheck === null"
           color="light blue darken-2"
           rounded
           outlined
@@ -288,8 +288,8 @@
         </v-btn>
 
         <Reminder
-        ref="reminder"
-        :message="'Please set your PRP Assign'"
+          ref="reminder"
+          :message="messageCheck === 'prp' ? 'Please set your PRP Assign' : messageCheck === 'user' ? 'Please set your personal information' : messageCheck === 'combine' ? 'Please set your PRP assign and your Personal Information' : ''"
         ></Reminder>
 
         </v-toolbar>
@@ -299,13 +299,21 @@
         <v-btn color="primary" @click="fileDialog = true; file_uri = item.file_uri">File</v-btn>
       </template>
       
+      <template v-slot:item.destination="{ item }"> {{convertData(item)}} </template>
       <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-        <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+        <v-icon medium disabled class="mr-2" v-if="((user_type.includes('emp') && user_type.includes('prp emp') && user_type.includes('hr mngr')) && item.status.status_name === 'approved')">mdi-pencil</v-icon>
+        <v-icon medium disabled class="mr-2" v-else-if="((user_type.includes('emp') && user_type.includes('prp emp') && !(user_type.includes('hr mngr'))) && item.approver_role.role_name === 'general mngr')">mdi-pencil</v-icon>
+        <v-icon medium disabled class="mr-2" v-else-if="((user_type.includes('emp') && !user_type.includes('prp emp') && !user_type.includes('hr mngr')) && ((item.approver_role.role_name === 'hr mngr') || item.approver_role.role_name === 'general mngr'))">mdi-pencil</v-icon>
+        <v-icon medium class="mr-2" @click="editItem(item)" style="color:blue" v-else>mdi-pencil</v-icon>
+        
+        <v-icon medium disabled v-if="((user_type.includes('emp') && user_type.includes('prp emp') && user_type.includes('hr mngr')) && item.status.status_name === 'approved')">mdi-delete</v-icon>  
+        <v-icon medium disabled v-else-if="((user_type.includes('emp') && user_type.includes('prp emp') && !(user_type.includes('hr mngr'))) && item.approver_role.role_name === 'general mngr')">mdi-delete</v-icon>  
+        <v-icon medium disabled v-else-if="((user_type.includes('emp') && !user_type.includes('prp emp') && !user_type.includes('hr mngr')) && ((item.approver_role.role_name === 'hr mngr') || item.approver_role.role_name === 'general mngr'))">mdi-delete</v-icon>  
+        <v-icon medium @click="deleteItem(item)" style="color:red" v-else>mdi-delete</v-icon>
       </template>
-    </v-data-table>
+    </v-data-table> 
     <SummaryTemplate
     ref="summary"
     ></SummaryTemplate>
@@ -334,10 +342,13 @@ export default {
     fileDialog: false,
     files: "",
     uploadPercentage: 0,
+    contact_number: null,
     disable: false,
     end_date: null,
     error2: false,
     search: '',
+    messageCheck: '',
+    informationCheck: null,
     deleteModal: false,
     dialogDelete: false,
     headers: [
@@ -345,7 +356,8 @@ export default {
       { text: "START DATE", value: "start_date" },
       { text: "END DATE", value: "end_date" },
       { text: "EMERGENCY CONTACT", value: "emergency_contact" },
-      { text: "EMPLOYEE TO COVER", value: "employee_to_cover" },
+      { text: "EMPLOYEE TO COVER", value: "employee_to_cover.email" },
+      { text: "EMPLOYEE TO COVER'S NUMBER", value: "contact_number" },
       { text: "DOCUMENTS", value: "file_uri", sortable: false },
       { text: "APPROVER", value: "approver_role.role_name" },
       { text: "STATUS", value: "status.status_name" },
@@ -357,7 +369,8 @@ export default {
       { text: "START DATE", value: "start_date" },
       { text: "END DATE", value: "end_date" },
       { text: "EMERGENCY CONTACT", value: "emergency_contact" },
-      { text: "EMPLOYEE TO COVER", value: "employee_to_cover" },
+      { text: "EMPLOYEE TO COVER", value: "employee_to_cover.email" },
+      { text: "EMPLOYEE TO COVER'S NUMBER", value: "contact_number" },
       { text: "DOCUMENTS", value: "file_uri", sortable: false },
       { text: "APPROVER", value: "approver_role.role_name" },
       { text: "STATUS", value: "status.status_name" },
@@ -369,7 +382,8 @@ export default {
       { text: "START DATE", value: "start_date" },
       { text: "END DATE", value: "end_date" },
       { text: "EMERGENCY CONTACT", value: "emergency_contact" },
-      { text: "EMPLOYEE TO COVER", value: "employee_to_cover" },
+      { text: "EMPLOYEE TO COVER", value: "employee_to_cover.email" },
+      { text: "EMPLOYEE TO COVER'S NUMBER", value: "contact_number" },
       { text: "DOCUMENTS", value: "file_uri", sortable: false },
       { text: "APPROVER", value: "approver_role.role_name" },
       { text: "STATUS", value: "status.status_name" }
@@ -391,6 +405,7 @@ export default {
       end_date: null,
       emergency_contact: null,
       employee_cover: null,
+      contact_number: null,
       prp_assigned_id: null,
       details: null
     },
@@ -411,21 +426,22 @@ export default {
     },
   },
   mounted() {
-    if (
-      this.user_type.includes("hr mngr") ||
-      this.user_type.includes("prp emp") ||
-      this.user_type.includes("general mngr")
-    ) {
+    if ((this.user_type.includes("hr mngr") || this.user_type.includes("prp emp") || this.user_type.includes("general mngr")) && !(this.user_type.includes("finance mngr"))) {
       this.retrieveTravel();
       this.retrieve();
       this.getAllFeedback();
       this.getCoDepartment()
+      this.checkUser()
     } else {
       this.retrieve();
       this.getCoDepartment()
+      this.checkUser()
     }
   },
   methods: {
+    convertData(item){
+      return item.destination.toUpperCase()
+    },
     changeDate() {
       if (
         this.editedItem.start_date !== null &&
@@ -454,15 +470,35 @@ export default {
       this.$axios
         .get("travel_auth_request/" + this.user_id)
         .then(response => {
+          console.log(response.data)
           this.travel = response.data;
-          console.log('here', this.travel)
         })
         .catch(e => {
           console.log(e);
         });
     },
+    checkUser(){
+      this.$axios
+        .get("user_info/" + this.user_id)
+        .then(response => {
+          if(response.data.user_information === null){
+            this.informationCheck = null
+          }else{
+            this.informationCheck = true
+          }
+        })
+    },
     messagePop(){
-      this.$refs.reminder.show()
+      if(this.prp_assigned_id === 'No PRP assign' && this.informationCheck === null){
+        this.messageCheck = 'combine'
+        this.$refs.reminder.show()
+      }else if(this.informationCheck === null){
+        this.messageCheck = 'user'
+        this.$refs.reminder.show()
+      }else {
+        this.messageCheck = 'prp'
+        this.$refs.reminder.show()
+      }
     },
     retrieveTravel() {
       this.$axios
@@ -485,6 +521,7 @@ export default {
       this.editedItem.end_date = item.end_date;
       this.editedItem.emergency_contact = item.emergency_contact;
       // this.editedItem.file_uri = item.file_uri;
+      this.editedItem.contact_number = item.contact_number;
       this.editedItem.employee_to_cover = item.employee_to_cover;
       this.dialog = true;
     },
@@ -495,6 +532,8 @@ export default {
         this.editedItem.end_date !== null &&
         this.editedItem.emergency_contact !== null &&
         this.editedItem.employee_to_cover !== null &&
+        this.editedItem.contact_number !== "" &&
+        this.editedItem.contact_number !== null &&
         this.editedItem.emergency_contact !== "" &&
         this.editedItem.employee_to_cover !== "" &&
         this.editedItem.start_date !== "" &&
@@ -507,16 +546,15 @@ export default {
           end_date: this.editedItem.end_date,
           emergency_contact: this.editedItem.emergency_contact,
           employee_to_cover: this.editedItem.employee_to_cover,
+          contact_number: this.editedItem.contact_number,
           file_uri: "test"
         };
-        // console.log("params", params, this.editedItem.id);
         this.$axios
           .post(
             "travel_auth_request/" + this.editedItem.id,
             params
           )
           .then(response => {
-            console.log(response.data)
             this.retrieve();
           });
         this.dialog = false;
@@ -634,7 +672,6 @@ export default {
       this.differenceDates();
     },
     summary(item){
-      console.log(this.dates[0], this.dates[1])
       this.$refs.summary.show(this.dates[0], this.dates[1], item)
     }
   }

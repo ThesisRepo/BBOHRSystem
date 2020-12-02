@@ -98,7 +98,7 @@ Route::get('shift_time/mine','Dependencies\ShiftTimeController@getUserShiftTime'
 // user_id: 1,
 // reason: 'over over',
 // date: '2020-12-12',
-// start_time: '12:30',
+//  rt_time: '12:30
 // end_time: '14:00',
 
 // add overtime request
@@ -196,13 +196,15 @@ Route::post('event_types/{id}','EventTypeController@update')->name('event_type.u
 
 Route::delete('event_types/{user_id}','EventTypeController@delete')->name('event_type.delete');
 
-Route::get('events','CalendarEventController@getByUser')->name('events.show');
+Route::get('events/{user_id}','CalendarEventController@getByUser')->name('events.show');
 
 Route::post('events','CalendarEventController@store')->name('events.store');
 
 Route::post('events/{id}','CalendarEventController@update')->name('events.update');
 
 
-Route::delete('events','CalendarEventController@delete')->name('events.delete');
+Route::delete('events/{id}','CalendarEventController@delete')->name('events.delete');
 
+Route::get('civil_status','CivilStatusController@index')->name('civil_status.index');
 
+Route::get('civil_status/other/{id}','CivilStatusController@showNotMine')->name('civil_status.showNotMine');

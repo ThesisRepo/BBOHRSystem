@@ -12,6 +12,7 @@ class TravelAuthRequest extends Model
     'start_date',
     'end_date',
     'emergency_contact',
+    'contact_number',
     'employee_to_cover_id',
     'file_uri',
     'approver_role_id',

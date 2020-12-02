@@ -104,11 +104,20 @@
                   ></v-date-picker>
                 </v-menu>
               </v-col>
-              <v-col cols="12">
+              <v-col cols="6">
                 <v-text-field
                   label="Contact Person*"
                   prepend-icon=" mdi-account-outline"
                   v-model="emergency_contact"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="6">
+                <v-text-field
+                  type="number"
+                  label="Contact Person's Number*"
+                  prepend-icon=" mdi-account-outline"
+                  v-model="contact_number"
                   required
                 ></v-text-field>
               </v-col>
@@ -138,6 +147,7 @@ export default {
     focused: false,
     destination: null,
     substitute: null,
+    contact_number: null,
     start_date: null,
     end_date: null,
     emergency_contact: null,
@@ -156,36 +166,25 @@ export default {
   methods: {
     changeDate() {
       if (this.start_date !== null && this.start_date !== "") {
-        let start = moment(String(this.start_date));
-        let end = moment(String(this.end_date));
-        this.disable = false;
+        let start = moment(String(this.start_date))
+        let end = moment(String(this.end_date))
+        this.disable = false
       } else {
-        this.disable = true;
+        this.disable = true
       }
     },
     checkFile(e) {
       this.selectedFile = e.target.files[0];
       this.file_uri = URL.createObjectURL(e.target.files[0]);
     },
-    // onButtonClick() {
-    //     this.isSelecting = false;
-    //     window.addEventListener(
-    //         "focus",
-    //         () => {
-    //             this.isSelecting = false;
-    //         },
-    //         { once: true }
-    //     );
-    //     this.$refs.uploader.click();
-    // },
     createTravel() {
       if (
         this.destination !== null &&
         this.start_date !== null &&
         this.end_date !== null &&
         this.emergency_contact !== null &&
-        this.employee_to_cover !== null
-        // this.img !== null
+        this.employee_to_cover !== null &&
+        this.contact_number !== null
       ) {
         let obj = this;
         const config = {
@@ -199,10 +198,12 @@ export default {
         formData.append("end_date", this.end_date);
         formData.append("emergency_contact", this.emergency_contact);
         formData.append("employee_to_cover", this.employee_to_cover);
+        formData.append("contact_number", this.contact_number);
         formData.append("prp_assigned_id", 1);
         this.$axios
           .post("travel_auth_request", formData, config)
           .then(res => {
+            console.log(res.data)
             this.$parent.$parent.$parent.$parent.$parent.retrieve();
           });
         this.dialog = false;
@@ -222,20 +223,20 @@ export default {
     },
     getCoDepartment(){
       this.$axios.get("departments/employees").then (response => {
-        response.data.forEach(element => {
-          console.log('Budget', element)
-          this.coDepartment.push(element)
-        })
+          response.data.forEach(element => {
+            this.coDepartment.push(element)
+          })
       })
     },
     removeData() {
-      (this.destination = null),
-        (this.employee_to_cover = null),
-        (this.start_date = null),
-        (this.end_date = null),
-        (this.emergency_contact = null),
-        (this.prp_assigned_id = null);
+      this.destination = null,
+        this.employee_to_cover = null,
+        this.start_date = null,
+        this.end_date = null,
+        this.emergency_contact = null,
+        this.prp_assigned_id = null;
         this.selectedFile = null
+        this.contact_number = null
       this.changeDate();
     }
   }

@@ -12,7 +12,8 @@ class CalendarEvent extends Model
         'content',
         'start_date',
         'end_date',
-        'is_private'
+        'is_public',
+        'event_type_id'
     ];
 
     public function user() {
