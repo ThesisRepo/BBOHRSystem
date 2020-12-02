@@ -18,8 +18,8 @@ class CreateLeaveRequestsTable extends Migration
             $table->UnsignedBigInteger('user_id');
             $table->UnsignedBigInteger('leave_type_id');
             $table->UnsignedBigInteger('department_id');
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->string('start_date');
+            $table->string('end_date');
             $table->integer('number_of_days');
             $table->UnsignedBigInteger('approver_role_id');
             $table->UnsignedBigInteger('status_id')->default(1);
