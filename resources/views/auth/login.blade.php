@@ -116,7 +116,7 @@ $(document).ready(function() {
                     <div class="form-group row">
                         <div class="col-md-10  mx-auto">
                             <button type="submit">
-                                <strong>Sign In</strong>
+                                <strong>Log In</strong>
                             </button>
                         </div>
                     </div>
@@ -129,6 +129,15 @@ $(document).ready(function() {
                             </button>
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <div id="gmail" class="col-md-10 mx-auto">
+                                @if (Route::has('password.request'))
+                                <a class="btn btn-link" href="/forget-password">
+                                    Forgot Your Password ?
+                                </a>
+                                @endif
+                        </div>
+                    </div>
                     @error('invalid')
                     <div style="width:100%;text-align:center">
                         <span style="color:red;">
@@ -137,8 +146,8 @@ $(document).ready(function() {
                     </div>
                     @enderror
                     <div class="form-group row">
-                        <div class="col-md-10  mx-auto">
-                            <div class="form-check">
+                        <div class="col-md-11  mx-auto">
+                            <!-- <div class="form-check">
                                 <div class="left">
                                     <input class="form-check-input" type="checkbox" name="remember" id="remember"
                                         value="{{ old('remember') ? 'checked' : '' }}">
@@ -146,14 +155,14 @@ $(document).ready(function() {
                                         Remember Me
                                     </label>
                                 </div>
-                            </div>
-                            <div class="right">
+                            </div> -->
+                            <!-- <div class="left">
                                 @if (Route::has('password.request'))
                                 <a class="btn btn-link" href="/forget-password">
                                     Forgot Your Password ?
                                 </a>
                                 @endif
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     </div>
