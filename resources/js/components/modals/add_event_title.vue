@@ -9,21 +9,27 @@
         </v-toolbar>
         <v-card-text>
           <v-container>
-            <!-- <h5>Add New Event Type</h5> -->
+            <h5>Add New Event Type</h5>
             <v-row>
               <v-col cols="4">
                 <v-text-field label="Event Title*" v-model="event_name" require></v-text-field>
               </v-col>
               <v-col cols="4">
-                <v-select
+                <!-- <label for="color">Color</label> -->
+                <!-- <input type="color" id="color" name="color" value="#e66465" size="50px"> -->
+                <br>
+                <select :style="color.style" class="form-control colorstyle" v-model="color">
+                  <option value="Colors" selected hidden>Colors*</option>
+                  <option v-for="(item, index) in colorItem" :key="index" :style="item.style" :value="item.value">{{item.name}}</option>
+                </select>
+                <!-- <v-select
                   :items="colorItem"
                   label="Color*"
                   v-model="color"
                   item-text="name"
                   item-value="value"
                   required
-                  class="color: color"
-                ></v-select>
+                ></v-select> -->
               </v-col>
               <v-col cols="4">
                 <br>
@@ -38,6 +44,9 @@
                 <v-toolbar class="mb-2" color="blue darken-1" dark flat>
                   <v-toolbar-title class="col pa-3 py-4 white--text" style="font-size:16px">LIST OF EVENT TYPES</v-toolbar-title>
                 </v-toolbar>
+              </template>
+              <template v-slot:item.color="{ item }">
+                <input type="color" :value="item.color">
               </template>
               <template v-slot:item.actions="{ item }">
                 <v-icon medium class="mr-2" @click="editItem(item)" style="color:blue">mdi-pencil</v-icon>
@@ -70,6 +79,12 @@ label {
 input {
   margin: 0.4rem;
 }
+.colorstyle{
+  border-top-style: hidden;
+  border-right-style: hidden;
+  border-left-style: hidden;
+  border-bottom-style: groove;
+}
 .center{
   text-align: center;
 }
@@ -81,7 +96,7 @@ export default {
   data: () => ({
     showSave: false,
     event_name: null,
-    color: null,
+    color: 'Colors',
     dialog: false,
     user_id: localStorage.getItem("id"),
     headers: [
@@ -91,13 +106,13 @@ export default {
     ],
     event_types: [],
     colorItem: [
-      { value: 'blue', name: "Blue"},
-      { value: 'red', name: "Red"},
-      { value: 'orange', name: "Orange" },
-      { value: 'yellow', name: "Yellow" },
-      { value: 'green', name: "Green" },
-      { value: 'blue', name: "Blue" },
-      { value: 'pink', name: "Pink" }
+      { value: '#FF0000', name: "Red", style: 'background-color: red' },
+      { value: '#FFA500', name: "Orange", style: 'background-color: orange' },
+      { value: '#FFFF00', name: "Yellow", style: 'background-color: yellow' },
+      { value: '#008000', name: "Green", style: 'background-color: green' },
+      { value: '#0000FF', name: "Blue", style: 'background-color: blue' },
+      { value: '#EE82EE', name: "Violet", style: 'background-color: violet' },
+      { value: '#FFC0CB', name: "Pink", style: 'background-color: pink' }
     ],
     editedIndex: null,
     storeage: []
@@ -117,11 +132,10 @@ export default {
         event_name: this.event_name,
         color: this.color
       };
-      console.log("parameter", params);
       this.$axios.post("user_info/event_types/" + this.user_id, params).then(response => {
         this.getEventType()
         this.event_name = null,
-        this.color = null
+        this.color = 'Colors'
       });
     },
     getEventType() {
@@ -145,7 +159,7 @@ export default {
       this.$axios.post('event_types/' + this.storeage.id, parameter).then( response =>{
         this.getEventType()
         this.event_name = null,
-        this.color = null
+        this.color = 'Colors'
       })
     },
     editItem(item){
@@ -157,7 +171,7 @@ export default {
     },
     clear(){
       this.event_name = null
-      this.color = null
+      this.color = 'Colors'
     },
     add(){
       this.showSave = false
