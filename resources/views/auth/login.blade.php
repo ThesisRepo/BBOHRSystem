@@ -132,7 +132,7 @@ $(document).ready(function() {
                     <div class="form-group row">
                         <div id="gmail" class="col-md-10 mx-auto">
                                 @if (Route::has('password.request'))
-                                <a class="btn btn-link" href="/forget-password">
+                                <a class="btn btn-link" style="padding-left:0px!important;" href="/forget-password">
                                     Forgot Your Password ?
                                 </a>
                                 @endif
