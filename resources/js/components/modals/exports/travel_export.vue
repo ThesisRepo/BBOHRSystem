@@ -92,13 +92,13 @@ export default {
       };
       if(item === 'Approved Requests'){
         this.$axios
-        .post("http://localhost:8000/hr/summary/travel_auth_request", param)
+        .post("hr/summary/travel_auth_request", param)
         .then(response => {
             this.summary = response.data;
         });
       }else if(item === 'Disapproved Requests'){
         this.$axios
-        .post("http://localhost:8000/hr/summary/travel_auth_request", param)
+        .post("hr/summary/travel_auth_request", param)
         .then(response => {
             this.summary = response.data;
         });

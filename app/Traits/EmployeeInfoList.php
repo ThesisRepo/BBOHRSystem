@@ -55,7 +55,7 @@ trait EmployeeInfoList
             // 'finance_assigned' => 4,
             'first_name' => 'Fenella',
             'last_name' => 'Corrine',
-            'email' => 'Fenella@bbo.com.ph',
+            'email' => 'cherrymae.herrera@student.passerellesnumeriques.org',
             'password' => Hash::make('123456789')
           ],
           'user_info' => null,
@@ -98,7 +98,7 @@ trait EmployeeInfoList
             // 'finance_assigned' => 4,
             'first_name' => 'Claire',
             'last_name' => 'khan',
-            'email' => 'claire@bbo.com.ph',
+            'email' => 'balugomarionjay@gmail.com',
             'password' => Hash::make('123456789')
           ],
           'user_info' => null,
@@ -142,7 +142,7 @@ trait EmployeeInfoList
             // 'finance_assigned' => 4,
             'first_name' => 'Cielo Fe Sasing',
             'last_name' => 'Atis',
-            'email' => 'Cielofe@bbo.com.ph',
+            'email' => 'jessavel.toring@student.passerellesnumeriques.org',
             'password' => Hash::make('123456789')
           ],
           'user_info' => [
@@ -183,7 +183,7 @@ trait EmployeeInfoList
             // 'finance_assigned' => 4,
             'first_name' => 'Gerard Winston Villegas',
             'last_name' => 'Hamoy',
-            'email' => 'GerardHamoy@bbo.com.ph',
+            'email' => 'marvie.cauyan@student.passerellesnumeriques.org',
             'password' => Hash::make('123456789')
           ],
           'user_info' => [
@@ -224,7 +224,7 @@ trait EmployeeInfoList
             // 'finance_assigned' => 4,
             'first_name' => 'Brisbane Jr Real',
             'last_name' => 'Bacalla',
-            'email' => 'BrisbaneBacalla@bbo.com.ph',
+            'email' => 'cherrymae.barlas@student.passerellesnumeriques.org',
             'password' => Hash::make('123456789')
           ],
           'user_info' => [

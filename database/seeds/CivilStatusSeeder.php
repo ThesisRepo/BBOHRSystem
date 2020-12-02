@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Models\Civilstatus;
+use App\Models\CivilStatus;
 
 class CivilStatusSeeder extends Seeder
 {
@@ -12,11 +12,11 @@ class CivilStatusSeeder extends Seeder
      */
     public function run()
     {
-        if(!Civilstatus::count()) {
-            Civilstatus::create(['civil_status_name' => 'Single']);
-            Civilstatus::create(['civil_status_name' => 'Married']);
-            Civilstatus::create(['civil_status_name' => 'Widow']);   
-            Civilstatus::create(['civil_status_name' => 'Widower']);  
+        if(!CivilStatus::count()) {
+            CivilStatus::create(['civil_status_name' => 'Single']);
+            CivilStatus::create(['civil_status_name' => 'Married']);
+            CivilStatus::create(['civil_status_name' => 'Widow']);   
+            CivilStatus::create(['civil_status_name' => 'Widower']);  
         }  
     }
 }

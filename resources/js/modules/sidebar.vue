@@ -122,16 +122,6 @@ export default {
           location.reload();
           localStorage.clear()
           window.location.replace("/");
-          // localStorage.removeItem('assigned_prp_id')
-          // localStorage.removeItem('user_finance')
-          // localStorage.removeItem('prp_assign')
-          // localStorage.removeItem('user_department')
-          // localStorage.removeItem('user_type')
-          // localStorage.removeItem('id')
-          // localStorage.removeItem('user_name')
-          // localStorage.removeItem('email')
-          // localStorage.removeItem('company_id')
-          // localStorage.removeItem('user_pic')
         })
     }
   }
