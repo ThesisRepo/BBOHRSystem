@@ -8,7 +8,7 @@
           fixed-tabs
           v-if="(user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr'))">
           <v-tabs-slider></v-tabs-slider>
-          <v-tab @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
+          <v-tab v-if="!user_type.includes('general mngr')" @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
           <v-tab @click="requests = false, employees = true, feedback = false">Employees Requests</v-tab>
           <v-tab @click="requests = false, employees = false, feedback = true">History</v-tab>
         </v-tabs>
@@ -433,13 +433,17 @@ export default {
     },
   },
   mounted() {
-    if ((this.user_type.includes("hr mngr") || this.user_type.includes("prp emp") || this.user_type.includes("general mngr")) && !(this.user_type.includes("finance mngr"))) {
+    if ((this.user_type.includes("hr mngr") || this.user_type.includes("prp emp")) && !(this.user_type.includes("finance mngr"))) {
       this.retrieveTravel();
       this.retrieve();
       this.getAllFeedback();
       this.getCoDepartment()
       this.checkUser()
-    } else {
+    } else if(this.user_type.includes("general mngr")){
+      this.checkUser()
+      this.retrieveTravel();
+      this.getAllFeedback();
+    }else{
       this.retrieve();
       this.getCoDepartment()
       this.checkUser()

@@ -20,7 +20,7 @@ class CreateLeaveRequestsTable extends Migration
             $table->UnsignedBigInteger('department_id');
             $table->dateTime('start_date');
             $table->dateTime('end_date');
-            $table->integer('number_of_days');
+            $table->double('number_of_days');
             $table->UnsignedBigInteger('approver_role_id');
             $table->UnsignedBigInteger('status_id')->default(1);
             $table->timestamps();
