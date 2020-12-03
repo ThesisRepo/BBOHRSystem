@@ -42,29 +42,15 @@
 #name {
     height: 500px;
 }
-
-/* @media screen and (max-width: 800px) {
-    #name {
-    height: 300px;
-  }
-} */
-/* #companyName, #appName{
-    font-size:250%;
+@media only screen and (max-width: 600px) {
+  /* #welcome {
+      display: none;
+  } */
 }
-#companyName{
-    color:#3490dc
-}
-.col-md-7 {
-    background-color:#3490dc;
-} */
 @media (min-width: 768px) {
     .h-md-100 {
         height: 100vh;
     }
-}
-
-.bg-indigo {
-    background: indigo;
 }
 </style>
 @yield('js')
@@ -72,20 +58,19 @@
 <body>  
     <div id="app" class="container-fluid">
         @guest
-        <div class=" row d-md-flex h-md-100 align-items-center" id="guest">
+        <div class=" row h-md-100" id="guest">
 
             <!-- First Half -->
 
-            <div class="col-md-6 p-0 h-md-100">
-                <div class="text-white d-md-flex align-items-center h-100 text-center justify-content-center">
+            <div class="col-md-6 p-0 " id="welcome">
+                <div class="text-white align-items-center h-100 text-center justify-content-center">
                         <img src="{{url('images/background1.jpg')}}" width="100%" height="100%">              
                 </div>
             </div>
 
             <!-- Second Half -->
-
-            <div class="col-md-6 p-0 h-md-100 loginarea" style="background-color:#3490dc">
-                <div class="d-md-flex align-items-center h-100 justify-content-center">
+            <div class="col-md-6 p-0 loginarea" style="background-color:#3490dc">
+                <div class="container d-md-flex align-items-center h-100 justify-content-center">
                     @yield('content')
                 </div>
             </div>

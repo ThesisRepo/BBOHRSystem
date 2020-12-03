@@ -44,7 +44,7 @@ $(document).ready(function() {
 @endsection
 @section('content')
 
-<div class="container-fluid">
+<div class="container">
     <div class="row justify-content-center">
         <div class="col-md-9" style="margin-top: 3%;">
             <div class="card" style="padding-bottom:-2% !important" >
@@ -69,7 +69,7 @@ $(document).ready(function() {
                     <img src="img/bboLoginIcon.png" width="100" alt="logo">
                 </center>
                 <br>
-                <form method="POST" class="container" action="{{ route('login') }}" style="margin-top: 7%;">
+                <form method="POST" class="container" action="{{ route('login') }}" style="margin-top: 10%;">
                     <div class="p-2">
                     @csrf
                     <div class="form-group  row">
@@ -96,7 +96,8 @@ $(document).ready(function() {
                                 <input 
                                     type="password" id="password"
                                     class="form-control @error('password') is-invalid @enderror" name="password"
-                                    value="123456789" required autocomplete="current-password"
+                                    placeholder="Enter your password"
+                                    required autocomplete="current-password"
                                 >
                                 <span toggle="#password" class=" input-group-append fa fa-fw fa-eye field-icon toggle-password "></span>
                             </div>
