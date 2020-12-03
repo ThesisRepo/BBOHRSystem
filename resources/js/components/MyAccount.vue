@@ -4,19 +4,21 @@
     <v-container>
       <v-card class="mx-auto" elevation="3">
           <v-card-title class="primary fill-height" >
-            <span class="headline white--text">USER PROFILE</span>
+            <span class="headline white--text">USER PROFILE {{profile_url}} s</span>
           </v-card-title>
           <v-container>
             <v-row>
               <v-col>
-                <v-avatar v-if="profile_url === null" class="ml-15" size="200">
+
+                <!-- <v-avatar v-if="profile_url === null" class="ml-15" size="200">
                   <img src="images/user.png" width="100%" height="100%" id="profile">
-                </v-avatar>
-                <v-avatar v-else class="ml-15" color="grey darken-1" size="200">
+                </v-avatar> -->
+                <v-avatar  class="ml-15" color="grey darken-1" size="200">
                   <img :src="profile_url" width="100%" height="100%" id="profile">
                 </v-avatar>
                 <v-row>
                   <v-col class="ml-15">
+                    {{profile_url}}
                   <v-btn
                     margin
                     color="primary"
@@ -163,7 +165,7 @@ export default {
       testClass: 'red--text'
     };
   },
-  mounted() {
+  created() {
     this.getInfo();
   },
   components: {
@@ -200,6 +202,7 @@ export default {
             this.tin_number = response.data.user_information.tin_number;
             this.philhealth_num = response.data.user_information.philhealth_number;
             this.sss_num = response.data.user_information.sss_number;
+          alert('dfd', this.profile_url);
           }
         })
         .catch(e => {

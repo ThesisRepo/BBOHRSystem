@@ -36,6 +36,7 @@ export default {
             this.user.roles.forEach(element => {
                 roleList.push(element.role_name)
             });
+            console.log('dfd', this.user.user_information );
             this.user.user_information ? localStorage.setItem('leave_number', this.user.user_information.allowed_leave_number) : localStorage.setItem('leave_number', 0)
             this.user.assigned_prp ? localStorage.setItem('assigned_prp_id', this.user.assigned_prp.id) : localStorage.setItem('assigned_prp_id', 'No PRP assign')
             this.user.assigned_finance ? localStorage.setItem('user_finance', this.user.assigned_finance.first_name + ' ' + this.user.assigned_finance.last_name) : localStorage.setItem('user_finance', 'No Finance assign')

@@ -57,8 +57,7 @@ class NewRequest implements ShouldBroadcast
                 break; 
         }
         // $this->message  = "{$username} {$action}" "a\an {$this->request_type}";
-        $this->message  = "{$username} {$action}" . (in_array($this->request_type[0], ['A', 'E', 'I', 'O', 'U'] ) ?   " an " :  " a ") . $this->request_type ;
-
+        $this->message  = "{$username} {$action}" . (in_array($this->request_type[0], ['A', 'E', 'I', 'O', 'U'] ) ?   " an " :  " a ") . $this->request_type;
     }
 
     public function broadcastOn() {
