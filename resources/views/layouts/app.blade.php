@@ -58,12 +58,12 @@
 <body>  
     <div id="app" class="container-fluid">
         @guest
-        <div class=" row h-md-100" id="guest">
+        <div class=" row d-md-flex h-md-100 align-items-center" id="guest">
 
             <!-- First Half -->
 
-            <div class="col-md-6 p-0 " id="welcome">
-                <div class="text-white align-items-center h-100 text-center justify-content-center">
+            <div class="col-md-6 p-0 h-md-100">
+                <div class="text-white d-md-flex align-items-center h-100 text-center justify-content-center">
                         <img src="{{url('images/background1.jpg')}}" width="100%" height="100%">              
                 </div>
             </div>
