@@ -25,7 +25,7 @@ class CreateUserInformations extends Migration
             $table->string('contact_number')->nullable();
             $table->unsignedBigInteger('civil_status_id')->nullable();
             $table->unsignedBigInteger('company_status_id')->nullable();
-            $table->string('regularization_date')->nullable();
+            $table->date('regularization_date')->nullable();
             $table->date('birthday')->nullable();
             $table->string('address')->nullable();  
             $table->string('tin_number')->nullable();
