@@ -66,7 +66,7 @@ trait EmployeeInfoList
           //   // 'profile_url'=> null
             // 'company_position'=> 'Customer Support Leader',
             'date_hired'=> '2018-10-9',
-            'contact_number'=> 
+            // 'contact_number'=> 
           //   'civil_status_id'=> 1,
             'company_status_id'=> 3,
             'birthday'=>'1989-7-16',
@@ -150,7 +150,7 @@ trait EmployeeInfoList
             'company_number'=> '03062018AA1',
             // 'profile_url'=> null
             'date_hired'=> '2018-3-6',
-            'contact_number'=> '09178404130'
+            'contact_number'=> '09178404130',
             // 'civil_status_id'=> 1,
             'company_status_id'=> 3,
             'birthday'=>'1984-4-13',
@@ -360,7 +360,7 @@ trait EmployeeInfoList
             // 'profile_url'=> null
             // 'company_position'=> 'Online Sales Associate',
             'date_hired'=> '2018-10-9',
-            'contact_number'=> ,'09276545179'
+            'contact_number'=> '09276545179',
             'civil_status_id'=> 1,
             'company_status_id'=> 3,
             'birthday'=>'1992-10-6',
