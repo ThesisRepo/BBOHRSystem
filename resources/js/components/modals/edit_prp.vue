@@ -65,8 +65,8 @@ export default {
                   "prp_assign",
                   element.first_name + " " + element.last_name
                 );
-                console.log('asdf', element)
-                this.$parent.$parent.getInfo();
+                console.log('asdf', element, this.$parent)                
+                this.$parent.$parent.$parent.getInfo();
               }
             });
           });

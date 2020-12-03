@@ -68,7 +68,7 @@ export default {
                   "user_finance",
                   element.first_name + " " + element.last_name
                 );
-                this.$parent.$parent.getInfo();
+                this.$parent.$parent.$parent.getInfo();
               }
             });
           });

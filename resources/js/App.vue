@@ -97,6 +97,4 @@ v-main {
     margin-right: auto;
     margin-left: auto;
 }
-
 </style>
-
