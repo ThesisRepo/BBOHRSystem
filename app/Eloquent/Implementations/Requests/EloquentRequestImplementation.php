@@ -80,7 +80,6 @@ class EloquentRequestImplementation extends EloquentImplementation {
   }
 
   public function requestFeedback($id, $data, $current_request, $approver) {
-    dd($id, $data, $current_request, $approver);
     try {
       DB::beginTransaction();
         $request = $current_request;
