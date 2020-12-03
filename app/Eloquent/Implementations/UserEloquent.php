@@ -22,7 +22,7 @@ class UserEloquent extends EloquentImplementation {
     }
     
     public function updateWithUserInfo($data, $id){
-       return  $this->model->findorFail($id)->userInformation()->updateOrCreate($data);
+       return  $this->model->findorFail($id)->userInformation()->updateOrCreate(['user_id' => $id], $data);
     }
 
     public function allWith($relationship){
