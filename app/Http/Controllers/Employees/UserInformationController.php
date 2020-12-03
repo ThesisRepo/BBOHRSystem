@@ -48,20 +48,24 @@ class UserInformationController extends Controller
     public function update(Request $request, $id)
     {
 
-        $data = [
-            'address'=> $request->address,
-            'civil_status'=> $request->civil_status,
-            'contact_number'=> $request->contact_number,
-            'pag_ibig_number'=> $request->pag_ibig_number,
-            'sss_number'=> $request->sss_number,
-            'tin_number'=> $request->tin_number,
-            'philhealth_number'=> $request->philhealth_number
-        ];
-        
+        $hasUserInfo = $this->user_service->hasUserInformation();
+        if($hasUserInfo) {
+            $data = [
+                'address'=> $request->address,
+                'civil_status'=> $request->civil_status,
+                'contact_number'=> $request->contact_number,
+                'pag_ibig_number'=> $request->pag_ibig_number,
+                'sss_number'=> $request->sss_number,
+                'tin_number'=> $request->tin_number,
+                'philhealth_number'=> $request->philhealth_number
+            ];
+        }
+        if(!$hasUserInfo) {
+            $data = $request->all();
+        }
         $res = response()->json($this->user->updateWithUserInfo($data, $id), 200);    
         
         return $res;
-
     }
     public function updateProfileImg($id,Request $request){
 
@@ -166,7 +170,7 @@ class UserInformationController extends Controller
     }
 
     public function getCountApprovedRequests($id) {
-        $res = $this->user->getCountOfRequests($id, 3);
+        $res = $this->user->getCountOfRequests($id, 2);
         return $res;
     }
 

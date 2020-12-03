@@ -1,80 +1,87 @@
 <template>
-  <v-row>
+<v-app>
+  <v-layout>
     <v-container>
-        <v-card class="mx-auto" elevation="3">
+      <v-card class="mx-auto" elevation="3">
           <v-card-title class="primary fill-height" >
             <span class="headline white--text">USER PROFILE</span>
           </v-card-title>
-          <v-row>
-            <v-col>
-              <v-avatar v-if="profile_url === null" class="ml-15" size="200">
-                <img src="images/user.png" width="100%" height="100%" id="profile">
-              </v-avatar>
-              <v-avatar v-else class="ml-15" color="grey darken-1" size="200">
-                <img :src="profile_url" width="100%" height="100%" id="profile">
-              </v-avatar>
+          <v-container>
+            <v-row>
+              <v-col>
+                <v-avatar v-if="profile_url === null" class="ml-15" size="200">
+                  <img src="images/user.png" width="100%" height="100%" id="profile">
+                </v-avatar>
+                <v-avatar v-else class="ml-15" color="grey darken-1" size="200">
+                  <img :src="profile_url" width="100%" height="100%" id="profile">
+                </v-avatar>
+                <v-row>
+                  <v-col class="ml-15">
+                  <v-btn
+                    margin
+                    color="primary"
+                    class="text-none"
+                    rounded
+                    outlined
+                    depressed
+                    :loading="isSelecting"
+                    @click="onButtonClick"
+                  >CHANGE PROFILE</v-btn>
 
-              <v-col class="ml-15">
-                <v-btn
-                  margin
-                  color="primary"
-                  class="text-none"
-                  rounded
-                  outlined
-                  depressed
-                  :loading="isSelecting"
-                  @click="onButtonClick"
-                >CHANGE PROFILE</v-btn>
-
-                <input
-                  ref="uploader"
-                  class="d-none"
-                  type="file"
-                  accept="image/*"
-                  @change="onFileChanged"
-                >
+                  <input
+                    ref="uploader"
+                    class="d-none"
+                    type="file"
+                    accept="image/*"
+                    @change="onFileChanged"
+                  >
+                </v-col>
+                </v-row>
+                
               </v-col>
-            </v-col>
-            <v-col>
-              <h1 class="title-h4 text-md-h4 text-sm-h4 text-truncate mt-8 primary--text"><b>{{ user_name ? user_name : 'No User Name' }}</b></h1>
-              <h2 class="title-h6 text-md-h6 text-sm-h6 text-truncate"><v-icon class="primary--text">mdi-account-cog</v-icon> {{ company_position ? company_position : 'No Position' }}</h2>
+              <v-col>
+                <h1 class="title-h4 text-md-h4 text-sm-h4 text-truncate mt-8 primary--text"><b>{{ user_name ? user_name : 'No User Name' }}</b></h1>
+                <h2 class="title-h6 text-md-h6 text-sm-h6 text-truncate"><v-icon class="primary--text">mdi-account-cog</v-icon> {{ company_position ? company_position : 'No Position' }}</h2>
 
-              <h3
-                class="text--primary text-caption text-sm-body-2 text-md-body-1 "
-              ><v-icon class="primary--text">mdi-email</v-icon> {{ user_email ? user_email : 'No email' }}</h3>
-              <h4
-                class="text--primary text-caption text-sm-body-2 text-md-body-1"
-              ><v-icon class="primary--text">mdi-id-card</v-icon> {{ company_number ? company_number : 'No ID No.' }}</h4>
-              <v-row>
-                <span class="text--primary text-caption text-sm-body-2 text-md-body-1">
-                  &nbsp;&nbsp;&nbsp;<v-icon class="primary--text">mdi-account-tie</v-icon> {{ prp_assign }}
-                </span>
-                <span class="text--primary text-caption text-sm-body-2 text-md-body-1">
-                   &nbsp;&nbsp;<u class="indigo--text lighten-1--text" style="cursor:pointer" @click="updatePrp">UPDATE</u>
-                </span>
-                <updatePrp
-                ref="updatePrp"
-                ></updatePrp>
-              </v-row>
-              <v-row class="mt-3">
-                <span class="text--primary text-caption text-sm-body-2 text-md-body-1">
-                  &nbsp;&nbsp;&nbsp;<v-icon class="primary--text">mdi-account-cash</v-icon> {{ user_finance }}
-                </span>
-                <span class="text--primary text-caption text-sm-body-2 text-md-body-1">
-                   &nbsp;&nbsp;<u class="indigo--text lighten-1--text" style="cursor:pointer" @click="updateFinance">UPDATE</u>
-                </span>
-                  <updateFinance
-                  ref="updateFinance"
-                  ></updateFinance>
-              </v-row>
-            </v-col>
-            <v-col class="text-right">
+                <h3
+                  class="text--primary text-caption text-sm-body-2 text-md-body-1 "
+                ><v-icon class="primary--text">mdi-email</v-icon> {{ user_email ? user_email : 'No email' }}</h3>
+                <h4
+                  class="text--primary text-caption text-sm-body-2 text-md-body-1"
+                ><v-icon class="primary--text">mdi-id-card</v-icon> {{ company_number ? company_number : 'No ID No.' }}</h4>
+                <v-row>
+                  <span class="text--primary text-caption text-sm-body-2 text-md-body-1">
+                    &nbsp;&nbsp;&nbsp;<v-icon class="primary--text">mdi-account-tie</v-icon> {{ prp_assign }}
+                  </span>
+                  <span class="text--primary text-caption text-sm-body-2 text-md-body-1">
+                    &nbsp;&nbsp;<u class="indigo--text lighten-1--text" style="cursor:pointer" @click="updatePrp">UPDATE</u>
+                  </span>
+                  <updatePrp
+                  ref="updatePrp"
+                  ></updatePrp>
+                </v-row>
+                <v-row class="mt-3">
+                  <span class="text--primary text-caption text-sm-body-2 text-md-body-1">
+                    &nbsp;&nbsp;&nbsp;<v-icon class="primary--text">mdi-account-cash</v-icon> {{ user_finance }}
+                  </span>
+                  <span class="text--primary text-caption text-sm-body-2 text-md-body-1">
+                    &nbsp;&nbsp;<u class="indigo--text lighten-1--text" style="cursor:pointer" @click="updateFinance">UPDATE</u>
+                  </span>
+                    <updateFinance
+                    ref="updateFinance"
+                    ></updateFinance>
+                </v-row>
+              </v-col>
+              <v-col class="text-right">
               <editProfile :datas="datas"></editProfile>
             </v-col>
-          </v-row>
-        </v-card>
+            </v-row>
+          </v-container>
+      </v-card>
     </v-container>
-    <v-container cols="4">
+    
+  </v-layout>
+  <v-container >
         <v-card class="mx-auto" elevation="3">
           <v-card-text>
             <v-container>
@@ -117,7 +124,7 @@
           </v-card-text>
         </v-card>
     </v-container>
-  </v-row>
+</v-app>
 </template>
 <script>
 import editProfile from "./modals/edit_profile.vue";
