@@ -22,7 +22,7 @@ class UserEloquent extends EloquentImplementation {
     }
     
     public function updateWithUserInfo($data, $id){
-       return  $this->model->findorFail($id)->userInformation()->update($data);
+       return  $this->model->findorFail($id)->userInformation()->updateOrCreate($data);
     }
 
     public function allWith($relationship){
@@ -206,7 +206,6 @@ class UserEloquent extends EloquentImplementation {
   }
 
   public function getCountOfRequests($id, $type_id) {
-
     $res = 0;
     $request_type_list = [
       'travel_auth_requests_count',
@@ -245,7 +244,6 @@ class UserEloquent extends EloquentImplementation {
         $request_count = $query[$request_type];
         $res +=  $request_count;
     }
-
     return $res;
 
   }

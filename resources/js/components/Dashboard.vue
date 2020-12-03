@@ -35,7 +35,7 @@
               <div class="green fill-height">&nbsp;</div>
             </div>
             <div class="col pa-3 py-4 green--text">
-              <h5 class="text-truncate text-uppercase">Approve Request</h5>
+              <h5 class="text-truncate text-uppercase">Approved Request</h5>
               <h1>{{ approve ? approve : 0 }}</h1>
             </div>
           </v-row>
