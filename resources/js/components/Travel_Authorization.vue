@@ -126,7 +126,7 @@
     ></Confirmation>
 
     <!-- ****************start************** -->
-    <v-dialog v-model="dialog" max-width="500px">
+    <v-dialog v-model="dialog" max-width="600px">
       <v-card>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-card-title>
@@ -221,6 +221,13 @@
                 <v-text-field
                   v-model="editedItem.emergency_contact"
                   label="Emergency Contact"
+                  prepend-icon="mdi-account-outline"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="6">
+                <v-text-field
+                  v-model="editedItem.contact_number"
+                  label="Contact Number"
                   prepend-icon="mdi-account-outline"
                 ></v-text-field>
               </v-col>
