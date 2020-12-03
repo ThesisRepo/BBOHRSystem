@@ -52,6 +52,7 @@
         height: 100vh;
     }
 }
+
 </style>
 @yield('js')
 
@@ -69,7 +70,7 @@
             </div>
 
             <!-- Second Half -->
-            <div class="col-md-6 p-0 loginarea" style="background-color:#3490dc">
+            <div class="col-md-6 p-0 h-md-100 loginarea" style="background-color:#3490dc">
                 <div class="container d-md-flex align-items-center h-100 justify-content-center">
                     @yield('content')
                 </div>
