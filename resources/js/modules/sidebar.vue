@@ -72,6 +72,7 @@
 
 <script>
 import ROUTER from "../router";
+import { mapGetters } from "vuex";
 export default {
   data: () => ({
     user_pic: localStorage.getItem('user_pic'),
@@ -101,7 +102,14 @@ export default {
       this.user_pic = 'images/user.png'
     }
   },
-
+  computed: {
+    ...mapGetters(["profileUrl"])
+  },
+  watch: {
+    profileUrl: function(newVal) {
+        this.user_pic = newVal;
+    }
+  },
   methods: {
 
     redirect(route) {
