@@ -4,16 +4,17 @@
     <v-container>
       <v-card class="mx-auto" elevation="3">
           <v-card-title class="primary fill-height" >
-            <span class="headline white--text">USER PROFILE</span>
+            <span class="headline white--text">USER PROFILE</span> 
+
           </v-card-title>
           <v-container>
             <v-row>
               <v-col>
 
-                <v-avatar v-if="profile_url === null" class="ml-15" size="200">
+                <!-- <v-avatar v-if="profile_url === null" class="ml-15" size="200">
                   <img src="images/user.png" width="100%" height="100%" id="profile">
-                </v-avatar>
-                <v-avatar  v-else class="ml-15" color="grey darken-1" size="200">
+                </v-avatar> -->
+                <v-avatar class="ml-15" color="grey darken-1" size="200">
                   <img :src="profile_url" width="100%" height="100%" id="profile">
                 </v-avatar>
                 <v-row>
@@ -27,7 +28,7 @@
                     depressed
                     :loading="isSelecting"
                     @click="onButtonClick"
-                  >CHANGE PROFILE</v-btn>
+                  >Upload Image</v-btn>
 
                   <input
                     ref="uploader"
@@ -131,6 +132,7 @@
 import editProfile from "./modals/edit_profile.vue";
 import updatePrp from "./modals/edit_prp.vue";
 import updateFinance from "./modals/edit_finance.vue";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -159,7 +161,7 @@ export default {
       sss_num: null,
       prp: null,
       datas: [],
-      profile_url: null,
+      profile_url: this.profileUrl,
       isSelecting: false,
       testClass: 'red--text'
     };
@@ -230,13 +232,17 @@ export default {
       let param = {
         id: this.user_id
       };
-      this.$axios
-        .post(
-          "update_profile_img/" + this.user_id,
-          formData
-        )
-        .then(response => {});
+      this.$store.dispatch('ChangeProfileUrl', {user:this.user_id, profileUrl:formData});
+      // this.$axios
+      //   .post(
+      //     "update_profile_img/" + this.user_id,
+      //     formData
+      //   )
+      //   .then(response => {});
     }
+  },
+  computed: {
+    ...mapGetters(["profileUrl"])
   }
 };
 </script>
