@@ -35,11 +35,12 @@
                 <div class="card-body">
                     @if (session('resent'))
                         <div class="alert alert-success" role="alert">
-                            {{ __('A fresh verification link has been sent to your email address.') }}
+                            {{ __('A fresh verification link has been sent to your email address.
+                             Resend if you did not receive the email') }}
                         </div>
                     @endif
                     <center>
-                        <p>Before proceeding, please check your email for a verification link. If you did not receive the email, </p>
+                        <p>Before proceeding, Click the button to send a verification link.Kindly check your email</p>
                     </center>
                     <!-- {{ __('Before proceeding, please check your email for a verification link.') }}
                     {{ __('If you did not receive the email') }}, -->
@@ -49,7 +50,7 @@
                             <div class="form-group row">
                             <div class="col-md-10  mx-auto">
                                 <center>
-                                    <button type="submit" style="cursor:pointer"><b>Resend verification link</b></button>
+                                    <button type="submit" style="cursor:pointer"><b>Send verification link</b></button>
                                 </center>
                             </div>
                         </div> 
