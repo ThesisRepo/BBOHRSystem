@@ -87,7 +87,9 @@ class UserInformationController extends Controller
             
             $result = $this->user->updateWithUserInfo($data, $id);
             if($user_info) {
-                unlink('public/'. $currentImg);
+                if($currentImg) {
+                    unlink('public/'. $currentImg);
+                }
             }
             $res = response()->json($result, 200);
 
