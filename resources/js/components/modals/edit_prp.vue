@@ -65,11 +65,12 @@ export default {
                   "prp_assign",
                   element.first_name + " " + element.last_name
                 );
-                console.log('asdf', element, this.$parent)                
+                localStorage.setItem("assigned_prp_id", element.id);
+                // console.log('asdf', element, this.$parent)                
                 this.$parent.$parent.$parent.getInfo();
               }
             });
-          });
+          }); 
         this.dialog = false;
       } else {
         this.error = true;
@@ -94,7 +95,6 @@ export default {
         .get("prp/" + this.user_id)
         .then(response => {
           this.prp = response.data;
-          console.log('asdfasdfasdf', this.prp)
         });
     }
   }

@@ -97,8 +97,7 @@ export default {
     if(this.user_type.includes('hr mngr')){
       this.employ.splice(this.employ.length-1, 0, { icon: "mdi-account-group", text: "Manage Users", route: "/ManageUsers" })
     }
-    console.log('adfasdf', this.user_pic)
-    if(this.user_pic === 'null'){
+    if(this.user_pic === null){
       this.user_pic = 'http://localhost:8000/images/user.png'
     }
   },

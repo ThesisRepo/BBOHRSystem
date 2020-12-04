@@ -106,9 +106,14 @@ class LoginController extends Controller
             }else{
                 $newUser = User::where('email', $user->email)->first();
                 if($newUser) {
-                    $newUser->update([
+                    $data = [
                         'google_id'=> $user->id
-                    ]); 
+                    ];
+                    if($newUser->email_verified_at == null) {
+                        $current_time = Carbon::now();
+                        $data['email_verified_at'] = $current_time->toDateTimeString();      
+                    }
+                    $newUser->update($data); 
                     Auth::login($newUser);
                     return redirect('/login')->withErrors(['email'=>'Something went wrong.']);
                 }else{
