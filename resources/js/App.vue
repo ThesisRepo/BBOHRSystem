@@ -2,7 +2,6 @@
     <v-app id="sample">
         <!-- <h1>{{user}}</h1> -->
         <v-main>
-            <h1>Nigga!!!</h1>
             <sidebar id="sidebar"></sidebar>
             <v-container class="container" fluid>
                 <router-view>
