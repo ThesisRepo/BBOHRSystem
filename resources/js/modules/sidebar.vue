@@ -98,7 +98,7 @@ export default {
       this.employ.splice(this.employ.length-1, 0, { icon: "mdi-account-group", text: "Manage Users", route: "/ManageUsers" })
     }
     if(this.user_pic === null){
-      this.user_pic = 'http://localhost:8000/images/user.png'
+      this.user_pic = 'images/user.png'
     }
   },
 
