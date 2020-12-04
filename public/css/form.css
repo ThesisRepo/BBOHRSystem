@@ -1,0 +1,193 @@
+.col, .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, 
+.col-11, .col-12, .col-auto, .col-lg, .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5,
+.col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-auto, 
+.col-md, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, 
+.col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12, .col-md-auto, .col-sm, .col-sm-1, 
+.col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, 
+.col-sm-10, .col-sm-11, .col-sm-12, .col-sm-auto, .col-xl, .col-xl-1, .col-xl-2, .col-xl-3, 
+.col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-10, .col-xl-11, 
+.col-xl-12, .col-xl-auto {
+    padding: 1px !important;
+}
+.input-group {
+    border-radius: 25px;
+}
+
+.left {
+  float:left;
+  /* padding: 0.375rem 0.75rem !important; */
+  padding: .55rem .80rem !important;
+
+}
+
+.right {
+  float:right;
+  padding: .10rem .10rem !important;
+}
+
+.card .md-form label {
+  font-weight:400 !important;
+
+}
+
+
+
+
+.md-form label {
+  position:absolute !important;
+  top:-35px !important;
+  left:0 !important;
+  font-size:1.1rem !important;
+  color:#101010 !important;
+  cursor:text !important;
+    -webkit-transition: color .2s ease-out, -webkit-transform .2s ease-out !important;
+    transition: color .2s ease-out, -webkit-transform .2s ease-out !important;
+    transition: transform .2s ease-out, color .2s ease-out !important;
+  transition: transform .2s ease-out, color .2s ease-out, -webkit-transform .2s ease-out !important;
+  transform: translateY(12px) !important;
+  -webkit-transform-origin: 0% 100% !important;
+  transform-origin: 0% 100% !important;
+}
+
+.md-form>label {
+  max-width: 100% !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  /* margin-bottom: -10px; */
+}
+
+
+.md-form input:not([type]), .md-form input[type="text"]:not(.browser-default), .md-form input[type="password"]:not(.browser-default), .md-form input[type="email"]:not(.browser-default), .md-form input[type="url"]:not(.browser-default), .md-form input[type="time"]:not(.browser-default), .md-form input[type="date"]:not(.browser-default), .md-form input[type="datetime"]:not(.browser-default), .md-form input[type="datetime-local"]:not(.browser-default), .md-form input[type="tel"]:not(.browser-default), .md-form input[type="number"]:not(.browser-default), .md-form input[type="search"]:not(.browser-default), .md-form input[type="phone"]:not(.browser-default), .md-form input[type="search-md"], .md-form textarea.md-textarea
+   {
+
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #ced4da;
+    border-radius: 0;
+    outline: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    -webkit-transition: border-color 0.15s ease-in-out,-webkit-box-shadow 0.15s ease-in-out;
+    transition: border-color 0.15s ease-in-out,-webkit-box-shadow 0.15s ease-in-out;
+    transition: border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out;
+    transition: border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out,-webkit-box-shadow 0.15s ease-in-out;
+}
+
+.md-form .form-control {
+    -webkit-box-sizing: border-box !important;
+    box-sizing: border-box !important;
+}
+constructed stylesheet
+.md-form .form-control {
+    height: auto;
+    padding: .6rem 0 .4rem 0;
+    margin: 0 0 .5rem 0;
+    background-color: transparent;
+    border-radius: 0;
+}
+constructed stylesheet
+.form-control {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057 !important;
+    background-color: #fff !important;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+-webkit-box-sizing: content-box;
+box-sizing: content-box;
+background-color: transparent;
+border: none;
+border-bottom: 1px solid #ced4da;
+border-radius: 0;
+outline: none;
+-webkit-box-shadow: none;
+box-shadow: none;
+-webkit-transition: border-color 0.15s ease-in-out,-webkit-box-shadow 0.15s ease-in-out;
+transition: border-color 0.15s ease-in-out,-webkit-box-shadow 0.15s ease-in-out;
+transition: border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out;
+transition: border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out,-webkit-box-shadow 0.15s ease-in-out;
+}
+
+.md-form .form-control {
+-webkit-box-sizing: border-box !important;
+box-sizing: border-box !important;
+}
+
+.md-form .form-control {
+    height: auto;
+    padding: .6rem 0 .4rem 0;
+    margin: 0 0 .5rem 0;
+    background-color: transparent;
+    border-radius: 0;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057 !important;
+    background-color: #fff !important;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+}
+
+
+@media (min-width: 768px) {
+    .navbar-expand-md {
+      height:70px;
+    }
+}
+
+
+@media (min-width: 768px) {
+    .col-md-8 {
+        /* flex: 50% !important; */
+        max-width: 45% !important;
+        
+    }
+}
+  
+.btn-link {
+    font-weight: 400 !important;
+    color: #3490dc !important;
+    text-decoration: none !important;
+  }
+  
+  .btn-link:hover {
+    color: #1d68a7;
+    text-decoration: underline !important;
+  }
+
+.btn {
+    
+    text-transform: uppercase;
+    white-space: normal;
+    border: 0;
+    border-radius: .125rem;
+    transition: color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out,-webkit-box-shadow 0.15s ease-in-out;
+    padding: .30rem .35rem !important;
+    font-size: .80rem !important;
+  
+}    
+
+img .float-left {
+    float:left !important;
+    margin-right: -100px !important;
+}
+
+.form-check-label {
+    font-size: small;
+    
+}
