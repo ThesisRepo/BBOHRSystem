@@ -144,7 +144,7 @@ trait EmployeeInfoList
             'password' => Hash::make('123456789')
           ],
           'user_info' => [
-            'department_id' => 2,
+            'department_id' => 1,
             'shift_time_id'=> 3,
             'gender'=> 0,
             'company_number'=> '03062018AA1',

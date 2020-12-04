@@ -234,7 +234,100 @@
 
         </v-toolbar>
       </template>
-      <template v-slot:item.number_of_days="{ item }">{{item.number_of_days >= 1 ? item.number_of_days + ' ' + 'Day/s' : item.number_of_days.toFixed(2) + ' ' + 'Hour/s' }}</template>
+      <!--Math.round((item.number_of_days / 1000 / 60 / 60 % 24) * 60)  -->
+       <!-- item.number_of_days >= 1 ? 
+          (item.number_of_days / 1000 / 60 / 60 % 24) != 0 ? 
+          Math.floor(item.number_of_days / 1000 / 60 / 60 / 24) + ' ' + 'Day/s' + ' ' + (Math.round(item.number_of_days / 1000 / 60 / 60 % 24) * 60) + ' ' + 'Hour/s' :
+          Math.floor(item.number_of_days / 1000 / 60 / 60 / 24) + ' ' + 'Day/s' :
+          (item.number_of_days / 1000 / 60 / 60 % 24) *60+ ' ' + 'minute/s' -->
+      <template v-slot:item.number_of_days="{ item }">
+        {{
+          item.number_of_days >= 1 ? 
+
+          // true
+
+          Math.floor(item.number_of_days) == item.number_of_days ? 
+            Math.floor(item.number_of_days) > 1 ? 
+            // true
+              Math.floor(item.number_of_days) + ' ' + 'days' 
+            : 
+              Math.floor(item.number_of_days) + ' ' + 'day' 
+
+            : 
+            // false
+              Math.floor(item.number_of_days) > 1 ?
+
+                Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) >= 1 ? 
+                  Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) > 1 ? 
+                    Math.round((item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+                    // hours and minute/s
+                
+                      Math.floor(item.number_of_days) + ' ' + 'days' + ', ' + Math.round(item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) + ' hours and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'mins' 
+                    : 
+                      Math.floor(item.number_of_days) + ' ' + 'days' + ', ' + Math.round(item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) + ' hours and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'min' 
+                  :
+                  // hour and minute/s
+                      Math.round((item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+                       Math.floor(item.number_of_days) + ' ' + 'days' + ', ' + Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) + ' hour and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'mins' 
+                    : 
+                      Math.floor(item.number_of_days) + ' ' + 'days' + ', ' +  Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) + ' hour and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'min' 
+                      
+                :
+                  // minutes
+                  Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+                    Math.floor(item.number_of_days) + ' ' + 'days' + ' and ' + Math.round((item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) * 60) + ' ' + 'mins' 
+                  : 
+                    Math.floor(item.number_of_days) + ' ' + 'days' + ' and ' + Math.round((item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) * 60) + ' ' + 'min' 
+              : 
+
+                Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) >= 1 ? 
+                  Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) > 1 ? 
+                    Math.round((item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+                    // hours and minute/s
+                
+                      Math.floor(item.number_of_days) + ' ' + 'day' + ', ' + Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) + ' hours and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'mins' 
+                    : 
+                      Math.floor(item.number_of_days) + ' ' + 'day' + ', ' + Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) + ' hours and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'min' 
+                  :
+                  // hour and minute/s
+                      Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+                       Math.floor(item.number_of_days) + ' ' + 'day' + ', ' + Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) + ' hour and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'mins' 
+                    : 
+                      Math.floor(item.number_of_days) + ' ' + 'day' + ', ' +  Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) + ' hour and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'min' 
+                      
+                :
+                  // minutes
+                  Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+                    Math.floor(item.number_of_days) + ' ' + 'day' + ' and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) * 60) + ' ' + 'mins' 
+                  : 
+                    Math.floor(item.number_of_days) + ' ' + 'day' + ' and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) * 60) + ' ' + 'min' 
+              
+
+          // false
+
+        :
+          Math.round(item.number_of_days  * 24) >= 1 ? 
+            Math.round(item.number_of_days  * 24) > 1 ? 
+              Math.round((item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+              // hours and minute/s
+                Math.round(item.number_of_days  * 24) + ' hours and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'mins' 
+              : 
+                Math.round(item.number_of_days  * 24) + ' hours and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'min' 
+            :
+            // hour and minute/s
+                Math.round((item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+                Math.round(item.number_of_days  * 24) + ' hour and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'mins' 
+              : 
+                Math.round(item.number_of_days  * 24) + ' hour and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'min' 
+                
+          :
+            // minutes
+            Math.round((item.number_of_days  * 24) * 60) > 1 ? 
+              Math.round((item.number_of_days  * 24) * 60) + ' ' + 'mins' 
+            : 
+              Math.round((item.number_of_days  * 24) * 60) + ' ' + 'min' 
+        }}
+      </template>
       <template v-slot:item.status.status_name="{ item }">
         <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
@@ -377,29 +470,29 @@ export default {
     }
   },
   methods: {
-    changeDate() {
-      if (
-        this.editedItem.start_date !== null &&
-        this.editedItem.start_date !== ""
-      ) {
-        let start = moment(String(this.editedItem.start_date));
-        let end = moment(String(this.editedItem.end_date));
-        if (end >= start) {
-          let diff = end.diff(start);
-          let differenceInDay = diff / 1000 / 60 / 60 / 24;
-          this.editedItem.total_days = differenceInDay;
-          this.total_days_with_text = differenceInDay.toFixed(2) < 0.5 ? ((differenceInDay.toFixed(2))*24) + " hours of leave" : differenceInDay.toFixed(1) + "days of leave";
-          this.error1 = false;
-          this.error2 = false;
-        } else {
-          this.error1 = true;
-          this.error2 = true;
-        }
-        this.disable = false;
-      } else {
-        this.disable = true;
-      }
-    },
+    // changeDate() {
+    //   if (
+    //     this.editedItem.start_date !== null &&
+    //     this.editedItem.start_date !== ""
+    //   ) {
+    //     let start = moment(String(this.editedItem.start_date));
+    //     let end = moment(String(this.editedItem.end_date));
+    //     if (end >= start) {
+    //       let diff = end.diff(start);
+    //       let differenceInDay = diff / 1000 / 60 / 60 / 24;
+    //       this.editedItem.total_days = differenceInDay;
+    //       this.total_days_with_text = differenceInDay.toFixed(2) < 0.5 ? ((differenceInDay.toFixed(2))*24) + " hours of leave" : differenceInDay.toFixed(1) + "days of leave";
+    //       this.error1 = false;
+    //       this.error2 = false;
+    //     } else {
+    //       this.error1 = true;
+    //       this.error2 = true;
+    //     }
+    //     this.disable = false;
+    //   } else {
+    //     this.disable = true;
+    //   }
+    // },
     retrieve() {
       this.$axios
         .get("leave_request/" + this.user_id)
