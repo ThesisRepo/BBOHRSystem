@@ -132,5 +132,6 @@ return [
     */
 
     'log_channel' => env('MAIL_LOG_CHANNEL'),
-
+    
+    'throttleToMessagesPerMin' => env('MAIL_THROTTLE_TO_MESSAGES_PER_MIN', null), 
 ];

@@ -20,6 +20,7 @@ class CreateTravelAuthRequestsTable extends Migration
             $table->date('start_date');
             $table->date('end_date');
             $table->string('emergency_contact');
+            $table->string('contact_number')->nullable();
             $table->UnsignedBigInteger('employee_to_cover_id');
             $table->string('file_uri')->nullable();
             $table->UnsignedBigInteger('approver_role_id');

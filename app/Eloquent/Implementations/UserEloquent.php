@@ -22,21 +22,26 @@ class UserEloquent extends EloquentImplementation {
     }
     
     public function updateWithUserInfo($data, $id){
-       return  $this->model->findorFail($id)->userInformation()->update($data);
+       return  $this->model->findorFail($id)->userInformation()->updateOrCreate(['user_id' => $id], $data);
     }
 
     public function allWith($relationship){
       return  $this->with($relationship)->get();
    }
     public function updateUserWithInfo($id, $user, $user_info, $company_position){
+      // dd($user_info, $company_position); 
+      $company_position = [
 
+      ];
       try {
         DB::beginTransaction();
           $res = $this->model->findorFail($id);
           $res->update($user);
-          $res->userInformation()->update($user_info);
-          $user->userInformation->company_positions()->attach($company_position);
+          $res->userInformation->update($user_info);
+          // dd($res->userInformation());
+          $res->userInformation->company_positions()->attach($company_position);
         DB::commit();
+        // dd($res->toArray());
         return $res;
       }catch(\Exception $e) {
         DB::rollback();
@@ -83,7 +88,7 @@ class UserEloquent extends EloquentImplementation {
 
     public function getAllNonAdminEmployees() {
       
-      $res = $this->model->with(['userInformation', 'userInformation.department', 'assignedPrp', 'assignedFinance', 'roles'])->whereDoesntHave('roles', function($q){
+      $res = $this->model->with(['userInformation', 'userInformation.department', 'userInformation.company_status', 'assignedPrp', 'assignedFinance', 'roles', 'userInformation.company_positions'])->whereDoesntHave('roles', function($q){
         $q->whereIn('role_id', [3, 4, 5]);
       })->get();
       
@@ -201,7 +206,6 @@ class UserEloquent extends EloquentImplementation {
   }
 
   public function getCountOfRequests($id, $type_id) {
-
     $res = 0;
     $request_type_list = [
       'travel_auth_requests_count',
@@ -240,7 +244,6 @@ class UserEloquent extends EloquentImplementation {
         $request_count = $query[$request_type];
         $res +=  $request_count;
     }
-
     return $res;
 
   }
@@ -277,15 +280,21 @@ class UserEloquent extends EloquentImplementation {
   }
 
   public function getRequestFeedbackedDate($user_id, $table_name, $relationship, $start_date, $end_date) {
+    // dd($start_date, $end_date);
+    
     $new_relationship = [
       $relationship => function( $q) use( $table_name, $start_date, $end_date) {
-        return $q->where( $table_name . '.created_at', '>', $start_date)
-          ->where( $table_name .  '.created_at', '<', $end_date);
+        return $q->where( $table_name . '.created_at','>', $start_date)
+          ->where( $table_name . '.created_at','<', $end_date);
+        // return $q->where( $table_name . '.created_at', '>=', $start_date)
+        //   ->where( $table_name .  '.created_at', '=<', $end_date);
       },
       $relationship . '.' . 'user',
-      $relationship . '.' . 'leave_type',
       $relationship . '.' . 'status'  
     ];
+    if($relationship == 'feedbacked_leave_requests') {
+      array_push( $new_relationship, $relationship . '.' . 'leave_type' );
+    }
     $res = $this->findWith( $user_id, $new_relationship);
     return $res;
 

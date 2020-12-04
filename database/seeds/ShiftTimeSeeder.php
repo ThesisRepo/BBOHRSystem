@@ -13,10 +13,10 @@ class ShiftTimeSeeder extends Seeder
     public function run()
     {
         if(!DB::table('shift_times')->count()) {
-            ShiftTime::create(['shift_time_name' => '8am-5pm']);
-            ShiftTime::create(['shift_time_name' => '9am-6pm']);
-            ShiftTime::create(['shift_time_name' => '10am-7pm']);
-            ShiftTime::create(['shift_time_name' => '2pm-11pm']);    
+            ShiftTime::create(['shift_time_name' => '8am-5pm']); // 1
+            ShiftTime::create(['shift_time_name' => '9am-6pm']); // 2
+            ShiftTime::create(['shift_time_name' => '10am-7pm']); // 3
+            ShiftTime::create(['shift_time_name' => '2pm-11pm']); // 4  
         }  
     }
 }

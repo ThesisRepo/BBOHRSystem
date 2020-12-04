@@ -125,8 +125,9 @@ export default {
     },
     removeData(){
       this.reason = null,
-      this.shift_time = null,
-      this.shift_date = null
+      this.start_time = null,
+      this.end_time = null,
+      this.overtime_date = null
     }
   }
 }

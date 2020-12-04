@@ -42,6 +42,14 @@ class UserService
         return $prp_assigned_id;
     }
 
+    public function getApproverId($request_type) {
+        if($request_type != 'Petty Cash Request' && $request_type != 'Budget Request') {
+            $prp_assigned_id = Auth::user()->prp_assigned;    
+        } else {
+            $prp_assigned_id = Auth::user()->finance_mngr_assigned;    
+        }
+        return $prp_assigned_id;
+    }
     public function getFinanceMngrAssignedId() {
         $finance_mngr_assigned_id = Auth::user()->finance_mngr_assigned;     
         return $finance_mngr_assigned_id;
@@ -55,5 +63,14 @@ class UserService
     public function getAuth() {
         $res = Auth::user();
         return $res;
+    }
+
+    public function getUserInformation() {
+        $res = Auth::user()->userInformation;
+        return $res;
+    }
+
+    public function hasUserInformation() {
+        return $this->getUserInformation() != null;
     }
 }

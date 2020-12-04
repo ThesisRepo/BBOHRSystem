@@ -82,20 +82,12 @@ class LoginController extends Controller
                 'email_verified_at' => $current_time->toDateTimeString()
             ];  
             $usertable->where('id', $user_id)->update($data);
-            DB::table('user_acc_activations')->where('token', $token)->delete();
+            DB::table('user_acc_activations')->where('token', $token);
             return redirect('login')->with('success','User verified successfully');        
         }
-        return redirect('login')->with('invalidToken','token invalid');
+        return redirect('login')->with('invalidToken','sorry, but token is invalid');
     }
-
-    // public function logout(Request $request)
-    // {
-    //     $request->user()->token()->revoke();
-
-    //     return response()->json([
-    //         'message' => 'Successfully logged out'
-    //     ]);
-    // }
+    
     public function redirectToGoogle()
     {
         return Socialite::driver('google')->redirect();
@@ -109,20 +101,21 @@ class LoginController extends Controller
             $finduser = User::where('google_id', $user->id)->first();
 
             if($finduser){
-
                 Auth::login($finduser);
-
                 return redirect('/');
-
             }else{
                 $newUser = User::where('email', $user->email)->first();
                 if($newUser) {
-                    $newUser->update([
+                    $data = [
                         'google_id'=> $user->id
-                    ]);
-                    if(Auth::attempt($newUser, $request->has('remember'))){
-                        return redirect()->intended('home');
+                    ];
+                    if($newUser->email_verified_at == null) {
+                        $current_time = Carbon::now();
+                        $data['email_verified_at'] = $current_time->toDateTimeString();      
                     }
+                    $newUser->update($data); 
+                    Auth::login($newUser);
+                    return redirect('/login')->withErrors(['email'=>'Something went wrong.']);
                 }else{
                     return redirect('/login')->withErrors(['email'=>'Cannot verify current email.']);
                 }   

@@ -12,7 +12,7 @@
               <v-col cols="12">
                 <v-select
                   :items="prp"
-                  label="Prp Assign"
+                  label="PRP Assign"
                   :item-text="
                   prp =>
                   prp.first_name + ' ' + prp.last_name
@@ -27,7 +27,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+          <v-btn color="blue darken-1" text @click="dialog = false">Cancel</v-btn>
           <v-btn color="blue darken-1" text @click="update">Update</v-btn>
         </v-card-actions>
       </v-card>
@@ -65,10 +65,12 @@ export default {
                   "prp_assign",
                   element.first_name + " " + element.last_name
                 );
-                this.$parent.$parent.getInfo();
+                localStorage.setItem("assigned_prp_id", element.id);
+                // console.log('asdf', element, this.$parent)                
+                this.$parent.$parent.$parent.getInfo();
               }
             });
-          });
+          }); 
         this.dialog = false;
       } else {
         this.error = true;

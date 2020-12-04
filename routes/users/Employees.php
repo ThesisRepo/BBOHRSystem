@@ -2,8 +2,11 @@
 
 // home
 // Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
-Route::get('/', 'HomeController@index')->name('home');
+Route::get('/home', function () {
+  return redirect()->route('home');
+});
 
+Route::get('/', 'HomeController@index')->name('home');
 
 // -- USER INFORMATION
 
@@ -95,7 +98,7 @@ Route::get('shift_time/mine','Dependencies\ShiftTimeController@getUserShiftTime'
 // user_id: 1,
 // reason: 'over over',
 // date: '2020-12-12',
-// start_time: '12:30',
+//  rt_time: '12:30
 // end_time: '14:00',
 
 // add overtime request
@@ -180,3 +183,28 @@ Route::delete('travel_auth_request/{id}','Requests\TravelAuthRequestController@d
 
 // submit multiple file
 // Route::post('submit_multiple_files/{id}','UserInformationController@updateProfileImg')->name('user_info.update_profile_img');
+
+// Route::get('event_types/{user_id}','EventTypeController@show')->name('event_type.show');
+// Route::post('event_types','EventTypeController@store')->name('event_type.store');
+
+
+Route::get('user_info/event_types/{user_id}','UserInformationController@getEventTypes')->name('user_info.event_type.show');
+
+Route::post('user_info/event_types/{user_id}','UserInformationController@addEventTypes')->name('user_info.event_type.store');
+
+Route::post('event_types/{id}','EventTypeController@update')->name('event_type.update');
+
+Route::delete('event_types/{user_id}','EventTypeController@delete')->name('event_type.delete');
+
+Route::get('events/{user_id}','CalendarEventController@getByUser')->name('events.show');
+
+Route::post('events','CalendarEventController@store')->name('events.store');
+
+Route::post('events/{id}','CalendarEventController@update')->name('events.update');
+
+
+Route::delete('events/{id}','CalendarEventController@delete')->name('events.delete');
+
+Route::get('civil_status','CivilStatusController@index')->name('civil_status.index');
+
+Route::get('civil_status/other/{id}','CivilStatusController@showNotMine')->name('civil_status.showNotMine');

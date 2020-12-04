@@ -48,7 +48,6 @@ class ShiftChangeRequestController extends RequestBaseController
     }
 
     public function requestFeedback($id, Request $request){
-
         $res = $this->requestBaseFeedback($id, $request);
 
         return $res;

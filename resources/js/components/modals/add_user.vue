@@ -210,252 +210,92 @@
                 </v-col>
                 <v-col cols="12" md="3">
                   <span
-                    v-if="successMessage !== null"
-                    class="text-success text-center"
-                  >{{ successMessage }}</span>
-                  <i>
-                    <span
-                      v-if="errorMessage11 !== null"
-                      class="text-danger text-center"
-                    >{{ errorMessage11 }}</span>
-                  </i>
-                  <v-text-field
-                    class="input-name"
-                    v-model="confirm_password"
-                    type="password"
-                    @keyup="validate('confirm_password')"
-                    label="Confirm Password"
-                    prepend-icon="mdi-key"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="3">
-                  <i>
-                    <span
-                      v-if="errorMessage12 !== null"
-                      class="text-danger text-center"
-                    >{{ errorMessage12 }}</span>
-                  </i>
-                  <i>
-                    <span
-                      v-if="errorMessage13 !== null"
-                      class="text-danger text-center"
-                    >{{ errorMessage13 }}</span>
-                  </i>
-                  <v-text-field
-                    class="input-name"
-                    v-model="company_id"
-                    label="Company ID"
-                    @keyup="validate('company_id')"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="4">
-                  <v-menu
-                    :close-on-content-click="true"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="290px"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                        v-model="regularization_date"
-                        label="Regularization Date"
-                        prepend-icon="mdi-calendar"
-                        readonly
-                        v-bind="attrs"
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker
-                      v-model="regularization_date"
-                      no-title
-                      scrollable
-                      color="primary"
-                    ></v-date-picker>
-                  </v-menu>
-                </v-col>
-                <v-col cols="12" md="4">
-                  <v-select
-                    :items="[
-                        'Probationary',
-                        'OJT',
-                        'Regular'
-                    ]"
-                    label="Company Status*"
-                    v-model="company_status"
-                    @keyup="validate('company_status')"
-                    required
-                  ></v-select>
-                </v-col>
-                <v-col cols="12" md="4">
-                  <v-select
-                    :items="position"
-                    item-text="position_name"
-                    item-value="id"
-                    label="Company Position*"
-                    v-model="company_position"
-                    @keyup="validate('company_position')"
-                    prepend-icon="mdi-account"
-                    required
-                  ></v-select>
-                </v-col>
-              </v-row>
-            </div>
-            <v-card-text class="display-1.5 text--primary" style="margin-left: 5%;">
-              <b>Business Assign:</b>
-            </v-card-text>
-            <v-divider></v-divider>
-            <div style="margin-left: 10%; margin-right: 10%">
-              <v-row>
-                <v-col cols="12" md="4">
-                  <v-select
-                    :items="prp"
-                    label="PRP Assign"
-                    :item-text="
-                        prp =>
-                        prp.first_name +
-                        ' ' +
-                        prp.last_name
-                    "
-                    item-value="id"
-                    v-model="selectPrp"
-                    @keyup="validate('prp_assign')"
-                    prepend-icon="mdi-account"
-                    required
-                  ></v-select>
-                </v-col>
-                <v-col cols="12" md="4">
-                  <v-select
-                    :items="finance"
-                    label="Finance Assign"
-                    prepend-icon="mdi-account"
-                    @keyup="validate('finance_assign')"
-                    :item-text="
-                        finance =>
-                        finance.first_name +
-                        ' ' +
-                        finance.last_name
-                    "
-                    item-value="id"
-                    v-model="selectFinance"
-                    required
-                  ></v-select>
-                </v-col>
-                <!-- *****************Start -->
-                <v-col cols="12" md="4">
-                  <v-select
-                    :items="departmentItem"
-                    item-text="department_name"
-                    item-value="id"
-                    label="Department*"
-                    v-model="department"
-                    required
-                  ></v-select>
-                </v-col>
-                <v-col cols="12" md="4">
-                  <v-select
-                    :items="sTime"
-                    label="Shift Time*"
-                    item-text="shift_time_name"
-                    item-value="id"
-                    v-model="shift_time"
-                    prepend-icon="mdi-timelapse"
-                    required
-                  ></v-select>
-                </v-col>
-                <v-col cols="12" md="4">
-                  <v-menu
-                    :close-on-content-click="true"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="290px"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                        v-model="date_hired"
-                        label="Date Hired"
-                        prepend-icon="mdi-calendar"
-                        readonly
-                        v-bind="attrs"
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker v-model="date_hired" no-title scrollable color="primary"></v-date-picker>
-                  </v-menu>
-                </v-col>
-                <v-col cols="12" md="4">
-                  <i>
-                    <span
-                      v-if="errorMessage14 !== null"
-                      class="text-danger text-center"
-                    >{{ errorMessage14 }}</span>
-                  </i>
-                  <i>
-                    <span
-                      v-if="errorMessage15 !== null"
-                      class="text-danger text-center"
-                    >{{ errorMessage15 }}</span>
-                  </i>
-                  <i>
-                    <span
-                      v-if="errorMessage16 !== null"
-                      class="text-danger text-center"
-                    >{{ errorMessage16 }}</span>
-                  </i>
-                  <v-text-field
-                    class="input-name"
-                    v-model="allowed_leave_number"
-                    label="Allowed Leave No."
-                    prepend-icon="mdi-number"
-                    type="number"
-                    @keyup="validate('allowed_leave_number')"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </div>
-            <v-card-text class="display-1.5 text--primary" style="margin-left: 5%;">
-              <b>Other Information:</b>
-            </v-card-text>
-            <v-divider></v-divider>
-            <div style="margin-left: 10%; margin-right: 10%">
-              <v-row>
-                <v-col cols="12" md="3">
-                  <v-text-field
-                    class="input-name"
-                    v-model="pag_ibig_number"
-                    label="Pag-ibig No."
-                    prepend-icon="mdi-credit-card"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="3">
-                  <v-text-field
-                    class="input-name"
-                    v-model="sss_number"
-                    label="SSS No."
-                    prepend-icon="mdi-credit-card"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="3">
-                  <v-text-field
-                    class="input-name"
-                    v-model="tin_number"
-                    label="TIN"
-                    prepend-icon="mdi-credit-card"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="3">
-                  <v-text-field
-                    class="input-name"
-                    v-model="philhealth_number"
-                    label="PhilHealth No."
-                    prepend-icon="mdi-credit-card"
-                  ></v-text-field>
-                  <br>
-                  <v-btn color="primary" @click="addNew(), (dialog = false)">Save</v-btn>
-                </v-col>
-              </v-row>
-            </div>
-          </v-card>
-        </v-container>
+                    v-if="errorMessage6 !== null"
+                    class="text-danger text-center"
+                  >{{ errorMessage6 }}</span>
+                <v-text-field label="Contact Number*" @keyup="validate('contact_number')" v-model="contact_number" dense required></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="3">
+                <v-select
+                  :items="genderItem"
+                  item-text="text"
+                  item-value="value"
+                  label="Gender*"
+                  @keyup="validate('gender')"
+                  v-model="gender"
+                  dense
+                  required
+                ></v-select>
+              </v-col>
+              <v-col cols="12" sm="6" md="3">
+                <v-menu
+                  ref="menu"
+                  v-model="menu"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="birthday"
+                      label="Birthday*"
+                      readonly
+                      dense
+                      v-bind="attrs"
+                      v-on="on"
+                      required
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    ref="picker"
+                    v-model="birthday"
+                    :max="
+                          new Date()
+                          .toISOString()
+                          .substr(0, 10)
+                      "
+                    min="1950-01-01"
+                    @change="save"
+                  ></v-date-picker>
+                </v-menu>
+              </v-col>
+              <!-- Firstname, Lastname, Contact Number, Address, Gender, Birthday, Email, Password, Confirm -->
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field label="Address*" v-model="address" dense required></v-text-field>
+              </v-col>
+              <!-- End --------------------------------------------------->
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field label="Email*" type="email" v-model="email" dense required></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field label="Password*" type="password" v-model="password" dense required></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field
+                  label="Confirm Password*"
+                  type="password"
+                  v-model="confirm_password"
+                  dense
+                  required
+                ></v-text-field>
+              </v-col>
+              <!-- <v-col cols="12" sm="6">
+                <v-autocomplete
+                  :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
+                  label="Interests"
+                  multiple
+                ></v-autocomplete>
+              </v-col>-->
+            </v-row>
+          </v-container>
+          <small>*indicates required field</small>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="dialog = false">Cancel</v-btn>
+          <v-btn color="blue darken-1" text @click="addNew()">Save</v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </div>
@@ -536,30 +376,30 @@ export default {
   },
   methods: {
     getAllPrp() {
-      this.$axios.get("http://localhost:8000/prp").then(response => {
+      this.$axios.get("prp").then(response => {
         this.prp = response.data;
       });
     },
     getAllFinance() {
-      this.$axios.get("http://localhost:8000/finance").then(response => {
+      this.$axios.get("finance").then(response => {
         this.finance = response.data;
       });
     },
     getAllDepartment() {
-      this.$axios.get("http://localhost:8000/departments").then(response => {
+      this.$axios.get("departments").then(response => {
         response.data.forEach(element => {
           this.departmentItem.push(element)
         })
       });
     },
     getShift() {
-      this.$axios.get("http://localhost:8000/shift_time").then(response => {
+      this.$axios.get("shift_time").then(response => {
         this.sTime = response.data;
       });
     },
 
     getPosition(){
-      this.$axios.get("http://localhost:8000/hr/company_position").then(response => {
+      this.$axios.get("hr/company_position").then(response => {
         response.data.forEach(el => {
           this.position.push(el)
         })
@@ -747,7 +587,7 @@ export default {
           company_number: this.company_number
       };
       this.$axios
-        .post("http://localhost:8000/hr/manage/user", params)
+        .post("hr/manage/user", params)
         .then(response => {
           console.log(response.data)
           this.$parent.$parent.$parent.$parent.$parent.$parent.retrieve();

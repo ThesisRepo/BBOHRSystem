@@ -12,7 +12,7 @@ class PettyCashRequestsController extends RequestBaseController
     protected $petty_cash_request;
 
     public function __construct(
-        PettyCashRequestEloquents $petty_cash_request,
+        PettyCashRequestEloquent $petty_cash_request,
         ApproverRequestService $request_service
     ) {
 

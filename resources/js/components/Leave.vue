@@ -6,10 +6,10 @@
           dark
           background-color="primary"
           fixed-tabs
-          v-if="(user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr')) && !user_type.includes('finance mngr')"
+          v-if="(user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr'))"
         >
           <v-tabs-slider></v-tabs-slider>
-          <v-tab @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
+          <v-tab v-if="!user_type.includes('general mngr')" @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
           <v-tab @click="requests = false, employees = true, feedback = false">Employees Requests</v-tab>
           <v-tab @click="requests = false, employees = false, feedback = true">History</v-tab>
         </v-tabs>
@@ -17,10 +17,9 @@
     </v-toolbar>
 
     <!-- Feedback -->
-    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" 
-      :search="search" class="elevation-3">
+    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" :search="search" class="elevation-3">
       <template v-slot:top>
-        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat v-if="(user_type.includes('hr mngr') || user_type.includes('general mngr'))">
           <v-col class="mt-8">
             <v-menu
               :close-on-content-click="false"
@@ -83,8 +82,19 @@
             label="Search"
           ></v-text-field>
         </v-toolbar>
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat v-if="((user_type.includes('prp emp') || user_type.includes('finance mngr')) && (!user_type.includes('hr mngr') && !user_type.includes('general mngr')))">
+          <v-text-field
+            v-model="search"
+            clearable
+            flat
+            solo-inverted
+            hide-details
+            prepend-inner-icon="mdi-magnify"
+            label="Search"
+          ></v-text-field>
+        </v-toolbar>
       </template>
-      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approve' ? 'APPROVE' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
+      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
     </v-data-table>
 
@@ -104,11 +114,11 @@
           ></v-text-field>
         </v-toolbar>
       </template>
-      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approve' ? 'APPROVE' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
+      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === '"approved"' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon small class="mr-2" @click="approveModal(item)">mdi-check-decagram</v-icon>
-        <v-icon small @click="disapproveModal(item)">mdi-close-circle</v-icon>
+        <v-icon medium class="mr-2" @click="approveModal(item)" style="color:green">mdi-check-decagram</v-icon>
+        <v-icon medium @click="disapproveModal(item)" style="color:red">mdi-close-circle</v-icon>
       </template>
     </v-data-table>
 
@@ -125,7 +135,7 @@
       <v-card class="mt-5">
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
             <v-card-title>
-                <span class="headline-bold ">LEAVE REQUEST FORM</span>
+                <span class="headline-bold">LEAVE REQUEST FORM</span>
             </v-card-title>
         </v-toolbar>
         <v-card-text>
@@ -155,63 +165,15 @@
                   v-if="error2"
                   style="color: red; font-style: italic"
                 >Start date must not be higher than End date!</span>
-                <v-menu
-                  :close-on-content-click="true"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      v-model="editedItem.start_date"
-                      label="Start Date"
-                      prepend-icon="mdi-calendar"
-                      readonly
-                      v-bind="attrs"
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker
-                    v-model="editedItem.start_date"
-                    :allowed-dates="disabledDates"
-                    no-title
-                    scrollable
-                    color="primary"
-                    @change="changeDate()"
-                  ></v-date-picker>
-                </v-menu>
+                <v-text-field label="Start Date" type="datetime-local" v-model="editedItem.start_date" :allowed-dates="disabledDates" @change="changeDate()" color="primary"></v-text-field>
               </v-col>
-              <v-col cols="12" sm="6" md="6">
+              <v-col cols="12" sm="4">
                 <span
                   v-if="error1"
-                  style="color: red; font-style: italic"
-                >End date must be higher than start date!</span>
-                <v-menu
-                  :close-on-content-click="true"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      v-model="editedItem.end_date"
-                      label="End Date"
-                      prepend-icon="mdi-calendar"
-                      readonly
-                      v-bind="attrs"
-                      v-on="on"
-                      :disabled="disable"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker
-                    v-model="editedItem.end_date"
-                    :allowed-dates="disabledDates2"
-                    no-title
-                    scrollable
-                    color="primary"
-                    @change="changeDate()"
-                  ></v-date-picker>
-                </v-menu>
+                  class="ml-7"
+                  style="color: red; font-size: 13px"
+                >Higher the End Date</span>
+                <v-text-field label="End Date" type="datetime-local" :allowed-dates="disabledDates2" v-model="editedItem.end_date" @change="changeDate()" color="primary"></v-text-field>
               </v-col>
             </v-row>
           </v-container>
@@ -231,7 +193,7 @@
     ></ConfirmationDel>
 
     <v-data-table
-      v-if="requests && (!user_type.includes('hr mngr') || !user_type.includes('finance mngr') || !user_type.includes('prp emp'))"
+      v-if="requests"
       :headers="headers"
       :items="request"
       :search="search"
@@ -250,11 +212,11 @@
             label="Search"
           ></v-text-field>
 
-          <createLeave v-if="prp_assigned_id !== 'No Prp assign'"></createLeave>
+          <createLeave v-if="prp_assigned_id !== 'No PRP assign' && informationCheck !== null"></createLeave>
           
           <v-btn
           style="margin-left: 5%"
-          v-if="prp_assigned_id === 'No Prp assign'"
+          v-if="prp_assigned_id === 'No PRP assign' || informationCheck === null"
           color="light blue darken-2"
           rounded
           outlined
@@ -267,17 +229,118 @@
 
           <Reminder
           ref="reminder"
-          :message="'Please set your PRP Assign'"
+          :message="messageCheck === 'prp' ? 'Please set your PRP Assign' : messageCheck === 'user' ? 'Please set your personal information' : messageCheck === 'combine' ? 'Please set your PRP assign and your Personal Information' : ''"
           ></Reminder>
 
         </v-toolbar>
       </template>
-      <template v-slot:item.status.status_name="{ item }"> 
+      <!--Math.round((item.number_of_days / 1000 / 60 / 60 % 24) * 60)  -->
+       <!-- item.number_of_days >= 1 ? 
+          (item.number_of_days / 1000 / 60 / 60 % 24) != 0 ? 
+          Math.floor(item.number_of_days / 1000 / 60 / 60 / 24) + ' ' + 'Day/s' + ' ' + (Math.round(item.number_of_days / 1000 / 60 / 60 % 24) * 60) + ' ' + 'Hour/s' :
+          Math.floor(item.number_of_days / 1000 / 60 / 60 / 24) + ' ' + 'Day/s' :
+          (item.number_of_days / 1000 / 60 / 60 % 24) *60+ ' ' + 'minute/s' -->
+      <template v-slot:item.number_of_days="{ item }">
+        {{
+          item.number_of_days >= 1 ? 
+
+          // true
+
+          Math.floor(item.number_of_days) == item.number_of_days ? 
+            Math.floor(item.number_of_days) > 1 ? 
+            // true
+              Math.floor(item.number_of_days) + ' ' + 'days' 
+            : 
+              Math.floor(item.number_of_days) + ' ' + 'day' 
+
+            : 
+            // false
+              Math.floor(item.number_of_days) > 1 ?
+
+                Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) >= 1 ? 
+                  Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) > 1 ? 
+                    Math.round((item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+                    // hours and minute/s
+                
+                      Math.floor(item.number_of_days) + ' ' + 'days' + ', ' + Math.round(item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) + ' hours and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'mins' 
+                    : 
+                      Math.floor(item.number_of_days) + ' ' + 'days' + ', ' + Math.round(item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) + ' hours and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'min' 
+                  :
+                  // hour and minute/s
+                      Math.round((item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+                       Math.floor(item.number_of_days) + ' ' + 'days' + ', ' + Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) + ' hour and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'mins' 
+                    : 
+                      Math.floor(item.number_of_days) + ' ' + 'days' + ', ' +  Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) + ' hour and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'min' 
+                      
+                :
+                  // minutes
+                  Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+                    Math.floor(item.number_of_days) + ' ' + 'days' + ' and ' + Math.round((item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) * 60) + ' ' + 'mins' 
+                  : 
+                    Math.floor(item.number_of_days) + ' ' + 'days' + ' and ' + Math.round((item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) * 60) + ' ' + 'min' 
+              : 
+
+                Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) >= 1 ? 
+                  Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) > 1 ? 
+                    Math.round((item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+                    // hours and minute/s
+                
+                      Math.floor(item.number_of_days) + ' ' + 'day' + ', ' + Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) + ' hours and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'mins' 
+                    : 
+                      Math.floor(item.number_of_days) + ' ' + 'day' + ', ' + Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) + ' hours and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'min' 
+                  :
+                  // hour and minute/s
+                      Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+                       Math.floor(item.number_of_days) + ' ' + 'day' + ', ' + Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) + ' hour and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'mins' 
+                    : 
+                      Math.floor(item.number_of_days) + ' ' + 'day' + ', ' +  Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) + ' hour and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'min' 
+                      
+                :
+                  // minutes
+                  Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+                    Math.floor(item.number_of_days) + ' ' + 'day' + ' and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) * 60) + ' ' + 'mins' 
+                  : 
+                    Math.floor(item.number_of_days) + ' ' + 'day' + ' and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) * 60) + ' ' + 'min' 
+              
+
+          // false
+
+        :
+          Math.round(item.number_of_days  * 24) >= 1 ? 
+            Math.round(item.number_of_days  * 24) > 1 ? 
+              Math.round((item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+              // hours and minute/s
+                Math.round(item.number_of_days  * 24) + ' hours and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'mins' 
+              : 
+                Math.round(item.number_of_days  * 24) + ' hours and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'min' 
+            :
+            // hour and minute/s
+                Math.round((item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+                Math.round(item.number_of_days  * 24) + ' hour and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'mins' 
+              : 
+                Math.round(item.number_of_days  * 24) + ' hour and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'min' 
+                
+          :
+            // minutes
+            Math.round((item.number_of_days  * 24) * 60) > 1 ? 
+              Math.round((item.number_of_days  * 24) * 60) + ' ' + 'mins' 
+            : 
+              Math.round((item.number_of_days  * 24) * 60) + ' ' + 'min' 
+        }}
+      </template>
+      <template v-slot:item.status.status_name="{ item }">
         <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-        <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+        <v-icon medium disabled class="mr-2" v-if="((user_type.includes('emp') && user_type.includes('prp emp') && user_type.includes('hr mngr')) && item.status.status_name === 'approved')">mdi-pencil</v-icon>
+        <v-icon medium disabled class="mr-2" v-else-if="((user_type.includes('emp') && user_type.includes('prp emp') && !(user_type.includes('hr mngr'))) && item.approver_role.role_name === 'general mngr')">mdi-pencil</v-icon>
+        <v-icon medium disabled class="mr-2" v-else-if="((user_type.includes('emp') && !user_type.includes('prp emp') && !user_type.includes('hr mngr')) && ((item.approver_role.role_name === 'hr mngr') || item.approver_role.role_name === 'general mngr'))">mdi-pencil</v-icon>
+        <v-icon medium class="mr-2" @click="editItem(item)" style="color:blue" v-else>mdi-pencil</v-icon>
+        
+        <v-icon medium disabled v-if="((user_type.includes('emp') && user_type.includes('prp emp') && user_type.includes('hr mngr')) && item.status.status_name === 'approved')">mdi-delete</v-icon>  
+        <v-icon medium disabled v-else-if="((user_type.includes('emp') && user_type.includes('prp emp') && !(user_type.includes('hr mngr'))) && item.approver_role.role_name === 'general mngr')">mdi-delete</v-icon>  
+        <v-icon medium disabled v-else-if="((user_type.includes('emp') && !user_type.includes('prp emp') && !user_type.includes('hr mngr')) && ((item.approver_role.role_name === 'hr mngr') || item.approver_role.role_name === 'general mngr'))">mdi-delete</v-icon>  
+        <v-icon medium @click="deleteItem(item)" style="color:red" v-else>mdi-delete</v-icon>
       </template>
     </v-data-table>
 
@@ -308,10 +371,11 @@ export default {
     prp_assigned_id: localStorage.getItem("assigned_prp_id"),
     employees: false,
     requests: true,
-    feedback: false,
+    feedback: false,  
     dialog: false,
     error: false,
     error1: false,
+    informationCheck: null,
     error2: false,
     disable: false,
     end_date: null,
@@ -358,7 +422,9 @@ export default {
       selectedLeaveType: null,
       total_days: null,
       start_date: null,
-      end_date: null
+      end_date: null,
+      start_time: null,
+      end_time: null
     },
     items: [
       { title: 'Approved Requests' },
@@ -374,6 +440,7 @@ export default {
       { value: 6, name: "Maternity Leave" }
     ],
     approveThis: '',
+    messageCheck: '',
   }),
   components: {
     createLeave,
@@ -388,44 +455,49 @@ export default {
     },
   },
   mounted() {
-    if ( this.user_type.includes("hr mngr") || this.user_type.includes("prp emp") || this.user_type.includes("general mngr")) {
+    if ((this.user_type.includes("hr mngr") || this.user_type.includes("prp emp")) && !(this.user_type.includes("finance mngr"))) {
       this.retrievePendingPrp();
       this.retrieve();
       this.getAllFeedback();
-    } else {
+      this.checkUser()
+    }else if(this.user_type.includes("general mngr")){
+      this.retrievePendingPrp();
+      this.getAllFeedback();
+      this.checkUser()
+    }else{
       this.retrieve();
+      this.checkUser()
     }
   },
   methods: {
-    changeDate() {
-      if (
-        this.editedItem.start_date !== null &&
-        this.editedItem.start_date !== ""
-      ) {
-        let start = moment(String(this.editedItem.start_date));
-        let end = moment(String(this.editedItem.end_date));
-        if (end >= start) {
-          let diff = end.diff(start);
-          let differenceInDay = diff / 1000 / 60 / 60 / 24;
-          this.editedItem.total_days = differenceInDay;
-          this.total_days_with_text = differenceInDay + " days of leave";
-          this.error1 = false;
-          this.error2 = false;
-        } else {
-          this.error1 = true;
-          this.error2 = true;
-        }
-        this.disable = false;
-      } else {
-        this.disable = true;
-      }
-    },
+    // changeDate() {
+    //   if (
+    //     this.editedItem.start_date !== null &&
+    //     this.editedItem.start_date !== ""
+    //   ) {
+    //     let start = moment(String(this.editedItem.start_date));
+    //     let end = moment(String(this.editedItem.end_date));
+    //     if (end >= start) {
+    //       let diff = end.diff(start);
+    //       let differenceInDay = diff / 1000 / 60 / 60 / 24;
+    //       this.editedItem.total_days = differenceInDay;
+    //       this.total_days_with_text = differenceInDay.toFixed(2) < 0.5 ? ((differenceInDay.toFixed(2))*24) + " hours of leave" : differenceInDay.toFixed(1) + "days of leave";
+    //       this.error1 = false;
+    //       this.error2 = false;
+    //     } else {
+    //       this.error1 = true;
+    //       this.error2 = true;
+    //     }
+    //     this.disable = false;
+    //   } else {
+    //     this.disable = true;
+    //   }
+    // },
     retrieve() {
       this.$axios
         .get("leave_request/" + this.user_id)
         .then(response => {
           this.request = response.data;
-          console.log(response.data)
         })
         .catch(e => {
           console.log(e);
@@ -525,12 +597,32 @@ export default {
       this.id = item.id;
       this.$refs.confirms.show(item)
     },
-    messagePop(){
-      this.$refs.reminder.show()
+    checkUser(){
+      this.$axios
+        .get("user_info/" + this.user_id)
+        .then(response => {
+          if(response.data.user_information === null){
+            this.informationCheck = null
+          }else{
+            this.informationCheck = true
+          }
+        })
     },
-    confirm(){
+    messagePop(){
+      if(this.prp_assigned_id === 'No PRP assign' && this.informationCheck === null){
+        this.messageCheck = 'combine'
+        this.$refs.reminder.show()
+      }else if(this.informationCheck === null){
+        this.messageCheck = 'user'
+        this.$refs.reminder.show()
+      }else {
+        this.messageCheck = 'prp'
+        this.$refs.reminder.show()
+      }
+    },
+    confirm(item){
       if(this.approveThis === 'approve'){
-        this.approve()
+        this.approve(item)
       }else{
         this.disapprove()
       }
@@ -540,20 +632,36 @@ export default {
       this.id = item.id;
       this.$refs.confirms.show(item)
     },
-    approve() {
-      let parameter = {
-        user_id: this.user_id,
-        status_id: 1
-      };
-      this.$axios
-        .post(
-          "prp/leave_request/feedback/" + this.id,
-          parameter
-        )
-        .then(response => {
-          this.retrievePendingPrp();
-          this.getAllFeedback();
-        });
+    approve(item) {
+      if(item.id.approver_role_id === 5) {
+        let parameter = {
+          user_id: this.user_id,
+          status_id: 2
+        };
+        this.$axios
+          .post(
+            "prp/leave_request/feedback/" + this.id,
+            parameter
+          )
+          .then(response => {
+            this.retrievePendingPrp();
+            this.getAllFeedback();
+          });
+      }else{
+        let parameter = {
+          user_id: this.user_id,
+          status_id: 1
+        };
+        this.$axios
+          .post(
+            "prp/leave_request/feedback/" + this.id,
+            parameter
+          )
+          .then(response => {
+            this.retrievePendingPrp();
+            this.getAllFeedback();
+          });
+      }
     },
     disapprove() {
       let parameter = {

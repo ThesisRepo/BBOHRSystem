@@ -31,7 +31,6 @@ Vue.component('dashboard-view', require('./App.vue').default);
  */
 
 
-
 import Vue from "vue";
 import router from "./router";
 import axios from 'axios';

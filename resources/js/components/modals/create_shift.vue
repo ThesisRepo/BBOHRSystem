@@ -20,7 +20,7 @@
       <v-card>
          <v-toolbar class="mb-2" color="blue darken-1" dark flat>
             <v-card-title>
-              <!-- <span class="headline-bold">SHIFT CHANGE REQUEST FORM</span> -->
+              <span class="headline-bold">SHIFT CHANGE REQUEST FORM</span>
             </v-card-title>
           </v-toolbar>
         <v-card-text>
@@ -59,7 +59,7 @@
               </v-col>
               <v-col cols="12" sm="6">
                 <v-select
-                  :items="this.sTime"
+                  :items="sTime"
                   label="Shift Time*"
                   item-text="shift_time_name"
                   item-value="id"
@@ -112,7 +112,6 @@ export default {
           reason: this.reason,
           prp_assigned_id: this.prp_assigned_id
         }
-        console.log(parameter)
         this.$axios.post("shift_change_request", parameter).then(res =>{
           this.$parent.$parent.$parent.$parent.$parent.retrieve()
           this.dialog = false
@@ -123,7 +122,7 @@ export default {
       }
     },
     getShift(){
-      this.$axios.get("shift_time").then(response => {
+      this.$axios.get("shift_time/mine").then(response => {
         this.sTime = response.data
       })
     },

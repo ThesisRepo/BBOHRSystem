@@ -3,10 +3,10 @@
     <v-navigation-drawer v-model="drawer" app color="light-blue darken-4" class="example">
       <center>
         <v-sheet color="light-blue darken-4" class="pa-5">
-          <v-avatar v-if="user_pic === null" class="mb-10" size="64">
+          <!-- <v-avatar v-if="user_pic === null" class="mb-10" size="64">
             <img src="images/user.png" alt="profile pic">
-          </v-avatar>
-          <v-avatar v-else class="mb-10" color="grey darken-1" size="64">
+          </v-avatar> -->
+          <v-avatar class="mb-10" color="grey darken-1" size="64">
             <img :src="user_pic" alt="profile pic">
           </v-avatar>
           <div style="color:white">{{ user_name }}</div>
@@ -68,27 +68,6 @@
 
 </template>
 <style>
-/* v-app {
-  overflow-y: hidden !important;
-} */
-.v-application--wrap {
-  overflow-y: scroll; /* Add the ability to scroll */
-}
-
-/* Hide scrollbar for Chrome, Safari and Opera */
-.v-application--wrap::-webkit-scrollbar {
-    display: none;
-}
-
-/* v-app-bar {
-  overflow: hidden !important;
-} */
-.v-list-item__title {
-  font-size: 15px;
-}
-/* .v-application--wrap{
-
-} */
 </style>
 
 <script>
@@ -103,11 +82,11 @@ export default {
     employ: [
       { icon: "mdi-account", text: "My Account", route: "/MyAccount" },
       { icon: "mdi-apps", text: "Dashboard", route: "/" },
-      { icon: "mdi-calendar-edit", text: "Leave Request", route: "/Leave" },
-      { icon: "mdi-calendar-account", text: "Shift Change Request", route: "/ShiftChange" },
-      { icon: "mdi-calendar-clock", text: "Overtime Request", route: "/Overtime" },
-      { icon: "mdi-account-cash", text: "Petty Cash Request", route: "/PettyCash" },
-      { icon: "mdi-account-cash-outline", text: "Budget Request", route: "/Budget" },
+      { icon: "mdi-calendar-edit", text: "Leave", route: "/Leave" },
+      { icon: "mdi-calendar-account", text: "Shift Change", route: "/ShiftChange" },
+      { icon: "mdi-calendar-clock", text: "Overtime", route: "/Overtime" },
+      { icon: "mdi-account-cash", text: "Petty Cash", route: "/PettyCash" },
+      { icon: "mdi-account-cash-outline", text: "Budget", route: "/Budget" },
       { icon: "mdi-airplane", text: "Travel Authorization", route: "/TravelAuthorization" },
       { icon: "mdi-logout", text: "LogOut"}
       // { icon: "mdi-logout", text: "LogOut", route: "/logout" }
@@ -115,9 +94,11 @@ export default {
     ],
   }),
   mounted(){
-    console.log('gawas', this.user_pic, this.user_type, this.user_name)
-    if(this.user_type.includes('general mngr') || this.user_type.includes('hr mngr')){
+    if(this.user_type.includes('hr mngr')){
       this.employ.splice(this.employ.length-1, 0, { icon: "mdi-account-group", text: "Manage Users", route: "/ManageUsers" })
+    }
+    if(this.user_pic === null){
+      this.user_pic = 'http://localhost:8000/images/user.png'
     }
   },
 
@@ -140,16 +121,6 @@ export default {
           location.reload();
           localStorage.clear()
           window.location.replace("/");
-          // localStorage.removeItem('assigned_prp_id')
-          // localStorage.removeItem('user_finance')
-          // localStorage.removeItem('prp_assign')
-          // localStorage.removeItem('user_department')
-          // localStorage.removeItem('user_type')
-          // localStorage.removeItem('id')
-          // localStorage.removeItem('user_name')
-          // localStorage.removeItem('email')
-          // localStorage.removeItem('company_id')
-          // localStorage.removeItem('user_pic')
         })
     }
   }

@@ -74,6 +74,7 @@ export default {
       { text: "END DATE", value: "end_date" },
       { text: "EMERGENCY CONTACT", value: "emergency_contact" },
       { text: "EMPLOYEE TO COVER", value: "employee_to_cover" },
+      { text: "EMPLOYEE TO COVER'S NUMBER", value: "contact_number" },
       { text: "DOCUMENT", value: "file_uri" },
       { text: "STATUS", value: "status.status_name" }
     ]
@@ -91,13 +92,13 @@ export default {
       };
       if(item === 'Approved Requests'){
         this.$axios
-        .post("http://localhost:8000/hr/summary/travel_auth_request", param)
+        .post("hr/summary/travel_auth_request", param)
         .then(response => {
             this.summary = response.data;
         });
       }else if(item === 'Disapproved Requests'){
         this.$axios
-        .post("http://localhost:8000/hr/summary/travel_auth_request", param)
+        .post("hr/summary/travel_auth_request", param)
         .then(response => {
             this.summary = response.data;
         });

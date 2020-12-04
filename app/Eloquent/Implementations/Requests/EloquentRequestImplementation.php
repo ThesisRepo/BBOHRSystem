@@ -63,7 +63,7 @@ class EloquentRequestImplementation extends EloquentImplementation {
     //   })->get();
     $res = $this->whereWith('status_id',1,  $relationship)->where('approver_role_id', $max_role_id)
       ->whereHas('user', function($query) use($user_id, $max_role_id){
-        return $query->where('prp_assigned',$user_id)->orHas('assignedPrp.roles','!=', $max_role_id);
+        return $query->where('prp_assigned',$user_id)->orWhere('finance_mngr_assigned',$user_id)->orHas('assignedPrp.roles','!=', $max_role_id);
       })->get();
     return $res;
     
@@ -75,12 +75,11 @@ class EloquentRequestImplementation extends EloquentImplementation {
 
   public function disapproveRequest($id, $data, $current_request, $approver) {
 
-    return $this->requestFeedback($id, $data, $current_request, $approver);
+    $res = $this->requestFeedback($id, $data, $current_request, $approver);
 
   }
 
   public function requestFeedback($id, $data, $current_request, $approver) {
-    
     try {
       DB::beginTransaction();
         $request = $current_request;
@@ -128,6 +127,7 @@ class EloquentRequestImplementation extends EloquentImplementation {
 
   // }
   public function getRequestSummaryByDate($status_id, $start, $end) {
+    dd($status_id, $start, $end);
     // $res = $this->where('status_id', $status_id)->get();
     // $res = $this->where('status_id', $status_id)->where('updated_at', '>', $start)->where('updated_at', '<', $end)->get();
     $res = $this->whereNative('status_id', '!=', 2)->get();

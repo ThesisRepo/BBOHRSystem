@@ -54,6 +54,7 @@ class TravelAuthRequestController extends RequestBaseController
             'start_date'=> $request->start_date,
             'end_date'=> $request->end_date,
             'emergency_contact'=> $request->emergency_contact,
+            'contact_number'=> $request->contact_number,
             'employee_to_cover_id'=> $request->employee_to_cover,
             'file_uri'=> $image,
             'approver_role_id'=> $this->nextApproverId($request->user_id),
@@ -79,6 +80,7 @@ class TravelAuthRequestController extends RequestBaseController
             'start_date'=> $request->start_date,
             'end_date'=> $request->end_date,
             'emergency_contact'=> $request->emergency_contact,
+            'contact_number'=> $request->contact_number,
             'employee_to_cover'=> $request->employee_to_cover,
             'file_uri'=> $request->file_uri,
         ];

@@ -1,21 +1,24 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" href="{!! asset('img/logoCircle.ico') !!}"/>
+    <link rel="icon" href="{!! asset('img/logoCircle.ico') !!}" />
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="js/app.js" defer></script>
+    <script src="/js/app.js" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
     <!-- Styles -->
     <link href="/css/app.css" rel="stylesheet">
     <!-- <link href="{{ asset('css/form.css') }}" rel="stylesheet"> -->
@@ -24,66 +27,72 @@
 
 <style>
 .col-md-7 {
-    height:100vh;
+    height: 100vh;
 }
-.col-md-7 main, .col-md-5 main {
-  position: relative;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
+
+.col-md-7 main,
+.col-md-5 main {
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
 }
+
 #name {
-    height:500px;
+    height: 500px;
 }
-@media screen and (max-width: 800px) {
-    #name {
-    height: 300px;
-  }
+@media only screen and (max-width: 600px) {
+  /* #welcome {
+      display: none;
+  } */
 }
-#companyName, #appName{
-    font-size:50px;
+@media (min-width: 768px) {
+    .h-md-100 {
+        height: 100vh;
+    }
 }
-#companyName{
-    color:#3490dc
-}
-.col-md-7 {
-    background-color:#3490dc;
-}
+
 </style>
 @yield('js')
-<body>
+
+<body>  
     <div id="app" class="container-fluid">
         @guest
-            <div class="row">
-                <div class="col-md-5" >
-                    <main class="py-4" >
-                        <div class="container-fluid" id="name"  >
-                            <div class="row justify-content-center">
-                                <div class="col-md-9" >
-                                    <!-- <img  src="{{url('img/logo.png')}}" width="400" height="auto" class="mb-3" alt="logo"> -->
-                                    <p id="companyName">BLUE BEE ONE </p>
-                                    <p id="tag"><i>"The name of our company comes from Blue Bee. The blue bee is said to bring happiness and make a path of happiness, which exists in each one of us."</i></p>
-                                    <p id="appName">REQUEST MANAGEMENT SYSTEM</p>
-                                </div>
-                            </div>
-                        </div>
-                    </main>
+        <div class=" row d-md-flex h-md-100 align-items-center" id="guest">
+
+            <!-- First Half -->
+
+            <div class="col-md-6 p-0 h-md-100">
+                <div class="text-white d-md-flex align-items-center h-100 text-center justify-content-center">
+                        <img src="{{url('images/background1.jpg')}}" width="100%" height="100%">              
                 </div>
-                <div id="app" class="col-md-7">
-                    <main class="py-4">
-                        @yield('content')
-                    </main>
-                </div>       
             </div>
-        @endguest 
-        @auth
-            <div id="app">
-                <main class="py-4">
+
+            <!-- Second Half -->
+            <div class="col-md-6 p-0 h-md-100 loginarea" style="background-color:#3490dc">
+                <div class="container d-md-flex align-items-center h-100 justify-content-center">
                     @yield('content')
-                </main>
+                </div>
             </div>
+
+        </div>
+        @endguest
+        @auth
+        <div id="app">
+            <main class="py-4">
+                @yield('content')
+            </main>
+        </div>
         @endauth
     </div>
 </body>
+<script  type="text/javascript">
+    window.onload = function() {
+        if(document.getElementById('guest')) {
+            console.log('storage cleared!');
+            localStorage.clear();
+        }
+    }
+</script>
 </html>
