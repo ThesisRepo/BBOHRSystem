@@ -86,7 +86,7 @@ class UserInformationController extends Controller
             ]; 
             
             $result = $this->user->updateWithUserInfo($data, $id);
-            if($currentImg) {
+            if(file_exists(public_path() . '/' . $currentImg)) {
                 unlink(public_path().'/' . $currentImg);
             }
             $res = response()->json($result, 200);
