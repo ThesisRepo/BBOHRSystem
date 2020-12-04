@@ -9,7 +9,7 @@
           v-if="(user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr'))"
         >
           <v-tabs-slider></v-tabs-slider>
-          <v-tab @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
+          <v-tab v-if="!user_type.includes('general mngr')" @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
           <v-tab @click="requests = false, employees = true, feedback = false">Employees Requests</v-tab>
           <v-tab @click="requests = false, employees = false, feedback = true">History</v-tab>
         </v-tabs>
@@ -141,16 +141,7 @@
         <v-card-text>
           <v-container>
             <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
-            <v-tabs
-            dark
-            background-color="primary"
-            fixed-tabs
-            >
-                <v-tabs-slider></v-tabs-slider>
-                <v-tab @click="half = false, whole = true">Whole Day</v-tab>
-                <v-tab @click="whole = false, half = true">Half Day</v-tab>
-            </v-tabs>
-            <v-row v-if="whole">
+            <v-row>
               <v-col cols="12" sm="6" md="6">
                 <v-select
                   :items="leaveType"
@@ -174,105 +165,15 @@
                   v-if="error2"
                   style="color: red; font-style: italic"
                 >Start date must not be higher than End date!</span>
-                <v-menu
-                  :close-on-content-click="true"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      v-model="editedItem.start_date"
-                      label="Start Date"
-                      prepend-icon="mdi-calendar"
-                      readonly
-                      v-bind="attrs"
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker
-                    v-model="editedItem.start_date"
-                    :allowed-dates="disabledDates"
-                    no-title
-                    scrollable
-                    color="primary"
-                    @change="changeDate()"
-                  ></v-date-picker>
-                </v-menu>
+                <v-text-field label="Start Date" type="datetime-local" v-model="editedItem.start_date" :allowed-dates="disabledDates" @change="changeDate()" color="primary"></v-text-field>
               </v-col>
-              <v-col cols="12" sm="6" md="6">
+              <v-col cols="12" sm="4">
                 <span
                   v-if="error1"
-                  style="color: red; font-style: italic"
-                >End date must be higher than start date!</span>
-                <v-menu
-                  :close-on-content-click="true"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      v-model="editedItem.end_date"
-                      label="End Date"
-                      prepend-icon="mdi-calendar"
-                      readonly
-                      v-bind="attrs"
-                      v-on="on"
-                      :disabled="disable"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker
-                    v-model="editedItem.end_date"
-                    :allowed-dates="disabledDates2"
-                    no-title
-                    scrollable
-                    color="primary"
-                    @change="changeDate()"
-                  ></v-date-picker>
-                </v-menu>
-              </v-col>
-            </v-row>
-            <v-row v-if="half">
-              <v-col cols="12">
-                <v-select
-                  :items="leaveType"
-                  label="Reason*"
-                  v-model="editedItem.selectedLeaveType"
-                  item-text="name"
-                  item-value="value"
-                  required
-                ></v-select>
-              </v-col>
-              <v-col cols="4">
-                <v-select
-                  :items="halfSched"
-                  label="Start Time*"
-                  v-model="editedItem.start_time"
-                  item-text="name"
-                  item-value="value"
-                  @change="timeClick()"
-                  required
-                ></v-select>
-              </v-col>
-              <v-col cols="4">
-                <v-select
-                  :items="halfSchedCorrespond"
-                  disabled
-                  label="End Time*"
-                  v-model="editedItem.end_time"
-                  item-text="name"
-                  item-value="value"
-                  required
-                ></v-select>
-              </v-col>
-              <v-col cols="4">
-                <v-text-field
-                  label="Total Day/s of Leave*"
-                  type="text"
-                  v-model="half_days_with_text"
-                  disabled
-                ></v-text-field>
+                  class="ml-7"
+                  style="color: red; font-size: 13px"
+                >Higher the End Date</span>
+                <v-text-field label="End Date" type="datetime-local" :allowed-dates="disabledDates2" v-model="editedItem.end_date" @change="changeDate()" color="primary"></v-text-field>
               </v-col>
             </v-row>
           </v-container>
@@ -333,7 +234,7 @@
 
         </v-toolbar>
       </template>
-      <template v-slot:item.number_of_days="{ item }">{{item.number_of_days === 0 ? 'Half Day' : item.number_of_days + ' ' + 'Day/s' }}</template>
+      <template v-slot:item.number_of_days="{ item }">{{item.number_of_days >= 1 ? item.number_of_days + ' ' + 'Day/s' : item.number_of_days.toFixed(2) + ' ' + 'Hour/s' }}</template>
       <template v-slot:item.status.status_name="{ item }">
         <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
@@ -382,8 +283,6 @@ export default {
     error: false,
     error1: false,
     informationCheck: null,
-    whole: true,
-    half: false,
     error2: false,
     disable: false,
     end_date: null,
@@ -438,14 +337,6 @@ export default {
       { title: 'Approved Requests' },
       { title: 'Disapproved Requests' }
     ],
-    halfSched: [
-        {value: 1, name: "10am"}, 
-        {value: 2, name: "2pm"}
-      ],
-      halfSchedCorrespond: [
-        {value: 1, name: "2pm"}, 
-        {value: 2, name: "7pm"}
-      ],
     dates: [new Date().toISOString().substr(0, 10), ],
     leaveType: [
       { value: 1, name: "Sick Leave" },
@@ -471,25 +362,21 @@ export default {
     },
   },
   mounted() {
-    if ((this.user_type.includes("hr mngr") || this.user_type.includes("prp emp") || this.user_type.includes("general mngr")) && !(this.user_type.includes("finance mngr"))) {
+    if ((this.user_type.includes("hr mngr") || this.user_type.includes("prp emp")) && !(this.user_type.includes("finance mngr"))) {
       this.retrievePendingPrp();
       this.retrieve();
       this.getAllFeedback();
       this.checkUser()
-    } else {
+    }else if(this.user_type.includes("general mngr")){
+      this.retrievePendingPrp();
+      this.getAllFeedback();
+      this.checkUser()
+    }else{
       this.retrieve();
       this.checkUser()
     }
   },
   methods: {
-    timeClick(){
-      if(this.start_time === 1){
-        this.end_time = this.halfSchedCorrespond[0]
-      }else{
-        this.end_time = this.halfSchedCorrespond[1]
-      }
-      console.log(this.end_time)
-    },
     changeDate() {
       if (
         this.editedItem.start_date !== null &&
@@ -501,7 +388,7 @@ export default {
           let diff = end.diff(start);
           let differenceInDay = diff / 1000 / 60 / 60 / 24;
           this.editedItem.total_days = differenceInDay;
-          this.total_days_with_text = differenceInDay + " days of leave";
+          this.total_days_with_text = differenceInDay.toFixed(2) < 0.5 ? ((differenceInDay.toFixed(2))*24) + " hours of leave" : differenceInDay.toFixed(1) + "days of leave";
           this.error1 = false;
           this.error2 = false;
         } else {
@@ -534,27 +421,14 @@ export default {
         });
     },
     editItem(item) {
-      if(this.whole === true){
-        this.editedItem.id = item.id;
-        this.editedIndex = this.request.indexOf(item);
-        this.editedItem.selectedLeaveType = item.leave_type_id;
-        this.editedItem.total_days = item.number_of_days;
-        this.total_days_with_text = item.number_of_days + " days of leave";
-        this.editedItem.start_date = item.start_date;
-        this.editedItem.end_date = item.end_date;
-        this.dialog = true;
-      }else{
-        this.editedItem.id = item.id;
-        this.editedIndex = this.request.indexOf(item);
-          this.start_time !== null &&
-          this.error1 === false
-        this.editedItem.selectedLeaveType = item.leave_type_id;
-        this.editedItem.total_days = item.number_of_days;
-        this.total_days_with_text = item.number_of_days + " days of leave";
-        this.editedItem.start_date = item.start_date;
-        this.editedItem.end_date = item.end_date;
-        this.dialog = true;
-      }
+      this.editedItem.id = item.id;
+      this.editedIndex = this.request.indexOf(item);
+      this.editedItem.selectedLeaveType = item.leave_type_id;
+      this.editedItem.total_days = item.number_of_days;
+      this.total_days_with_text = item.number_of_days + " days of leave";
+      this.editedItem.start_date = item.start_date;
+      this.editedItem.end_date = item.end_date;
+      this.dialog = true;
     },
     save() {
       if (
