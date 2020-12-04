@@ -4,21 +4,20 @@
     <v-container>
       <v-card class="mx-auto" elevation="3">
           <v-card-title class="primary fill-height" >
-            <span class="headline white--text">USER PROFILE {{profile_url}} s</span>
+            <span class="headline white--text">USER PROFILE</span>
           </v-card-title>
           <v-container>
             <v-row>
               <v-col>
 
-                <!-- <v-avatar v-if="profile_url === null" class="ml-15" size="200">
+                <v-avatar v-if="profile_url === null" class="ml-15" size="200">
                   <img src="images/user.png" width="100%" height="100%" id="profile">
-                </v-avatar> -->
-                <v-avatar  class="ml-15" color="grey darken-1" size="200">
+                </v-avatar>
+                <v-avatar  v-else class="ml-15" color="grey darken-1" size="200">
                   <img :src="profile_url" width="100%" height="100%" id="profile">
                 </v-avatar>
                 <v-row>
                   <v-col class="ml-15">
-                    {{profile_url}}
                   <v-btn
                     margin
                     color="primary"
@@ -90,7 +89,7 @@
               <h4 class="primary--text" mb-1 style="margin-left: 3%;">Personal Information:</h4>
               <v-row style="margin-left: 5%;">
                 <v-col cols="6 sm-6 md-6">
-                  <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-map-marker</v-icon> {{ address ? address : 'No Address' }}</p>
+                  <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-map-marker</v-icon>{{ address ? address : 'No Address' }}</p>
                   <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-calendar</v-icon> {{ birthdate ? birthdate : 'No Birthdate'}}</p>
                 </v-col>
                 <v-col cols="6">
