@@ -211,9 +211,8 @@ class RequestBaseController extends Controller
         
         $prp_assigned_id = $this->getApproverId($this->request_name);
         $res = $this->model->delete($id);
-        // dd($this->model->delete($id));
         $employee_name = $this->getFullName();
-        // $this->notifyNewRequest('deleted', $employee_name, $prp_assigned_id, $this->request_name);
+        $this->notifyNewRequest('deleted', $employee_name, $prp_assigned_id, $this->request_name, []);
 
         return response()->json($res, 200);
 

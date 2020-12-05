@@ -53,6 +53,7 @@ export default {
         console.log('listening', this.user);
         Echo.private('newrequest.' + this.user.id)
           .listen('NewRequest', notif => {
+            this.$store.commit('notificationCount');
             this.browserPopUp(notif);
           })
 
