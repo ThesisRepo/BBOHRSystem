@@ -16,7 +16,7 @@
                   <img :src="profile_url" width="100%" height="100%" id="profile">
                 </v-avatar>
                 <v-row>
-                  <v-col class="ml-15">
+                  <v-col class="ml-16">
                   <v-btn
                     margin
                     color="primary"
@@ -26,7 +26,7 @@
                     depressed
                     :loading="isSelecting"
                     @click="onButtonClick"
-                  >CHANGE PROFILE</v-btn>
+                  >CHANGE IMAGE</v-btn>
 
                   <input
                     ref="uploader"
@@ -54,7 +54,7 @@
                     &nbsp;&nbsp;&nbsp;<v-icon class="primary--text">mdi-account-tie</v-icon> {{ prp_assign }}
                   </span>
                   <span class="text--primary text-caption text-sm-body-2 text-md-body-1">
-                    &nbsp;&nbsp;<u class="indigo--text lighten-1--text" style="cursor:pointer" @click="updatePrp">UPDATE</u>
+                    &nbsp;&nbsp;<u class="indigo--text lighten-1--text" style="cursor:pointer" @click="updatePrp">UPDATE PRP</u>
                   </span>
                   <updatePrp
                   ref="updatePrp"
@@ -73,7 +73,7 @@
                 </v-row>
               </v-col>
               <v-col class="text-right">
-              <editProfile :datas="datas"></editProfile>
+              <editProfile :datas="datas" :datum="datum"></editProfile>
             </v-col>
             </v-row>
           </v-container>
@@ -87,11 +87,11 @@
             <v-container>
               <h4 class="primary--text" mb-1 style="margin-left: 3%;">Personal Information:</h4>
               <v-row style="margin-left: 5%;">
-                <v-col cols="6 sm-6 md-6">
+                <v-col cols="12" md="6">
                   <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-map-marker</v-icon> {{ address ? address : 'No Address' }}</p>
                   <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-calendar</v-icon> {{ birthdate ? birthdate : 'No Birthdate'}}</p>
                 </v-col>
-                <v-col cols="6">
+                <v-col cols="12" md="6">
                   <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-contacts</v-icon> {{ contact_number ? contact_number : 'No Contact No.' }}</p>
                   <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-account</v-icon> {{ status === 'single' ? 'Single' : status === 'married' ? 'Married' : status ? status : 'No Status' }}</p>
                 </v-col>
@@ -99,11 +99,11 @@
               <!-- end Personal Info -->
               <h4 class="primary--text" mb-1 style="margin-left: 3%;">Business Information:</h4>
               <v-row style="margin-left: 5%;">
-                <v-col cols="6">
+                <v-col cols="12" md="6">
                   <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-account-group</v-icon> {{ department ? department : 'No Department' }}</p>
                   <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-google-street-view</v-icon> {{ company_status === 'regular' ? 'Regular' : company_status ? company_status : 'No Company Status' }}</p>
                 </v-col>
-                <v-col cols="6">
+                <v-col cols="12" md="6">
                   <p class="black--text"  style="font-size:20px"><v-icon class="primary--text">mdi-calendar-check</v-icon> {{ date_hired ? date_hired : 'No Date Hired'}}</p>
                   <p class="black--text"  style="font-size:20px"><v-icon class="primary--text">mdi-timetable</v-icon> {{ shift ? shift : 'No Shift Time'}}</p>
                 </v-col>
@@ -111,11 +111,11 @@
               <!-- end Business Info -->
               <h4 class="primary--text" mb-1 style="margin-left: 3%;">Others:</h4>
               <v-row style="margin-left: 5%;">
-                <v-col cols="6">
+                <v-col cols="12" md="6">
                   <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-calculator</v-icon> {{ pag_ibig ? pag_ibig : 'No Pag-ibig Account' }}</p>
                   <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-calculator</v-icon> {{ tin_number ? tin_number : 'No TIN'}}</p>
                 </v-col>
-                <v-col cols="6">
+                <v-col cols="12" md="6">
                   <p class="black--text"  style="font-size:20px"><v-icon class="primary--text">mdi-calculator</v-icon> {{ philhealth_num ? philhealth_num : 'No PhilHealth'}}</p>
                   <p class="black--text"  style="font-size:20px"><v-icon class="primary--text">mdi-calculator</v-icon> {{ sss_num ? sss_num : 'No SSS'}}</p>
                 </v-col>
@@ -126,6 +126,14 @@
     </v-container>
 </v-app>
 </template>
+<style>
+.v-btn:not(.v-btn--round).v-size--default {
+  height: 36px;
+  min-width: 64px;
+  padding: 0 37px;
+}
+</style>
+
 <script>
 import editProfile from "./modals/edit_profile.vue";
 import updatePrp from "./modals/edit_prp.vue";
@@ -160,7 +168,8 @@ export default {
       datas: [],
       profile_url: null,
       isSelecting: false,
-      testClass: 'red--text'
+      testClass: 'red--text',
+      datum: []
     };
   },
   mounted() {
@@ -186,6 +195,7 @@ export default {
           this.user_finance = localStorage.getItem("user_finance");
           if(response.data.user_information !== null){
             this.datas = response.data.user_information;
+            this.datum = response.data
             this.company_position = response.data.user_information.company_positions[0].position_name;
             this.shift = response.data.user_information.shift_time.shift_time_name;
             this.department = response.data.user_information.department.department_name;

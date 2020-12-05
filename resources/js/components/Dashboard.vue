@@ -164,28 +164,32 @@
         </v-toolbar>
         <v-card-text>
           <v-container>
+            <span v-if="errorMessage1" style="color: red; font-size: 13px">{{ errorMessage1 }}</span>
+            <span v-if="errorMessage2" style="color: red; font-size: 13px">{{ errorMessage2 }}</span>
+            <span v-if="errorMessage3" style="color: red; font-size: 13px">{{ errorMessage3 }}</span>
             <v-row>
               <v-col cols="12" sm="6">
-                <v-text-field label="Title*" v-model="editedItem.title" required></v-text-field>
+                <v-text-field label="Title*" @keyup="validate('title')" autocomplete="off" v-model="editedItem.title" required></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
-                <v-select label="Event Type*" :items="event_types" item-text="event_name" item-value="id" v-model="editedItem.event_type" required></v-select>
+                <v-select label="Event Type*" :items="event_types" @keyup="validate('event')" item-text="event_name" item-value="id" v-model="editedItem.event_type" required></v-select>
               </v-col>
               <v-col cols="12">
                 <!-- <v-text-field label="Content*" v-model="content" required></v-text-field> -->
                 <v-textarea
                   outlined
                   label="Content*"
+                   @keyup="validate('details')"
                   v-model="editedItem.content"
                   rows="3"
                   required
                 ></v-textarea>
               </v-col>
               <v-col cols="12" sm="6">
-                <v-text-field label="Start Date" type="datetime-local" v-model="editedItem.start_date" color="primary"></v-text-field>
+                <v-text-field label="Start Date & Time" type="datetime-local" v-model="editedItem.start_date" color="primary"></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
-                <v-text-field label="End Date" type="datetime-local" v-model="editedItem.end_date" color="primary"></v-text-field>
+                <v-text-field label="End Date & Time" type="datetime-local" v-model="editedItem.end_date" color="primary"></v-text-field>
               </v-col>
               <v-col cols="12" v-if="user_type.includes('hr mngr')">
                 <v-checkbox
@@ -251,7 +255,10 @@ export default {
       checkbox: false,
       event_type: null,
     },
-    loading: false
+    loading: false,
+    errorMessage1: null,
+    errorMessage2: null,
+    errorMessage3: null,
   }),
   mounted() {
     this.$refs.calendar.checkChange();
@@ -261,6 +268,27 @@ export default {
     this.retrieve();
   },
   methods: {
+    validate(item){
+      if(item === 'title'){
+        if(this.editedItem.title === '' || this.editedItem.title === null){
+          this.errorMessage1 = 'Title field is required'
+        }else{
+          this.errorMessage1 = null
+        }
+      }else if(item === 'event'){
+        if(this.editedItem.event_type === '' || this.editedItem.event_type === null){
+          this.errorMessage2 = 'Event type field is required'
+        }else{
+          this.errorMessage2 = null
+        }
+      }else if(item === 'details'){
+        if(this.editedItem.content === '' || this.editedItem.content === null){
+          this.errorMessage3 = 'Details field is required'
+        }else{
+          this.errorMessage3 = null
+        }
+      }
+    },
     eventAdd(){
       this.$refs.addEvent.show()
     },
@@ -298,12 +326,12 @@ export default {
       this.$refs.calendar.prev();
     },
     next() {
-      // console.log(this.$refs.calendar);
       this.$refs.calendar.next();
     },
     showEvent({ nativeEvent, event }) {
       const open = () => {
         this.selectedEvent = event;
+        console.log('mao ni', this.selectedEvent, event)
         this.selectedElement = nativeEvent.target;
         setTimeout(() => {
           this.selectedOpen = true;
@@ -315,7 +343,7 @@ export default {
       } else {
         open();
       }
-      nativeEvent.stopPropagation();
+      nativeEvent.stopPropagation();  
     },
     updateRange() {
       const events = [];
@@ -367,6 +395,7 @@ export default {
           };
           this.events.push(temp)
         });
+        console.log('hahaha', this.events)
       });
     },
     deleteItem(selectedEvent) {
@@ -384,6 +413,9 @@ export default {
         });
     },    
     editItem(selectedEvent) {
+      this.errorMessage1 = null
+      this.errorMessage2 = null
+      this.errorMessage3 = null                                        
       this.editedItem.id = selectedEvent.id;
       this.editedIndex = this.events.indexOf(selectedEvent);
       this.editedItem.content = selectedEvent.content;
@@ -399,27 +431,32 @@ export default {
       })
     },
     updateCalendar(){
-      this.loading = true
-      let params = {
-          id: this.editedItem.id,
-          user_id: this.user_id,
-          content: this.editedItem.content,
-          is_public: this.editedItem.checkbox,
-          start_date: this.editedItem.start_date,
-          end_date: this.editedItem.end_date,
-          event_type_id: this.editedItem.event_type.id ? this.editedItem.event_type.id : this.editedItem.event_type,
-          title: this.editedItem.title
-        };
-        this.$axios
-          .post(
-            "events/" + this.editedItem.id,
-            params
-          )
-          .then(response => {
-            this.loading = false
-            this.retrieve();
-            this.dialog = false;
-          });
+      this.validate('title')
+      this.validate('event')
+      this.validate('details')
+      if(this.errorMessage1 === null && this.errorMessage2 === null && this.errorMessage3 === null){
+        this.loading = true
+        let params = {
+            id: this.editedItem.id,
+            user_id: this.user_id,
+            content: this.editedItem.content,
+            is_public: this.editedItem.checkbox,
+            start_date: this.editedItem.start_date,
+            end_date: this.editedItem.end_date,
+            event_type_id: this.editedItem.event_type.id ? this.editedItem.event_type.id : this.editedItem.event_type,
+            title: this.editedItem.title
+          };
+          this.$axios
+            .post(
+              "events/" + this.editedItem.id,
+              params
+            )
+            .then(response => {
+              this.loading = false
+              this.retrieve();
+              this.dialog = false;
+            });
+        }
       }
   }
 };

@@ -15,12 +15,12 @@
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col cols="12" sm="6" md="12">
+              <v-col cols="12" md="6">
                 <v-text-field
                   class="input-name"
-                  label="Address*"
-                  v-model="datas.address"
-                  @keyup="validate('datas.address')"
+                  label="First Name*"
+                  v-model="datum.first_name"
+                  @keyup="validate('first_name')"
                   required
                 ></v-text-field>
                 <span
@@ -29,7 +29,40 @@
                   style="color: red; font-size: 12px"
                 >{{ errorMessage1 }}</span>
               </v-col>
-              <v-col cols="12" sm="6" md="12">
+              <v-col cols="12" md="6">
+                <v-text-field
+                  class="input-name"
+                  label="Last Name*"
+                  v-model="datum.last_name"
+                  @keyup="validate('last_name')"
+                  required
+                ></v-text-field>
+                <span
+                  class="ml-2"
+                  v-if="errorMessage1 !== null"
+                  style="color: red; font-size: 12px"
+                >{{ errorMessage1 }}</span>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-select
+                    :items="civilItem"
+                    item-text="text"
+                    item-value="value"
+                    label="Civil Status*"
+                    @keyup="validate('civil_status')"
+                    v-model="datas.civil_status_id"
+                    required
+                ></v-select>
+                <span
+                  v-if="errorMessage2 !== null"
+                  style="color: red; font-size: 12px"
+                >{{ errorMessage2 }}</span>
+                <span
+                  v-if="errorMessage3 !== null"
+                  style="color: red; font-size: 12px"
+                >{{ errorMessage3 }}</span>
+              </v-col>
+              <v-col cols="12" md="6">
                 <v-text-field
                   label="Contact No.*"
                   type="number"
@@ -46,60 +79,77 @@
                   style="color: red; font-size: 12px"
                 >{{ errorMessage3 }}</span>
               </v-col>
-              <!-- <div>Manage Password</div> -->
-              <v-col cols="6">
+              <v-col cols="12">
                 <v-text-field
-                  v-model="datas.password"
-                  prepend-icon="mdi-lock"
-                  label="New Password*"
-                  :append-icon="
-                                        value ? 'mdi-eye' : 'mdi-eye-off'
-                                    "
-                  :type="value ? 'password' : 'text'"
-                  @keyup="validate('datas.password')"
-                  dense
-                  required
-                  @click:append="() => (value = !value)"
-                ></v-text-field>
-                <span
-                  class="ml-8"
-                  v-if="successMessage !== null"
-                  style="color: green; font-size: 12px"
-                >{{ successMessage }}</span>
-                <span
-                  class="ml-8"
-                  v-if="errorMessage4 !== null"
-                  style="color: red; font-size: 12px"
-                >{{ errorMessage4 }}</span>
-                <span
-                  class="ml-8"
-                  v-if="errorMessage5 !== null"
-                  style="color: red; font-size: 12px"
-                >{{ errorMessage5 }}</span>
-              </v-col>
-              <v-col cols="6">
-                <v-text-field
-                  label="Confirm Password"
-                  :append-icon="
-                                        valuePass ? 'mdi-eye' : 'mdi-eye-off'
-                                    "
-                  @click:append="
-                                        () => (valuePass = !valuePass)
-                                    "
-                  :type="valuePass ? 'password' : 'text'"
-                  @keyup="validate('datas.confirm_password')"
-                  name="password"
-                  prepend-icon="mdi-lock"
-                  v-model="datas.confirm_password"
-                  dense
+                  class="input-name"
+                  label="Address*"
+                  v-model="datas.address"
+                  @keyup="validate('datas.address')"
                   required
                 ></v-text-field>
                 <span
-                  class="ml-8"
-                  v-if="errorMessage6 !== null"
+                  class="ml-2"
+                  v-if="errorMessage1 !== null"
                   style="color: red; font-size: 12px"
-                >{{ errorMessage6 }}</span>
+                >{{ errorMessage1 }}</span>
               </v-col>
+              <v-divider></v-divider>
+              <div><v-btn depressed color="primary" @click="showP()" v-if="showPass === true">Manage Password</v-btn></div>
+              <v-row v-if="seen === false">
+                <v-col cols="12" md="6">
+                  <v-text-field
+                    v-model="datas.password"
+                    prepend-icon="mdi-lock"
+                    label="New Password*"
+                    :append-icon="
+                      value ? 'mdi-eye' : 'mdi-eye-off'
+                    "
+                    :type="value ? 'password' : 'text'"
+                    @keyup="validate('datas.password')"
+                    dense
+                    required
+                    @click:append="() => (value = !value)"
+                  ></v-text-field>
+                  <span
+                    class="ml-8"
+                    v-if="successMessage !== null"
+                    style="color: green; font-size: 12px"
+                  >{{ successMessage }}</span>
+                  <span
+                    class="ml-8"
+                    v-if="errorMessage4 !== null"
+                    style="color: red; font-size: 12px"
+                  >{{ errorMessage4 }}</span>
+                  <span
+                    class="ml-8"
+                    v-if="errorMessage5 !== null"
+                    style="color: red; font-size: 12px"
+                  >{{ errorMessage5 }}</span>
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-text-field
+                    label="Confirm Password"
+                    :append-icon="
+                      valuePass ? 'mdi-eye' : 'mdi-eye-off'
+                    "
+                    @click:append="
+                      () => (valuePass = !valuePass)
+                    "
+                    :type="valuePass ? 'password' : 'text'"
+                    @keyup="validate('datas.confirm_password')"
+                    name="password"
+                    prepend-icon="mdi-lock"
+                    v-model="datas.confirm_password"
+                    dense
+                    required
+                  ></v-text-field>
+                  <span
+                    class="ml-8"
+                    v-if="errorMessage6 !== null"
+                    style="color: red; font-size: 12px"
+                  >{{ errorMessage6 }}</span>
+                </v-col>
+              </v-row>
             </v-row>
           </v-container>
         </v-card-text>
@@ -123,8 +173,11 @@ export default {
     errorMessage5: null,
     errorMessage6: null,
     successMessage: null,
-    valuePass: true,
+    valuePass: false,
+    showPass: true,
+    seen: true,
     value: true,
+    civil_status: null,
     user_id: localStorage.getItem("id"),
     civilItem: [
       { text: "Single", value: 0 },
@@ -132,14 +185,15 @@ export default {
       { text: "Widow", value: 2 }
     ]
   }),
-  props: ["datas"],
-
+  props: ["datas", "datum"],
   methods: {
+    showP(){
+      this.seen = false
+    },
     validate(input) {
       let reqWhiteSpace = /\d/;
       let specialChar = /^[A-Za-z0-9 ]+$/;
       let numberExclude = /^[0-9 ]+$/;
-
       if (input === "datas.address") {
         this.errorMessage1 = null;
         if (this.datas.address === "") {
@@ -148,7 +202,6 @@ export default {
           this.errorMessage1 = null;
         }
       }
-
       if (input === "datas.contact_number") {
         this.errorMessage2 = null;
         this.errorMessage3 = null;
@@ -269,29 +322,20 @@ export default {
     update() {
       this.validate("datas.address");
       this.validate("datas.contact_number");
-      this.validate("datas.pag_ibig_number");
-      this.validate("datas.sss_number");
-      this.validate("datas.tin_number");
-      this.validate("datas.tin_number");
+      this.validate("datas.first_name");
+      this.validate("datas.last_name");
+      this.validate("datas.civil_status");
       if (
         this.datas.address != null &&
         this.datas.civil_status != null &&
         this.datas.contact_number != null &&
-        this.datas.pag_ibig_number != null &&
-        this.datas.sss_number != null &&
-        this.datas.tin_number != null &&
-        this.datas.philhealth_number != null &&
+        this.datas.first_name != null &&
+        this.datas.last_name != null &&
         this.errorMessage1 === null &&
         this.errorMessage2 === null &&
         this.errorMessage3 === null &&
         this.errorMessage4 === null &&
-        this.errorMessage5 === null &&
-        this.errorMessage6 === null &&
-        this.errorMessage7 === null &&
-        this.errorMessage8 === null &&
-        this.errorMessage9 === null &&
-        this.errorMessage10 === null &&
-        this.errorMessage11 === null
+        this.errorMessage5 === null
       ) {
         this.dialog = true;
         e.preventDefault();
@@ -300,10 +344,8 @@ export default {
         address: this.datas.address,
         civil_status: this.datas.civil_status,
         contact_number: this.datas.contact_number,
-        pag_ibig_number: this.datas.pag_ibig_number,
-        sss_number: this.datas.sss_number,
-        tin_number: this.datas.tin_number,
-        philhealth_number: this.datas.philhealth_number
+        pag_ibig_number: this.datas.first_name,
+        sss_number: this.datas.last_name
       };
       this.$axios.post("user_info/" + this.user_id, params).then(response => {
         if (response.data === 1) {

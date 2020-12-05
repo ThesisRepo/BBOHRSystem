@@ -165,7 +165,7 @@
                   v-if="error2"
                   style="color: red; font-style: italic"
                 >Start date must not be higher than End date!</span>
-                <v-text-field label="Start Date" type="datetime-local" v-model="editedItem.start_date" :allowed-dates="disabledDates" @change="changeDate()" color="primary"></v-text-field>
+                <v-text-field label="Start Date & Time" type="datetime-local" v-model="editedItem.start_date" :allowed-dates="disabledDates" @change="changeDate()" color="primary"></v-text-field>
               </v-col>
               <v-col cols="12" sm="4">
                 <span
@@ -173,7 +173,7 @@
                   class="ml-7"
                   style="color: red; font-size: 13px"
                 >Higher the End Date</span>
-                <v-text-field label="End Date" type="datetime-local" :allowed-dates="disabledDates2" v-model="editedItem.end_date" @change="changeDate()" color="primary"></v-text-field>
+                <v-text-field label="End Date & Time" type="datetime-local" :allowed-dates="disabledDates2" v-model="editedItem.end_date" @change="changeDate()" color="primary"></v-text-field>
               </v-col>
             </v-row>
           </v-container>
@@ -201,7 +201,7 @@
     >
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
-          <v-toolbar-title class="col pa-3 py-4 white--text">LEAVE REQUEST</v-toolbar-title>
+          <v-toolbar-title v-if="!user_type.includes('general mngr')" class="col pa-3 py-4 white--text">LEAVE REQUEST</v-toolbar-title>
           <v-text-field
             v-model="search"
             clearable
@@ -216,15 +216,15 @@
           
           <v-btn
           style="margin-left: 5%"
-          v-if="prp_assigned_id === 'No PRP assign' || informationCheck === null"
+          v-if="(prp_assigned_id === 'No PRP assign' || informationCheck === null) && !user_type.includes('general mngr')"
           color="light blue darken-2"
           rounded
           outlined
           dark
           @click="messagePop()"
         >
-          <v-icon>mdi-plus</v-icon>
-          <v-toolbar-title style="font-size: 16px">Make Request</v-toolbar-title>
+          <v-icon v-if="!user_type.includes('general mngr')">mdi-plus</v-icon>
+          <v-toolbar-title v-if="!user_type.includes('general mngr')" style="font-size: 16px">Make Request</v-toolbar-title>
         </v-btn>
 
           <Reminder

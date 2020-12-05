@@ -36,18 +36,18 @@
                   required
                 ></v-select>
               </v-col>
-              <v-col cols="12" sm="4">
-                <v-text-field label="Start Date" type="datetime-local" v-model="start_date" :allowed-dates="disabledDates" @change="changeDate()" color="primary"></v-text-field>
+              <v-col cols="12" md="4">
+                <v-text-field label="Start Date & Time" type="datetime-local" v-model="start_date" :allowed-dates="disabledDates" @change="changeDate()"></v-text-field>
               </v-col>
-              <v-col cols="12" sm="4">
-                <v-text-field label="End Date" type="datetime-local" :allowed-dates="disabledDates2" v-model="end_date" @change="changeDate()" color="primary"></v-text-field>
+              <v-col cols="12" md="4">
+                <v-text-field label="End Date & Time" type="datetime-local" :allowed-dates="disabledDates2" v-model="end_date" @change="changeDate()"></v-text-field>
                 <span
                   v-if="error1"
                   class="ml-7"
                   style="color: red; font-size: 13px"
                 >Higher the End Date</span>
               </v-col>
-              <v-col cols="12" sm="4">
+              <v-col cols="12" md="4">
                 <v-text-field
                   label="Total Day/s of Leave*"
                   type="text"

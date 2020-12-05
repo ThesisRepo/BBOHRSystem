@@ -185,7 +185,7 @@
     <v-data-table v-if="requests" :headers="headers" :items="petty" :search="search" class="elevation-3">
       <template v-slot:top>
       <v-toolbar class="mb-2" color="blue darken-1" dark flat>
-        <v-toolbar-title class="col pa-3 py-4 white--text"  style="font-size:16px "
+        <v-toolbar-title class="col pa-3 py-4 white--text"  style="font-size:16px " v-if="!user_type.includes('general mngr')"
           >PETTY REQUEST</v-toolbar-title
         >
         <v-text-field
@@ -204,15 +204,15 @@
 
         <v-btn
           style="margin-left: 5%"
-          v-if="user_finance === 'No Finance assign' || informationCheck === null"
+          v-if="(user_finance === 'No Finance assign' || informationCheck === null) && !user_type.includes('general mngr')"
           color="light blue darken-2"
           rounded
           outlined
           dark
           @click="messagePop()"
         >
-          <v-icon>mdi-plus</v-icon>
-          <v-toolbar-title style="font-size: 16px">Make Request</v-toolbar-title>
+          <v-icon v-if="!user_type.includes('general mngr')">mdi-plus</v-icon>
+          <v-toolbar-title style="font-size: 16px" v-if="!user_type.includes('general mngr')">Make Request</v-toolbar-title>
         </v-btn>
 
         <Reminder

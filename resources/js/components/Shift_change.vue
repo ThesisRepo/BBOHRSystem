@@ -200,7 +200,7 @@
     >
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
-          <v-toolbar-title class="col pa-3 py-4 white--text" style="font-size: 16px">SHIFT REQUEST</v-toolbar-title>
+          <v-toolbar-title class="col pa-3 py-4 white--text" style="font-size: 16px" v-if="!user_type.includes('general mngr')">SHIFT REQUEST</v-toolbar-title>
           <v-text-field
             v-model="search"
             clearable
@@ -213,15 +213,15 @@
           <createShift v-if="prp_assigned_id !== 'No PRP assign' && informationCheck !== null"></createShift>
           <v-btn
           style="margin-left: 5%"
-          v-if="prp_assigned_id === 'No PRP assign' || informationCheck === null"
+          v-if="(prp_assigned_id === 'No PRP assign' || informationCheck === null) && !user_type.includes('general mngr')"
           color="light blue darken-2"
           rounded
           outlined
           dark
           @click="messagePop()"
         >
-          <v-icon>mdi-plus</v-icon>
-          <v-toolbar-title style="font-size: 16px">Make Request</v-toolbar-title>
+          <v-icon v-if="!user_type.includes('general mngr')">mdi-plus</v-icon>
+          <v-toolbar-title style="font-size: 16px" v-if="!user_type.includes('general mngr')">Make Request</v-toolbar-title>
         </v-btn>
 
           <Reminder
