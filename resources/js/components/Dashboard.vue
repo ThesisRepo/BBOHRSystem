@@ -78,6 +78,7 @@
               <v-icon small>mdi-chevron-right</v-icon>
             </v-btn>
             <v-toolbar-title v-if="$refs.calendar">{{ $refs.calendar.title }}</v-toolbar-title>
+            
             <v-spacer></v-spacer>
             <v-menu bottom right>
               <template v-slot:activator="{ on, attrs }">
@@ -342,9 +343,9 @@ export default {
         .then(response => {
           this.loading = false
           response.data.event_types.forEach(element => {
-            console.log('here', element)
             this.event_types.push(element)  
           });
+          console.log('here', this.event_types)
         });
     },
     retrieve() {
