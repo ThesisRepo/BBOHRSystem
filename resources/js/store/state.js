@@ -1,5 +1,5 @@
 let state = {
   todos: [],
-  profileUrl: 'images/user.png'
+  profileUrl: null
 }
 export default state

@@ -11,11 +11,12 @@
             <v-row>
               <v-col>
 
-                <!-- <v-avatar v-if="profile_url === null" class="ml-15" size="200">
+                <v-avatar v-if="profile_url === null" class="ml-15" size="200">
                   <img src="images/user.png" width="100%" height="100%" id="profile">
-                </v-avatar> -->
-                <v-avatar class="ml-15" color="grey darken-1" size="200">
+                </v-avatar>
+                <v-avatar v-else class="ml-15 avatar" color="grey darken-1" size="200">
                   <img :src="profile_url" width="100%" height="100%" id="profile">
+                   <div class="overlay" @click="onButtonClick">upload image</div>
                 </v-avatar>
                 <v-row>
                   <v-col class="ml-16">
@@ -27,8 +28,8 @@
                     outlined
                     depressed
                     :loading="isSelecting"
-                    @click="onButtonClick"
-                  >Upload Image</v-btn>
+                    @click="updateFileChanged"
+                  >Change Profile Image</v-btn>
 
                   <input
                     ref="uploader"
@@ -80,6 +81,16 @@
             </v-row>
           </v-container>
       </v-card>
+      <Reminder
+      ref="reminder"
+      :message="myMessage"
+      ></Reminder>
+      <Confirmation
+      ref="confirms"
+      :title="confirmationTitle"
+      :message="confirmationMessage"
+      @onConfirm="confirm($event)"
+    ></Confirmation>
     </v-container>
     
   </v-layout>
@@ -128,18 +139,41 @@
     </v-container>
 </v-app>
 </template>
-<style>
-.v-btn:not(.v-btn--round).v-size--default {
-  height: 36px;
-  min-width: 64px;
-  padding: 0 37px;
+<style scoped>
+.avatar {
+  position: relative;
+  width: 50%;
+  max-width: 300px;
+}
+.overlay {
+  position: absolute;
+  bottom: 0;
+  background: rgb(0, 0, 0);
+  background: rgba(0, 0, 0, 0.5); /* Black see-through */
+  color: #f1f1f1;
+  width: 100%;
+  transition: .5s ease;
+  /* opacity:0; */
+  color: white;
+  font-size: 20px;
+  padding: 20px;
+  text-align: center;
+}
+
+/* When you mouse over the container, fade in the overlay title */
+.avatar:hover .overlay {
+  /* opacity: 1; */
+  cursor: pointer;
 }
 </style>
+
 
 <script>
 import editProfile from "./modals/edit_profile.vue";
 import updatePrp from "./modals/edit_prp.vue";
 import updateFinance from "./modals/edit_finance.vue";
+import Reminder from "./modals/confirmation/reminder.vue";
+import Confirmation from "./modals/confirmation/confirm.vue";
 import { mapGetters } from "vuex";
 export default {
   data() {
@@ -172,6 +206,12 @@ export default {
       profile_url: this.profileUrl,
       isSelecting: false,
       testClass: 'red--text',
+      formData: null,
+      isEditabelProfile: false,
+      myMessage: null,
+      imgMaxSize: 2.097152,
+      confirmationTitle:null,
+      confirmationMessage: null,
       datum: []
     };
   },
@@ -181,7 +221,9 @@ export default {
   components: {
     editProfile,
     updatePrp,
-    updateFinance
+    updateFinance,
+    Reminder,
+    Confirmation
   },
   methods: {
     updatePrp(){
@@ -231,18 +273,43 @@ export default {
       );
       this.$refs.uploader.click();
     },
+    confirm(){
+      if(this.confirmationTitle == 'Update Profile'){
+        this.uploadImg();
+      }
+    },
+    uploadImg() {
+      this.$store.dispatch('ChangeProfileUrl', {user:this.user_id, profileUrl:this.formData}).then(()=> {
+        // alert('ddf');
+        this.isEditabelProfile = false;
+        this.isConfirmed = false;
+      });
+    },
+    updateFileChanged() {
+      if(this.isEditabelProfile) {
+        this.confirmationTitle = 'Update Profile',
+        this.confirmationMessage = 'Are you sure you want to update your profile photo?',
+        this.$refs.confirms.show()
+      }else{
+        this.myMessage = 'seems like you didn\'t upload an image.'
+        this.$refs.reminder.show();
+      }
+    },
     onFileChanged(e) {
       this.selectedFile = e.target.files[0];
-      this.profile_url = URL.createObjectURL(e.target.files[0]);
-      const config = {
-        header: { "content-type": "multipart/form-data" }
-      };
-      let formData = new FormData();
-      formData.append("image", this.selectedFile);
-      let param = {
-        id: this.user_id
-      };
-      this.$store.dispatch('ChangeProfileUrl', {user:this.user_id, profileUrl:formData});
+      if(this.selectedFile.size > this.imgMaxSize * 1024 * 1024) {
+        this.myMessage = 'Opps! Image too large.'
+        this.$refs.reminder.show();
+      }else {
+        this.isEditabelProfile = this.profile_url !=  URL.createObjectURL(e.target.files[0])
+        this.profile_url = URL.createObjectURL(e.target.files[0]);
+        const config = {
+          header: { "content-type": "multipart/form-data" }
+        };
+        let formData = new FormData();
+        formData.append("image", this.selectedFile);
+        this.formData = formData;
+      }
       // this.$axios
       //   .post(
       //     "update_profile_img/" + this.user_id,

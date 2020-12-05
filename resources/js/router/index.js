@@ -24,7 +24,18 @@ function isLoggedIn(to, from, next)
  {
   next();
  }
-}
+};
+function isLoggedIn2(to, from, next)
+{
+ if(localStorage.getItem('isloggedin')) 
+ {
+  next();
+ } 
+ else
+ {
+  next('/');
+ }
+};
 const router = new Router({
   mode: "hash",
   base: process.env.BASE_URL,
@@ -33,7 +44,8 @@ const router = new Router({
     {
       path: "/MyAccount",
       name: "MyAccount",
-      component: MyAccount
+      component: MyAccount,
+      beforeEnter : isLoggedIn2
     },
     {
       path: '/',
@@ -46,42 +58,50 @@ const router = new Router({
     {
       path: "/Dashboard",
       name: "Dashboard",
-      component: Dashboard
+      component: Dashboard,
+      beforeEnter : isLoggedIn2
     },
     {
       path: "/Leave",
       name: "Leave",
-      component: Leave
+      component: Leave,
+      beforeEnter : isLoggedIn2
     },
     {
       path: "/ShiftChange",
       name: "ShiftChange",
-      component: ShiftChange
+      component: ShiftChange,
+      beforeEnter : isLoggedIn2
     },
     {
       path: "/Overtime",
       name: "Overtime",
-      component: Overtime
+      component: Overtime,
+      beforeEnter : isLoggedIn2
     },
     {
       path: "/PettyCash",
       name: "PettyCash",
-      component: PettyCash
+      component: PettyCash,
+      beforeEnter : isLoggedIn2
     },
     {
       path: "/Budget",
       name: "Budget",
-      component: Budget
+      component: Budget,
+      beforeEnter : isLoggedIn2
     },
     {
       path: "/TravelAuthorization",
       name: "TravelAuthorization",
-      component: TravelAuthorization
+      component: TravelAuthorization,
+      beforeEnter : isLoggedIn2
     },
     {
       path: "/ManageUsers",
       name: "ManageUsers",
-      component: ManageUsers
+      component: ManageUsers,
+      beforeEnter : isLoggedIn2
     }
   ] 
 });

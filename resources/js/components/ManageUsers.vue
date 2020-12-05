@@ -1161,7 +1161,7 @@ export default {
             });
         },
         getAllPrp() {
-            this.$axios.get("prp/").then(response => {
+            this.$axios.get("prp").then(response => {
                 this.prp = response.data;
             });
         },

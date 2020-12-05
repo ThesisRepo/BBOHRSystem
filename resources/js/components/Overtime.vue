@@ -246,6 +246,8 @@
           <Reminder
           ref="reminder"
           :message="messageCheck === 'prp' ? 'Please set your PRP Assign' : messageCheck === 'user' ? 'Please set your personal information' : messageCheck === 'combine' ? 'Please set your PRP assign and your Personal Information' : ''"
+          link= "/MyAccount"
+          routeName='go to MY ACCOUNT'
           ></Reminder>
 
       </v-toolbar>

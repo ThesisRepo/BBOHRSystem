@@ -5,7 +5,7 @@ namespace App\Http\Controllers\PRP\Requests;
 use Illuminate\Http\Request;
 use App\Eloquent\Implementations\Requests\PettyCashRequestEloquent;
 use App\Services\ApproverRequestService;
-
+use App\Services\UserRequestService;
 
 class PettyCashRequestsController extends RequestBaseController
 {
@@ -13,12 +13,14 @@ class PettyCashRequestsController extends RequestBaseController
 
     public function __construct(
         PettyCashRequestEloquent $petty_cash_request,
-        ApproverRequestService $request_service
+        ApproverRequestService $request_service,
+        UserRequestService $user_request_service
+
     ) {
 
         $this->middleware(['auth','verify.prp', 'verify.manager.finance']);  
         $this->petty_cash_request = $petty_cash_request;
-        parent::__construct($request_service,  $petty_cash_request, 'petty_cash_request');
+        parent::__construct($request_service,  $petty_cash_request, $user_request_service, 'petty_cash_request');
     }
     
     public function getPendingRequest($id){
