@@ -26,7 +26,7 @@
             <span v-if="error" style="color: red; font-size: 13px">All data are required</span>
             <span v-if="errorMessage1" style="color: red; font-size: 13px">{{ errorMessage1 }}</span>
             <v-row>
-              <v-col cols="12">
+              <v-col cols="12" md="6">
                 <v-select
                   :items="leaveType"
                   label="Reason*"
@@ -36,10 +36,10 @@
                   required
                 ></v-select>
               </v-col>
-              <v-col cols="12" md="4">
+              <v-col cols="12" md="6">
                 <v-text-field label="Start Date & Time" type="datetime-local" v-model="start_date" :allowed-dates="disabledDates" @change="changeDate()"></v-text-field>
               </v-col>
-              <v-col cols="12" md="4">
+              <v-col cols="12" md="6">
                 <v-text-field label="End Date & Time" type="datetime-local" :allowed-dates="disabledDates2" v-model="end_date" @change="changeDate()"></v-text-field>
                 <span
                   v-if="error1"
@@ -47,7 +47,7 @@
                   style="color: red; font-size: 13px"
                 >Higher the End Date</span>
               </v-col>
-              <v-col cols="12" md="4">
+              <v-col cols="12" md="6">
                 <v-text-field
                   label="Total Day/s of Leave*"
                   type="text"
@@ -55,6 +55,25 @@
                   disabled
                 ></v-text-field>
               </v-col>
+              <!-- <v-col cols="12" >
+                <v-text-field label="Start Date" type="datetime-local" v-model="start_date" :allowed-dates="disabledDates" @change="changeDate()" color="primary"></v-text-field>
+              </v-col>
+              <v-col cols="12" >
+                <v-text-field label="End Date" type="datetime-local" :allowed-dates="disabledDates2" v-model="end_date" @change="changeDate()" color="primary"></v-text-field>
+                <span
+                  v-if="error1"
+                  class="ml-7"
+                  style="color: red; font-size: 13px"
+                >Higher the End Date</span>
+              </v-col> -->
+              <!-- <v-col cols="12">
+                <v-text-field
+                  label="Total duration of Leave*"
+                  type="text"
+                  v-model="total_days_with_text"
+                  disabled
+                ></v-text-field>
+              </v-col> -->
             </v-row>
           </v-container>
         </v-card-text>
@@ -108,9 +127,14 @@ export default {
         if (end >= start) {
           let diff = end.diff(start);
           let differenceInDay = diff / 1000 / 60 / 60 / 24;
+          // let differenceInDay = Math.floor(diff / 1000 / 60 / 60 / 24) + ((diff / 1000 / 60 / 60 % 24) * 60);
+          // alert(differenceInDay * 24 );
+          // alert(  differenceInDay * 24- Math.trunc(differenceInDay * 24) );
           this.total_days = differenceInDay
-          console.log(this.total_days)
-          this.total_days_with_text = differenceInDay.toFixed(2) < 0.5 ? ((differenceInDay.toFixed(2))*24) + " hours of leave" : differenceInDay.toFixed(1) + "days of leave";
+          // console.log(this.total_days)
+          // this.total_days_with_text = differenceInDay.toFixed(2) < 0.5 ? ((differenceInDay.toFixed(2))*24) + " hours of leave" : differenceInDay.toFixed(1) + "days of leave";
+          // this.total_days_with_text = differenceInDay.toFixed(2) < 0.5 ? ((differenceInDay.toFixed(2))*24) + " hours of leave" : differenceInDay.toFixed(1) + "days of leave";
+          this.total_days_with_text = this.displayTimeLengthInText(differenceInDay);
           this.error1 = false;
           if (diff == 0) {
             this.error1 = true;
@@ -122,6 +146,96 @@ export default {
       } else {
         this.disable = true;
       }
+    },
+
+    displayTimeLengthInText(num) {
+          var item= {
+            number_of_days: num
+          }
+          return item.number_of_days >= 1 ? 
+
+          // true
+
+          Math.floor(item.number_of_days) == item.number_of_days ? 
+            Math.floor(item.number_of_days) > 1 ? 
+            // true
+              Math.floor(item.number_of_days) + ' ' + 'days' 
+            : 
+              Math.floor(item.number_of_days) + ' ' + 'day' 
+
+            : 
+            // false
+              Math.floor(item.number_of_days) > 1 ?
+
+                Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) >= 1 ? 
+                  Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) > 1 ? 
+                    Math.round((item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+                    // hours and minute/s
+                
+                      Math.floor(item.number_of_days) + ' ' + 'days' + ', ' + Math.round(item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) + ' hours and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'mins' 
+                    : 
+                      Math.floor(item.number_of_days) + ' ' + 'days' + ', ' + Math.round(item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) + ' hours and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'min' 
+                  :
+                  // hour and minute/s
+                      Math.round((item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+                       Math.floor(item.number_of_days) + ' ' + 'days' + ', ' + Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) + ' hour and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'mins' 
+                    : 
+                      Math.floor(item.number_of_days) + ' ' + 'days' + ', ' +  Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) + ' hour and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'min' 
+                      
+                :
+                  // minutes
+                  Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+                    Math.floor(item.number_of_days) + ' ' + 'days' + ' and ' + Math.round((item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) * 60) + ' ' + 'mins' 
+                  : 
+                    Math.floor(item.number_of_days) + ' ' + 'days' + ' and ' + Math.round((item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) * 60) + ' ' + 'min' 
+              : 
+
+                Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) >= 1 ? 
+                  Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) > 1 ? 
+                    Math.round((item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+                    // hours and minute/s
+                
+                      Math.floor(item.number_of_days) + ' ' + 'day' + ', ' + Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) + ' hours and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'mins' 
+                    : 
+                      Math.floor(item.number_of_days) + ' ' + 'day' + ', ' + Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) + ' hours and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'min' 
+                  :
+                  // hour and minute/s
+                      Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+                       Math.floor(item.number_of_days) + ' ' + 'day' + ', ' + Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) + ' hour and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'mins' 
+                    : 
+                      Math.floor(item.number_of_days) + ' ' + 'day' + ', ' +  Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) + ' hour and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'min' 
+                      
+                :
+                  // minutes
+                  Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+                    Math.floor(item.number_of_days) + ' ' + 'day' + ' and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) * 60) + ' ' + 'mins' 
+                  : 
+                    Math.floor(item.number_of_days) + ' ' + 'day' + ' and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) * 60) + ' ' + 'min' 
+              
+
+          // false
+
+        :
+          Math.round(item.number_of_days  * 24) >= 1 ? 
+            Math.round(item.number_of_days  * 24) > 1 ? 
+              Math.round((item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+              // hours and minute/s
+                Math.round(item.number_of_days  * 24) + ' hours and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'mins' 
+              : 
+                Math.round(item.number_of_days  * 24) + ' hours and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'min' 
+            :
+            // hour and minute/s
+                Math.round((item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+                Math.round(item.number_of_days  * 24) + ' hour and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'mins' 
+              : 
+                Math.round(item.number_of_days  * 24) + ' hour and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'min' 
+                
+          :
+            // minutes
+            Math.round((item.number_of_days  * 24) * 60) > 1 ? 
+              Math.round((item.number_of_days  * 24) * 60) + ' ' + 'mins' 
+            : 
+              Math.round((item.number_of_days  * 24) * 60) + ' ' + 'min' 
     },
     hideModal() {
       this.dialog = false;

@@ -17,12 +17,27 @@
     background-color: #F4F6F6;
     color: black;
 }
-.field-icon {
+/* .field-icon {
     font-size:20px;
     position: absolute;
     top: 50%; 
     transform: translate(-50%,-50%);
     right: 0;
+    z-index:2;
+} */
+.field-icon {
+    font-size:25px;
+    position: relative;
+    /* position: absolute;
+    top: 50%;  */
+    /* transform: translate(-50%,-50%); */
+    /* right: 0; */
+    z-index:100;
+}
+#password {
+    /* padding: 1em; */
+  /* margin: 0 -1em; */
+    /* border-bottom-height: 130%; */
 }
 </style>
 @endsection
@@ -91,15 +106,19 @@ $(document).ready(function() {
                     <div class="form-group row">
                         <div class="col-md-10 mb-3 mx-auto">
                             <div class="md-form form-group">
-                            <div class="input-group">
-                            <label for="password">Password</label>
+                            <div class="input-group"
+                             >
+                                
+                                <label for="password">Password</label>
                                 <input 
                                     type="password" id="password"
                                     class="form-control @error('password') is-invalid @enderror" name="password"
                                     placeholder="Enter your password"
                                     required autocomplete="current-password"
                                 >
+                                <div  class="input-group-append pt-2">
                                 <span toggle="#password" class=" input-group-append fa fa-fw fa-eye field-icon toggle-password "></span>
+                                </div>
                             </div>
                                 
                                 @error('password')

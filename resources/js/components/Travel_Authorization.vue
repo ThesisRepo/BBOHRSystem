@@ -18,7 +18,7 @@
     <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat v-if="(user_type.includes('hr mngr') || user_type.includes('general mngr'))">
-          <v-col class="mt-8">
+          <v-col class="mt-8" v-if="!user_type.includes('general mngr')">
             <v-menu
               :close-on-content-click="false"
               transition="scale-transition"
@@ -47,7 +47,7 @@
             transition="slide-y-transition"
             bottom
           >
-            <template v-slot:activator="{ on, attrs }">
+            <template v-slot:activator="{ on, attrs }" v-if="!user_type.includes('general mngr')">
               <v-btn
                 class="purple"
                 color="primary"
@@ -67,8 +67,8 @@
               </v-list-item>
             </v-list>
           </v-menu>
-          <v-divider class="mx-4" vertical></v-divider>
-          <v-spacer></v-spacer>
+          <v-divider class="mx-4" vertical v-if="!user_type.includes('general mngr')"></v-divider>
+          <!-- <v-spacer></v-spacer> -->
           <v-text-field
             v-model="search"
             clearable

@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-row>
-      <v-col lg="4" cols="sm" class="pb-2">
+      <v-col lg="4" cols="sm" class="pb-2" v-if="!user_type.includes('general mngr')">
         <v-card>
           <v-row class="no-gutters">
             <div class="col-auto">
@@ -9,12 +9,12 @@
             </div>
             <div class="col pa-3 py-4 primary--text">
               <h5 class="text-truncate text-uppercase">Remaining Leave Request</h5>
-              <h1>{{ leave_number == null ? leave_number : 0 }}</h1>
+              <h1>{{ leave_number == null ?  0 : leave_number }}</h1>
             </div>
           </v-row>
         </v-card>
       </v-col>
-      <v-col lg="4" cols="sm" class="pb-2">
+      <v-col lg="4" cols="sm" class="pb-2" v-if="!user_type.includes('general mngr')">
         <v-card>
           <v-row class="no-gutters">
             <div class="col-auto">
@@ -28,7 +28,7 @@
         </v-card>
       </v-col>
 
-      <v-col lg="4" cols="sm" class="pb-2">
+      <v-col lg="4" cols="sm" class="pb-2" v-if="!user_type.includes('general mngr')">
         <v-card>
           <v-row class="no-gutters">
             <div class="col-auto">
@@ -53,7 +53,7 @@
     <div class="text-right">
       <v-btn color="light blue darken-2" rounded outlined @click="eventType()">
         <v-icon>mdi-plus</v-icon>Event Type
-      </v-btn>&nbsp;&nbsp;&nbsp;
+      </v-btn>
       <v-btn color="light blue darken-2" rounded outlined @click="eventAdd()">
         <v-icon>mdi-plus</v-icon>Add Event
       </v-btn>

@@ -20,7 +20,7 @@
     <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat v-if="(user_type.includes('hr mngr') || user_type.includes('general mngr'))">
-          <v-col class="mt-8">
+          <v-col class="mt-8" v-if="!user_type.includes('general mngr')">
             <v-menu
               :close-on-content-click="false"
               transition="scale-transition"
@@ -50,7 +50,7 @@
             transition="slide-y-transition"
             bottom
           >
-            <template v-slot:activator="{ on, attrs }">
+            <template v-slot:activator="{ on, attrs }" v-if="!user_type.includes('general mngr')">
               <v-btn
                 class="purple"
                 color="primary"
@@ -70,8 +70,8 @@
               </v-list-item>
             </v-list>
           </v-menu>
-          <v-divider class="mx-4" vertical></v-divider>
-          <v-spacer></v-spacer>
+          <v-divider class="mx-4" vertical v-if="!user_type.includes('general mngr')"></v-divider>
+          <!-- <v-spacer></v-spacer> -->
           <v-text-field
             v-model="search"
             clearable
@@ -135,7 +135,7 @@
       <v-card class="mt-5">
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
             <v-card-title>
-                <span class="headline-bold">LEAVE REQUEST FORM</span>
+                <span class="headline-bold">UPDATE LEAVE REQUEST</span>
             </v-card-title>
         </v-toolbar>
         <v-card-text>
@@ -154,7 +154,7 @@
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-text-field
-                  label="Total Day/s of Leave*"
+                  label="Duration of Leave*"
                   type="text"
                   v-model="total_days_with_text"
                   disabled
@@ -165,7 +165,7 @@
                   v-if="error2"
                   style="color: red; font-style: italic"
                 >Start date must not be higher than End date!</span>
-                <v-text-field label="Start Date & Time" type="datetime-local" v-model="editedItem.start_date" :allowed-dates="disabledDates" @change="changeDate()" color="primary"></v-text-field>
+                <v-text-field label="Start Date" type="datetime-local" v-model="editedItem.start_date" :allowed-dates="disabledDates" @change="changeDate()" color="primary"></v-text-field>
               </v-col>
               <v-col cols="12" sm="4">
                 <span
@@ -173,7 +173,7 @@
                   class="ml-7"
                   style="color: red; font-size: 13px"
                 >Higher the End Date</span>
-                <v-text-field label="End Date & Time" type="datetime-local" :allowed-dates="disabledDates2" v-model="editedItem.end_date" @change="changeDate()" color="primary"></v-text-field>
+                <v-text-field label="End Date" type="datetime-local" :allowed-dates="disabledDates2" v-model="editedItem.end_date" @change="changeDate()" color="primary"></v-text-field>
               </v-col>
             </v-row>
           </v-container>
@@ -181,7 +181,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red" class="white--text" @click="close">Cancel</v-btn>
-          <v-btn color="success" @click="save">Save</v-btn>
+          <v-btn color="success" @click="save">Update</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -201,7 +201,7 @@
     >
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
-          <v-toolbar-title v-if="!user_type.includes('general mngr')" class="col pa-3 py-4 white--text">LEAVE REQUEST</v-toolbar-title>
+          <v-toolbar-title class="col pa-3 py-4 white--text" v-if="!user_type.includes('general mngr')">LEAVE REQUEST</v-toolbar-title>
           <v-text-field
             v-model="search"
             clearable
@@ -224,17 +224,29 @@
           @click="messagePop()"
         >
           <v-icon v-if="!user_type.includes('general mngr')">mdi-plus</v-icon>
-          <v-toolbar-title v-if="!user_type.includes('general mngr')" style="font-size: 16px">Make Request</v-toolbar-title>
+          <v-toolbar-title style="font-size: 16px" v-if="!user_type.includes('general mngr')">Make Request</v-toolbar-title>
         </v-btn>
 
           <Reminder
           ref="reminder"
-          :message="messageCheck === 'prp' ? 'Please set your PRP Assign' : messageCheck === 'user' ? 'Please set your personal information' : messageCheck === 'combine' ? 'Please set your PRP assign and your Personal Information' : ''"
+          :message="messageCheck === 'prp' ? 'Please set your Assigned PRP' : messageCheck === 'user' ? 'Please set your personal information' : messageCheck === 'combine' ? 'Please set your PRP assign and your Personal Information' : ''"
+          link= "/MyAccount"
+          routeName='go to MY ACCOUNT'
           ></Reminder>
 
         </v-toolbar>
       </template>
-      <template v-slot:item.number_of_days="{ item }">{{item.number_of_days >= 1 ? item.number_of_days + ' ' + 'Day/s' : item.number_of_days.toFixed(2) + ' ' + 'Hour/s' }}</template>
+      <!--Math.round((item.number_of_days / 1000 / 60 / 60 % 24) * 60)  -->
+       <!-- item.number_of_days >= 1 ? 
+          (item.number_of_days / 1000 / 60 / 60 % 24) != 0 ? 
+          Math.floor(item.number_of_days / 1000 / 60 / 60 / 24) + ' ' + 'Day/s' + ' ' + (Math.round(item.number_of_days / 1000 / 60 / 60 % 24) * 60) + ' ' + 'Hour/s' :
+          Math.floor(item.number_of_days / 1000 / 60 / 60 / 24) + ' ' + 'Day/s' :
+          (item.number_of_days / 1000 / 60 / 60 % 24) *60+ ' ' + 'minute/s' -->
+      <template v-slot:item.number_of_days="{ item }">
+        {{
+          displayTimeLengthInText(item.number_of_days)
+        }}
+      </template>
       <template v-slot:item.status.status_name="{ item }">
         <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
@@ -290,7 +302,7 @@ export default {
     search: '',
     headers: [
       { text: "TYPE OF LEAVE", align: "start", value: "leave_type.leave_type_name" },
-      { text: "TOTAL DAY/S LEAVE", value: "number_of_days" },
+      { text: "DURATION OF LEAVE", value: "number_of_days" },
       { text: "START DATE", value: "start_date" },
       { text: "END DATE", value: "end_date" },
       { text: "APPROVER", value: "approver_role.role_name" },
@@ -300,7 +312,7 @@ export default {
     headersEmp: [
       { text: "REQUESTER", align: "start", value: "user.first_name" },
       { text: "TYPE OF LEAVE", value: "leave_type.leave_type_name" },
-      { text: "TOTAL DAY/S LEAVE", value: "number_of_days" },
+      { text: "DURATION OF LEAVE", value: "number_of_days" },
       { text: "START DATE", value: "start_date" },
       { text: "END DATE", value: "end_date" },
       { text: "APPROVER", value: "approver_role.role_name" },
@@ -310,7 +322,7 @@ export default {
     headersFeed: [
       { text: "REQUESTER", align: "start", value: "user.first_name" },
       { text: "TYPE OF LEAVE", value: "leave_type.leave_type_name" },
-      { text: "TOTAL DAY/S LEAVE", value: "number_of_days" },
+      { text: "DURATION OF LEAVE", value: "number_of_days" },
       { text: "START DATE", value: "start_date" },
       { text: "END DATE", value: "end_date" },
       { text: "APPROVER", value: "approver_role.role_name" },
@@ -388,7 +400,12 @@ export default {
           let diff = end.diff(start);
           let differenceInDay = diff / 1000 / 60 / 60 / 24;
           this.editedItem.total_days = differenceInDay;
-          this.total_days_with_text = differenceInDay.toFixed(2) < 0.5 ? ((differenceInDay.toFixed(2))*24) + " hours of leave" : differenceInDay.toFixed(1) + "days of leave";
+          // this.total_days = differenceInDay
+          // console.log(this.total_days)
+          // this.total_days_with_text = differenceInDay.toFixed(2) < 0.5 ? ((differenceInDay.toFixed(2))*24) + " hours of leave" : differenceInDay.toFixed(1) + "days of leave";
+          // this.total_days_with_text = differenceInDay.toFixed(2) < 0.5 ? ((differenceInDay.toFixed(2))*24) + " hours of leave" : differenceInDay.toFixed(1) + "days of leave";
+          this.total_days_with_text = this.displayTimeLengthInText(differenceInDay);
+          // this.total_days_with_text = differenceInDay.toFixed(2) < 0.5 ? ((differenceInDay.toFixed(2))*24) + " hours of leave" : differenceInDay.toFixed(1) + "days of leave";
           this.error1 = false;
           this.error2 = false;
         } else {
@@ -425,10 +442,112 @@ export default {
       this.editedIndex = this.request.indexOf(item);
       this.editedItem.selectedLeaveType = item.leave_type_id;
       this.editedItem.total_days = item.number_of_days;
-      this.total_days_with_text = item.number_of_days + " days of leave";
-      this.editedItem.start_date = item.start_date;
-      this.editedItem.end_date = item.end_date;
+      this.total_days_with_text = this.displayTimeLengthInText(item.number_of_days);
+      this.editedItem.start_date = moment(item.start_date).format("YYYY-MM-DDTkk:mm");
+      this.editedItem.end_date =  moment(item.end_date).format("YYYY-MM-DDTkk:mm");
       this.dialog = true;
+    },
+    convert(datetime) {
+      // Check correct time format and split into components
+      var time = datetime[1].toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [datetime];
+
+      if (time.length > 1) { // If time format correct
+        time = time.slice (1);  // Remove full string match value
+        time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
+        time[0] = +time[0] % 12 || 12; // Adjust hours
+      }
+      datetime[1] = time.join('');
+      return datetime.join(' ') // return adjusted time or original string
+    },
+
+    displayTimeLengthInText(num) {
+          var item= {
+            number_of_days: num
+          }
+          return item.number_of_days >= 1 ? 
+
+          // true
+
+          Math.floor(item.number_of_days) == item.number_of_days ? 
+            Math.floor(item.number_of_days) > 1 ? 
+            // true
+              Math.floor(item.number_of_days) + ' ' + 'days' 
+            : 
+              Math.floor(item.number_of_days) + ' ' + 'day' 
+
+            : 
+            // false
+              Math.floor(item.number_of_days) > 1 ?
+
+                Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) >= 1 ? 
+                  Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) > 1 ? 
+                    Math.round((item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+                    // hours and minute/s
+                
+                      Math.floor(item.number_of_days) + ' ' + 'days' + ', ' + Math.round(item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) + ' hours and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'mins' 
+                    : 
+                      Math.floor(item.number_of_days) + ' ' + 'days' + ', ' + Math.round(item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) + ' hours and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'min' 
+                  :
+                  // hour and minute/s
+                      Math.round((item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+                       Math.floor(item.number_of_days) + ' ' + 'days' + ', ' + Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) + ' hour and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'mins' 
+                    : 
+                      Math.floor(item.number_of_days) + ' ' + 'days' + ', ' +  Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) + ' hour and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'min' 
+                      
+                :
+                  // minutes
+                  Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+                    Math.floor(item.number_of_days) + ' ' + 'days' + ' and ' + Math.round((item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) * 60) + ' ' + 'mins' 
+                  : 
+                    Math.floor(item.number_of_days) + ' ' + 'days' + ' and ' + Math.round((item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) * 60) + ' ' + 'min' 
+              : 
+
+                Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) >= 1 ? 
+                  Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) > 1 ? 
+                    Math.round((item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+                    // hours and minute/s
+                
+                      Math.floor(item.number_of_days) + ' ' + 'day' + ', ' + Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) + ' hours and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'mins' 
+                    : 
+                      Math.floor(item.number_of_days) + ' ' + 'day' + ', ' + Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) + ' hours and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'min' 
+                  :
+                  // hour and minute/s
+                      Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+                       Math.floor(item.number_of_days) + ' ' + 'day' + ', ' + Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) + ' hour and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'mins' 
+                    : 
+                      Math.floor(item.number_of_days) + ' ' + 'day' + ', ' +  Math.round(item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) + ' hour and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'min' 
+                      
+                :
+                  // minutes
+                  Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+                    Math.floor(item.number_of_days) + ' ' + 'day' + ' and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) * 60) + ' ' + 'mins' 
+                  : 
+                    Math.floor(item.number_of_days) + ' ' + 'day' + ' and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 )) * 60) + ' ' + 'min' 
+              
+
+          // false
+
+        :
+          Math.round(item.number_of_days  * 24) >= 1 ? 
+            Math.round(item.number_of_days  * 24) > 1 ? 
+              Math.round((item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+              // hours and minute/s
+                Math.round(item.number_of_days  * 24) + ' hours and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'mins' 
+              : 
+                Math.round(item.number_of_days  * 24) + ' hours and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'min' 
+            :
+            // hour and minute/s
+                Math.round((item.number_of_days  * 24- Math.trunc(item.number_of_days  * 24 )) * 60) > 1 ? 
+                Math.round(item.number_of_days  * 24) + ' hour and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'mins' 
+              : 
+                Math.round(item.number_of_days  * 24) + ' hour and ' + Math.round((item.number_of_days  * 24 - Math.trunc(item.number_of_days  * 24 ) ) * 60) + ' ' + 'min' 
+                
+          :
+            // minutes
+            Math.round((item.number_of_days  * 24) * 60) > 1 ? 
+              Math.round((item.number_of_days  * 24) * 60) + ' ' + 'mins' 
+            : 
+              Math.round((item.number_of_days  * 24) * 60) + ' ' + 'min' 
     },
     save() {
       if (

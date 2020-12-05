@@ -68,23 +68,27 @@ class UserInformationController extends Controller
         return $res;
     }
     public function updateProfileImg($id,Request $request){
-
-        $currentImg = $this->user->findWith($id, 'userInformation')->userInformation->profile_url;
+        $user_info = $this->user->findWith($id, 'userInformation')->userInformation;
+        if($user_info) {
+            $currentImg = $this->user->findWith($id, 'userInformation')->userInformation->profile_url;
+        }
         if($request->image) {
 
             $image = $this->image_upload_from_trait($request->image);
-
             // $imageName = time().'.'.$request->image->getClientOriginalExtension();
+            // dd($request->image->move(public_path('images'),$imageName));
+
             // $request->image->move(public_path('images'),$imageName);
             // $image = 'images/'.$imageName;
 
             $data = [
                 'profile_url' => $image
-            ];
-
-            $result = $this->user->updateWithUserInfo($data, $id);
-            unlink($currentImg);
+            ]; 
             
+            $result = $this->user->updateWithUserInfo($data, $id);
+            if($user_info) {
+                unlink(public_path().'/' . $currentImg);
+            }
             $res = response()->json($result, 200);
 
         }else {
