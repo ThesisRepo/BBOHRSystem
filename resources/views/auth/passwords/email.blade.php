@@ -17,10 +17,6 @@
     }
     </style>
 @endsection
-@section('js')
-   <script>
-   </script>
-
 @section('content')
 <div class="container">
     <div class="row justify-content-center">

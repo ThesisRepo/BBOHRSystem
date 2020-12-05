@@ -48,39 +48,47 @@ class UserInformationController extends Controller
     public function update(Request $request, $id)
     {
 
-        $data = [
-            'address'=> $request->address,
-            'civil_status'=> $request->civil_status,
-            'contact_number'=> $request->contact_number,
-            'pag_ibig_number'=> $request->pag_ibig_number,
-            'sss_number'=> $request->sss_number,
-            'tin_number'=> $request->tin_number,
-            'philhealth_number'=> $request->philhealth_number
-        ];
-        
+        $hasUserInfo = $this->user_service->hasUserInformation();
+        if($hasUserInfo) {
+            $data = [
+                'address'=> $request->address,
+                'civil_status'=> $request->civil_status,
+                'contact_number'=> $request->contact_number,
+                'pag_ibig_number'=> $request->pag_ibig_number,
+                'sss_number'=> $request->sss_number,
+                'tin_number'=> $request->tin_number,
+                'philhealth_number'=> $request->philhealth_number
+            ];
+        }
+        if(!$hasUserInfo) {
+            $data = $request->all();
+        }
         $res = response()->json($this->user->updateWithUserInfo($data, $id), 200);    
         
         return $res;
-
     }
     public function updateProfileImg($id,Request $request){
-
-        $currentImg = $this->user->findWith($id, 'userInformation')->userInformation->profile_url;
+        $user_info = $this->user->findWith($id, 'userInformation')->userInformation;
+        if($user_info) {
+            $currentImg = $this->user->findWith($id, 'userInformation')->userInformation->profile_url;
+        }
         if($request->image) {
 
             $image = $this->image_upload_from_trait($request->image);
-
             // $imageName = time().'.'.$request->image->getClientOriginalExtension();
+            // dd($request->image->move(public_path('images'),$imageName));
+
             // $request->image->move(public_path('images'),$imageName);
             // $image = 'images/'.$imageName;
 
             $data = [
                 'profile_url' => $image
-            ];
-
-            $result = $this->user->updateWithUserInfo($data, $id);
-            unlink($currentImg);
+            ]; 
             
+            $result = $this->user->updateWithUserInfo($data, $id);
+            if(file_exists(public_path() . '/' . $currentImg)) {
+                unlink(public_path().'/' . $currentImg);
+            }
             $res = response()->json($result, 200);
 
         }else {
@@ -166,7 +174,7 @@ class UserInformationController extends Controller
     }
 
     public function getCountApprovedRequests($id) {
-        $res = $this->user->getCountOfRequests($id, 3);
+        $res = $this->user->getCountOfRequests($id, 2);
         return $res;
     }
 

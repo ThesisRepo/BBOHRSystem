@@ -64,4 +64,18 @@ class UserService
         $res = Auth::user();
         return $res;
     }
+
+    public function getUserInformation() {
+        $res = Auth::user()->userInformation;
+        return $res;
+    }
+
+    public function getShiftTime() {
+        $res = Auth::user();
+        return $res;
+    }
+
+    public function hasUserInformation() {
+        return $this->getUserInformation() != null;
+    }
 }

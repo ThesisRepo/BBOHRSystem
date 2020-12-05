@@ -57,7 +57,12 @@
       
         <span style="color:#3490dc">Blue Bee One</span>  Request Management System</v-toolbar-title>
     </v-app-bar>
-
+     <Confirmation
+      ref="confirms"
+      :title="confirmationTitle"
+      :message="confirmationMessage"
+      @onConfirm="confirm($event)"
+    ></Confirmation>
     <!-- <v-list v-if="isLoggedIn">
       <a id="logout-link" href="#" @click.prevent="logout">Logout</a>
     </v-list> -->
@@ -72,6 +77,8 @@
 
 <script>
 import ROUTER from "../router";
+import { mapGetters } from "vuex";
+import Confirmation from "../components/modals/confirmation/confirm.vue";
 export default {
   data: () => ({
     user_pic: localStorage.getItem('user_pic'),
@@ -92,19 +99,39 @@ export default {
       // { icon: "mdi-logout", text: "LogOut", route: "/logout" }
 
     ],
+    confirmationTitle: null,
+    confirmationMessage: null
   }),
+  components: {
+    Confirmation
+  },
   mounted(){
     if(this.user_type.includes('hr mngr')){
       this.employ.splice(this.employ.length-1, 0, { icon: "mdi-account-group", text: "Manage Users", route: "/ManageUsers" })
     }
-    console.log('adfasdf', this.user_pic)
-    if(this.user_pic === 'null'){
-      this.user_pic = 'http://localhost:8000/images/user.png'
+    if(this.user_pic === null){
+      this.user_pic = 'images/user.png'
     }
   },
-
+  computed: {
+    ...mapGetters(["profileUrl"])
+  },
+  watch: {
+    profileUrl: function(newVal) {
+        this.user_pic = newVal;
+    }
+  },
   methods: {
-
+    confirm(){
+      this.$axios
+      .post(
+        "logout")
+      .then(response => {
+        location.reload();
+        localStorage.clear()
+        window.location.replace("/");
+      })
+    },
     redirect(route) {
        ROUTER.push(route).catch(() => {});
       // if(route != '/logout') {
@@ -115,24 +142,9 @@ export default {
       // }
     },
     logout() {
-       this.$axios
-        .post(
-          "logout")
-        .then(response => {
-          location.reload();
-          localStorage.clear()
-          window.location.replace("/");
-          // localStorage.removeItem('assigned_prp_id')
-          // localStorage.removeItem('user_finance')
-          // localStorage.removeItem('prp_assign')
-          // localStorage.removeItem('user_department')
-          // localStorage.removeItem('user_type')
-          // localStorage.removeItem('id')
-          // localStorage.removeItem('user_name')
-          // localStorage.removeItem('email')
-          // localStorage.removeItem('company_id')
-          // localStorage.removeItem('user_pic')
-        })
+      this.confirmationTitle= 'Logout',
+      this.confirmationMessage= 'Are you sure you want to logout?'
+      this.$refs.confirms.show();
     }
   }
 };

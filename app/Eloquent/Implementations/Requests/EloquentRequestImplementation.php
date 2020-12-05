@@ -75,12 +75,11 @@ class EloquentRequestImplementation extends EloquentImplementation {
 
   public function disapproveRequest($id, $data, $current_request, $approver) {
 
-    return $this->requestFeedback($id, $data, $current_request, $approver);
+    $res = $this->requestFeedback($id, $data, $current_request, $approver);
 
   }
 
   public function requestFeedback($id, $data, $current_request, $approver) {
-    
     try {
       DB::beginTransaction();
         $request = $current_request;

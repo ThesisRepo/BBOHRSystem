@@ -52,8 +52,8 @@ class EloquentImplementation implements EloquentContract {
     return $this->model->findOrFail($id);
   }
 
-  public function findWith( $id, $relationship) {
-    return $this->model->with( $relationship)->find($id);
+  public function findWith( $id, $relationship, $order= 'DESC') {
+    return $this->model->with( $relationship)->orderBy('updated_at', $order)->find($id);
   }
 
   public function findWithCount($id, $relationship) {
@@ -80,11 +80,11 @@ class EloquentImplementation implements EloquentContract {
   }
 
   public function getWhere($column, $id){
-    return $this->where($column, $id)->get();
+    return $this->where($column, $id)->orderBy('updated_at', 'DESC')->get();
   }
   
   public function getWhereWith($column, $id, $relationship){
-    return $this->with($relationship)->where($column, $id)->get();
+    return $this->with($relationship)->where($column, $id)->orderBy('updated_at', 'DESC')->get();
   }
   
   public function whereWith($column, $id, $relationship){

@@ -88,7 +88,7 @@ export default {
         };
       if(item === 'Approved Requests'){
         this.$axios
-          .post("http://localhost:8000/hr/summary/leave_request", param)
+          .post("hr/summary/leave_request", param)
           .then(response => {
               this.summary1 = response.data.feedbacked_leave_requests;
               console.log('approve', this.summary1)
@@ -98,7 +98,7 @@ export default {
           });  
       }else if(item === 'Disapproved Requests'){
         this.$axios
-          .post("http://localhost:8000/hr/summary/leave_request", param)
+          .post("hr/summary/leave_request", param)
           .then(response => {
               this.summary1 = response.data.feedbacked_leave_requests;
               this.summary1.feedbacked_leave_requests.forEach(el => {

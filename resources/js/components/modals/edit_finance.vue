@@ -68,7 +68,10 @@ export default {
                   "user_finance",
                   element.first_name + " " + element.last_name
                 );
-                this.$parent.$parent.getInfo();
+                // localStorage.setItem('user_finance',
+                //   element.id
+                // );
+                this.$parent.$parent.$parent.getInfo();
               }
             });
           });

@@ -1,87 +1,107 @@
 <template>
-  <v-row>
+<v-app>
+  <v-layout>
     <v-container>
-        <v-card class="mx-auto" elevation="3">
+      <v-card class="mx-auto" elevation="3">
           <v-card-title class="primary fill-height" >
-            <span class="headline white--text">USER PROFILE</span>
+            <span class="headline white--text">USER PROFILE</span> 
+
           </v-card-title>
-          <v-row>
-            <v-col>
-              <v-avatar v-if="profile_url === null" class="ml-15" size="200">
-                <img src="images/user.png" width="100%" height="100%" id="profile">
-              </v-avatar>
-              <v-avatar v-else class="ml-15" color="grey darken-1" size="200">
-                <img :src="profile_url" width="100%" height="100%" id="profile">
-              </v-avatar>
+          <v-container>
+            <v-row>
+              <v-col>
 
-              <v-col class="ml-15">
-                <v-btn
-                  margin
-                  color="primary"
-                  class="text-none"
-                  rounded
-                  outlined
-                  depressed
-                  :loading="isSelecting"
-                  @click="onButtonClick"
-                >CHANGE PROFILE</v-btn>
+                <v-avatar v-if="profile_url === null" class="ml-15" size="200">
+                  <img src="images/user.png" width="100%" height="100%" id="profile">
+                </v-avatar>
+                <v-avatar v-else class="ml-15 avatar" color="grey darken-1" size="200">
+                  <img :src="profile_url" width="100%" height="100%" id="profile">
+                   <div class="overlay" @click="onButtonClick">upload image</div>
+                </v-avatar>
+                <v-row>
+                  <v-col class="ml-15">
+                  <v-btn
+                    margin
+                    color="primary"
+                    class="text-none"
+                    rounded
+                    outlined
+                    depressed
+                    :loading="isSelecting"
+                    @click="updateFileChanged"
+                  >Change Profile Image</v-btn>
 
-                <input
-                  ref="uploader"
-                  class="d-none"
-                  type="file"
-                  accept="image/*"
-                  @change="onFileChanged"
-                >
+                  <input
+                    ref="uploader"
+                    class="d-none"
+                    type="file"
+                    accept="image/*"
+                    @change="onFileChanged"
+                  >
+                </v-col>
+                </v-row>
+                
               </v-col>
-            </v-col>
-            <v-col>
-              <h1 class="title-h4 text-md-h4 text-sm-h4 text-truncate mt-8 primary--text"><b>{{ user_name ? user_name : 'No User Name' }}</b></h1>
-              <h2 class="title-h6 text-md-h6 text-sm-h6 text-truncate"><v-icon class="primary--text">mdi-account-cog</v-icon> {{ company_position ? company_position : 'No Position' }}</h2>
+              <v-col>
+                <h1 class="title-h4 text-md-h4 text-sm-h4 text-truncate mt-8 primary--text"><b>{{ user_name ? user_name : 'No User Name' }}</b></h1>
+                <h2 class="title-h6 text-md-h6 text-sm-h6 text-truncate"><v-icon class="primary--text">mdi-account-cog</v-icon> {{ company_position ? company_position : 'No Position' }}</h2>
 
-              <h3
-                class="text--primary text-caption text-sm-body-2 text-md-body-1 "
-              ><v-icon class="primary--text">mdi-email</v-icon> {{ user_email ? user_email : 'No email' }}</h3>
-              <h4
-                class="text--primary text-caption text-sm-body-2 text-md-body-1"
-              ><v-icon class="primary--text">mdi-id-card</v-icon> {{ company_number ? company_number : 'No ID No.' }}</h4>
-              <v-row>
-                <span class="text--primary text-caption text-sm-body-2 text-md-body-1">
-                  &nbsp;&nbsp;&nbsp;<v-icon class="primary--text">mdi-account-tie</v-icon> {{ prp_assign }}
-                </span>
-                <span class="text--primary text-caption text-sm-body-2 text-md-body-1">
-                   &nbsp;&nbsp;<u class="indigo--text lighten-1--text" style="cursor:pointer" @click="updatePrp">UPDATE</u>
-                </span>
-                <updatePrp
-                ref="updatePrp"
-                ></updatePrp>
-              </v-row>
-              <v-row class="mt-3">
-                <span class="text--primary text-caption text-sm-body-2 text-md-body-1">
-                  &nbsp;&nbsp;&nbsp;<v-icon class="primary--text">mdi-account-cash</v-icon> {{ user_finance }}
-                </span>
-                <span class="text--primary text-caption text-sm-body-2 text-md-body-1">
-                   &nbsp;&nbsp;<u class="indigo--text lighten-1--text" style="cursor:pointer" @click="updateFinance">UPDATE</u>
-                </span>
-                  <updateFinance
-                  ref="updateFinance"
-                  ></updateFinance>
-              </v-row>
-            </v-col>
-            <v-col class="text-right">
+                <h3
+                  class="text--primary text-caption text-sm-body-2 text-md-body-1 "
+                ><v-icon class="primary--text">mdi-email</v-icon> {{ user_email ? user_email : 'No email' }}</h3>
+                <h4
+                  class="text--primary text-caption text-sm-body-2 text-md-body-1"
+                ><v-icon class="primary--text">mdi-id-card</v-icon> {{ company_number ? company_number : 'No ID No.' }}</h4>
+                <v-row>
+                  <span class="text--primary text-caption text-sm-body-2 text-md-body-1">
+                    &nbsp;&nbsp;&nbsp;<v-icon class="primary--text">mdi-account-tie</v-icon> {{ prp_assign }}
+                  </span>
+                  <span class="text--primary text-caption text-sm-body-2 text-md-body-1">
+                    &nbsp;&nbsp;<u class="indigo--text lighten-1--text" style="cursor:pointer" @click="updatePrp">UPDATE ASSIGNED PRP</u>
+                  </span>
+                  <updatePrp
+                  ref="updatePrp"
+                  ></updatePrp>
+                </v-row>
+                <v-row class="mt-3">
+                  <span class="text--primary text-caption text-sm-body-2 text-md-body-1">
+                    &nbsp;&nbsp;&nbsp;<v-icon class="primary--text">mdi-account-cash</v-icon> {{ user_finance }}
+                  </span>
+                  <span class="text--primary text-caption text-sm-body-2 text-md-body-1">
+                    &nbsp;&nbsp;<u class="indigo--text lighten-1--text" style="cursor:pointer" @click="updateFinance">UPDATE ASSIGNED FINANCE</u>
+                  </span>
+                    <updateFinance
+                    ref="updateFinance"
+                    ></updateFinance>
+                </v-row>
+              </v-col>
+              <v-col class="text-right">
               <editProfile :datas="datas"></editProfile>
             </v-col>
-          </v-row>
-        </v-card>
+            </v-row>
+          </v-container>
+      </v-card>
+      <Reminder
+      ref="reminder"
+      :message="myMessage"
+      ></Reminder>
+      <Confirmation
+      ref="confirms"
+      :title="confirmationTitle"
+      :message="confirmationMessage"
+      @onConfirm="confirm($event)"
+    ></Confirmation>
     </v-container>
-    <v-container cols="4">
+    
+  </v-layout>
+  <v-container >
         <v-card class="mx-auto" elevation="3">
           <v-card-text>
             <v-container>
               <h4 class="primary--text" mb-1 style="margin-left: 3%;">Personal Information:</h4>
               <v-row style="margin-left: 5%;">
                 <v-col cols="6 sm-6 md-6">
-                  <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-map-marker</v-icon> {{ address ? address : 'No Address' }}</p>
+                  <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-map-marker</v-icon>{{ address ? address : 'No Address' }}</p>
                   <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-calendar</v-icon> {{ birthdate ? birthdate : 'No Birthdate'}}</p>
                 </v-col>
                 <v-col cols="6">
@@ -117,12 +137,44 @@
           </v-card-text>
         </v-card>
     </v-container>
-  </v-row>
+</v-app>
 </template>
+<style scoped>
+.avatar {
+  position: relative;
+  width: 50%;
+  max-width: 300px;
+}
+.overlay {
+  position: absolute;
+  bottom: 0;
+  background: rgb(0, 0, 0);
+  background: rgba(0, 0, 0, 0.5); /* Black see-through */
+  color: #f1f1f1;
+  width: 100%;
+  transition: .5s ease;
+  /* opacity:0; */
+  color: white;
+  font-size: 20px;
+  padding: 20px;
+  text-align: center;
+}
+
+/* When you mouse over the container, fade in the overlay title */
+.avatar:hover .overlay {
+  /* opacity: 1; */
+  cursor: pointer;
+}
+</style>
+
+
 <script>
 import editProfile from "./modals/edit_profile.vue";
 import updatePrp from "./modals/edit_prp.vue";
 import updateFinance from "./modals/edit_finance.vue";
+import Reminder from "./modals/confirmation/reminder.vue";
+import Confirmation from "./modals/confirmation/confirm.vue";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -151,18 +203,26 @@ export default {
       sss_num: null,
       prp: null,
       datas: [],
-      profile_url: null,
+      profile_url: this.profileUrl,
       isSelecting: false,
-      testClass: 'red--text'
+      testClass: 'red--text',
+      formData: null,
+      isEditabelProfile: false,
+      myMessage: null,
+      imgMaxSize: 2.097152,
+      confirmationTitle:null,
+      confirmationMessage: null
     };
   },
-  mounted() {
+  created() {
     this.getInfo();
   },
   components: {
     editProfile,
     updatePrp,
-    updateFinance
+    updateFinance,
+    Reminder,
+    Confirmation
   },
   methods: {
     updatePrp(){
@@ -194,6 +254,7 @@ export default {
             this.philhealth_num = response.data.user_information.philhealth_number;
             this.sss_num = response.data.user_information.sss_number;
           }
+          // location.reload();
         })
         .catch(e => {
           console.log(e);
@@ -210,24 +271,53 @@ export default {
       );
       this.$refs.uploader.click();
     },
+    confirm(){
+      if(this.confirmationTitle == 'Update Profile'){
+        this.uploadImg();
+      }
+    },
+    uploadImg() {
+      this.$store.dispatch('ChangeProfileUrl', {user:this.user_id, profileUrl:this.formData}).then(()=> {
+        // alert('ddf');
+        this.isEditabelProfile = false;
+        this.isConfirmed = false;
+      });
+    },
+    updateFileChanged() {
+      if(this.isEditabelProfile) {
+        this.confirmationTitle = 'Update Profile',
+        this.confirmationMessage = 'Are you sure you want to update your profile photo?',
+        this.$refs.confirms.show()
+      }else{
+        this.myMessage = 'seems like you didn\'t upload an image.'
+        this.$refs.reminder.show();
+      }
+    },
     onFileChanged(e) {
       this.selectedFile = e.target.files[0];
-      this.profile_url = URL.createObjectURL(e.target.files[0]);
-      const config = {
-        header: { "content-type": "multipart/form-data" }
-      };
-      let formData = new FormData();
-      formData.append("image", this.selectedFile);
-      let param = {
-        id: this.user_id
-      };
-      this.$axios
-        .post(
-          "update_profile_img/" + this.user_id,
-          formData
-        )
-        .then(response => {});
+      if(this.selectedFile.size > this.imgMaxSize * 1024 * 1024) {
+        this.myMessage = 'Opps! Image too large.'
+        this.$refs.reminder.show();
+      }else {
+        this.isEditabelProfile = this.profile_url !=  URL.createObjectURL(e.target.files[0])
+        this.profile_url = URL.createObjectURL(e.target.files[0]);
+        const config = {
+          header: { "content-type": "multipart/form-data" }
+        };
+        let formData = new FormData();
+        formData.append("image", this.selectedFile);
+        this.formData = formData;
+      }
+      // this.$axios
+      //   .post(
+      //     "update_profile_img/" + this.user_id,
+      //     formData
+      //   )
+      //   .then(response => {});
     }
+  },
+  computed: {
+    ...mapGetters(["profileUrl"])
   }
 };
 </script>

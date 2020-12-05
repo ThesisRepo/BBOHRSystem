@@ -111,7 +111,8 @@ export default {
       { value: '#FFFF00', name: "Yellow", style: 'background-color: yellow' },
       { value: '#008000', name: "Green", style: 'background-color: green' },
       { value: '#0000FF', name: "Blue", style: 'background-color: blue' },
-      { value: '#EE82EE', name: "Violet", style: 'background-color: violet' }
+      { value: '#EE82EE', name: "Violet", style: 'background-color: violet' },
+      { value: '#FFC0CB', name: "Pink", style: 'background-color: pink' }
     ],
     editedIndex: null,
     storeage: []
@@ -131,20 +132,22 @@ export default {
         event_name: this.event_name,
         color: this.color
       };
-      console.log("parameter", params);
       this.$axios.post("user_info/event_types/" + this.user_id, params).then(response => {
-        console.log('hi response me', response.data)
-        // this.$parent.$parent.retrieve();
-        // this.getEventType()
+        this.getEventType()
+        this.event_name = null,
+        this.color = 'Colors'
       });
     },
     getEventType() {
       this.$axios
         .get("user_info/event_types/" + this.user_id)
         .then(response => {
+          const event_types = [];
           response.data.event_types.forEach(element => {
-            this.event_types.push(element);
+            event_types.push(element);
+            console.log('ha')
           });
+          this.event_types = event_types.reverse()
         });
     },
     update(){
@@ -154,6 +157,9 @@ export default {
         color: this.color
       }
       this.$axios.post('event_types/' + this.storeage.id, parameter).then( response =>{
+        this.getEventType()
+        this.event_name = null,
+        this.color = 'Colors'
       })
     },
     editItem(item){
@@ -179,7 +185,7 @@ export default {
       this.$axios
         .delete("event_types/" + this.id)
         .then(response => {
-          // this.retrieve();
+          this.getEventType()
         });
     },
   }

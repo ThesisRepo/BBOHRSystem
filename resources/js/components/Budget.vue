@@ -9,7 +9,7 @@
           v-if="user_type.includes('hr mngr') || user_type.includes('finance mngr') || user_type.includes('general mngr')"
         >
           <v-tabs-slider></v-tabs-slider>
-          <v-tab @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
+          <v-tab v-if="!user_type.includes('general mngr')" @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
           <v-tab @click="requests = false, employees = true, feedback = false">Employees Requests</v-tab>
           <v-tab v-if="user_type.includes('finance mngr') || user_type.includes('general mngr')" @click="requests = false, employees = false, feedback = true">History</v-tab>
         </v-tabs>
@@ -217,6 +217,8 @@
       <Reminder
           ref="reminder"
           :message="messageCheck === 'finance' ? 'Please set your Finance Assign' : messageCheck === 'user' ? 'Please set your personal information' : messageCheck === 'combine' ? 'Please set your Finance assign and your Personal Information' : ''"
+          link= "/MyAccount"
+          routeName='go to MY ACCOUNT'
         ></Reminder>
 
         </v-toolbar>
@@ -326,12 +328,16 @@ export default {
     },
   },
   mounted(){
-    if (this.user_type.includes("hr mngr") || this.user_type.includes("prp emp") || this.user_type.includes("general mngr")) {
+    if (this.user_type.includes("hr mngr") || this.user_type.includes("prp emp")) {
       this.retrieveBudget();
       this.getAllFeedback();
       this.retrieve();
       this.checkUser()
-    } else {
+    } else if(this.user_type.includes("general mngr")){
+      this.retrieveBudget();
+      this.getAllFeedback();
+      this.checkUser()
+    }else{
       this.retrieve();
       this.checkUser()
     }

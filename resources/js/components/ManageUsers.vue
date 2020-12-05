@@ -1095,7 +1095,7 @@ export default {
 
         getPosition() {
             this.$axios
-                .get("http://localhost:8000/hr/company_position")
+                .get("hr/company_position")
                 .then(response => {
                     response.data.forEach(el => {
                         this.position.push(el);
@@ -1104,7 +1104,7 @@ export default {
         },
         getAllDepartment() {
             this.$axios
-                .get("http://localhost:8000/departments")
+                .get("departments")
                 .then(response => {
                     response.data.forEach(element => {
                         this.departmentItem.push(element);
@@ -1161,7 +1161,7 @@ export default {
             });
         },
         getAllPrp() {
-            this.$axios.get("prp/").then(response => {
+            this.$axios.get("prp").then(response => {
                 this.prp = response.data;
             });
         },

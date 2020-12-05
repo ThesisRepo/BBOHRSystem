@@ -8,7 +8,7 @@
           fixed-tabs
           v-if="(user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr'))">
           <v-tabs-slider></v-tabs-slider>
-          <v-tab @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
+          <v-tab v-if="!user_type.includes('general mngr')" @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
           <v-tab @click="requests = false, employees = true, feedback = false">Employees Requests</v-tab>
           <v-tab @click="requests = false, employees = false, feedback = true">History</v-tab>
         </v-tabs>
@@ -126,7 +126,7 @@
     ></Confirmation>
 
     <!-- ****************start************** -->
-    <v-dialog v-model="dialog" max-width="500px">
+    <v-dialog v-model="dialog" max-width="600px">
       <v-card>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-card-title>
@@ -141,13 +141,6 @@
                   v-model="editedItem.destination"
                   label="Destination"
                   prepend-icon=" mdi-home-modern"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="6">
-                <v-text-field
-                  v-model="editedItem.emergency_contact"
-                  label="Emergency Contact"
-                  prepend-icon="mdi-account-outline"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
@@ -213,7 +206,7 @@
                   ></v-date-picker>
                 </v-menu>
               </v-col>
-              <v-col cols="12">
+              <v-col cols="6">
                 <v-select
                   :items="coDepartment"
                   :item-text="coDepartment => coDepartment.first_name + ' ' + coDepartment.last_name"
@@ -223,6 +216,20 @@
                   prepend-icon=" mdi-account-outline"
                   required
                 ></v-select>
+              </v-col>
+              <v-col cols="6">
+                <v-text-field
+                  v-model="editedItem.emergency_contact"
+                  label="Emergency Contact"
+                  prepend-icon="mdi-account-outline"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="6">
+                <v-text-field
+                  v-model="editedItem.contact_number"
+                  label="Contact Number"
+                  prepend-icon="mdi-account-outline"
+                ></v-text-field>
               </v-col>
             </v-row>
           </v-container>
@@ -290,6 +297,8 @@
         <Reminder
           ref="reminder"
           :message="messageCheck === 'prp' ? 'Please set your PRP Assign' : messageCheck === 'user' ? 'Please set your personal information' : messageCheck === 'combine' ? 'Please set your PRP assign and your Personal Information' : ''"
+          link= "/MyAccount"
+          routeName='go to MY ACCOUNT'
         ></Reminder>
 
         </v-toolbar>
@@ -342,6 +351,7 @@ export default {
     fileDialog: false,
     files: "",
     uploadPercentage: 0,
+    contact_number: null,
     disable: false,
     end_date: null,
     error2: false,
@@ -356,6 +366,7 @@ export default {
       { text: "END DATE", value: "end_date" },
       { text: "EMERGENCY CONTACT", value: "emergency_contact" },
       { text: "EMPLOYEE TO COVER", value: "employee_to_cover.email" },
+      { text: "EMPLOYEE TO COVER'S NUMBER", value: "contact_number" },
       { text: "DOCUMENTS", value: "file_uri", sortable: false },
       { text: "APPROVER", value: "approver_role.role_name" },
       { text: "STATUS", value: "status.status_name" },
@@ -368,6 +379,7 @@ export default {
       { text: "END DATE", value: "end_date" },
       { text: "EMERGENCY CONTACT", value: "emergency_contact" },
       { text: "EMPLOYEE TO COVER", value: "employee_to_cover.email" },
+      { text: "EMPLOYEE TO COVER'S NUMBER", value: "contact_number" },
       { text: "DOCUMENTS", value: "file_uri", sortable: false },
       { text: "APPROVER", value: "approver_role.role_name" },
       { text: "STATUS", value: "status.status_name" },
@@ -380,6 +392,7 @@ export default {
       { text: "END DATE", value: "end_date" },
       { text: "EMERGENCY CONTACT", value: "emergency_contact" },
       { text: "EMPLOYEE TO COVER", value: "employee_to_cover.email" },
+      { text: "EMPLOYEE TO COVER'S NUMBER", value: "contact_number" },
       { text: "DOCUMENTS", value: "file_uri", sortable: false },
       { text: "APPROVER", value: "approver_role.role_name" },
       { text: "STATUS", value: "status.status_name" }
@@ -401,6 +414,7 @@ export default {
       end_date: null,
       emergency_contact: null,
       employee_cover: null,
+      contact_number: null,
       prp_assigned_id: null,
       details: null
     },
@@ -421,13 +435,17 @@ export default {
     },
   },
   mounted() {
-    if ((this.user_type.includes("hr mngr") || this.user_type.includes("prp emp") || this.user_type.includes("general mngr")) && !(this.user_type.includes("finance mngr"))) {
+    if ((this.user_type.includes("hr mngr") || this.user_type.includes("prp emp")) && !(this.user_type.includes("finance mngr"))) {
       this.retrieveTravel();
       this.retrieve();
       this.getAllFeedback();
       this.getCoDepartment()
       this.checkUser()
-    } else {
+    } else if(this.user_type.includes("general mngr")){
+      this.checkUser()
+      this.retrieveTravel();
+      this.getAllFeedback();
+    }else{
       this.retrieve();
       this.getCoDepartment()
       this.checkUser()
@@ -516,6 +534,7 @@ export default {
       this.editedItem.end_date = item.end_date;
       this.editedItem.emergency_contact = item.emergency_contact;
       // this.editedItem.file_uri = item.file_uri;
+      this.editedItem.contact_number = item.contact_number;
       this.editedItem.employee_to_cover = item.employee_to_cover;
       this.dialog = true;
     },
@@ -526,6 +545,8 @@ export default {
         this.editedItem.end_date !== null &&
         this.editedItem.emergency_contact !== null &&
         this.editedItem.employee_to_cover !== null &&
+        this.editedItem.contact_number !== "" &&
+        this.editedItem.contact_number !== null &&
         this.editedItem.emergency_contact !== "" &&
         this.editedItem.employee_to_cover !== "" &&
         this.editedItem.start_date !== "" &&
@@ -538,6 +559,7 @@ export default {
           end_date: this.editedItem.end_date,
           emergency_contact: this.editedItem.emergency_contact,
           employee_to_cover: this.editedItem.employee_to_cover,
+          contact_number: this.editedItem.contact_number,
           file_uri: "test"
         };
         this.$axios
