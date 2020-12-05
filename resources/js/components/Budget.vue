@@ -217,6 +217,8 @@
       <Reminder
           ref="reminder"
           :message="messageCheck === 'finance' ? 'Please set your Finance Assign' : messageCheck === 'user' ? 'Please set your personal information' : messageCheck === 'combine' ? 'Please set your Finance assign and your Personal Information' : ''"
+          link= "/MyAccount"
+          routeName='go to MY ACCOUNT'
         ></Reminder>
 
         </v-toolbar>

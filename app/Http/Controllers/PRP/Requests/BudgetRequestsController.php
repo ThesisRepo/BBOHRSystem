@@ -5,6 +5,7 @@ namespace App\Http\Controllers\PRP\Requests;
 use Illuminate\Http\Request;
 use App\Eloquent\Implementations\Requests\BudgetRequestEloquent;
 use App\Services\ApproverRequestService;
+use App\Services\UserRequestService;
 
 class BudgetRequestsController extends RequestBaseController
 {
@@ -12,12 +13,14 @@ class BudgetRequestsController extends RequestBaseController
 
     public function __construct(
         BudgetRequestEloquent $budget_request,
-        ApproverRequestService $request_service
+        ApproverRequestService $request_service,
+        UserRequestService $user_request_service
+
     ) {
 
         $this->middleware(['auth', 'verify.prp', 'verify.manager.finance']);  
         $this->budget_request = $budget_request;
-        parent::__construct($request_service,  $budget_request, 'budget_request');
+        parent::__construct($request_service,  $budget_request, $user_request_service, 'budget_request');
     }
     
     public function getPendingRequest($id){

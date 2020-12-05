@@ -10,6 +10,9 @@
         
         <center>
           <v-card-text><b>{{ message }}</b></v-card-text>
+          <v-btn color="primary" v-if="link">
+            <router-link style="color:white" :to="link">{{routeName}}</router-link>
+          </v-btn>
         </center>
 
         <v-divider></v-divider>
@@ -30,7 +33,7 @@ export default {
       dialog: false
     };
   },
-  props: ['message'],
+  props: ['message', 'routeName', 'link'],
   methods: {
     show(id){
       this.id = id
