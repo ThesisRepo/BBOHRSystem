@@ -326,6 +326,7 @@
     <SummaryTemplate
     ref="summary"
     ></SummaryTemplate>
+    <Loading v-if="loading"></Loading>
   </div>
 </template>
 
@@ -336,6 +337,7 @@ import Confirmation from "./modals/confirmation/confirm.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
 import Reminder from "./modals/confirmation/reminder.vue";
 import SummaryTemplate from "./modals/exports/travel_export.vue";
+import Loading from "./Loading.vue";
 export default {
   data: () => ({
     file_uri: "",
@@ -360,6 +362,7 @@ export default {
     informationCheck: null,
     deleteModal: false,
     dialogDelete: false,
+    loading:false,
     headers: [
       { text: "DESTINATION", align: "start", sortable: false, value: "destination" },
       { text: "START DATE", value: "start_date" },
@@ -427,7 +430,8 @@ export default {
     Confirmation,
     ConfirmationDel,
     SummaryTemplate,
-    Reminder
+    Reminder,
+    Loading
   },
   computed: {
     dateRangeText () {
@@ -480,13 +484,16 @@ export default {
       })
     },
     retrieve() {
+      this.loading = true;
       this.$axios
         .get("travel_auth_request/" + this.user_id)
         .then(response => {
+          this.loading = false;
           console.log(response.data)
           this.travel = response.data;
         })
         .catch(e => {
+          this.loading = false;
           console.log(e);
         });
     },

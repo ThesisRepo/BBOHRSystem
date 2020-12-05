@@ -53,9 +53,13 @@
         src="../storage/img/logoCircle.png"
         class="ml-5 mr-2"
       ></v-img> -->
-      <v-toolbar-title style="color:black">
+      <v-toolbar-title style="color:black;width:100%">
       
         <span style="color:#3490dc">Blue Bee One</span>  Request Management System</v-toolbar-title>
+        <div>
+          <!-- <i class="fas fa-bell" id="bell"></i>
+          <Notification id="notification"/> -->
+        </div>
     </v-app-bar>
      <Confirmation
       ref="confirms"
@@ -72,13 +76,23 @@
         
 
 </template>
-<style>
+<style scoped>
+#notification{
+  position:absolute;
+}
+#bell {
+  /* float: right; */
+  color: #01579b;
+  font-size: 25px;
+  margin-right: 30px;
+}
 </style>
 
 <script>
 import ROUTER from "../router";
 import { mapGetters } from "vuex";
 import Confirmation from "../components/modals/confirmation/confirm.vue";
+import Notification from "../components/notification.vue";
 export default {
   data: () => ({
     user_pic: localStorage.getItem('user_pic'),
@@ -103,7 +117,8 @@ export default {
     confirmationMessage: null
   }),
   components: {
-    Confirmation
+    Confirmation,
+    Notification
   },
   mounted(){
     if(this.user_type.includes('hr mngr')){

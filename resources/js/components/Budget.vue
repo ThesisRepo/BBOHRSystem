@@ -238,6 +238,7 @@
     <SummaryTemplate
     ref="summary"
     ></SummaryTemplate>
+    <Loading v-if="loading"></Loading>
   </div>
 </template>
 <script>
@@ -246,6 +247,7 @@ import Confirmation from "./modals/confirmation/confirm.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
 import SummaryTemplate from "./modals/exports/overtime_export.vue";
 import Reminder from "./modals/confirmation/reminder.vue";
+import Loading from "./Loading.vue";
 export default {
   data: () => ({
     user_type: localStorage.getItem("user_type"),
@@ -261,6 +263,7 @@ export default {
     search: '',
     messageCheck: '',
     informationCheck: null,
+    loading:false,
     headers: [
       { text: "DATE", value: "date" },
       { text: "DEPARTMENT", value: "department.department_name" },
@@ -320,7 +323,8 @@ export default {
     Confirmation,
     ConfirmationDel,
     SummaryTemplate,
-    Reminder
+    Reminder,
+    Loading
   },
   computed: {
     dateRangeText () {
@@ -347,12 +351,15 @@ export default {
       return date > new Date().toISOString().substr(0, 10);
     },
     retrieve() {
+      this.loading = true
       this.$axios
         .get("budget_request/" + this.user_id)
         .then(response => {
+          this.loading = false
           this.budget = response.data;
         })
         .catch(e => {
+          this.loading = false
           console.log(e);
         });
     },

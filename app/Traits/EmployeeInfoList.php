@@ -39,11 +39,11 @@ trait EmployeeInfoList
           'event_types' => [
             [
               'event_name' => 'Holiday',
-              'color' => 'red'
+              'color' => '#FF0000'
             ],
             [
               'event_name' => 'Birthday',
-              'color' => 'yellow'
+              'color' => '#FFFF00'
             ]
           ]
         ],
@@ -82,11 +82,11 @@ trait EmployeeInfoList
           'event_types' => [
             [
               'event_name' => 'Holiday',
-              'color' => 'red'
+              'color' => '#FF0000'
             ],
             [
               'event_name' => 'Birthday',
-              'color' => 'yellow'
+              'color' => '#FFFF00'
             ]
           ]
         ],
@@ -125,11 +125,11 @@ trait EmployeeInfoList
           'event_types' => [
             [
               'event_name' => 'Holiday',
-              'color' => 'red'
+              'color' => '#FF0000'
             ],
             [
               'event_name' => 'Birthday',
-              'color' => 'yellow'
+              'color' => '#FFFF00'
             ]
           ]
         ],
@@ -166,11 +166,11 @@ trait EmployeeInfoList
           'event_types' => [
             [
               'event_name' => 'Holiday',
-              'color' => 'red'
+              'color' => '#FF0000'
             ],
             [
               'event_name' => 'Birthday',
-              'color' => 'yellow'
+              'color' => '#FFFF00'
             ]
           ]
         ],
@@ -208,11 +208,11 @@ trait EmployeeInfoList
           'event_types' => [
             [
               'event_name' => 'Holiday',
-              'color' => 'red'
+              'color' => '#FF0000'
             ],
             [
               'event_name' => 'Birthday',
-              'color' => 'yellow'
+              'color' => '#FFFF00'
             ]
           ]
         ],
@@ -250,11 +250,11 @@ trait EmployeeInfoList
           'event_types' => [
             [
               'event_name' => 'Holiday',
-              'color' => 'red'
+              'color' => '#FF0000'
             ],
             [
               'event_name' => 'Birthday',
-              'color' => 'yellow'
+              'color' => '#FFFF00'
             ]
           ]
         ],
@@ -292,11 +292,11 @@ trait EmployeeInfoList
           'event_types' => [
             [
               'event_name' => 'Holiday',
-              'color' => 'red'
+              'color' => '#FF0000'
             ],
             [
               'event_name' => 'Birthday',
-              'color' => 'yellow'
+              'color' => '#FFFF00'
             ]
           ]
         ],
@@ -334,11 +334,11 @@ trait EmployeeInfoList
           'event_types' => [
             [
               'event_name' => 'Holiday',
-              'color' => 'red'
+              'color' => '#FF0000'
             ],
             [
               'event_name' => 'Birthday',
-              'color' => 'yellow'
+              'color' => '#FFFF00'
             ]
           ]
         ],
@@ -376,11 +376,11 @@ trait EmployeeInfoList
           'event_types' => [
             [
               'event_name' => 'Holiday',
-              'color' => 'red'
+              'color' => '#FF0000'
             ],
             [
               'event_name' => 'Birthday',
-              'color' => 'yellow'
+              'color' => '#FFFF00'
             ]
           ]
 
@@ -419,11 +419,11 @@ trait EmployeeInfoList
           'event_types' => [
             [
               'event_name' => 'Holiday',
-              'color' => 'red'
+              'color' => '#FF0000'
             ],
             [
               'event_name' => 'Birthday',
-              'color' => 'yellow'
+              'color' => '#FFFF00'
             ]
           ]
         ],
@@ -461,11 +461,11 @@ trait EmployeeInfoList
           'event_types' => [
             [
               'event_name' => 'Holiday',
-              'color' => 'red'
+              'color' => '#FF0000'
             ],
             [
               'event_name' => 'Birthday',
-              'color' => 'yellow'
+              'color' => '#FFFF00'
             ]
           ]
         ],
@@ -503,11 +503,11 @@ trait EmployeeInfoList
           'event_types' => [
             [
               'event_name' => 'Holiday',
-              'color' => 'red'
+              'color' => '#FF0000'
             ],
             [
               'event_name' => 'Birthday',
-              'color' => 'yellow'
+              'color' => '#FFFF00'
             ]
           ]
         ],
@@ -545,11 +545,11 @@ trait EmployeeInfoList
           'event_types' => [
             [
               'event_name' => 'Holiday',
-              'color' => 'red'
+              'color' => '#FF0000'
             ],
             [
               'event_name' => 'Birthday',
-              'color' => 'yellow'
+              'color' => '#FFFF00'
             ]
           ]
         ],
@@ -587,11 +587,11 @@ trait EmployeeInfoList
           'event_types' => [
             [
               'event_name' => 'Holiday',
-              'color' => 'red'
+              'color' => '#FF0000'
             ],
             [
               'event_name' => 'Birthday',
-              'color' => 'yellow'
+              'color' => '#FFFF00'
             ]
           ]
         ],
@@ -629,11 +629,11 @@ trait EmployeeInfoList
           'event_types' => [
             [
               'event_name' => 'Holiday',
-              'color' => 'red'
+              'color' => '#FF0000'
             ],
             [
               'event_name' => 'Birthday',
-              'color' => 'yellow'
+              'color' => '#FFFF00'
             ]
           ]
         ],
@@ -671,11 +671,11 @@ trait EmployeeInfoList
           'event_types' => [
             [
               'event_name' => 'Holiday',
-              'color' => 'red'
+              'color' => '#FF0000'
             ],
             [
               'event_name' => 'Birthday',
-              'color' => 'yellow'
+              'color' => '#FFFF00'
             ]
           ]
         ],
@@ -713,11 +713,11 @@ trait EmployeeInfoList
           'event_types' => [
             [
               'event_name' => 'Holiday',
-              'color' => 'red'
+              'color' => '#FF0000'
             ],
             [
               'event_name' => 'Birthday',
-              'color' => 'yellow'
+              'color' => '#FFFF00'
             ]
           ]
         ],
@@ -755,11 +755,11 @@ trait EmployeeInfoList
           'event_types' => [
             [
               'event_name' => 'Holiday',
-              'color' => 'red'
+              'color' => '#FF0000'
             ],
             [
               'event_name' => 'Birthday',
-              'color' => 'yellow'
+              'color' => '#FFFF00'
             ]
           ]
         ],
@@ -797,11 +797,11 @@ trait EmployeeInfoList
           'event_types' => [
             [
               'event_name' => 'Holiday',
-              'color' => 'red'
+              'color' => '#FF0000'
             ],
             [
               'event_name' => 'Birthday',
-              'color' => 'yellow'
+              'color' => '#FFFF00'
             ]
           ]
         ],
@@ -839,11 +839,11 @@ trait EmployeeInfoList
           'event_types' => [
             [
               'event_name' => 'Holiday',
-              'color' => 'red'
+              'color' => '#FF0000'
             ],
             [
               'event_name' => 'Birthday',
-              'color' => 'yellow'
+              'color' => '#FFFF00'
             ]
           ]
         ],
@@ -882,11 +882,11 @@ trait EmployeeInfoList
           'event_types' => [
             [
               'event_name' => 'Holiday',
-              'color' => 'red'
+              'color' => '#FF0000'
             ],
             [
               'event_name' => 'Birthday',
-              'color' => 'yellow'
+              'color' => '#FFFF00'
             ]
           ]
         ],

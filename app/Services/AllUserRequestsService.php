@@ -43,4 +43,14 @@ class AllUserRequestsService
   public function getAllPendingRequests($user) {
     return $this->leave_request->count();
   }
+  public function getGMAllToApprove($with) {
+    $temp_arr = [];
+    array_push($temp_arr, ...$this->leave_request->with($with)->where('approver_role_id', 5)->where('status_id', 1)->get()->toArray());
+    array_push($temp_arr, ...$this->shift_change_request->with($with)->where('approver_role_id', 5)->where('status_id', 1)->get()->toArray());
+    array_push($temp_arr, ...$this->overtime_request->with($with)->where('approver_role_id', 5)->where('status_id', 1)->get()->toArray());
+    array_push($temp_arr, ...$this->budget_request->with($with)->where('approver_role_id', 5)->where('status_id', 1)->get()->toArray());
+    array_push($temp_arr, ...$this->petty_cash_request->with($with)->where('approver_role_id', 5)->where('status_id', 1)->get()->toArray());
+    array_push($temp_arr, ...$this->travel_auth_request->with($with)->where('approver_role_id', 5)->where('status_id', 1)->get()->toArray());
+    return $temp_arr;
+  }
 }

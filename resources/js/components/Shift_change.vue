@@ -184,6 +184,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <Loading v-if="loading"></Loading>
 
     <!-- DeleteModal -->
     <ConfirmationDel
@@ -259,6 +260,8 @@ import Confirmation from "./modals/confirmation/confirm.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
 import SummaryTemplate from "./modals/exports/shift_export.vue";
 import Reminder from "./modals/confirmation/reminder.vue";
+import Loading from "./Loading.vue";
+
 // import { constants } from 'fs';
 export default {
   data: () => ({
@@ -275,6 +278,7 @@ export default {
     shift_date: null,
     reason: null,
     shift_time: null,
+    loading: false,
     headers: [
       {
         text: "REASON",
@@ -328,7 +332,8 @@ export default {
     Confirmation,
     ConfirmationDel,
     SummaryTemplate,
-    Reminder
+    Reminder,
+    Loading
   },
   computed: {
     dateRangeText () {
@@ -356,10 +361,12 @@ export default {
       return date > new Date().toISOString().substr(0, 10);
     },
     retrieve() {
+      this.loading = true;
       this.$axios
         .get("shift_change_request/" + this.user_id)
         .then(response => {
           this.shifts = response.data;
+          this.loading = false;
         })
         .catch(e => {
           console.log(e);

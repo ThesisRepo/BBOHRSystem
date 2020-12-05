@@ -199,6 +199,8 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <Loading v-if="loading"></Loading>
+
 
       <!-- DeleteModal -->
       <ConfirmationDel
@@ -277,6 +279,8 @@ import Confirmation from "./modals/confirmation/confirm.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
 import SummaryTemplate from "./modals/exports/overtime_export.vue";
 import Reminder from "./modals/confirmation/reminder.vue";
+import Loading from "./Loading.vue";
+
 export default {
   data: () => ({
     user_type: localStorage.getItem("user_type"),
@@ -290,6 +294,7 @@ export default {
     overtime_date: null,
     messageCheck: '',
     informationCheck: null,
+    loading:false,
     search: '',
     headers: [
       { text: "REASON", align: "start", value: "reason" },
@@ -344,7 +349,8 @@ export default {
     Confirmation,
     ConfirmationDel,
     SummaryTemplate,
-    Reminder
+    Reminder,
+    Loading
   },
   computed: {
     dateRangeText () {
@@ -371,8 +377,10 @@ export default {
       return date >  new Date().toISOString().substr(0, 10)
     },
     retrieve(){
+      this.loading = true;
       this.$axios.get("overtime_request/" + this.user_id).then(response => {
         this.overtime = response.data
+        this.loading = false;
       })
       .catch(e => {
         console.log(e);
