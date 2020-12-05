@@ -81,10 +81,16 @@
             </v-row>
           </v-container>
       </v-card>
-       <Reminder
-        ref="reminder"
-        :message="myMessage"
-        ></Reminder>
+      <Reminder
+      ref="reminder"
+      :message="myMessage"
+      ></Reminder>
+      <Confirmation
+      ref="confirms"
+      :title="confirmationTitle"
+      :message="confirmationMessage"
+      @onConfirm="confirm($event)"
+    ></Confirmation>
     </v-container>
     
   </v-layout>
@@ -167,6 +173,7 @@ import editProfile from "./modals/edit_profile.vue";
 import updatePrp from "./modals/edit_prp.vue";
 import updateFinance from "./modals/edit_finance.vue";
 import Reminder from "./modals/confirmation/reminder.vue";
+import Confirmation from "./modals/confirmation/confirm.vue";
 import { mapGetters } from "vuex";
 export default {
   data() {
@@ -202,7 +209,9 @@ export default {
       formData: null,
       isEditabelProfile: false,
       myMessage: null,
-      imgMaxSize: 2.097152
+      imgMaxSize: 2.097152,
+      confirmationTitle:null,
+      confirmationMessage: null
     };
   },
   created() {
@@ -212,7 +221,8 @@ export default {
     editProfile,
     updatePrp,
     updateFinance,
-    Reminder
+    Reminder,
+    Confirmation
   },
   methods: {
     updatePrp(){
@@ -261,14 +271,23 @@ export default {
       );
       this.$refs.uploader.click();
     },
+    confirm(){
+      if(this.confirmationTitle == 'Update Profile'){
+        this.uploadImg();
+      }
+    },
+    uploadImg() {
+      this.$store.dispatch('ChangeProfileUrl', {user:this.user_id, profileUrl:this.formData}).then(()=> {
+        // alert('ddf');
+        this.isEditabelProfile = false;
+        this.isConfirmed = false;
+      });
+    },
     updateFileChanged() {
       if(this.isEditabelProfile) {
-        console.log(this.formData);
-        this.$store.dispatch('ChangeProfileUrl', {user:this.user_id, profileUrl:this.formData}).then(()=> {
-          // alert('ddf');
-          this.isEditabelProfile = false;
-        });
-        
+        this.confirmationTitle = 'Update Profile',
+        this.confirmationMessage = 'Are you sure you want to update your profile photo?',
+        this.$refs.confirms.show()
       }else{
         this.myMessage = 'seems like you didn\'t upload an image.'
         this.$refs.reminder.show();
