@@ -9,7 +9,10 @@
           v-if="(user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr'))"
         >
           <v-tabs-slider></v-tabs-slider>
-          <v-tab v-if="!user_type.includes('general mngr')" @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
+          <v-tab
+            v-if="!user_type.includes('general mngr')"
+            @click="employees = false, requests = true, feedback = false"
+          >My Requests</v-tab>
           <v-tab @click="requests = false, employees = true, feedback = false">Employees Requests</v-tab>
           <v-tab @click="requests = false, employees = false, feedback = true">History</v-tab>
         </v-tabs>
@@ -17,7 +20,13 @@
     </v-toolbar>
 
     <!-- Feedback -->
-    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" :search="search" class="elevation-3">
+    <v-data-table
+      v-if="feedback"
+      :headers="headersFeed"
+      :items="feedbacks"
+      :search="search"
+      class="elevation-3"
+    >
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat v-if="(user_type.includes('hr mngr') || user_type.includes('general mngr'))">
           <v-col class="mt-8" v-if="!user_type.includes('general mngr')">
@@ -39,10 +48,7 @@
                   v-on="on"
                 ></v-text-field>
               </template>
-               <v-date-picker
-                v-model="dates"
-                range
-              ></v-date-picker>
+              <v-date-picker v-model="dates" range></v-date-picker>
             </v-menu>
           </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <!-- <v-btn color="light blue darken-2" @click="summary()" outlined>SUMMARY</v-btn> -->
@@ -62,11 +68,11 @@
               </v-btn>
             </template>
             <v-list>
-              <v-list-item
-                v-for="(item, i) in items"
-                :key="i"
-              >
-                <v-list-item-title @click="summary(item.title)" style="cursor: pointer;">{{ item.title }}</v-list-item-title>
+              <v-list-item v-for="(item, i) in items" :key="i">
+                <v-list-item-title
+                  @click="summary(item.title)"
+                  style="cursor: pointer;"
+                >{{ item.title }}</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -82,7 +88,13 @@
             label="Search"
           ></v-text-field>
         </v-toolbar>
-        <v-toolbar class="mb-2" color="blue darken-1" dark flat v-if="((user_type.includes('prp emp') || user_type.includes('finance mngr')) && (!user_type.includes('hr mngr') && !user_type.includes('general mngr')))">
+        <v-toolbar
+          class="mb-2"
+          color="blue darken-1"
+          dark
+          flat
+          v-if="((user_type.includes('prp emp') || user_type.includes('finance mngr')) && (!user_type.includes('hr mngr') && !user_type.includes('general mngr')))"
+        >
           <v-text-field
             v-model="search"
             clearable
@@ -94,13 +106,29 @@
           ></v-text-field>
         </v-toolbar>
       </template>
-      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
-      <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
+      <template v-slot:item.status.status_name="{ item }">
+        <v-chip
+          :color="getColor(item.status.status_name)"
+          :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'"
+        >{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip>
+      </template>
+      <template v-slot:item.approver_role.role_name="{ item }">
+        <v-chip
+          class="ma-2"
+          outlined
+          :color="prpColor(item.approver_role.role_name)"
+        >{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip>
+      </template>
     </v-data-table>
 
     <!-- Pending Requests -->
-    <v-data-table v-if="employees" :headers="headersEmp" :items="prpPending" 
-      :search="search" class="elevation-3">
+    <v-data-table
+      v-if="employees"
+      :headers="headersEmp"
+      :items="prpPending"
+      :search="search"
+      class="elevation-3"
+    >
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-text-field
@@ -114,10 +142,26 @@
           ></v-text-field>
         </v-toolbar>
       </template>
-      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === '"approved"' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
-      <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
+      <template v-slot:item.status.status_name="{ item }">
+        <v-chip
+          :color="getColor(item.status.status_name)"
+          :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'"
+        >{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === '"approved"' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip>
+      </template>
+      <template v-slot:item.approver_role.role_name="{ item }">
+        <v-chip
+          class="ma-2"
+          outlined
+          :color="prpColor(item.approver_role.role_name)"
+        >{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip>
+      </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon medium class="mr-2" @click="approveModal(item)" style="color:green">mdi-check-decagram</v-icon>
+        <v-icon
+          medium
+          class="mr-2"
+          @click="approveModal(item)"
+          style="color:green"
+        >mdi-check-decagram</v-icon>
         <v-icon medium @click="disapproveModal(item)" style="color:red">mdi-close-circle</v-icon>
       </template>
     </v-data-table>
@@ -165,7 +209,14 @@
                   v-if="error2"
                   style="color: red; font-style: italic"
                 >Start date must not be higher than End date!</span>
-                <v-text-field label="Start Date" type="datetime-local" v-model="editedItem.start_date" :allowed-dates="disabledDates" @change="changeDate()" color="primary"></v-text-field>
+                <v-text-field
+                  label="Start Date"
+                  type="datetime-local"
+                  v-model="editedItem.start_date"
+                  :allowed-dates="disabledDates"
+                  @change="changeDate()"
+                  color="primary"
+                ></v-text-field>
               </v-col>
               <v-col cols="12" sm="4">
                 <span
@@ -173,7 +224,14 @@
                   class="ml-7"
                   style="color: red; font-size: 13px"
                 >Higher the End Date</span>
-                <v-text-field label="End Date" type="datetime-local" :allowed-dates="disabledDates2" v-model="editedItem.end_date" @change="changeDate()" color="primary"></v-text-field>
+                <v-text-field
+                  label="End Date"
+                  type="datetime-local"
+                  :allowed-dates="disabledDates2"
+                  v-model="editedItem.end_date"
+                  @change="changeDate()"
+                  color="primary"
+                ></v-text-field>
               </v-col>
             </v-row>
           </v-container>
@@ -185,12 +243,10 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <Loading v-if="loading"></Loading>
 
     <!-- Delete Modal -->
-    <ConfirmationDel
-      ref="confirmDel"
-      @onConfirm="confirmDel($event)"
-    ></ConfirmationDel>
+    <ConfirmationDel ref="confirmDel" @onConfirm="confirmDel($event)"></ConfirmationDel>
 
     <v-data-table
       v-if="requests"
@@ -213,7 +269,7 @@
           ></v-text-field>
 
           <createLeave v-if="prp_assigned_id !== 'No PRP assign' && informationCheck !== null"></createLeave>
-          
+
           <v-btn
           style="margin-left: 5%"
           v-if="(prp_assigned_id === 'No PRP assign' || informationCheck === null) && !user_type.includes('general mngr')"
@@ -233,40 +289,73 @@
           link= "/MyAccount"
           routeName='go to MY ACCOUNT'
           ></Reminder>
-
         </v-toolbar>
       </template>
       <!--Math.round((item.number_of_days / 1000 / 60 / 60 % 24) * 60)  -->
-       <!-- item.number_of_days >= 1 ? 
+      <!-- item.number_of_days >= 1 ? 
           (item.number_of_days / 1000 / 60 / 60 % 24) != 0 ? 
           Math.floor(item.number_of_days / 1000 / 60 / 60 / 24) + ' ' + 'Day/s' + ' ' + (Math.round(item.number_of_days / 1000 / 60 / 60 % 24) * 60) + ' ' + 'Hour/s' :
           Math.floor(item.number_of_days / 1000 / 60 / 60 / 24) + ' ' + 'Day/s' :
-          (item.number_of_days / 1000 / 60 / 60 % 24) *60+ ' ' + 'minute/s' -->
+      (item.number_of_days / 1000 / 60 / 60 % 24) *60+ ' ' + 'minute/s'-->
       <template v-slot:item.number_of_days="{ item }">
         {{
           displayTimeLengthInText(item.number_of_days)
         }}
       </template>
       <template v-slot:item.status.status_name="{ item }">
-        <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
-      <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
+        <v-chip
+          :color="getColor(item.status.status_name)"
+          :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'"
+        >{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip>
+      </template>
+      <template v-slot:item.approver_role.role_name="{ item }">
+        <v-chip
+          class="ma-2"
+          outlined
+          :color="prpColor(item.approver_role.role_name)"
+        >{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip>
+      </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon medium disabled class="mr-2" v-if="((user_type.includes('emp') && user_type.includes('prp emp') && user_type.includes('hr mngr')) && item.status.status_name === 'approved')">mdi-pencil</v-icon>
-        <v-icon medium disabled class="mr-2" v-else-if="((user_type.includes('emp') && user_type.includes('prp emp') && !(user_type.includes('hr mngr'))) && item.approver_role.role_name === 'general mngr')">mdi-pencil</v-icon>
-        <v-icon medium disabled class="mr-2" v-else-if="((user_type.includes('emp') && !user_type.includes('prp emp') && !user_type.includes('hr mngr')) && ((item.approver_role.role_name === 'hr mngr') || item.approver_role.role_name === 'general mngr'))">mdi-pencil</v-icon>
+        <v-icon
+          medium
+          disabled
+          class="mr-2"
+          v-if="((user_type.includes('emp') && user_type.includes('prp emp') && user_type.includes('hr mngr')) && item.status.status_name === 'approved')"
+        >mdi-pencil</v-icon>
+        <v-icon
+          medium
+          disabled
+          class="mr-2"
+          v-else-if="((user_type.includes('emp') && user_type.includes('prp emp') && !(user_type.includes('hr mngr'))) && item.approver_role.role_name === 'general mngr')"
+        >mdi-pencil</v-icon>
+        <v-icon
+          medium
+          disabled
+          class="mr-2"
+          v-else-if="((user_type.includes('emp') && !user_type.includes('prp emp') && !user_type.includes('hr mngr')) && ((item.approver_role.role_name === 'hr mngr') || item.approver_role.role_name === 'general mngr'))"
+        >mdi-pencil</v-icon>
         <v-icon medium class="mr-2" @click="editItem(item)" style="color:blue" v-else>mdi-pencil</v-icon>
-        
-        <v-icon medium disabled v-if="((user_type.includes('emp') && user_type.includes('prp emp') && user_type.includes('hr mngr')) && item.status.status_name === 'approved')">mdi-delete</v-icon>  
-        <v-icon medium disabled v-else-if="((user_type.includes('emp') && user_type.includes('prp emp') && !(user_type.includes('hr mngr'))) && item.approver_role.role_name === 'general mngr')">mdi-delete</v-icon>  
-        <v-icon medium disabled v-else-if="((user_type.includes('emp') && !user_type.includes('prp emp') && !user_type.includes('hr mngr')) && ((item.approver_role.role_name === 'hr mngr') || item.approver_role.role_name === 'general mngr'))">mdi-delete</v-icon>  
+
+        <v-icon
+          medium
+          disabled
+          v-if="((user_type.includes('emp') && user_type.includes('prp emp') && user_type.includes('hr mngr')) && item.status.status_name === 'approved')"
+        >mdi-delete</v-icon>
+        <v-icon
+          medium
+          disabled
+          v-else-if="((user_type.includes('emp') && user_type.includes('prp emp') && !(user_type.includes('hr mngr'))) && item.approver_role.role_name === 'general mngr')"
+        >mdi-delete</v-icon>
+        <v-icon
+          medium
+          disabled
+          v-else-if="((user_type.includes('emp') && !user_type.includes('prp emp') && !user_type.includes('hr mngr')) && ((item.approver_role.role_name === 'hr mngr') || item.approver_role.role_name === 'general mngr'))"
+        >mdi-delete</v-icon>
         <v-icon medium @click="deleteItem(item)" style="color:red" v-else>mdi-delete</v-icon>
       </template>
     </v-data-table>
 
-    <SummaryTemplate
-    ref="summary"
-    ></SummaryTemplate>
-
+    <SummaryTemplate ref="summary"></SummaryTemplate>
   </div>
 </template>
 <style>
@@ -275,13 +364,14 @@
 }
 </style>
 <script>
-
 import createLeave from "./modals/create_leave.vue";
 import moment from "moment";
 import Confirmation from "./modals/confirmation/confirm.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
 import Reminder from "./modals/confirmation/reminder.vue";
 import SummaryTemplate from "./modals/exports/leave_export.vue";
+import Loading from "./Loading.vue";
+
 export default {
   // "employees = false, requests = true, feedback = false"
   data: () => ({
@@ -290,7 +380,7 @@ export default {
     prp_assigned_id: localStorage.getItem("assigned_prp_id"),
     employees: false,
     requests: true,
-    feedback: false,  
+    feedback: false,
     dialog: false,
     error: false,
     error1: false,
@@ -299,7 +389,9 @@ export default {
     disable: false,
     end_date: null,
     start_date: null,
-    search: '',
+    loading: false,
+
+    search: "",
     headers: [
       { text: "TYPE OF LEAVE", align: "start", value: "leave_type.leave_type_name" },
       { text: "DURATION OF LEAVE", value: "number_of_days" },
@@ -345,11 +437,8 @@ export default {
       start_time: null,
       end_time: null
     },
-    items: [
-      { title: 'Approved Requests' },
-      { title: 'Disapproved Requests' }
-    ],
-    dates: [new Date().toISOString().substr(0, 10), ],
+    items: [{ title: "Approved Requests" }, { title: "Disapproved Requests" }],
+    dates: [new Date().toISOString().substr(0, 10)],
     leaveType: [
       { value: 1, name: "Sick Leave" },
       { value: 2, name: "Solo Parent Leave" },
@@ -358,34 +447,39 @@ export default {
       { value: 5, name: "Paternity Leave" },
       { value: 6, name: "Maternity Leave" }
     ],
-    approveThis: '',
-    messageCheck: '',
+    approveThis: "",
+    messageCheck: ""
   }),
   components: {
     createLeave,
     Confirmation,
     ConfirmationDel,
     SummaryTemplate,
-    Reminder
+    Reminder,
+    Loading
   },
   computed: {
-    dateRangeText () {
-      return this.dates.join(' ~ ')
-    },
+    dateRangeText() {
+      return this.dates.join(" ~ ");
+    }
   },
   mounted() {
-    if ((this.user_type.includes("hr mngr") || this.user_type.includes("prp emp")) && !(this.user_type.includes("finance mngr"))) {
+    if (
+      (this.user_type.includes("hr mngr") ||
+        this.user_type.includes("prp emp")) &&
+      !this.user_type.includes("finance mngr")
+    ) {
       this.retrievePendingPrp();
       this.retrieve();
       this.getAllFeedback();
-      this.checkUser()
-    }else if(this.user_type.includes("general mngr")){
+      this.checkUser();
+    } else if (this.user_type.includes("general mngr")) {
       this.retrievePendingPrp();
       this.getAllFeedback();
-      this.checkUser()
-    }else{
+      this.checkUser();
+    } else {
       this.retrieve();
-      this.checkUser()
+      this.checkUser();
     }
   },
   methods: {
@@ -418,10 +512,12 @@ export default {
       }
     },
     retrieve() {
+      this.loading = true;
       this.$axios
         .get("leave_request/" + this.user_id)
         .then(response => {
           this.request = response.data;
+          this.loading = false
         })
         .catch(e => {
           console.log(e);
@@ -570,10 +666,7 @@ export default {
           prp_assigned_id: this.prp_assigned_id
         };
         this.$axios
-          .post(
-            "leave_request/" + this.editedItem.id,
-            params
-          )
+          .post("leave_request/" + this.editedItem.id, params)
           .then(response => {
             this.retrieve();
           });
@@ -594,95 +687,88 @@ export default {
 
     deleteItem(item) {
       this.id = item.id;
-      this.$refs.confirmDel.show(item)
+      this.$refs.confirmDel.show(item);
     },
-    confirmDel(){
-      this.$axios
-        .delete("leave_request/" + this.id)
-        .then(response => {
-          this.retrieve();
-        });
+    confirmDel() {
+      this.$axios.delete("leave_request/" + this.id).then(response => {
+        this.retrieve();
+      });
     },
     close() {
       this.dialog = false;
     },
     getColor(status) {
-      if (status === "pending") return "#ffa500"
-      else if (status === "disapproved") return "red"
+      if (status === "pending") return "#ffa500";
+      else if (status === "disapproved") return "red";
       else return "green";
     },
     prpColor(approver_role) {
-      if (approver_role === "prp emp") return "#0047ab"
-      else if (approver_role === "hr mngr") return "blue"
-      else if (approver_role === "finance mngr") return "#00004d"
-      else if (approver_role === "emp") return "0f52ba"
+      if (approver_role === "prp emp") return "#0047ab";
+      else if (approver_role === "hr mngr") return "blue";
+      else if (approver_role === "finance mngr") return "#00004d";
+      else if (approver_role === "emp") return "0f52ba";
       else return "#002366";
     },
     approveModal(item) {
-      this.approveThis = 'approve'
+      this.approveThis = "approve";
       this.id = item.id;
-      this.$refs.confirms.show(item)
+      this.$refs.confirms.show(item);
     },
-    checkUser(){
-      this.$axios
-        .get("user_info/" + this.user_id)
-        .then(response => {
-          if(response.data.user_information === null){
-            this.informationCheck = null
-          }else{
-            this.informationCheck = true
-          }
-        })
+    checkUser() {
+      this.$axios.get("user_info/" + this.user_id).then(response => {
+        if (response.data.user_information === null) {
+          this.informationCheck = null;
+        } else {
+          this.informationCheck = true;
+        }
+      });
     },
-    messagePop(){
-      if(this.prp_assigned_id === 'No PRP assign' && this.informationCheck === null){
-        this.messageCheck = 'combine'
-        this.$refs.reminder.show()
-      }else if(this.informationCheck === null){
-        this.messageCheck = 'user'
-        this.$refs.reminder.show()
-      }else {
-        this.messageCheck = 'prp'
-        this.$refs.reminder.show()
+    messagePop() {
+      if (
+        this.prp_assigned_id === "No PRP assign" &&
+        this.informationCheck === null
+      ) {
+        this.messageCheck = "combine";
+        this.$refs.reminder.show();
+      } else if (this.informationCheck === null) {
+        this.messageCheck = "user";
+        this.$refs.reminder.show();
+      } else {
+        this.messageCheck = "prp";
+        this.$refs.reminder.show();
       }
     },
-    confirm(item){
-      if(this.approveThis === 'approve'){
-        this.approve(item)
-      }else{
-        this.disapprove()
+    confirm(item) {
+      if (this.approveThis === "approve") {
+        this.approve(item);
+      } else {
+        this.disapprove();
       }
     },
     disapproveModal(item) {
-      this.approveThis = 'disapproved'
+      this.approveThis = "disapproved";
       this.id = item.id;
-      this.$refs.confirms.show(item)
+      this.$refs.confirms.show(item);
     },
     approve(item) {
-      if(item.id.approver_role_id === 5) {
+      if (item.id.approver_role_id === 5) {
         let parameter = {
           user_id: this.user_id,
           status_id: 2
         };
         this.$axios
-          .post(
-            "prp/leave_request/feedback/" + this.id,
-            parameter
-          )
+          .post("prp/leave_request/feedback/" + this.id, parameter)
           .then(response => {
             this.retrievePendingPrp();
             this.getAllFeedback();
           });
-      }else{
+      } else {
         let parameter = {
           user_id: this.user_id,
           status_id: 1
         };
         this.$axios
-          .post(
-            "prp/leave_request/feedback/" + this.id,
-            parameter
-          )
+          .post("prp/leave_request/feedback/" + this.id, parameter)
           .then(response => {
             this.retrievePendingPrp();
             this.getAllFeedback();
@@ -695,10 +781,7 @@ export default {
         status_id: 3
       };
       this.$axios
-        .post(
-          "prp/leave_request/feedback/" + this.id,
-          parameter
-        )
+        .post("prp/leave_request/feedback/" + this.id, parameter)
         .then(res => {
           this.retrievePendingPrp();
           this.getAllFeedback();
@@ -706,15 +789,13 @@ export default {
     },
     getAllFeedback() {
       this.$axios
-        .get(
-          "prp/leave_request/feedbacked/" + this.user_id
-        )
+        .get("prp/leave_request/feedbacked/" + this.user_id)
         .then(response => {
           this.feedbacks = response.data.feedbacked_leave_requests;
         });
     },
-    summary(item){
-      this.$refs.summary.show(this.dates[0], this.dates[1], item)
+    summary(item) {
+      this.$refs.summary.show(this.dates[0], this.dates[1], item);
     }
   }
 };

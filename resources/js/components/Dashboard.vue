@@ -9,7 +9,7 @@
             </div>
             <div class="col pa-3 py-4 primary--text">
               <h5 class="text-truncate text-uppercase">Remaining Leave Request</h5>
-              <h1>{{ leave_number == null ?  0 : leave_number }}</h1>
+              <h1>{{ leave_number == 'null' ?  0 : leave_number }}</h1>
             </div>
           </v-row>
         </v-card>
