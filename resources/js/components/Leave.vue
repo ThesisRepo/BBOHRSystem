@@ -28,14 +28,8 @@
       class="elevation-3"
     >
       <template v-slot:top>
-        <v-toolbar
-          class="mb-2"
-          color="blue darken-1"
-          dark
-          flat
-          v-if="(user_type.includes('hr mngr') || user_type.includes('general mngr'))"
-        >
-          <v-col class="mt-8">
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat v-if="(user_type.includes('hr mngr') || user_type.includes('general mngr'))">
+          <v-col class="mt-8" v-if="!user_type.includes('general mngr')">
             <v-menu
               :close-on-content-click="false"
               transition="scale-transition"
@@ -58,9 +52,20 @@
             </v-menu>
           </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <!-- <v-btn color="light blue darken-2" @click="summary()" outlined>SUMMARY</v-btn> -->
-          <v-menu transition="slide-y-transition" bottom>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn class="purple" color="primary" dark v-bind="attrs" v-on="on">Summary</v-btn>
+          <v-menu
+            transition="slide-y-transition"
+            bottom
+          >
+            <template v-slot:activator="{ on, attrs }" v-if="!user_type.includes('general mngr')">
+              <v-btn
+                class="purple"
+                color="primary"
+                dark
+                v-bind="attrs"
+                v-on="on"
+              >
+                Summary
+              </v-btn>
             </template>
             <v-list>
               <v-list-item v-for="(item, i) in items" :key="i">
@@ -71,8 +76,8 @@
               </v-list-item>
             </v-list>
           </v-menu>
-          <v-divider class="mx-4" vertical></v-divider>
-          <v-spacer></v-spacer>
+          <v-divider class="mx-4" vertical v-if="!user_type.includes('general mngr')"></v-divider>
+          <!-- <v-spacer></v-spacer> -->
           <v-text-field
             v-model="search"
             clearable
@@ -252,7 +257,7 @@
     >
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
-          <v-toolbar-title class="col pa-3 py-4 white--text">LEAVE REQUEST</v-toolbar-title>
+          <v-toolbar-title class="col pa-3 py-4 white--text" v-if="!user_type.includes('general mngr')">LEAVE REQUEST</v-toolbar-title>
           <v-text-field
             v-model="search"
             clearable
@@ -266,17 +271,17 @@
           <createLeave v-if="prp_assigned_id !== 'No PRP assign' && informationCheck !== null"></createLeave>
 
           <v-btn
-            style="margin-left: 5%"
-            v-if="prp_assigned_id === 'No PRP assign' || informationCheck === null"
-            color="light blue darken-2"
-            rounded
-            outlined
-            dark
-            @click="messagePop()"
-          >
-            <v-icon>mdi-plus</v-icon>
-            <v-toolbar-title style="font-size: 16px">Make Request</v-toolbar-title>
-          </v-btn>
+          style="margin-left: 5%"
+          v-if="(prp_assigned_id === 'No PRP assign' || informationCheck === null) && !user_type.includes('general mngr')"
+          color="light blue darken-2"
+          rounded
+          outlined
+          dark
+          @click="messagePop()"
+        >
+          <v-icon v-if="!user_type.includes('general mngr')">mdi-plus</v-icon>
+          <v-toolbar-title style="font-size: 16px" v-if="!user_type.includes('general mngr')">Make Request</v-toolbar-title>
+        </v-btn>
 
           <Reminder
           ref="reminder"
