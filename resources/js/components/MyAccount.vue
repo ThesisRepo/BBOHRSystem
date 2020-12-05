@@ -15,7 +15,7 @@
                   <img src="images/user.png" width="100%" height="100%" id="profile">
                   <div class="overlay" @click="onButtonClick">upload image</div>
                 </v-avatar>
-                <v-avatar v-else class="ml-15 avatar" color="grey darken-1" size="200">
+                <v-avatar  v-else class="ml-15 avatar" color="grey darken-1" size="200">
                   <img :src="profile_url" width="100%" height="100%" id="profile">
                    <div class="overlay" @click="onButtonClick">upload image</div>
                 </v-avatar>
@@ -204,7 +204,7 @@ export default {
       sss_num: null,
       prp: null,
       datas: [],
-      profile_url: this.profileUrl,
+      profile_url: this.$store.getters.profileUrl,
       isSelecting: false,
       testClass: 'red--text',
       formData: null,
@@ -237,31 +237,33 @@ export default {
       this.$axios
         .get("user_info/" + this.user_id)
         .then(response => {
+          console.log(response.data);
           this.prp_assign = localStorage.getItem("prp_assign");
           this.user_finance = localStorage.getItem("user_finance");
           if(response.data.user_information !== null){
             this.datas = response.data.user_information;
             this.datum = response.data
             this.company_position = response.data.user_information.company_positions[0].position_name;
-            this.shift = response.data.user_information.shift_time.shift_time_name;
-            this.department = response.data.user_information.department.department_name;
+            if(response.data.user_information.shift_time ) {
+              this.shift = response.data.user_information.shift_time.shift_time_name;
+            }
+            if(response.data.user_information.department) {
+              this.department = response.data.user_information.department.department_name;
+            }
             this.date_hired = response.data.user_information.date_hired;
             this.address = response.data.user_information.address;
             this.status = response.data.user_information.civil_status;
             this.company_status = response.data.user_information.company_status;
-            this.profile_url = response.data.user_information.profile_url;
+            // this.profile_url = response.data.user_information.profile_url;
             this.birthdate = response.data.user_information.birthday;
             this.contact_number = response.data.user_information.contact_number;
             this.pag_ibig = response.data.user_information.pag_ibig_number;
             this.tin_number = response.data.user_information.tin_number;
             this.philhealth_num = response.data.user_information.philhealth_number;
             this.sss_num = response.data.user_information.sss_number;
+            this.$store.commit('ChangeProfileUrl', response.data.user_information.profile_url);
           }
-          // location.reload();
         })
-        .catch(e => {
-          console.log(e);
-        });
     },
     onButtonClick() {
       this.isSelecting = false;
@@ -321,6 +323,11 @@ export default {
   },
   computed: {
     ...mapGetters(["profileUrl"])
+  },
+  watch: {
+    profileUrl(newVal) {
+      this.profile_url = newVal;
+    }
   }
 };
 </script>

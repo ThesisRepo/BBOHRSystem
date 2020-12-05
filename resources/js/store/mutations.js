@@ -20,6 +20,7 @@
 
 let mutations = {
   ChangeProfileUrl(state, profileUrl) {
+      console.log('dd', profileUrl);
       state.profileUrl = profileUrl
   }
 }
