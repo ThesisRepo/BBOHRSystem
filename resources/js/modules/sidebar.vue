@@ -93,29 +93,32 @@ import ROUTER from "../router";
 import { mapGetters } from "vuex";
 import Confirmation from "../components/modals/confirmation/confirm.vue";
 import Notification from "../components/notification.vue";
-export default {
-  data: () => ({
-    user_pic: localStorage.getItem('user_pic'),
-    user_type: localStorage.getItem('user_type'),
-    user_name: localStorage.getItem('user_name'),
-    drawer: null,
-    data: null,
-    employ: [
-      { icon: "mdi-account", text: "My Account", route: "/MyAccount" },
-      { icon: "mdi-apps", text: "Dashboard", route: "/" },
-      { icon: "mdi-calendar-edit", text: "Leave", route: "/Leave" },
-      { icon: "mdi-calendar-account", text: "Shift Change", route: "/ShiftChange" },
-      { icon: "mdi-calendar-clock", text: "Overtime", route: "/Overtime" },
-      { icon: "mdi-account-cash", text: "Petty Cash", route: "/PettyCash" },
-      { icon: "mdi-account-cash-outline", text: "Budget", route: "/Budget" },
-      { icon: "mdi-airplane", text: "Travel Authorization", route: "/TravelAuthorization" },
-      { icon: "mdi-logout", text: "LogOut"}
-      // { icon: "mdi-logout", text: "LogOut", route: "/logout" }
 
-    ],
-    confirmationTitle: null,
-    confirmationMessage: null
-  }),
+export default {
+  data(){
+    return {
+      user_pic: this.$store.getters.profileUrl,
+      user_type: localStorage.getItem('user_type'),
+      user_name: localStorage.getItem('user_name'),
+      drawer: null,
+      data: null,
+      employ: [
+        { icon: "mdi-account", text: "My Account", route: "/MyAccount" },
+        { icon: "mdi-apps", text: "Dashboard", route: "/" },
+        { icon: "mdi-calendar-edit", text: "Leave", route: "/Leave" },
+        { icon: "mdi-calendar-account", text: "Shift Change", route: "/ShiftChange" },
+        { icon: "mdi-calendar-clock", text: "Overtime", route: "/Overtime" },
+        { icon: "mdi-account-cash", text: "Petty Cash", route: "/PettyCash" },
+        { icon: "mdi-account-cash-outline", text: "Budget", route: "/Budget" },
+        { icon: "mdi-airplane", text: "Travel Authorization", route: "/TravelAuthorization" },
+        { icon: "mdi-logout", text: "LogOut"}
+        // { icon: "mdi-logout", text: "LogOut", route: "/logout" }
+
+      ],
+      confirmationTitle: null,
+      confirmationMessage: null
+    }
+  },
   components: {
     Confirmation,
     Notification

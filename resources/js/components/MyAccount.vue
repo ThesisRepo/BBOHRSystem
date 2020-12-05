@@ -11,11 +11,11 @@
             <v-row>
               <v-col>
 
-                <v-avatar v-if="profile_url === null" class="ml-15" size="200">
+                <!-- <v-avatar v-if="profile_url === null" class="ml-15" size="200">
                   <img src="images/user.png" width="100%" height="100%" id="profile">
                   <div class="overlay" @click="onButtonClick">upload image</div>
-                </v-avatar>
-                <v-avatar  v-else class="ml-15 avatar" color="grey darken-1" size="200">
+                </v-avatar> -->
+                <v-avatar  class="ml-15 avatar" color="grey darken-1" size="200">
                   <img :src="profile_url" width="100%" height="100%" id="profile">
                    <div class="overlay" @click="onButtonClick">upload image</div>
                 </v-avatar>
@@ -237,7 +237,6 @@ export default {
       this.$axios
         .get("user_info/" + this.user_id)
         .then(response => {
-          console.log(response.data);
           this.prp_assign = localStorage.getItem("prp_assign");
           this.user_finance = localStorage.getItem("user_finance");
           if(response.data.user_information !== null){
@@ -261,7 +260,7 @@ export default {
             this.tin_number = response.data.user_information.tin_number;
             this.philhealth_num = response.data.user_information.philhealth_number;
             this.sss_num = response.data.user_information.sss_number;
-            this.$store.commit('ChangeProfileUrl', response.data.user_information.profile_url);
+            this.$store.commit('ChangeProfileUrl', response.data.user_information.profile_url == null ? 'images/user.png' : response.data.user_information.profile_url);
           }
         })
     },
