@@ -5,6 +5,7 @@ namespace App\Http\Controllers\PRP\Requests;
 use Illuminate\Http\Request;
 use App\Eloquent\Implementations\Requests\OvertimeRequestEloquent;
 use App\Services\ApproverRequestService;
+use App\Services\UserRequestService;
 
 class OvertimeRequestsController extends RequestBaseController
 {
@@ -12,12 +13,14 @@ class OvertimeRequestsController extends RequestBaseController
 
     public function __construct(
         OvertimeRequestEloquent $overtime_request,
-        ApproverRequestService $request_service
+        ApproverRequestService $request_service,
+        UserRequestService $user_request_service
+
     ) {
 
         $this->middleware(['auth', 'verify.prp']);  
         $this->overtime_request = $overtime_request;
-        parent::__construct($request_service,  $overtime_request, 'overtime_request');
+        parent::__construct($request_service,  $overtime_request, $user_request_service, 'overtime_request');
     }
     
     public function getPendingRequest($id){

@@ -60,7 +60,7 @@ class ShiftChangeRequestController extends RequestBaseController
     public function update(Request $request, $id) {
 
         if($this->isEqualShiftTime($request)) {
-            return response()->json([],404);            
+            return response()->json(['data'=>['message'=>'you can\'t change shift on current shift']], 400);            
         }
 
         $current_shift_change_request = $this->shift_change_request->findWith($id, 'user');
@@ -88,15 +88,9 @@ class ShiftChangeRequestController extends RequestBaseController
     }
 
     public function isEqualShiftTime($data) {
+        $for_update_shift_time = $data->shift_time_id;
+        $current_shift_time = $this->user_service->getShiftTime()->load('userInformation.shift_time')->userInformation->shift_time->id;
 
-        $shift_time = $this->user->findWith($data->user_id, 'userInformation.shift_time')->userInformation->shift_time;
-
-        if(!$shift_time) {
-            return false;
-        }
-
-        return $shift_time->shift_time_name == $data-> $shift_time;
-        
-
+        return $for_update_shift_time == $current_shift_time;
     }
 }

@@ -57,7 +57,12 @@
       
         <span style="color:#3490dc">Blue Bee One</span>  Request Management System</v-toolbar-title>
     </v-app-bar>
-
+     <Confirmation
+      ref="confirms"
+      :title="confirmationTitle"
+      :message="confirmationMessage"
+      @onConfirm="confirm($event)"
+    ></Confirmation>
     <!-- <v-list v-if="isLoggedIn">
       <a id="logout-link" href="#" @click.prevent="logout">Logout</a>
     </v-list> -->
@@ -73,6 +78,7 @@
 <script>
 import ROUTER from "../router";
 import { mapGetters } from "vuex";
+import Confirmation from "../components/modals/confirmation/confirm.vue";
 export default {
   data: () => ({
     user_pic: localStorage.getItem('user_pic'),
@@ -93,7 +99,12 @@ export default {
       // { icon: "mdi-logout", text: "LogOut", route: "/logout" }
 
     ],
+    confirmationTitle: null,
+    confirmationMessage: null
   }),
+  components: {
+    Confirmation
+  },
   mounted(){
     if(this.user_type.includes('hr mngr')){
       this.employ.splice(this.employ.length-1, 0, { icon: "mdi-account-group", text: "Manage Users", route: "/ManageUsers" })
@@ -111,7 +122,16 @@ export default {
     }
   },
   methods: {
-
+    confirm(){
+      this.$axios
+      .post(
+        "logout")
+      .then(response => {
+        location.reload();
+        localStorage.clear()
+        window.location.replace("/");
+      })
+    },
     redirect(route) {
        ROUTER.push(route).catch(() => {});
       // if(route != '/logout') {
@@ -122,14 +142,9 @@ export default {
       // }
     },
     logout() {
-       this.$axios
-        .post(
-          "logout")
-        .then(response => {
-          location.reload();
-          localStorage.clear()
-          window.location.replace("/");
-        })
+      this.confirmationTitle= 'Logout',
+      this.confirmationMessage= 'Are you sure you want to logout?'
+      this.$refs.confirms.show();
     }
   }
 };

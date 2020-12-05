@@ -55,7 +55,7 @@ class LeaveRequestController extends RequestBaseController
     public function update(Request $request, $id) {
 
         $current_leave_request = $this->leave_request->findWith($id,'user');
-        $user_id = $this->getUserId();
+        $user_id = $this->user_service->getUserId();
 
         // $prp_assigned_id = $this->setPrpId($request->prp_assigned_id);
         
