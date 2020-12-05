@@ -13,6 +13,7 @@
 
                 <v-avatar v-if="profile_url === null" class="ml-15" size="200">
                   <img src="images/user.png" width="100%" height="100%" id="profile">
+                  <div class="overlay" @click="onButtonClick">upload image</div>
                 </v-avatar>
                 <v-avatar v-else class="ml-15 avatar" color="grey darken-1" size="200">
                   <img :src="profile_url" width="100%" height="100%" id="profile">
