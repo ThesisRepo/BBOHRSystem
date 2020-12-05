@@ -21,6 +21,9 @@
 let mutations = {
   ChangeProfileUrl(state, profileUrl) {
       state.profileUrl = profileUrl
-  }
+  },
+  notificationCount(state) {
+    state.notificationCount ++
+}
 }
 export default mutations

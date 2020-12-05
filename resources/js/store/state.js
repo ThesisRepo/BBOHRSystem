@@ -1,5 +1,6 @@
 let state = {
   todos: [],
-  profileUrl: null
+  profileUrl: null,
+  notificationCount: 0
 }
 export default state

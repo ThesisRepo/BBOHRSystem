@@ -4,6 +4,9 @@ let getters = {
   },
   profileUrl: state => {
       return state.profileUrl
-  }
+  },
+  notificationCount: state => {
+    return state.notificationCount
+}
 }
 export default getters

@@ -5,7 +5,7 @@ use App\Events\NewRequest;
 
 class UserRequestService 
 {
-
+  protected $notification;
   public function __construct() {
   }
 
