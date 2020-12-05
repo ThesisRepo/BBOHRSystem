@@ -159,7 +159,7 @@
       <v-card>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-card-title>
-            <span class="headline-bold">ADD EVENT</span>
+            <span class="headline-bold">EDIT EVENT</span>
           </v-card-title>
         </v-toolbar>
         <v-card-text>
@@ -203,14 +203,21 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red" dark @click="dialog = false">Cancel</v-btn>
-          <v-btn color="success" @click="updateCalendar()">Update</v-btn>
+          <v-btn color="success" @click="confirm()">Update</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <Confirmation
+      ref="confirm"
+      :title="'Confirmation'"
+      :message="'Are you sure you want to update ?'"
+      @onConfirm="updateCalendar($event)"
+    ></Confirmation>
     <Loading v-if="loading"></Loading>
   </v-app>
 </template>
 <script>
+import Confirmation from "./modals/confirmation/confirmation.vue";
 import DashBoardtable from "./Dashboard_table";
 import CalendarAdd from "./modals/addCalendar.vue";
 import AddEvent from "./modals/add_event_title.vue";
@@ -222,6 +229,7 @@ export default {
     DashBoardtable,
     CalendarAdd,
     ConfirmationDel,
+    Confirmation,
     AddEvent,
     Loading
   },
@@ -268,6 +276,14 @@ export default {
     this.retrieve();
   },
   methods: {
+    confirm(){
+      if(this.editedItem.title !== null && this.editedItem.title !== "" && this.editedItem.event_type !== null && this.editedItem.event_type !== "" && this.editedItem.content !== null && this.editedItem.content !== "" && this.editedItem.start_date !== null && this.editedItem.start_date !== "" && this.editedItem.end_date !== null && this.editedItem.end_date !== ""){
+        this.$refs.confirm.show()
+      }else {
+        this.error = true
+        this.dialog = true
+      }
+    },
     validate(item){
       if(item === 'title'){
         if(this.editedItem.title === '' || this.editedItem.title === null){
@@ -331,7 +347,6 @@ export default {
     showEvent({ nativeEvent, event }) {
       const open = () => {
         this.selectedEvent = event;
-        console.log('mao ni', this.selectedEvent, event)
         this.selectedElement = nativeEvent.target;
         setTimeout(() => {
           this.selectedOpen = true;
@@ -395,7 +410,6 @@ export default {
           };
           this.events.push(temp)
         });
-        console.log('hahaha', this.events)
       });
     },
     deleteItem(selectedEvent) {
