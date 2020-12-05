@@ -70,6 +70,11 @@ class UserService
         return $res;
     }
 
+    public function getShiftTime() {
+        $res = Auth::user();
+        return $res;
+    }
+
     public function hasUserInformation() {
         return $this->getUserInformation() != null;
     }

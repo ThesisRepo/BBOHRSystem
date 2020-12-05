@@ -135,7 +135,7 @@
       <v-card class="mt-5">
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
             <v-card-title>
-                <span class="headline-bold">LEAVE REQUEST FORM</span>
+                <span class="headline-bold">UPDATE LEAVE REQUEST</span>
             </v-card-title>
         </v-toolbar>
         <v-card-text>
@@ -154,7 +154,7 @@
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-text-field
-                  label="Total Day/s of Leave*"
+                  label="Duration of Leave*"
                   type="text"
                   v-model="total_days_with_text"
                   disabled
@@ -181,7 +181,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red" class="white--text" @click="close">Cancel</v-btn>
-          <v-btn color="success" @click="save">Save</v-btn>
+          <v-btn color="success" @click="save">Update</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -229,7 +229,7 @@
 
           <Reminder
           ref="reminder"
-          :message="messageCheck === 'prp' ? 'Please set your Assigned PRP. Go to My Account' : messageCheck === 'user' ? 'Please set your personal information' : messageCheck === 'combine' ? 'Please set your PRP assign and your Personal Information' : ''"
+          :message="messageCheck === 'prp' ? 'Please set your Assigned PRP' : messageCheck === 'user' ? 'Please set your personal information' : messageCheck === 'combine' ? 'Please set your PRP assign and your Personal Information' : ''"
           link= "/MyAccount"
           routeName='go to MY ACCOUNT'
           ></Reminder>
@@ -244,7 +244,227 @@
           (item.number_of_days / 1000 / 60 / 60 % 24) *60+ ' ' + 'minute/s' -->
       <template v-slot:item.number_of_days="{ item }">
         {{
-          item.number_of_days >= 1 ? 
+          displayTimeLengthInText(item.number_of_days)
+        }}
+      </template>
+      <template v-slot:item.status.status_name="{ item }">
+        <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
+      <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
+      <template v-slot:item.actions="{ item }">
+        <v-icon medium disabled class="mr-2" v-if="((user_type.includes('emp') && user_type.includes('prp emp') && user_type.includes('hr mngr')) && item.status.status_name === 'approved')">mdi-pencil</v-icon>
+        <v-icon medium disabled class="mr-2" v-else-if="((user_type.includes('emp') && user_type.includes('prp emp') && !(user_type.includes('hr mngr'))) && item.approver_role.role_name === 'general mngr')">mdi-pencil</v-icon>
+        <v-icon medium disabled class="mr-2" v-else-if="((user_type.includes('emp') && !user_type.includes('prp emp') && !user_type.includes('hr mngr')) && ((item.approver_role.role_name === 'hr mngr') || item.approver_role.role_name === 'general mngr'))">mdi-pencil</v-icon>
+        <v-icon medium class="mr-2" @click="editItem(item)" style="color:blue" v-else>mdi-pencil</v-icon>
+        
+        <v-icon medium disabled v-if="((user_type.includes('emp') && user_type.includes('prp emp') && user_type.includes('hr mngr')) && item.status.status_name === 'approved')">mdi-delete</v-icon>  
+        <v-icon medium disabled v-else-if="((user_type.includes('emp') && user_type.includes('prp emp') && !(user_type.includes('hr mngr'))) && item.approver_role.role_name === 'general mngr')">mdi-delete</v-icon>  
+        <v-icon medium disabled v-else-if="((user_type.includes('emp') && !user_type.includes('prp emp') && !user_type.includes('hr mngr')) && ((item.approver_role.role_name === 'hr mngr') || item.approver_role.role_name === 'general mngr'))">mdi-delete</v-icon>  
+        <v-icon medium @click="deleteItem(item)" style="color:red" v-else>mdi-delete</v-icon>
+      </template>
+    </v-data-table>
+
+    <SummaryTemplate
+    ref="summary"
+    ></SummaryTemplate>
+
+  </div>
+</template>
+<style>
+.input-name {
+  font-size: 12px;
+}
+</style>
+<script>
+
+import createLeave from "./modals/create_leave.vue";
+import moment from "moment";
+import Confirmation from "./modals/confirmation/confirm.vue";
+import ConfirmationDel from "./modals/confirmation/delete.vue";
+import Reminder from "./modals/confirmation/reminder.vue";
+import SummaryTemplate from "./modals/exports/leave_export.vue";
+export default {
+  // "employees = false, requests = true, feedback = false"
+  data: () => ({
+    user_type: localStorage.getItem("user_type"),
+    user_id: localStorage.getItem("id"),
+    prp_assigned_id: localStorage.getItem("assigned_prp_id"),
+    employees: false,
+    requests: true,
+    feedback: false,  
+    dialog: false,
+    error: false,
+    error1: false,
+    informationCheck: null,
+    error2: false,
+    disable: false,
+    end_date: null,
+    start_date: null,
+    search: '',
+    headers: [
+      { text: "TYPE OF LEAVE", align: "start", value: "leave_type.leave_type_name" },
+      { text: "DURATION OF LEAVE", value: "number_of_days" },
+      { text: "START DATE", value: "start_date" },
+      { text: "END DATE", value: "end_date" },
+      { text: "APPROVER", value: "approver_role.role_name" },
+      { text: "STATUS", value: "status.status_name" },
+      { text: "ACTIONS", value: "actions", sortable: false }
+    ],
+    headersEmp: [
+      { text: "REQUESTER", align: "start", value: "user.first_name" },
+      { text: "TYPE OF LEAVE", value: "leave_type.leave_type_name" },
+      { text: "DURATION OF LEAVE", value: "number_of_days" },
+      { text: "START DATE", value: "start_date" },
+      { text: "END DATE", value: "end_date" },
+      { text: "APPROVER", value: "approver_role.role_name" },
+      { text: "STATUS", value: "status.status_name" },
+      { text: "ACTIONS", value: "actions", sortable: false }
+    ],
+    headersFeed: [
+      { text: "REQUESTER", align: "start", value: "user.first_name" },
+      { text: "TYPE OF LEAVE", value: "leave_type.leave_type_name" },
+      { text: "DURATION OF LEAVE", value: "number_of_days" },
+      { text: "START DATE", value: "start_date" },
+      { text: "END DATE", value: "end_date" },
+      { text: "APPROVER", value: "approver_role.role_name" },
+      { text: "STATUS", value: "status.status_name" }
+    ],
+    request: [],
+    prpPending: [],
+    feedbacks: [],
+    editedIndex: null,
+    prp: null,
+    menu: false,
+    total_days: null,
+    total_days_with_text: null,
+    editedItem: {
+      id: null,
+      selectedLeaveType: null,
+      total_days: null,
+      start_date: null,
+      end_date: null,
+      start_time: null,
+      end_time: null
+    },
+    items: [
+      { title: 'Approved Requests' },
+      { title: 'Disapproved Requests' }
+    ],
+    dates: [new Date().toISOString().substr(0, 10), ],
+    leaveType: [
+      { value: 1, name: "Sick Leave" },
+      { value: 2, name: "Solo Parent Leave" },
+      { value: 3, name: "Vacation Leave" },
+      { value: 4, name: "Emergency Leave" },
+      { value: 5, name: "Paternity Leave" },
+      { value: 6, name: "Maternity Leave" }
+    ],
+    approveThis: '',
+    messageCheck: '',
+  }),
+  components: {
+    createLeave,
+    Confirmation,
+    ConfirmationDel,
+    SummaryTemplate,
+    Reminder
+  },
+  computed: {
+    dateRangeText () {
+      return this.dates.join(' ~ ')
+    },
+  },
+  mounted() {
+    if ((this.user_type.includes("hr mngr") || this.user_type.includes("prp emp")) && !(this.user_type.includes("finance mngr"))) {
+      this.retrievePendingPrp();
+      this.retrieve();
+      this.getAllFeedback();
+      this.checkUser()
+    }else if(this.user_type.includes("general mngr")){
+      this.retrievePendingPrp();
+      this.getAllFeedback();
+      this.checkUser()
+    }else{
+      this.retrieve();
+      this.checkUser()
+    }
+  },
+  methods: {
+    changeDate() {
+      if (
+        this.editedItem.start_date !== null &&
+        this.editedItem.start_date !== ""
+      ) {
+        let start = moment(String(this.editedItem.start_date));
+        let end = moment(String(this.editedItem.end_date));
+        if (end >= start) {
+          let diff = end.diff(start);
+          let differenceInDay = diff / 1000 / 60 / 60 / 24;
+          this.editedItem.total_days = differenceInDay;
+          // this.total_days = differenceInDay
+          // console.log(this.total_days)
+          // this.total_days_with_text = differenceInDay.toFixed(2) < 0.5 ? ((differenceInDay.toFixed(2))*24) + " hours of leave" : differenceInDay.toFixed(1) + "days of leave";
+          // this.total_days_with_text = differenceInDay.toFixed(2) < 0.5 ? ((differenceInDay.toFixed(2))*24) + " hours of leave" : differenceInDay.toFixed(1) + "days of leave";
+          this.total_days_with_text = this.displayTimeLengthInText(differenceInDay);
+          // this.total_days_with_text = differenceInDay.toFixed(2) < 0.5 ? ((differenceInDay.toFixed(2))*24) + " hours of leave" : differenceInDay.toFixed(1) + "days of leave";
+          this.error1 = false;
+          this.error2 = false;
+        } else {
+          this.error1 = true;
+          this.error2 = true;
+        }
+        this.disable = false;
+      } else {
+        this.disable = true;
+      }
+    },
+    retrieve() {
+      this.$axios
+        .get("leave_request/" + this.user_id)
+        .then(response => {
+          this.request = response.data;
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    retrievePendingPrp() {
+      this.$axios
+        .get("prp/leave_request/pending/" + this.user_id)
+        .then(response => {
+          this.prpPending = response.data;
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    editItem(item) {
+      this.editedItem.id = item.id;
+      this.editedIndex = this.request.indexOf(item);
+      this.editedItem.selectedLeaveType = item.leave_type_id;
+      this.editedItem.total_days = item.number_of_days;
+      this.total_days_with_text = this.displayTimeLengthInText(item.number_of_days);
+      this.editedItem.start_date = moment(item.start_date).format("YYYY-MM-DDTkk:mm");
+      this.editedItem.end_date =  moment(item.end_date).format("YYYY-MM-DDTkk:mm");
+      this.dialog = true;
+    },
+    convert(datetime) {
+      // Check correct time format and split into components
+      var time = datetime[1].toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [datetime];
+
+      if (time.length > 1) { // If time format correct
+        time = time.slice (1);  // Remove full string match value
+        time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
+        time[0] = +time[0] % 12 || 12; // Adjust hours
+      }
+      datetime[1] = time.join('');
+      return datetime.join(' ') // return adjusted time or original string
+    },
+
+    displayTimeLengthInText(num) {
+          var item= {
+            number_of_days: num
+          }
+          return item.number_of_days >= 1 ? 
 
           // true
 
@@ -328,202 +548,6 @@
               Math.round((item.number_of_days  * 24) * 60) + ' ' + 'mins' 
             : 
               Math.round((item.number_of_days  * 24) * 60) + ' ' + 'min' 
-        }}
-      </template>
-      <template v-slot:item.status.status_name="{ item }">
-        <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
-      <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
-      <template v-slot:item.actions="{ item }">
-        <v-icon medium disabled class="mr-2" v-if="((user_type.includes('emp') && user_type.includes('prp emp') && user_type.includes('hr mngr')) && item.status.status_name === 'approved')">mdi-pencil</v-icon>
-        <v-icon medium disabled class="mr-2" v-else-if="((user_type.includes('emp') && user_type.includes('prp emp') && !(user_type.includes('hr mngr'))) && item.approver_role.role_name === 'general mngr')">mdi-pencil</v-icon>
-        <v-icon medium disabled class="mr-2" v-else-if="((user_type.includes('emp') && !user_type.includes('prp emp') && !user_type.includes('hr mngr')) && ((item.approver_role.role_name === 'hr mngr') || item.approver_role.role_name === 'general mngr'))">mdi-pencil</v-icon>
-        <v-icon medium class="mr-2" @click="editItem(item)" style="color:blue" v-else>mdi-pencil</v-icon>
-        
-        <v-icon medium disabled v-if="((user_type.includes('emp') && user_type.includes('prp emp') && user_type.includes('hr mngr')) && item.status.status_name === 'approved')">mdi-delete</v-icon>  
-        <v-icon medium disabled v-else-if="((user_type.includes('emp') && user_type.includes('prp emp') && !(user_type.includes('hr mngr'))) && item.approver_role.role_name === 'general mngr')">mdi-delete</v-icon>  
-        <v-icon medium disabled v-else-if="((user_type.includes('emp') && !user_type.includes('prp emp') && !user_type.includes('hr mngr')) && ((item.approver_role.role_name === 'hr mngr') || item.approver_role.role_name === 'general mngr'))">mdi-delete</v-icon>  
-        <v-icon medium @click="deleteItem(item)" style="color:red" v-else>mdi-delete</v-icon>
-      </template>
-    </v-data-table>
-
-    <SummaryTemplate
-    ref="summary"
-    ></SummaryTemplate>
-
-  </div>
-</template>
-<style>
-.input-name {
-  font-size: 12px;
-}
-</style>
-<script>
-
-import createLeave from "./modals/create_leave.vue";
-import moment from "moment";
-import Confirmation from "./modals/confirmation/confirm.vue";
-import ConfirmationDel from "./modals/confirmation/delete.vue";
-import Reminder from "./modals/confirmation/reminder.vue";
-import SummaryTemplate from "./modals/exports/leave_export.vue";
-export default {
-  // "employees = false, requests = true, feedback = false"
-  data: () => ({
-    user_type: localStorage.getItem("user_type"),
-    user_id: localStorage.getItem("id"),
-    prp_assigned_id: localStorage.getItem("assigned_prp_id"),
-    employees: false,
-    requests: true,
-    feedback: false,  
-    dialog: false,
-    error: false,
-    error1: false,
-    informationCheck: null,
-    error2: false,
-    disable: false,
-    end_date: null,
-    start_date: null,
-    search: '',
-    headers: [
-      { text: "TYPE OF LEAVE", align: "start", value: "leave_type.leave_type_name" },
-      { text: "TOTAL DAY/S LEAVE", value: "number_of_days" },
-      { text: "START DATE", value: "start_date" },
-      { text: "END DATE", value: "end_date" },
-      { text: "APPROVER", value: "approver_role.role_name" },
-      { text: "STATUS", value: "status.status_name" },
-      { text: "ACTIONS", value: "actions", sortable: false }
-    ],
-    headersEmp: [
-      { text: "REQUESTER", align: "start", value: "user.first_name" },
-      { text: "TYPE OF LEAVE", value: "leave_type.leave_type_name" },
-      { text: "TOTAL DAY/S LEAVE", value: "number_of_days" },
-      { text: "START DATE", value: "start_date" },
-      { text: "END DATE", value: "end_date" },
-      { text: "APPROVER", value: "approver_role.role_name" },
-      { text: "STATUS", value: "status.status_name" },
-      { text: "ACTIONS", value: "actions", sortable: false }
-    ],
-    headersFeed: [
-      { text: "REQUESTER", align: "start", value: "user.first_name" },
-      { text: "TYPE OF LEAVE", value: "leave_type.leave_type_name" },
-      { text: "TOTAL DAY/S LEAVE", value: "number_of_days" },
-      { text: "START DATE", value: "start_date" },
-      { text: "END DATE", value: "end_date" },
-      { text: "APPROVER", value: "approver_role.role_name" },
-      { text: "STATUS", value: "status.status_name" }
-    ],
-    request: [],
-    prpPending: [],
-    feedbacks: [],
-    editedIndex: null,
-    prp: null,
-    menu: false,
-    total_days: null,
-    total_days_with_text: null,
-    editedItem: {
-      id: null,
-      selectedLeaveType: null,
-      total_days: null,
-      start_date: null,
-      end_date: null,
-      start_time: null,
-      end_time: null
-    },
-    items: [
-      { title: 'Approved Requests' },
-      { title: 'Disapproved Requests' }
-    ],
-    dates: [new Date().toISOString().substr(0, 10), ],
-    leaveType: [
-      { value: 1, name: "Sick Leave" },
-      { value: 2, name: "Solo Parent Leave" },
-      { value: 3, name: "Vacation Leave" },
-      { value: 4, name: "Emergency Leave" },
-      { value: 5, name: "Paternity Leave" },
-      { value: 6, name: "Maternity Leave" }
-    ],
-    approveThis: '',
-    messageCheck: '',
-  }),
-  components: {
-    createLeave,
-    Confirmation,
-    ConfirmationDel,
-    SummaryTemplate,
-    Reminder
-  },
-  computed: {
-    dateRangeText () {
-      return this.dates.join(' ~ ')
-    },
-  },
-  mounted() {
-    if ((this.user_type.includes("hr mngr") || this.user_type.includes("prp emp")) && !(this.user_type.includes("finance mngr"))) {
-      this.retrievePendingPrp();
-      this.retrieve();
-      this.getAllFeedback();
-      this.checkUser()
-    }else if(this.user_type.includes("general mngr")){
-      this.retrievePendingPrp();
-      this.getAllFeedback();
-      this.checkUser()
-    }else{
-      this.retrieve();
-      this.checkUser()
-    }
-  },
-  methods: {
-    // changeDate() {
-    //   if (
-    //     this.editedItem.start_date !== null &&
-    //     this.editedItem.start_date !== ""
-    //   ) {
-    //     let start = moment(String(this.editedItem.start_date));
-    //     let end = moment(String(this.editedItem.end_date));
-    //     if (end >= start) {
-    //       let diff = end.diff(start);
-    //       let differenceInDay = diff / 1000 / 60 / 60 / 24;
-    //       this.editedItem.total_days = differenceInDay;
-    //       this.total_days_with_text = differenceInDay.toFixed(2) < 0.5 ? ((differenceInDay.toFixed(2))*24) + " hours of leave" : differenceInDay.toFixed(1) + "days of leave";
-    //       this.error1 = false;
-    //       this.error2 = false;
-    //     } else {
-    //       this.error1 = true;
-    //       this.error2 = true;
-    //     }
-    //     this.disable = false;
-    //   } else {
-    //     this.disable = true;
-    //   }
-    // },
-    retrieve() {
-      this.$axios
-        .get("leave_request/" + this.user_id)
-        .then(response => {
-          this.request = response.data;
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-    retrievePendingPrp() {
-      this.$axios
-        .get("prp/leave_request/pending/" + this.user_id)
-        .then(response => {
-          this.prpPending = response.data;
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-    editItem(item) {
-      this.editedItem.id = item.id;
-      this.editedIndex = this.request.indexOf(item);
-      this.editedItem.selectedLeaveType = item.leave_type_id;
-      this.editedItem.total_days = item.number_of_days;
-      this.total_days_with_text = item.number_of_days + " days of leave";
-      this.editedItem.start_date = item.start_date;
-      this.editedItem.end_date = item.end_date;
-      this.dialog = true;
     },
     save() {
       if (
