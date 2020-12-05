@@ -33,10 +33,10 @@
               </v-col>
               <v-col cols="4">
                 <br>
-                <v-btn v-if="!showSave" color="green" class="white--text" @click="save()">Add</v-btn>
-                <v-btn v-else color="green" class="white--text" @click="update()">Update</v-btn>
-                <v-btn v-if="!showSave" color="red" class="white--text" @click="clear">Clear</v-btn>
-                <v-btn v-else color="red" class="white--text" @click="add">Cancel</v-btn>
+                <v-btn v-if="!showSave" color="green" class="white--text" style="width: 1%;" @click="save()">Add</v-btn>
+                <v-btn v-else color="green" class="white--text" @click="update()" style="width: 1%;">Update</v-btn>
+                <v-btn v-if="!showSave" color="red" class="white--text" @click="clear" style="width: 1%;">Clear</v-btn>
+                <v-btn v-else color="red" class="white--text" @click="add" style="width: 1%;">Cancel</v-btn>
               </v-col>
             </v-row>
             <v-data-table :headers="headers" :items="event_types" class="elevation-1">
@@ -57,7 +57,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red" dark @click="dialog = false">Ok</v-btn>
+          <v-btn color="red" dark @click="dialog = false">Close</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -160,6 +160,7 @@ export default {
         this.getEventType()
         this.event_name = null,
         this.color = 'Colors'
+        this.showSave = false
       })
     },
     editItem(item){
