@@ -14,6 +14,7 @@
         </v-toolbar>
         <v-card-text>
           <v-container>
+            <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
             <v-row>
               <v-col cols="12" md="6">
                 <v-text-field
@@ -138,16 +139,24 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red" dark @click="dialog = false">Cancel</v-btn>
-          <v-btn color="success" dark @click="update()">Save</v-btn>
+          <v-btn color="success" dark @click="confirm()">Update</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <Confirmation
+      ref="confirm"
+      :title="'Confirmation'"
+      :message="'Are you sure you want to update ?'"
+      @onConfirm="update($event)"
+    ></Confirmation>
   </v-row>
 </template>
 <script>
+import Confirmation from "../modals/confirmation/confirmation.vue";
 export default {
   data: () => ({
     dialog: false,
+    error: false,
     errorMessage: null,
     errorMessage1: null,
     errorMessage2: null,
@@ -170,7 +179,29 @@ export default {
     ]
   }),
   props: ["datas", "datum"],
+  components: {
+    Confirmation
+  },
   methods: {
+    confirm(){
+      // if(this.datas.address != null &&
+      //   this.datas.civil_status != null &&
+      //   this.datas.contact_number != null &&
+      //   this.datas.first_name != null &&
+      //   this.datas.last_name != null &&
+      //   this.errorMessage1 === null &&
+      //   this.errorMessage2 === null &&
+      //   this.errorMessage3 === null &&
+      //   this.errorMessage4 === null &&
+      //   this.errorMessage5 === null &&
+      //   this.errorMessage6 === null &&
+      //   this.errorMessage7 === null){
+          this.$refs.confirm.show()
+        // }else{
+          // this.error = true
+          // this.dialog = true
+        // }
+    },
     clearError(){
       this.errorMessage =  null
       this.errorMessage1 =  null
@@ -297,8 +328,11 @@ export default {
           } else {
             this.$parent.$parent.getInfo();
           }
-          this.dialog = false;
         });
+        this.dialog = false;
+      }else{
+        this.error = true
+        this.dialog = true
       }
     }
   }

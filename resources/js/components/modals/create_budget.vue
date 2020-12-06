@@ -29,6 +29,9 @@
           <v-container>
             <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
             <v-row>
+              <v-col cols="12" sm="12">
+                <v-text-field label="Details*" v-model="details" required></v-text-field>
+              </v-col>
               <v-col cols="12" sm="6">
                 <v-menu
                   :close-on-content-click="true"
@@ -63,9 +66,6 @@
                   prefix="₱"
                   required
                 ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="12">
-                <v-text-field label="Details*" v-model="details" required></v-text-field>
               </v-col>
             </v-row>
           </v-container>
