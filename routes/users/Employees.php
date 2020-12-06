@@ -208,3 +208,15 @@ Route::delete('events/{id}','CalendarEventController@delete')->name('events.dele
 Route::get('civil_status','CivilStatusController@index')->name('civil_status.index');
 
 Route::get('civil_status/other/{id}','CivilStatusController@showNotMine')->name('civil_status.showNotMine');
+
+Route::get('notifications/{user_id}','NotificationController@getByUser')->name('events.show');
+
+Route::get('notifications/unread/count/{user_id}','NotificationController@countUnSeenByUser')->name('events.count');
+
+
+Route::get('notifications/read/{user_id}','NotificationController@readNotification')->name('events.read');
+
+Route::post('notifications/more/{user_id}','NotificationController@moredNotification')->name('events.more');
+
+Route::get('notifications/mark_as_read/{user_id}','NotificationController@markAsReadNotification')->name('events.mark_as_read');
+

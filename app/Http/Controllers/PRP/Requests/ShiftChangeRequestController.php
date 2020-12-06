@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Eloquent\Implementations\Requests\ShiftChangeRequestEloquent;
 use App\Services\ApproverRequestService;
 use App\Services\UserRequestService;
+use App\Services\UserService;
 
 class ShiftChangeRequestController extends RequestBaseController
 {
@@ -14,13 +15,14 @@ class ShiftChangeRequestController extends RequestBaseController
     public function __construct(
         ShiftChangeRequestEloquent $shift_change_request,
         ApproverRequestService $request_service,
-        UserRequestService $user_request_service
+        UserRequestService $user_request_service,
+        UserService $user_service
 
     ) {
 
         $this->middleware(['auth', 'verify.prp']);  
         $this->shift_change_request = $shift_change_request;
-        parent::__construct($request_service,  $shift_change_request, $user_request_service, 'shift_change_request');
+        parent::__construct($request_service,  $shift_change_request, $user_request_service, 'shift_change_request', $user_service);
     }
     
     public function getPendingRequest($id){
@@ -52,7 +54,6 @@ class ShiftChangeRequestController extends RequestBaseController
 
     public function requestFeedback($id, Request $request){
         $res = $this->requestBaseFeedback($id, $request);
-
         return $res;
         
     }
