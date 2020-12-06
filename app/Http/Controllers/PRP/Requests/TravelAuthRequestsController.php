@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Eloquent\Implementations\Requests\TravelAuthRequestEloquent;
 use App\Services\ApproverRequestService;
 use App\Services\UserRequestService;
+use App\Services\UserService;
 
 class TravelAuthRequestsController extends RequestBaseController
 {
@@ -14,7 +15,8 @@ class TravelAuthRequestsController extends RequestBaseController
     public function __construct(
         TravelAuthRequestEloquent $travel_auth_request,
         ApproverRequestService $request_service,
-        UserRequestService $user_request_service
+        UserRequestService $user_request_service,
+        UserService $user_service
     ) {
 
         $this->middleware(['auth', 'verify.prp']);  
