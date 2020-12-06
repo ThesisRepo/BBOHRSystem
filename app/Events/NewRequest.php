@@ -35,7 +35,7 @@ class NewRequest implements ShouldBroadcast
     public function __construct($action, $username, $id, $request_type, $data)
     {
         $this->username = $username;
-        $this->data = $data;
+        // $this->data = $data;
         $this->id = $id;
         switch($request_type){
             case 'leave_request':
@@ -64,7 +64,7 @@ class NewRequest implements ShouldBroadcast
             'request_type' => $this->request_type,
             'message' => $this->message
         ];
-        Notification::create($data);
+        $this->data = Notification::create($data);
     }
     public function broadcastOn() {
         return new PrivateChannel('newrequest.' . $this->id);
