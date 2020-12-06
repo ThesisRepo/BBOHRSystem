@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Eloquent\Implementations\Requests\OvertimeRequestEloquent;
 use App\Services\ApproverRequestService;
 use App\Services\UserRequestService;
+use App\Services\UserService;
 
 class OvertimeRequestsController extends RequestBaseController
 {
@@ -14,7 +15,8 @@ class OvertimeRequestsController extends RequestBaseController
     public function __construct(
         OvertimeRequestEloquent $overtime_request,
         ApproverRequestService $request_service,
-        UserRequestService $user_request_service
+        UserRequestService $user_request_service,
+        UserService $user_service
 
     ) {
 

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Eloquent\Implementations\Requests\LeaveRequestEloquent;
 use App\Services\ApproverRequestService;
 use App\Services\UserRequestService;
+use App\Services\UserService;
 
 class LeaveRequestController extends RequestBaseController
 {
@@ -14,7 +15,8 @@ class LeaveRequestController extends RequestBaseController
     public function __construct(
         LeaveRequestEloquent $leave_request,
         ApproverRequestService $request_service,
-        UserRequestService $user_request_service
+        UserRequestService $user_request_service,
+        UserService $user_service
     ) {
 
         $this->middleware(['auth', 'verify.prp']);  
