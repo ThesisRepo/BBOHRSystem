@@ -88,7 +88,7 @@
 } */
 #cont {
   /* background-color: yellow; */
-  width:300px;
+  width:500px;
   text-align:center;
   position:relative;
   /* right: 0;
@@ -118,6 +118,7 @@ export default {
       notification_count: this.$store.getters.notificationCount ,
       user_type: localStorage.getItem('user_type'),
       user_name: localStorage.getItem('user_name'),
+      user_id: localStorage.getItem("id"),
       drawer: null,
       data: null,
       employ: [
@@ -142,12 +143,16 @@ export default {
     Notification
   },
   mounted(){
+
     if(this.user_type.includes('hr mngr')){
       this.employ.splice(this.employ.length-1, 0, { icon: "mdi-account-group", text: "Manage Users", route: "/ManageUsers" })
     }
     if(this.user_pic === null){
       this.user_pic = 'images/user.png'
     }
+    this.$store.dispatch('getNotifications',{user_id: this.user_id}).then(()=> {});
+    this.$store.dispatch('getCountUnreadNotifications',{user_id: this.user_id}).then(()=> {});
+
   },
   computed: {
     ...mapGetters(["profileUrl", "notificationCount"])
