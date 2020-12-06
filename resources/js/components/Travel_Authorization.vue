@@ -250,14 +250,21 @@
 
     <v-dialog v-model="fileDialog" width="700px">
       <v-card>
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
         <v-card-title>
           <span class="headline">Attached File</span>
         </v-card-title>
-        <v-divider></v-divider>
+        </v-toolbar>
+        <!-- <v-divider></v-divider> -->
         <v-card class="mx-auto" max-width="344">
           <v-img :src="file_uri" width="500"></v-img>
         </v-card>
         <br>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="red" dark @click="fileDialog = false">Cancel</v-btn>
+          <v-btn color="success" dark>Update</v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
 

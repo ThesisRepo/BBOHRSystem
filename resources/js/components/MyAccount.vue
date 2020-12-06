@@ -293,7 +293,7 @@ export default {
         this.confirmationMessage = 'Are you sure you want to update your profile photo?',
         this.$refs.confirms.show()
       }else{
-        this.myMessage = 'seems like you didn\'t upload an image.'
+        this.myMessage = 'Seems like you didn\'t upload an image.'
         this.$refs.reminder.show();
       }
     },
