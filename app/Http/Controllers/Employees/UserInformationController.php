@@ -34,7 +34,7 @@ class UserInformationController extends Controller
      */
     public function show($id)
     {
-        $res = $this->user->findWith($id, ['userInformation.department','userInformation.shift_time', 'userInformation.company_positions']);
+        $res = $this->user->findWith($id, ['userInformation.department', 'userInformation.shift_time', 'userInformation.company_positions']);
         return $res;
     }
 
@@ -86,7 +86,7 @@ class UserInformationController extends Controller
             ]; 
             
             $result = $this->user->updateWithUserInfo($data, $id);
-            if(file_exists(public_path() . '/' . $currentImg)) {
+            if($currentImg && file_exists(public_path() . '/' . $currentImg)) {
                 unlink(public_path().'/' . $currentImg);
             }
             $res = response()->json($result, 200);

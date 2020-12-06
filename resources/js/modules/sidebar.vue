@@ -56,9 +56,15 @@
       <v-toolbar-title style="color:black;width:100%">
       
         <span style="color:#3490dc">Blue Bee One</span>  Request Management System</v-toolbar-title>
-        <div>
-          <!-- <i class="fas fa-bell" id="bell"></i>
-          <Notification id="notification"/> -->
+        <div id="cont">
+          <span v-if="notification_count > 0" style="float:right;background-color:red;color:white;border-radius:50px;height:20px;width:20px;margin-top:-5px;"
+          >{{ notification_count > 99 ? '99+': notification_count}}
+          </span>
+          <span v-else style="float:right;background-color:white;color:white;border-radius:50px;height:20px;width:20px;margin-top:-5px;"
+          >{{ notification_count > 99 ? '99+': notification_count}}
+          </span>
+          <i class="fas fa-bell" id="bell" style="float:right;" @click="show()"></i>
+          <Notification id="notification" ref="notification"/>
         </div>
     </v-app-bar>
      <Confirmation
@@ -77,14 +83,25 @@
 
 </template>
 <style scoped>
+/* #container {
+  background-color: red;
+} */
+#cont {
+  /* background-color: yellow; */
+  width:300px;
+  text-align:center;
+  position:relative;
+  /* right: 0;
+  position:absolute; */
+};
 #notification{
-  position:absolute;
+  /* right:150%;
+  position:absolute; */
 }
 #bell {
-  /* float: right; */
   color: #01579b;
   font-size: 25px;
-  margin-right: 30px;
+  cursor:pointer;
 }
 </style>
 
@@ -93,29 +110,33 @@ import ROUTER from "../router";
 import { mapGetters } from "vuex";
 import Confirmation from "../components/modals/confirmation/confirm.vue";
 import Notification from "../components/notification.vue";
-export default {
-  data: () => ({
-    user_pic: localStorage.getItem('user_pic'),
-    user_type: localStorage.getItem('user_type'),
-    user_name: localStorage.getItem('user_name'),
-    drawer: null,
-    data: null,
-    employ: [
-      { icon: "mdi-account", text: "My Account", route: "/MyAccount" },
-      { icon: "mdi-apps", text: "Dashboard", route: "/" },
-      { icon: "mdi-calendar-edit", text: "Leave", route: "/Leave" },
-      { icon: "mdi-calendar-account", text: "Shift Change", route: "/ShiftChange" },
-      { icon: "mdi-calendar-clock", text: "Overtime", route: "/Overtime" },
-      { icon: "mdi-account-cash", text: "Petty Cash", route: "/PettyCash" },
-      { icon: "mdi-account-cash-outline", text: "Budget", route: "/Budget" },
-      { icon: "mdi-airplane", text: "Travel Authorization", route: "/TravelAuthorization" },
-      { icon: "mdi-logout", text: "LogOut"}
-      // { icon: "mdi-logout", text: "LogOut", route: "/logout" }
 
-    ],
-    confirmationTitle: null,
-    confirmationMessage: null
-  }),
+export default {
+  data(){
+    return {
+      user_pic: this.$store.getters.profileUrl,
+      notification_count: this.$store.getters.notificationCount ,
+      user_type: localStorage.getItem('user_type'),
+      user_name: localStorage.getItem('user_name'),
+      drawer: null,
+      data: null,
+      employ: [
+        { icon: "mdi-account", text: "My Account", route: "/MyAccount" },
+        { icon: "mdi-apps", text: "Dashboard", route: "/" },
+        { icon: "mdi-calendar-edit", text: "Leave", route: "/Leave" },
+        { icon: "mdi-calendar-account", text: "Shift Change", route: "/ShiftChange" },
+        { icon: "mdi-calendar-clock", text: "Overtime", route: "/Overtime" },
+        { icon: "mdi-account-cash", text: "Petty Cash", route: "/PettyCash" },
+        { icon: "mdi-account-cash-outline", text: "Budget", route: "/Budget" },
+        { icon: "mdi-airplane", text: "Travel Authorization", route: "/TravelAuthorization" },
+        { icon: "mdi-logout", text: "LogOut"}
+        // { icon: "mdi-logout", text: "LogOut", route: "/logout" }
+
+      ],
+      confirmationTitle: null,
+      confirmationMessage: null
+    }
+  },
   components: {
     Confirmation,
     Notification
@@ -129,14 +150,20 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["profileUrl"])
+    ...mapGetters(["profileUrl", "notificationCount"])
   },
   watch: {
     profileUrl: function(newVal) {
         this.user_pic = newVal;
+    },
+    notificationCount: function(newVal) {
+      this.notification_count = newVal;
     }
   },
   methods: {
+    show() {
+      this.$refs.notification.show();
+    },
     confirm(){
       this.$axios
       .post(
