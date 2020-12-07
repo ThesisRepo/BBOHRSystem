@@ -187,7 +187,7 @@
 
     <!-- Edit Modal -->
     <v-dialog v-model="dialog" persistent max-width="600px">
-      <v-card class="mt-5">
+      <v-card >
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-card-title>
             <span class="headline-bold">UPDATE LEAVE REQUEST</span>
