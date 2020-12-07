@@ -146,7 +146,7 @@
                   transition="scale-transition"
                   offset-y
                   min-width="290px"
-                >
+                 >
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
                       v-model="editedItem.shift_date"
@@ -183,7 +183,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red" class="white--text" @click="close">Cancel</v-btn>
-          <v-btn color="success" @click="save">Save</v-btn>
+          <v-btn color="success" @click="save">Update</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

@@ -20,7 +20,7 @@
       <v-card>
          <v-toolbar class="mb-2" color="blue darken-1" dark flat>
             <v-card-title>
-              <span class="headline-bold">SHIFT CHANGE REQUEST FORM</span>
+              <span class="headline-bold">CREATE SHIFT CHANGE REQUEST</span>
             </v-card-title>
           </v-toolbar>
         <v-card-text>
@@ -28,7 +28,12 @@
             <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
             <v-row>
               <v-col cols="12">
-                <v-text-field label="Reason*" v-model="reason" required></v-text-field>
+                <v-textarea 
+                    clearable
+                    clear-icon="mdi-close-circle"
+                    label="Reason*" 
+                    v-model="reason" required>
+                </v-textarea>
               </v-col>
               <v-col cols="12" sm="6">
                 <v-menu

@@ -22,7 +22,7 @@ class OvertimeRequestsController extends RequestBaseController
 
         $this->middleware(['auth', 'verify.prp']);  
         $this->overtime_request = $overtime_request;
-        parent::__construct($request_service,  $overtime_request, $user_request_service, 'overtime_request');
+        parent::__construct($request_service,  $overtime_request, $user_request_service, 'overtime_request',  $user_service);
     }
     
     public function getPendingRequest($id){
