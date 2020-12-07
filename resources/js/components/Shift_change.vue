@@ -127,7 +127,7 @@
       <v-card>
          <v-toolbar class="mb-2" color="blue darken-1" dark flat>
             <v-card-title>
-              <span class="headline-bold">SHIFT CHANGE REQUEST FORM</span>
+              <span class="headline-bold">UPDATE SHIFT CHANGE REQUEST</span>
             </v-card-title>
           </v-toolbar>
         <v-card-text>
@@ -135,7 +135,10 @@
             <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
             <v-row>
               <v-col cols="12" sm="6" md="12">
-                <v-text-field v-model="editedItem.reason" label="Reason"></v-text-field>
+                <v-textarea 
+                  clearable
+                  clear-icon="mdi-close-circle"
+                  v-model="editedItem.reason" label="Reason"></v-textarea>
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-menu
@@ -143,7 +146,7 @@
                   transition="scale-transition"
                   offset-y
                   min-width="290px"
-                >
+                 >
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
                       v-model="editedItem.shift_date"
@@ -170,7 +173,7 @@
                   label="Shift Time*"
                   item-text="shift_time_name"
                   item-value="id"
-                  v-model="editedItem.shift_time"
+                  v-model="editedItem.shift_time.id"
                   required
                 ></v-select>
               </v-col>
@@ -180,7 +183,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red" class="white--text" @click="close">Cancel</v-btn>
-          <v-btn color="success" @click="save">Save</v-btn>
+          <v-btn color="success" @click="save">Update</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -198,7 +201,7 @@
       :items="shifts"
       :search="search"
       class="elevation-3"
-    >
+      >
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-toolbar-title class="col pa-3 py-4 white--text" style="font-size: 16px" v-if="!user_type.includes('general mngr')">SHIFT REQUEST</v-toolbar-title>
@@ -320,9 +323,12 @@ export default {
     informationCheck: null,
     editedIndex: null,
     editedItem: {
+      id: null,
       reason: null,
       shift_date: null,
-      shift_time: null
+      shift_time: {
+        id: null
+      }
     },
     start_date: null,
     dates: [new Date().toISOString().substr(0, 10), ]
@@ -411,14 +417,12 @@ export default {
           reason: this.editedItem.reason,
           prp_assigned_id: 1
         };
-        console.log(params)
         this.$axios
           .post(
             "shift_change_request/" + this.editedItem.id,
             params
           )
           .then(response => {
-            console.log(response.data)
             this.retrieve();
           });
         this.dialog = false;
@@ -444,8 +448,7 @@ export default {
       this.dialog = false;
     },
     getShift() {
-      this.$axios.get("shift_time").then(response => {
-        console.log(response.data)
+      this.$axios.get("shift_time/mine").then(response => {
         this.sTime = response.data;
       });
     },

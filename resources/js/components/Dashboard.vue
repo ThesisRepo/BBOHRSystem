@@ -409,7 +409,7 @@ export default {
             timed: true
           };
           this.events.push(temp)
-        });
+        }, 30000);
       });
     },
     deleteItem(selectedEvent) {
