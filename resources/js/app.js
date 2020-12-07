@@ -37,12 +37,12 @@ import axios from 'axios';
 import Vuetify from 'vuetify';
 Vue.use(Vuetify);
 import store from '../js/store'
-
 Vue.prototype.$axios = axios
 Vue.config.productionTip = false;
 const app = new Vue({
   router,
   el: '#app',
   vuetify : new Vuetify(),
-  store
+  store,
+  
 })

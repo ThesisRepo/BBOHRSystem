@@ -123,6 +123,7 @@ export default {
     },
     getShift(){
       this.$axios.get("shift_time/mine").then(response => {
+        console.log(response.data)
         this.sTime = response.data
       })
     },

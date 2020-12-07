@@ -101,60 +101,59 @@ class RequestBaseController extends Controller
     }
 
 
+    public function isToBeApprovedByNext($approver_role_id) {
+        switch($this->max_role) {
+            case 1:
+                if($this->request_name == 'petty_cash_request' || $this->request_name == 'budget_request') {
+                    return $approver_role_id == $this->max_role + 2;
+                }else {
+                    return $approver_role_id == $this->max_role + 1;
+                }
+                break;
+            case 2:
+                if($this->request_name == 'petty_cash_request' || $this->request_name == 'budget_request') {
+                    return $approver_role_id == $this->max_role + 1;
+                }else {
+                    return $approver_role_id == $this->max_role + 2;
+                }
+                break;
+            case 3:
+                if($this->request_name == 'petty_cash_request' || $this->request_name == 'budget_request') {
+                    return $approver_role_id == $this->max_role + 2;
+                }else {
+                    return $approver_role_id == $this->max_role + 1;
+                }
+                break;  
+            case 4:
+                if($this->request_name == 'petty_cash_request' || $this->request_name == 'budget_request') {
+                    return $approver_role_id == $this->max_role - 1;
+                }else {
+                    return $approver_role_id == $this->max_role + 2;
+                }
+                break;
+            default:
+                return false;
+                break;
+        };
+    }
+
     public function isEditable($data) {
         $approver_role_id = $data->approver_role_id;
-        if($data->status_id == 1) {
+        if($data->status_id != 2) {
             $this->setMaxRoles($this->getRoles($data->user_id));
-            // dd($this->max_role);
             $status_id = $data->status_id;
-            switch($this->max_role) {
-                case 1:
-                    if($this->request_name == 'petty_cash_request' || $this->request_name == 'budget_request') {
-                        return $approver_role_id == $this->max_role + 2;
-                    }else {
-                        return $approver_role_id == $this->max_role + 1;
-                    }
-                    break;
-                case 2:
-                    if($this->request_name == 'petty_cash_request' || $this->request_name == 'budget_request') {
-                        return $approver_role_id == $this->max_role + 1;
-                    }else {
-                        return $approver_role_id == $this->max_role + 2;
-                    }
-                    break;
-                case 3:
-                    if($this->request_name == 'petty_cash_request' || $this->request_name == 'budget_request') {
-                        return $approver_role_id == $this->max_role - 1;
-                    }else {
-                        return $approver_role_id == $this->max_role + 1;
-                    }
-                    break;  
-                case 4:
-                    break;
-            };
-            // if($this->request_name == 'petty_cash_request' || $this->request_name == 'budget_request' && $this->max_role != 2) {
-            //     if($this->max_role == 4) {
-            //         return $approver_role_id == $this->max_role - 1;
-            //     }else {
-            //         return $approver_role_id == $this->max_role + 2;
-            //     }
-            // }else{
-            //     return $approver_role_id == $this->max_role + 2;
-            // }
-        }else{
-            return $approver_role_id == $this->max_role + 1;
+            return $this->isToBeApprovedByNext( $approver_role_id);
         }
-
+        return false;
     }
+
     public function updateRequest($editable, $data, $id) {
         
         if($this->isEditable($editable)){
-
             $res = response()->json($this->model->update($data, $id), 200);
             $employee_name = $this->getFullName();
             $prp_assigned_id = $this->getApproverId($this->request_name);
             $this->notifyNewRequest('edited', $employee_name, $prp_assigned_id, $this->request_name, $editable);
-
         }else{
             $res =  response()->json(['data'=>['message'=> 'you can\'t edit']], 400);
         }
