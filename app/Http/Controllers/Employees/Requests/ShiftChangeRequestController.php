@@ -37,9 +37,6 @@ class ShiftChangeRequestController extends RequestBaseController
         if($this->isEqualShiftTime($request)) {
             return response()->json([],404);            
         }
-
-        // $prp_assigned_id =  $this->setPrpId($request->prp_assigned_id);
-
         $requestData = [
             'user_id'=> $request->user_id,
             'department_id'=> $this->getDepartmentId($request->user_id),
@@ -65,8 +62,6 @@ class ShiftChangeRequestController extends RequestBaseController
 
         $current_shift_change_request = $this->shift_change_request->findWith($id, 'user');
         $user_id = $current_shift_change_request->user->id;
-        // $prp_assigned_id =  $this->setPrpId($request->prp_assigned_id);
-
         $requestData = [
             'department_id'=> $this->getDepartmentId($user_id),
             'reason'=> $request->reason,

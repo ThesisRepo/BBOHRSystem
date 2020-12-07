@@ -27,6 +27,17 @@
       :search="search"
       class="elevation-3"
     >
+     <template v-slot:item.start_date="{ item }">
+        {{
+        (new Date(item.start_date).toLocaleString()).replace(',','')
+        }}
+      </template>
+      <template v-slot:item.end_date="{ item }">
+        {{
+        (new Date(item.end_date).toLocaleString()).replace(',','')
+        }}
+      </template>
+      
       <template v-slot:top>
         <v-toolbar
           class="mb-2"
@@ -114,6 +125,11 @@
           :color="prpColor(item.approver_role.role_name)"
         >{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip>
       </template>
+      <template v-slot:item.number_of_days="{ item }">
+        {{
+        displayTimeLengthInText(item.number_of_days)
+        }}
+      </template> 
     </v-data-table>
 
     <!-- Pending Requests -->
@@ -249,7 +265,7 @@
       :items="request"
       :search="search"
       class="elevation-3"
-    >
+      >
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-toolbar-title
@@ -301,6 +317,17 @@
       <template v-slot:item.number_of_days="{ item }">
         {{
         displayTimeLengthInText(item.number_of_days)
+        }}
+      </template>
+      <!-- format time -->
+      <template v-slot:item.start_date="{ item }">
+        {{
+        (new Date(item.start_date).toLocaleString()).replace(',','')
+        }}
+      </template>
+      <template v-slot:item.end_date="{ item }">
+        {{
+        (new Date(item.end_date).toLocaleString()).replace(',','')
         }}
       </template>
       <template v-slot:item.status.status_name="{ item }">

@@ -21,7 +21,7 @@ class LeaveRequestController extends RequestBaseController
 
         $this->middleware(['auth', 'verify.prp']);  
         $this->leave_request = $leave_request;
-        parent::__construct($request_service,  $leave_request, $user_request_service, 'leave_request');
+        parent::__construct($request_service,  $leave_request, $user_request_service, 'leave_request', $user_service);
     }
     
     public function getPendingRequest($id){
