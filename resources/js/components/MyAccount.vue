@@ -20,10 +20,10 @@
                 </v-avatar> -->
                 <v-avatar  class=" avatar" color="grey darken-1" size="200">
                   <img :src="profile_url" width="100%" height="100%" id="profile">
-                   <div class="overlay" @click="onButtonClick">upload image</div>
+                   <div class="overlay" @click="onButtonClick">UPLOAD IMAGE</div>
                 </v-avatar>
                 <v-row>
-                  <v-col >
+                  <v-col>
                     <v-btn
                       margin
                       color="primary"
@@ -43,11 +43,15 @@
                       @change="onFileChanged"
                     >
                   </v-col>
+                  <v-col>
+                    <v-btn margin color="primary" class="text-none" rounded outlined depressed @click="password()">
+                      <v-icon left>mdi-lock</v-icon>Manage Password
+                    </v-btn>
+                  </v-col>
                 </v-row> 
               </v-col>
 
               <v-col  class="pl-md-10 pr-md-10">
-
                 <v-row >
                   <v-col md="6">
                     <h1 class="text-truncate text-center text-md-left primary--text"><b>{{ user_name ? user_name : 'No User Name' }}</b></h1>
@@ -129,6 +133,10 @@
           </v-container>
           
       </v-card>
+      <Password
+        ref="pass"
+        >
+        </Password>
       <Reminder
       ref="reminder"
       :message="myMessage"
@@ -222,6 +230,7 @@ import updatePrp from "./modals/edit_prp.vue";
 import updateFinance from "./modals/edit_finance.vue";
 import Reminder from "./modals/confirmation/reminder.vue";
 import Confirmation from "./modals/confirmation/confirm.vue";
+import Password from "./modals/change_password.vue"
 import { mapGetters } from "vuex";
 export default {
   data() {
@@ -271,9 +280,13 @@ export default {
     updatePrp,
     updateFinance,
     Reminder,
-    Confirmation
+    Confirmation,
+    Password
   },
   methods: {
+    password(){
+      this.$refs.pass.show()
+    },
     updatePrp(){
       this.$refs.updatePrp.show()
     },

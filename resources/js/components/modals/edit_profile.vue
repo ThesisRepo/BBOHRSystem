@@ -14,7 +14,6 @@
         </v-toolbar>
         <v-card-text>
           <v-container>
-            <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
             <v-row>
               <v-col cols="12" md="6">
                 <v-text-field
@@ -51,6 +50,7 @@
                     item-value="value"
                     label="Civil Status*"
                     @keyup="validate('civil_status')"
+                    @click="validate('civil_status')"
                     v-model="datas.civil_status_id"
                     required
                 ></v-select>
@@ -139,24 +139,16 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red" dark @click="dialog = false">Cancel</v-btn>
-          <v-btn color="success" dark @click="confirm()">Update</v-btn>
+          <v-btn color="success" dark @click="update()">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <Confirmation
-      ref="confirm"
-      :title="'Confirmation'"
-      :message="'Are you sure you want to update ?'"
-      @onConfirm="update($event)"
-    ></Confirmation>
   </v-row>
 </template>
 <script>
-import Confirmation from "../modals/confirmation/confirmation.vue";
 export default {
   data: () => ({
     dialog: false,
-    error: false,
     errorMessage: null,
     errorMessage1: null,
     errorMessage2: null,
@@ -173,35 +165,14 @@ export default {
     civil_status: null,
     user_id: localStorage.getItem("id"),
     civilItem: [
-      { text: "Single", value: 0 },
-      { text: "Married", value: 1 },
-      { text: "Widow", value: 2 }
+      { text: "Single", value: 1 },
+      { text: "Married", value: 2 },
+      { text: "Widow", value: 3 },
+      { text: "Widower", value: 4 },
     ]
   }),
   props: ["datas", "datum"],
-  components: {
-    Confirmation
-  },
   methods: {
-    confirm(){
-      // if(this.datas.address != null &&
-      //   this.datas.civil_status != null &&
-      //   this.datas.contact_number != null &&
-      //   this.datas.first_name != null &&
-      //   this.datas.last_name != null &&
-      //   this.errorMessage1 === null &&
-      //   this.errorMessage2 === null &&
-      //   this.errorMessage3 === null &&
-      //   this.errorMessage4 === null &&
-      //   this.errorMessage5 === null &&
-      //   this.errorMessage6 === null &&
-      //   this.errorMessage7 === null){
-          this.$refs.confirm.show()
-        // }else{
-          // this.error = true
-          // this.dialog = true
-        // }
-    },
     clearError(){
       this.errorMessage =  null
       this.errorMessage1 =  null
@@ -237,7 +208,7 @@ export default {
       }else if (input === "civil_status") {
         this.errorMessage3 = null;
         if (this.datas.civil_status_id === "" || this.datas.civil_status_id === null) {
-          this.errorMessage3 = "Last name is Required";
+          this.errorMessage3 = "Civil status is Required";
         } else {
           this.errorMessage3 = null;
         }
@@ -300,39 +271,28 @@ export default {
       this.validate("last_name");
       this.validate("civil_status");
       if (
-        this.datas.address != null &&
-        this.datas.civil_status != null &&
-        this.datas.contact_number != null &&
-        this.datas.first_name != null &&
-        this.datas.last_name != null &&
         this.errorMessage1 === null &&
         this.errorMessage2 === null &&
         this.errorMessage3 === null &&
         this.errorMessage4 === null &&
-        this.errorMessage5 === null &&
-        this.errorMessage6 === null &&
-        this.errorMessage7 === null
+        this.errorMessage5 === null
       ) {
         this.dialog = true;
-        e.preventDefault();
         let params = {
           address: this.datas.address,
-          civil_status: this.datas.civil_status,
+          civil_status: this.datas.civil_status_id,
           contact_number: this.datas.contact_number,
-          pag_ibig_number: this.datas.first_name,
-          sss_number: this.datas.last_name
+          first_name: this.datum.first_name,
+          last_name: this.datum.last_name
         };
         this.$axios.post("user_info/" + this.user_id, params).then(response => {
           if (response.data === 1) {
-            this.$parent.$parent.getInfo();
+            this.$parent.$parent.$parent.getInfo();
           } else {
-            this.$parent.$parent.getInfo();
+            this.$parent.$parent.$parent.getInfo();
           }
+          this.dialog = false;
         });
-        this.dialog = false;
-      }else{
-        this.error = true
-        this.dialog = true
       }
     }
   }
