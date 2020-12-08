@@ -10,10 +10,11 @@
             <img :src="user_pic" alt="profile pic">
           </v-avatar>
           <div style="color:white">{{ user_name }}</div>
+          <div style="color:white">{{ user_name }}</div>
         </v-sheet>
       </center>
 
-      <v-divider></v-divider>
+      <v-divider style="background-color:#1976d2 "></v-divider>
 
       <v-list v-if="user_type.includes('emp') || user_type.includes('finance mngr') || user_type.includes('prp emp')">
         <v-list-item-group active-class="sky blue blue--text">
@@ -110,6 +111,8 @@ import ROUTER from "../router";
 import { mapGetters } from "vuex";
 import Confirmation from "../components/modals/confirmation/confirm.vue";
 import Notification from "../components/notification.vue";
+// import {isPRP, hasFinanceManager,  hasHRManager, hasGeneralManager} from "../helpers/user_roles.js";
+
 
 export default {
   data(){

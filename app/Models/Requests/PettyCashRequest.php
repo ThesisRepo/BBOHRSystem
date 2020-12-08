@@ -25,7 +25,7 @@ class PettyCashRequest extends Model
     }
 
     public function approvers() {
-        return $this->morphToMany(\App\Models\User::class, 'recordable');
+        return $this->morphToMany(\App\Models\User::class, 'recordable')->withTimestamps();
     }
 
     public function user_requester() {

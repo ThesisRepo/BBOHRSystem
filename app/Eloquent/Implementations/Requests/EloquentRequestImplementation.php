@@ -54,17 +54,11 @@ class EloquentRequestImplementation extends EloquentImplementation {
 
   }
 
-  public function getPendingRequestForApproverAdmin($user_id, $max_role_id, $relationship) {
-    // $res = $this->whereWith('status_id',1, $relationship)->where('approver_role_id', $max_role_id)
-    //   ->whereHas('user', function($query) use($user_id){
-    //     return $query->where('prp_assigned',$user_id);
-    //   })->orWhereHas('user.assignedPrp.roles', function($query) use($max_role_id) {
-    //     return $query->whereNotIn('role_id',[1,2, $max_role_id]);
-    //   })->get();
+  public function getPendingRequestForApproverAdmin($user_id, $max_role_id, $relationship, $order_by = 'DESC') {
     $res = $this->whereWith('status_id',1,  $relationship)->where('approver_role_id', $max_role_id)
       ->whereHas('user', function($query) use($user_id, $max_role_id){
         return $query->where('prp_assigned',$user_id)->orWhere('finance_mngr_assigned',$user_id)->orHas('assignedPrp.roles','!=', $max_role_id);
-      })->get();
+      })->orderBy('updated_at', $order_by)->get();
     return $res;
     
   }

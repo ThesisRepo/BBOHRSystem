@@ -4,12 +4,12 @@
       <v-card>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-card-title>
-              <span class="headline-bold ">Confirmation</span>
+              <span class="headline-bold ">{{title ? title : 'Confirmation'}}</span>
           </v-card-title>
         </v-toolbar>
 
         <center>
-          <v-card-text><b>Are you sure you want to delete?</b></v-card-text>
+          <v-card-text><b>{{ description ? description : 'Are you sure you want to delete?'}}</b></v-card-text>
         </center>
 
         <v-divider></v-divider>
@@ -31,6 +31,7 @@ export default {
       dialog: false
     };
   },
+  props:['title', 'description'],
   methods: {
     show(id){
       this.id = id
