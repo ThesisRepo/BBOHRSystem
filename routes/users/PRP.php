@@ -20,7 +20,6 @@ Route::get('prp/leave_request/pending/{user_id}','Requests\LeaveRequestControlle
 // approve or disapprove a leave request
 Route::post('prp/leave_request/feedback/{id}','Requests\LeaveRequestController@requestFeedback')->name('prp.leave_request.feedback');
 
-
 // -- SHIFT CHANGE REQUEST
 
 // user_id:4,

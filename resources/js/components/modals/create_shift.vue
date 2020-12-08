@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-dialog v-model="dialog" persistent max-width="600px">
+    <v-dialog scrollable v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
         <v-btn
           color="light blue darken-2"
@@ -87,6 +87,7 @@
   </v-row>
 </template>
 <script>
+import {isTwoFourHrLater} from  "../../helpers/date_format.js"
 export default {
   data: () => ({
     dialog: false,
@@ -102,8 +103,9 @@ export default {
     this.getShift()
   },
   methods: {
+    isTwoFourHrLater,
     disabledDates(date) {
-      return date > new Date().toISOString().substr(0, 10);
+      return this.isTwoFourHrLater(date);
     },
     hideModal(){
       this.dialog = false

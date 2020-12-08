@@ -180,7 +180,7 @@ class UserInformationController extends Controller
         $table_name = $this->user->getTableFeedbackedShiftChangeRequests();
         $start_date = $request->start_date;
         $end_date = $request->end_date;
-        $relationship = 'shift_change_requests';
+        $relationship = 'feedbacked_shift_change_requests';
         $res = $this->getAllFeedbackedDate( $table_name, $relationship, $start_date, $end_date);
         return $res;
     }
@@ -222,15 +222,22 @@ class UserInformationController extends Controller
     }
 
     public function getAllFeedbackedDate( $table_name, $relationship, $start_date, $end_date, $user_id = null) {
-
         $user_id = $user_id ? $user_id: $this->user_service->getUserId();
         $new_temp_date = $start_date;
-        if( new DateTime($new_temp_date) > new DateTime($end_date)) {
-            $start_date = $end_date;
-            $end_date = $new_temp_date;
+        if($start_date != null && $end_date!=null) {
+            if( new DateTime($new_temp_date) > new DateTime($end_date)) {
+                $start_date = $end_date;
+                $end_date = $new_temp_date;
+            }
+        }else {
+            if($start_date == null) {
+                $start_date = $end_date;
+            }
+            if($end_date == null) {
+                 $end_date = $start_date;
+            }
         }
-        $res = $this->user->getRequestFeedbackedDate( $user_id, $table_name, $relationship, $start_date, $end_date);
-        
+        $res = $this->user->getRequestFeedbackedDate( $user_id, $table_name, $relationship, $start_date, $end_date);  
         return $res;
         
     }

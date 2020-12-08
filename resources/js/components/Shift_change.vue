@@ -123,7 +123,7 @@
     ></Confirmation>
 
     <!-- editModal -->
-    <v-dialog v-model="dialog" max-width="500px">
+    <v-dialog scrollable v-model="dialog" max-width="500px">
       <v-card>
          <v-toolbar class="mb-2" color="blue darken-1" dark flat>
             <v-card-title>
@@ -192,6 +192,8 @@
     <!-- DeleteModal -->
     <ConfirmationDel
       ref="confirmDel"
+      :title="deleteTitle"
+      :description="deleteDescription"
       @onConfirm="confirmDel($event)"
     ></ConfirmationDel>
 
@@ -250,6 +252,11 @@
         <v-icon medium disabled v-else-if="((user_type.includes('emp') && !user_type.includes('prp emp') && !user_type.includes('hr mngr')) && ((item.approver_role.role_name === 'hr mngr') || item.approver_role.role_name === 'general mngr'))">mdi-delete</v-icon>  
         <v-icon medium @click="deleteItem(item)" style="color:red" v-else>mdi-delete</v-icon>
       </template>
+       <template v-slot:item.shift_date="{ item }">
+        {{
+        formatDateStandardDateOnly(item.shift_date)
+        }}
+      </template>
     </v-data-table>
 
     <SummaryTemplate
@@ -264,8 +271,7 @@ import ConfirmationDel from "./modals/confirmation/delete.vue";
 import SummaryTemplate from "./modals/exports/shift_export.vue";
 import Reminder from "./modals/confirmation/reminder.vue";
 import Loading from "./Loading.vue";
-
-// import { constants } from 'fs';
+import {isTwoFourHrLater, formatDateStandardDateOnly} from  "../helpers/date_format.js"
 export default {
   data: () => ({
     user_type: localStorage.getItem("user_type"),
@@ -331,7 +337,9 @@ export default {
       }
     },
     start_date: null,
-    dates: [new Date().toISOString().substr(0, 10), ]
+    dates: [new Date().toISOString().substr(0, 10), ],
+    deleteTitle: null,
+    deleteDescription: null
   }),
   components: {
     createShift,
@@ -347,6 +355,7 @@ export default {
     },
   },
   mounted() {
+    
     this.getShift()
     if ((this.user_type.includes("hr mngr") || this.user_type.includes("prp emp")) && !(this.user_type.includes("finance mngr"))) {
       this.retrieveShift();
@@ -363,8 +372,10 @@ export default {
     }
   },
   methods: {
+    isTwoFourHrLater,
+    formatDateStandardDateOnly,
     disabledDates(date) {
-      return date > new Date().toISOString().substr(0, 10);
+      return this.isTwoFourHrLater(date);
     },
     retrieve() {
       this.loading = true;
@@ -433,6 +444,8 @@ export default {
 
     deleteItem(item) {
       this.id = item.id;
+      this.deleteTitle = "Delete Request"
+      this.deleteDescription = "Are you sure you want to delete this request?"
       this.$refs.confirmDel.show(item)
     },
 
