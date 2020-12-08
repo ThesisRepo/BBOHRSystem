@@ -16,7 +16,9 @@ class EloquentRequestImplementation extends EloquentImplementation {
   public function getModelClass() {
     return get_class($this->model);
   }
-
+  public function getTableName() {
+    return $this->model->getTable();
+  }
   // public function create(array $data) {
   //   $res = parent::create($data);
   //   $res->user_requester()->save(Auth::user());

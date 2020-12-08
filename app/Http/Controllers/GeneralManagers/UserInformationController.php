@@ -27,7 +27,7 @@ class UserInformationController extends Controller
     }
 
     public function getAllPendingRequests($id) {
-        $with = ['user.userInformation'];
+        $with = ['user.userInformation', 'user.userInformation.company_positions', 'user.userInformation.department'];
         $res = $this->all_user_request_service->getGMAllToApprove($with);
         return $res;
     }
