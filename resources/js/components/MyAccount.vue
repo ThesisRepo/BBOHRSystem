@@ -11,7 +11,7 @@
             <v-row 
               align="center"
               justify="center"
-            >
+              >
               <!-- style="background-color:blue" -->
               <v-col  md="3" style="text-align:center">
                 <!-- <v-avatar v-if="profile_url === null" class="ml-15" size="200">
@@ -49,10 +49,10 @@
               <v-col  class="pl-md-10 pr-md-10">
 
                 <v-row >
-                  <v-col md="6">
-                    <h1 class="text-truncate text-center text-md-left primary--text"><b>{{ user_name ? user_name : 'No User Name' }}</b></h1>
+                  <v-col col="12" md="6">
+                    <h4 class="text-truncate text-center text-md-left primary--text">{{ user_name ? user_name : 'No User Name' }}</h4>
                   </v-col>
-                  <v-col md="6">
+                  <v-col col="12" md="6">
                     <editProfile :datas="datas" :datum="datum" class="float-md-right"></editProfile>
                   </v-col>
                 </v-row>
@@ -150,7 +150,7 @@
               <v-row style="margin-left: 5%;">
                 <v-col cols="12" md="6">
                   <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-map-marker</v-icon> {{ address ? address : 'No Address' }}</p>
-                  <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-calendar</v-icon> {{ birthdate ? birthdate : 'No Birthdate'}}</p>
+                  <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-calendar</v-icon> {{ birthdate ? formatDateStandardDateOnly(birthdate) : 'No Birthdate'}}</p>
                 </v-col>
                 <v-col cols="12" md="6">
                   <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-contacts</v-icon> {{ contact_number ? contact_number : 'No Contact No.' }}</p>
@@ -165,7 +165,7 @@
                   <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-google-street-view</v-icon> {{ company_status === 'regular' ? 'Regular' : company_status ? company_status : 'No Company Status' }}</p>
                 </v-col>
                 <v-col cols="12" md="6">
-                  <p class="black--text"  style="font-size:20px"><v-icon class="primary--text">mdi-calendar-check</v-icon> {{ date_hired ? date_hired : 'No Date Hired'}}</p>
+                  <p class="black--text"  style="font-size:20px"><v-icon class="primary--text">mdi-calendar-check</v-icon> {{ date_hired ? formatDateStandardDateOnly(date_hired) : 'No Date Hired'}}</p>
                   <p class="black--text"  style="font-size:20px"><v-icon class="primary--text">mdi-timetable</v-icon> {{ shift ? shift : 'No Shift Time'}}</p>
                 </v-col>
               </v-row>
@@ -223,6 +223,8 @@ import updateFinance from "./modals/edit_finance.vue";
 import Reminder from "./modals/confirmation/reminder.vue";
 import Confirmation from "./modals/confirmation/confirm.vue";
 import { mapGetters } from "vuex";
+import {formatDateStandardDateOnly} from  "../helpers/date_format.js"
+
 export default {
   data() {
     return {
@@ -274,6 +276,7 @@ export default {
     Confirmation
   },
   methods: {
+    formatDateStandardDateOnly,
     updatePrp(){
       this.$refs.updatePrp.show()
     },

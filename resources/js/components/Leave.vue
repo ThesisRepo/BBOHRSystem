@@ -27,17 +27,22 @@
       :search="search"
       class="elevation-3"
     >
-     <template v-slot:item.start_date="{ item }">
+      <template v-slot:item.number_of_days="{ item }">
         {{
-        (new Date(item.start_date).toLocaleString()).replace(',','')
+        displayTimeLengthInText(item.number_of_days)
+        }}
+      </template>
+      <!-- format time -->
+      <template v-slot:item.start_date="{ item }">
+        {{
+        formatDateStandard(item.start_date)
         }}
       </template>
       <template v-slot:item.end_date="{ item }">
         {{
-        (new Date(item.end_date).toLocaleString()).replace(',','')
+        formatDateStandard(item.end_date)
         }}
       </template>
-      
       <template v-slot:top>
         <v-toolbar
           class="mb-2"
@@ -322,12 +327,12 @@
       <!-- format time -->
       <template v-slot:item.start_date="{ item }">
         {{
-        (new Date(item.start_date).toLocaleString()).replace(',','')
+        formatDateStandard(item.start_date)
         }}
       </template>
       <template v-slot:item.end_date="{ item }">
         {{
-        (new Date(item.end_date).toLocaleString()).replace(',','')
+        formatDateStandard(item.end_date)
         }}
       </template>
       <template v-slot:item.status.status_name="{ item }">
@@ -405,7 +410,7 @@ import ConfirmationDel from "./modals/confirmation/delete.vue";
 import Reminder from "./modals/confirmation/reminder.vue";
 import SummaryTemplate from "./modals/exports/leave_export.vue";
 import Loading from "./Loading.vue";
-
+import {formatDateStandard} from  "../helpers/date_format.js"
 export default {
   // "employees = false, requests = true, feedback = false"
   data: () => ({
@@ -641,7 +646,7 @@ export default {
                   Math.floor(item.number_of_days) +
                   " " +
                   "days" +
-                  ", " +
+                  " " +
                   Math.round(
                     item.number_of_days * 24 -
                       Math.trunc(item.number_of_days * 24)
@@ -657,7 +662,7 @@ export default {
                 : Math.floor(item.number_of_days) +
                   " " +
                   "days" +
-                  ", " +
+                  " " +
                   Math.round(
                     item.number_of_days * 24 -
                       Math.trunc(item.number_of_days * 24)
@@ -679,7 +684,7 @@ export default {
               ? Math.floor(item.number_of_days) +
                 " " +
                 "days" +
-                ", " +
+                " " +
                 Math.round(
                   item.number_of_days * 24 -
                     Math.trunc(item.number_of_days * 24)
@@ -695,7 +700,7 @@ export default {
               : Math.floor(item.number_of_days) +
                 " " +
                 "days" +
-                ", " +
+                " " +
                 Math.round(
                   item.number_of_days * 24 -
                     Math.trunc(item.number_of_days * 24)
@@ -752,7 +757,7 @@ export default {
                 Math.floor(item.number_of_days) +
                 " " +
                 "day" +
-                ", " +
+                " " +
                 Math.round(
                   item.number_of_days * 24 -
                     Math.trunc(item.number_of_days * 24)
@@ -768,7 +773,7 @@ export default {
               : Math.floor(item.number_of_days) +
                 " " +
                 "day" +
-                ", " +
+                " " +
                 Math.round(
                   item.number_of_days * 24 -
                     Math.trunc(item.number_of_days * 24)
@@ -790,7 +795,7 @@ export default {
             ? Math.floor(item.number_of_days) +
               " " +
               "day" +
-              ", " +
+              " " +
               Math.round(
                 item.number_of_days * 24 - Math.trunc(item.number_of_days * 24)
               ) +
@@ -805,7 +810,7 @@ export default {
             : Math.floor(item.number_of_days) +
               " " +
               "day" +
-              ", " +
+              " " +
               Math.round(
                 item.number_of_days * 24 - Math.trunc(item.number_of_days * 24)
               ) +
@@ -1053,7 +1058,8 @@ export default {
     },
     summary(item) {
       this.$refs.summary.show(this.dates[0], this.dates[1], item);
-    }
+    },
+    formatDateStandard
   }
 };
 </script>

@@ -95,13 +95,17 @@ export default {
       };
       if(item === 'Approved Requests'){
         this.$axios
-        .post("hr/summary/shift_change_request", param)
+        .post("hr/summary/shift_change_request/approved/", param)
         .then(response => {
             this.summary = response.data;
+            this.summary = response.data.feedbacked_shift_change_requests;
+            // this.summary.forEach(el => {
+            //   this.summary.push(el)
+            // });
         });
       }else if(item === 'Disapproved Requests'){
         this.$axios
-        .post("hr/summary/shift_change_request", param)
+        .post("hr/summary/shift_change_request/disapproved/", param)
         .then(response => {
             this.summary = response.data;
         });

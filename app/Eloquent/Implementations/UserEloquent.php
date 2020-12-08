@@ -86,6 +86,16 @@ class UserEloquent extends EloquentImplementation {
 
     }
 
+    public function getGenMngr() {
+      
+      $res = $this->model->whereHas('roles', function($q){
+        $q->whereIn('role_id', [5]);
+      })->get();
+      
+      return $res;
+
+    }
+
     public function getAllNonAdminEmployees() {
       
       $res = $this->model->with(['userInformation', 'userInformation.department', 'userInformation.company_status', 'assignedPrp', 'assignedFinance', 'roles', 'userInformation.company_positions'])->whereDoesntHave('roles', function($q){
@@ -106,13 +116,12 @@ class UserEloquent extends EloquentImplementation {
 
     }
 
-  public function getAllFeedbackedRequests($user_id, $relationship, $nested_relationship) {
-    
+  public function getAllFeedbackedRequests($user_id, $relationship, $nested_relationship, $order_by = 'DESC') {
     $res = $this->findWith(
       $user_id,
       [
-        $relationship => function($q) use($nested_relationship){
-          return $q->with($nested_relationship);
+        $relationship => function($q) use($nested_relationship, $order_by ){
+          return $q->with($nested_relationship)->orderBy('updated_at', $order_by);
         }
       ] 
     );
@@ -332,15 +341,13 @@ class UserEloquent extends EloquentImplementation {
 
   }
 
-  public function getRequestFeedbackedDate($user_id, $table_name, $relationship, $start_date, $end_date) {
-    // dd($start_date, $end_date);
-    
+  public function getRequestFeedbackedDate($user_id, $table_name, $relationship, $start_date, $end_date, $status= 2, $order_by = "DESC") { 
     $new_relationship = [
-      $relationship => function( $q) use( $table_name, $start_date, $end_date) {
-        return $q->where( $table_name . '.created_at','>', $start_date)
-          ->where( $table_name . '.created_at','<', $end_date);
-        // return $q->where( $table_name . '.created_at', '>=', $start_date)
-        //   ->where( $table_name .  '.created_at', '=<', $end_date);
+      $relationship => function( $q) use( $table_name, $start_date, $end_date, $status, $order_by) {
+        return $q->whereDate( $table_name . '.created_at','>=', $start_date)
+          ->whereDate( $table_name . '.created_at','<=', $end_date)
+          ->where('status_id', $status)
+          ->orderBy( $table_name . '.created_at', $order_by);
       },
       $relationship . '.' . 'user',
       $relationship . '.' . 'status'  
@@ -379,7 +386,7 @@ class UserEloquent extends EloquentImplementation {
   }
 
   public function getTableFeedbackedShiftChangeRequests() {
-    $res = $this->model->shift_change_requests()->getTable();
+    $res = $this->model->feedbacked_shift_change_requests()->getTable();
     return $res;
   }
 }

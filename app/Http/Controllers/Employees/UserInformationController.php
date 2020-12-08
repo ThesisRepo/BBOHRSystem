@@ -105,7 +105,10 @@ class UserInformationController extends Controller
         $max_role = $this->user_service->getMaxRoles($user->roles);
         if($max_role == 1){
             $res = response()->json($this->user->getPrp($user)->toArray(), 200);
-        }else {
+        }else if($max_role == 4){
+            $res = response()->json($this->user->getGenMngr()->toArray(), 200);
+        }
+        else {
             $res = response()->json($this->user->getHR()->toArray(), 200);
         }
 
