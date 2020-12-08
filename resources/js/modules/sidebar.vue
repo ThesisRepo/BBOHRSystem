@@ -10,7 +10,7 @@
             <img :src="user_pic" alt="profile pic">
           </v-avatar>
           <div style="color:white">{{ user_name }}</div>
-          <div style="color:white">{{ user_name }}</div>
+          <!-- <div style="color:white">{{ user_name }}</div> -->
         </v-sheet>
       </center>
 
