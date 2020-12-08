@@ -21,6 +21,7 @@ class CreateCalendarEventsTable extends Migration
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->boolean('is_public')->default(1);
+            $table->boolean('is_yearly')->default(0);
             $table->unsignedBigInteger('event_type_id');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

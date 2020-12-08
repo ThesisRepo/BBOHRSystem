@@ -110,6 +110,7 @@
             color="primary"
             :events="events"
             :type="type"
+            :now="today"
             :event-color="getEventColor"
             @click:event="showEvent"
             @click:more="viewDay"
@@ -234,6 +235,7 @@ export default {
     Loading
   },
   data: () => ({
+    today: new Date().toISOString().substr(0,10),
     user_type: localStorage.getItem("user_type"),
     leave_number: localStorage.getItem("leave_number"),
     user_id: localStorage.getItem("id"),
@@ -242,7 +244,7 @@ export default {
     update: false,
     dialog: false,
     event_types: [],
-    focus: "",
+    focus:  new Date().toISOString().substr(0,10),
     type: "month",
     typeToLabel: {
       month: "Month",
@@ -363,13 +365,13 @@ export default {
     updateRange() {
       const events = [];
       for (let i = 0; i < this.events.length; i++) {
-        events.push({
+          events.push({
           name: this.events[i].name,
           content: this.events[i].content,
-          start: this.events[i].start_date,
-          end: this.events[i].end_date,
-          color: this.events[i].event_type.color,
-          event_type: this.events[i].event_type.event_name,
+          start: this.events[i].start,
+          end: this.events[i].end,
+          color: this.events[i].color,
+          event_type: this.events[i].event_name,
           checkbox: this.events[i].is_public,
           timed: this.events[i].timed
         });
@@ -394,6 +396,7 @@ export default {
         user_id: this.user_id
       };
       this.$axios.get("events/"+  this.user_id).then(response => {
+        console.log('event result', response.data);
         this.loading = false
         this.events = []
         response.data.forEach(element => {
@@ -401,13 +404,14 @@ export default {
             id: element.id,
             name: element.title,
             content: element.content,
-            start: element.start_date,
-            end: element.end_date,
+            start: new Date(element.start_date).toISOString().substring(0,10),
+            end: new Date(element.end_date).toISOString().substring(0,10),
             color: element.event_type.color,
             event_type: element.event_type.event_name,
             checkbox: element.is_public,
             timed: true
           };
+          console.log('iso',new Date(element.end_date).toISOString().substring(0,10));
           this.events.push(temp)
         }, 30000);
       });
