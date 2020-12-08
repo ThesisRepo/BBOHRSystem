@@ -626,10 +626,10 @@
             </template>
             <template v-slot:item.actions="{ item }">
                 <!-- <v-icon small class="mr-2" @click="seeItem(item)">mdi-eye</v-icon> -->
-                <v-icon small class="mr-2" @click="editedItem(item)"
+                <v-icon small class="mr-2" @click="editedItem(item)" style="color:blue"
                     >mdi-pencil</v-icon
                 >
-                <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+                <v-icon small @click="deleteItem(item)" style="color:red">mdi-delete</v-icon>
             </template>
         </v-data-table>
     </v-row>
@@ -1050,6 +1050,7 @@ export default {
             this.dialogBusiness = true;
         },
         editedItem(item) {
+            console.log('item', item)
             this.editItem.id = item.id;
             this.editItem.address = item.user_information.address;
             this.editItem.civil_status = parseInt(
