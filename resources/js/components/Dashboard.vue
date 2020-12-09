@@ -106,12 +106,14 @@
         <v-sheet height="600">
           <v-calendar
             ref="calendar"
+            id="calendar"
             v-model="focus"
             color="primary"
             :events="events"
             :type="type"
             :now="today"
             :event-color="getEventColor"
+            :event-text-color="getProperColor"
             @click:event="showEvent"
             @click:more="viewDay"
             @click:date="viewDay"
@@ -124,14 +126,22 @@
             offset-x
           >
             <v-card color="grey lighten-4" width="350px" flat>
-              <v-toolbar :color="selectedEvent.color" dark>
-                <v-btn icon>
-                  <v-icon @click="editItem(selectedEvent)">mdi-pencil</v-icon>
+              <v-toolbar :color="selectedEvent.color"
+                :style="[lightColoredTextData.includes(selectedEvent.color) ? {'color':'black!important'} : {}]"
+               dark>
+                <v-btn
+                 icon>
+                  <v-icon 
+                  :style="[lightColoredTextData.includes(selectedEvent.color) ? {'color':'black!important'} : {}]"                                  
+                  @click="editItem(selectedEvent)">mdi-pencil</v-icon>
                 </v-btn>
-                <v-toolbar-title v-html="selectedEvent.name + ' ' + '(' + selectedEvent.event_type + ')'"></v-toolbar-title>
+                <v-toolbar-title 
+                v-html="selectedEvent.name + ' ' + '(' + selectedEvent.event_type + ')'"></v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-btn icon>
-                  <v-icon @click="deleteItem(selectedEvent)">mdi-delete</v-icon>
+                  <v-icon 
+                  :style="[lightColoredTextData.includes(selectedEvent.color) ? {'color':'black!important'} : {}]"
+                  @click="deleteItem(selectedEvent)">mdi-delete</v-icon>
                 </v-btn>
 
                 <ConfirmationDel
@@ -269,6 +279,10 @@ export default {
     errorMessage1: null,
     errorMessage2: null,
     errorMessage3: null,
+    lightColoredTextData: [
+      '#FFFF00'
+    ],
+    year: null
   }),
   mounted() {
     this.$refs.calendar.checkChange();
@@ -276,6 +290,7 @@ export default {
     this.getNoPending();
     this.getEventType();
     this.retrieve();
+
   },
   methods: {
     confirm(){
@@ -337,13 +352,48 @@ export default {
     getEventColor(event) {
       return event.color;
     },
+    getProperColor(event) {
+      var bright = this.isBright(event.color);
+      return bright ? 'black': 'white';
+    },
+    isBright(color) {
+      var element, bgColor, brightness, r, g, b, hsp;
+      if (color.match(/^rgb/)) {
+        color = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/);
+
+        r = color[1];
+        g = color[2];
+        b = color[3];
+      } 
+      else {
+        color = +("0x" + color.slice(1).replace(color.length < 5 && /./g, '$&$&'));
+        r = color >> 16;
+        g = color >> 8 & 255;
+        b = color & 255;
+      }
+      hsp = Math.sqrt(
+        0.299 * (r * r) +
+        0.587 * (g * g) +
+        0.114 * (b * b)
+      );
+
+      // Using the HSP value, determine whether the color is light or dark
+      if (hsp>127.5) {
+
+        return true;
+      } 
+      else {
+
+        return false;
+      }
+    },
     setToday() {
       this.focus = "";
     },
     prev() {
       this.$refs.calendar.prev();
     },
-    next() {
+    next() { 
       this.$refs.calendar.next();
     },
     showEvent({ nativeEvent, event }) {
@@ -363,6 +413,17 @@ export default {
       nativeEvent.stopPropagation();  
     },
     updateRange() {
+      console.log('year', this.$refs.calendar);
+      // if(this.year != this.$refs.calendar.days.year || this.year == null){
+      //   this.year = this.$refs.calendar.days.year;
+      //   this.events = this.events.map(function(val) {
+      //     if(val.event_type == 'Holiday' || val.event_type == 'Birthday') {
+      //       val.start = new Date(val.start).setFullYear(this.year);
+      //       val.end = new Date(val.start).setFullYear(this.year);
+      //     }
+      //     return val;
+      //   });
+      // }
       const events = [];
       for (let i = 0; i < this.events.length; i++) {
           events.push({
@@ -371,7 +432,7 @@ export default {
           start: this.events[i].start,
           end: this.events[i].end,
           color: this.events[i].color,
-          event_type: this.events[i].event_name,
+          event_type: this.events[i].event_type,
           checkbox: this.events[i].is_public,
           timed: this.events[i].timed
         });
@@ -396,7 +457,6 @@ export default {
         user_id: this.user_id
       };
       this.$axios.get("events/"+  this.user_id).then(response => {
-        console.log('event result', response.data);
         this.loading = false
         this.events = []
         response.data.forEach(element => {
@@ -404,16 +464,15 @@ export default {
             id: element.id,
             name: element.title,
             content: element.content,
-            start: new Date(element.start_date).toISOString().substring(0,10),
-            end: new Date(element.end_date).toISOString().substring(0,10),
+            start: element.start_date,
+            end: element.end_date,
             color: element.event_type.color,
             event_type: element.event_type.event_name,
             checkbox: element.is_public,
             timed: true
           };
-          console.log('iso',new Date(element.end_date).toISOString().substring(0,10));
           this.events.push(temp)
-        }, 30000);
+        }, 1);
       });
     },
     deleteItem(selectedEvent) {

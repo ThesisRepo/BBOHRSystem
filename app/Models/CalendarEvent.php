@@ -13,7 +13,8 @@ class CalendarEvent extends Model
         'start_date',
         'end_date',
         'is_public',
-        'event_type_id'
+        'event_type_id',
+        'is_yearly'
     ];
 
     public function user() {
@@ -21,6 +22,6 @@ class CalendarEvent extends Model
     }
 
     public function event_type() {
-        return $this->belongsTo(EventType::class);
+        return $this->belongsTo(EventType::class)->withTrashed();
     }
 }
