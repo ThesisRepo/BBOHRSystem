@@ -20,5 +20,6 @@ class DatabaseSeeder extends Seeder
         $this->call(LeaveTypeSeeder::class);
         $this->call(CompanyStatusSeeder::class);  
         $this->call(CivilStatusSeeder::class);
+        // $this->call(CalendarEventSeeder::class);
     }
 }
