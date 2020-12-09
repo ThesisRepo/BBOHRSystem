@@ -9,7 +9,8 @@
         </v-toolbar>
         <v-card-text>
           <v-container>
-            <h5>Add New Event Type</h5>
+            <h5 v-if="!showSave">Add New Event Type</h5>
+            <h5 v-else>Update Event Type</h5>
             <v-row>
               <v-col cols="4">
                 <v-text-field label="Event Title*" v-model="event_name" require></v-text-field>

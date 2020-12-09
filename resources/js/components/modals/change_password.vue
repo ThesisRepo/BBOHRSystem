@@ -10,7 +10,25 @@
         <v-card-text>
           <v-container>
             <v-row>
-                <v-col cols="12" md="6">
+                <v-col cols="12">
+                  <v-text-field
+                    v-model="old_password"
+                    prepend-icon="mdi-lock"
+                    label="Current Password*"
+                    :append-icon="valueCurrent ? 'mdi-eye' : 'mdi-eye-off'"
+                    :type="valueCurrent ? 'password' : 'text'"
+                    @keyup="validate('old_password')"
+                    dense
+                    required
+                    @click:append="() => (valueCurrent = !valueCurrent)"
+                  ></v-text-field>
+                  <span
+                    class="ml-8"
+                    v-if="errorMessage8 !== null"
+                    style="color: red; font-size: 12px"
+                  >{{ errorMessage8 }}</span>
+                </v-col>
+                <v-col cols="12">
                   <v-text-field
                     v-model="password"
                     prepend-icon="mdi-lock"
@@ -30,7 +48,7 @@
                     style="color: red; font-size: 12px"
                   >{{ errorMessage6 }}</span>
                 </v-col>
-                <v-col cols="12" md="6">
+                <v-col cols="12">
                   <v-text-field
                     label="Confirm Password"
                     :append-icon="
@@ -59,11 +77,10 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red" dark @click="dialog = false">Cancel</v-btn>
-          <v-btn color="green" dark @click="dialog = false">Update</v-btn>
+          <v-btn color="green" dark @click="update()">Update</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-    
     <ConfirmationDel
       ref="confirmDel"
       @onConfirm="confirmDel($event)"
@@ -80,9 +97,12 @@ export default {
     user_id: localStorage.getItem("id"),
     password: null,
     confirm_password: null,
-    valuePass: false,
+    old_password: null,
+    valuePass: true,
+    valueCurrent: true,
     errorMessage6: null,
     errorMessage7: null,
+    errorMessage8: null,
     value: true
   }),
   mounted() {
@@ -101,11 +121,7 @@ export default {
           this.errorMessage6 = "Password is required";
         }else if (this.password.length < 8) {
           this.errorMessage6 = "Password must be atleast 8 characters.";
-        } else if (
-          /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/.test(
-            this.password
-          )
-        ) {
+        } else if (/^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/.test(this.password)) {
           this.successMessage = "Strong password";
           this.errorMessage6 = null;
         } else {
@@ -115,26 +131,39 @@ export default {
       } else if (input === "confirm_password") {
         this.errorMessage7 = null;
         if(this.confirm_password === '' || this.confirm_password === null){
-          this.errorMessage6 = "Confirm password is required";
+          this.errorMessage7 = "Confirm password is required";
         }else if (this.password.localeCompare(this.confirm_password) !== 0) {
           this.errorMessage7 = "Password did not match";
         } else {
           this.errorMessage7 = null;
         }
+      } else if(input === "old_password") {
+        this.errorMessage8 = null
+        if(this.old_password === '' || this.old_password === null){
+          this.errorMessage8 = 'Please input your Current Password'
+        }
       }
     },
     update(){
-      let parameter = {
-        id: this.storeage.id,
-        event_name: this.event_name,
-        color: this.color
+      this.validate('password')
+      this.validate('confirm_password')
+      this.validate('old_password')
+      if(this.errorMessage6 === null && this.errorMessage7 === null && this.errorMessage8 === null){
+        let parameter = {
+          id: localStorage.getItem('id'),
+          old_password: this.old_password,
+          password: this.password,
+          confirm_password: this.confirm_password
+        }
+        console.log('parameter', parameter)
+        this.$axios.post('update_password', parameter).then( response =>{
+          if(response.data.error){
+            this.errorMessage8 = 'Current password is not recognized'
+          }else{
+            this.dialog = false
+          }
+        })
       }
-      this.$axios.post('event_types/' + this.storeage.id, parameter).then( response =>{
-        // this.getEventType()
-        this.event_name = null,
-        this.color = 'Colors'
-        this.showSave = false
-      })
     }
   }
 }
