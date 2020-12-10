@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\UserService;
 use App\Traits\ImageUpload;
+use Illuminate\Support\Facades\Hash;
 
 class UserInformationController extends Controller
 {
@@ -196,6 +197,17 @@ class UserInformationController extends Controller
         ];
         $res = $this->user->find($user_id)->event_types()->create($data);
         return $res;
+    }
+
+    public function updatePassword(Request $request){
+        $password = User::firstOrCreate(['id' => $request->id]);
+        if(!(Hash::check($request->old_password, $password['password']))){
+            return response()->json(['error' => 'Current password is not recognized']);
+        }else{
+            $password['password'] = Hash::make($request->password);
+            $password->save();
+            return response()->json(['success' => 'Successfully updated']);
+        }
     }
 
 }

@@ -128,7 +128,7 @@ class RequestBaseController extends Controller
                 if($this->request_name == 'petty_cash_request' || $this->request_name == 'budget_request') {
                     return $approver_role_id == $this->max_role - 1;
                 }else {
-                    return $approver_role_id == $this->max_role + 2;
+                    return $approver_role_id == $this->max_role + 1;
                 }
                 break;
             default:
@@ -153,6 +153,7 @@ class RequestBaseController extends Controller
             $res = response()->json($this->model->update($data, $id), 200);
             $employee_name = $this->getFullName();
             $prp_assigned_id = $this->getApproverId($this->request_name);
+            dd($editable);
             $this->notifyNewRequest('edited', $employee_name, $prp_assigned_id, $this->request_name, $editable);
         }else{
             $res =  response()->json(['data'=>['message'=> 'you can\'t edit']], 400);
@@ -211,7 +212,7 @@ class RequestBaseController extends Controller
         $prp_assigned_id = $this->getApproverId($this->request_name);
         $res = $this->model->delete($id);
         $employee_name = $this->getFullName();
-        $this->notifyNewRequest('deleted', $employee_name, $prp_assigned_id, $this->request_name, []);
+        // $this->notifyNewRequest('deleted', $employee_name, $prp_assigned_id, $this->request_name, $data);
 
         return response()->json($res, 200);
 

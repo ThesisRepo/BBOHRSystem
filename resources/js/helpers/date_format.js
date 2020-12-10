@@ -14,3 +14,8 @@ export function isTwoFourHrLater(date) {
   var twoFourHrLater = date >= new Date().toISOString().substr(0, 10) && date <= new Date(new Date().getTime() + 60 * 60 * 24 * 1000).toISOString().substr(0, 10);
   return twoFourHrLater;
 }
+
+export function fiveDays(date) {
+  var fiveDays = date >= new Date().toISOString().substr(0, 10) && date <= new Date(new Date().getTime() + 60 * 60 * 120 * 1000).toISOString().substr(0, 10);
+  return fiveDays;
+}
