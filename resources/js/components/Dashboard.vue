@@ -471,7 +471,6 @@ export default {
       this.$axios.get("events/"+  this.user_id).then(response => {
         this.loading = false
         this.events = []
-        console.log(response.data);
         response.data.forEach(element => {
           var temp = {
             user_id: element.user_id,
