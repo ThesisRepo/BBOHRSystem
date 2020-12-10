@@ -14,5 +14,8 @@ let getters = {
     isLoading: state => {
         return state.isLoading
     },
+    roleList: state => {
+        return state.roleList;
+    }
 }
 export default getters

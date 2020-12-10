@@ -19,8 +19,8 @@ trait HolidayList {
         'user_id' => 2,
         'title' => 'Chinese Lunar New Year',
         'content' => 'Special Non-working Holiday',
-        'start_date' => '2020-12-8',
-        'end_date' => '2020-12-8',
+        'start_date' => '2020-01-25',
+        'end_date' => '2020-01-25',
         'is_public' => 1,
         'event_type_id' => 1,
         'is_yearly' => 1
