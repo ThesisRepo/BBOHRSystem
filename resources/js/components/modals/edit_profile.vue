@@ -49,8 +49,7 @@
                     item-text="text"
                     item-value="value"
                     label="Civil Status*"
-                    @keyup="validate('civil_status')"
-                    @click="validate('civil_status')"
+                    @change="validate('civil_status')"
                     v-model="datas.civil_status_id"
                     required
                 ></v-select>
@@ -87,7 +86,7 @@
                 >{{ errorMessage4 }}</span>
               </v-col>
               <v-divider></v-divider>
-              <div><v-btn depressed color="primary" @click="showP()" v-if="showPass === true">Manage Password</v-btn></div>
+              <!-- <div><v-btn depressed color="primary" @click="showP()" v-if="showPass === true">Manage Password</v-btn></div>
               <v-row v-if="seen === false">
                 <v-col cols="12" md="6">
                   <v-text-field
@@ -132,7 +131,7 @@
                     style="color: red; font-size: 12px"
                   >{{ errorMessage7 }}</span>
                 </v-col>
-              </v-row>
+              </v-row> -->
             </v-row>
           </v-container>
         </v-card-text>
@@ -194,28 +193,28 @@ export default {
       if (input === "first_name") {
         this.errorMessage1 = null;
         if (this.datum.first_name === "") {
-          this.errorMessage1 = "First name is Required";
+          this.errorMessage1 = "First name is required";
         } else {
           this.errorMessage1 = null;
         }
       }else if (input === "last_name") {
         this.errorMessage2 = null;
         if (this.datum.last_name === "") {
-          this.errorMessage2 = "Last name is Required";
+          this.errorMessage2 = "Last name is required";
         } else {
           this.errorMessage2 = null;
         }
       }else if (input === "civil_status") {
         this.errorMessage3 = null;
         if (this.datas.civil_status_id === "" || this.datas.civil_status_id === null) {
-          this.errorMessage3 = "Civil status is Required";
+          this.errorMessage3 = "Civil status is required";
         } else {
           this.errorMessage3 = null;
         }
       }else if (input === "address") {
         this.errorMessage4 = null;
         if (this.datas.address === "") {
-          this.errorMessage4 = "Address is Required";
+          this.errorMessage4 = "Address is required";
         } else {
           this.errorMessage4 = null;
         }
@@ -236,33 +235,33 @@ export default {
           this.errorMessage5 = null;
         }
       }
-      if (input === "password") {
-        this.errorMessage6 = null;
-        if(this.datas.password === '' || this.datas.password === null){
-          this.errorMessage6 = "Password is required";
-        }else if (this.datas.password.length < 8) {
-          this.errorMessage6 = "Password must be atleast 8 characters.";
-        } else if (
-          /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/.test(
-            this.datas.password
-          )
-        ) {
-          this.successMessage = "Strong password";
-          this.errorMessage6 = null;
-        } else {
-          this.errorMessage6 =
-            "Password must be alphanumeric characters. It should contain 1 number, 1 special character and 1 capital letter";
-        }
-      } else if (input === "confirm_password") {
-        this.errorMessage7 = null;
-        if(this.datas.confirm_password === '' || this.datas.confirm_password === null){
-          this.errorMessage6 = "Confirm password is required";
-        }else if (this.datas.password.localeCompare(this.datas.confirm_password) !== 0) {
-          this.errorMessage7 = "Password did not match";
-        } else {
-          this.errorMessage7 = null;
-        }
-      }
+      // if (input === "password") {
+      //   this.errorMessage6 = null;
+      //   if(this.datas.password === '' || this.datas.password === null){
+      //     this.errorMessage6 = "Password is required";
+      //   }else if (this.datas.password.length < 8) {
+      //     this.errorMessage6 = "Password must be atleast 8 characters.";
+      //   } else if (
+      //     /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/.test(
+      //       this.datas.password
+      //     )
+      //   ) {
+      //     this.successMessage = "Strong password";
+      //     this.errorMessage6 = null;
+      //   } else {
+      //     this.errorMessage6 =
+      //       "Password must be alphanumeric characters. It should contain 1 number, 1 special character and 1 capital letter";
+      //   }
+      // } else if (input === "confirm_password") {
+      //   this.errorMessage7 = null;
+      //   if(this.datas.confirm_password === '' || this.datas.confirm_password === null){
+      //     this.errorMessage6 = "Confirm password is required";
+      //   }else if (this.datas.password.localeCompare(this.datas.confirm_password) !== 0) {
+      //     this.errorMessage7 = "Password did not match";
+      //   } else {
+      //     this.errorMessage7 = null;
+      //   }
+      // }
     },
     update() {
       this.validate("address");

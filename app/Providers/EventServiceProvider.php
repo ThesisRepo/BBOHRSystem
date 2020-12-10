@@ -20,8 +20,8 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         NewRequest::class => [
-            \App\Listeners\NotifyViaGmailListener::class,
-            \App\Listeners\NotifyViaSlackListener::class,
+            // \App\Listeners\NotifyViaGmailListener::class,
+            // \App\Listeners\NotifyViaSlackListener::class,
         ]
     ];
 

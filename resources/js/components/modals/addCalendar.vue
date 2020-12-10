@@ -1,6 +1,6 @@
 <template>
   <v-row justify='end' id="move">
-    <v-dialog v-model="dialog" persistent max-width="600px">
+    <v-dialog scrollable v-model="dialog" persistent max-width="600px">
       <v-card>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-card-title>
@@ -16,7 +16,8 @@
                 <v-text-field label="Title*" v-model="title" autocomplete="off" @keyup="validate('title')" required></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
-                <v-select label="Event Type*" :items="event_types" item-text="event_name" item-value="id"  @keyup="validate('event')" v-model="event_type" required></v-select>
+                <v-select label="Event Type*" 
+                :items="event_types" item-text="event_name" item-value="id"  @keyup="validate('event')" v-model="event_type" required></v-select>
               </v-col>
               <v-col cols="12">
                 <!-- <v-text-field label="Content*" v-model="content" required></v-text-field> -->
@@ -119,16 +120,12 @@ export default {
           this.total_days = differenceInDay;
           this.total_days_with_text = differenceInDay + " days of leave";
           this.error1 = false;
-          if (diff == 0) {
+        } else {
+          if((this.end_date !== null && this.end_date !== "") && (this.start_date !== null && this.start_date !== "")) {
             this.error1 = true;
           }
-        } else {
-          this.error1 = true;
         }
-        this.disable = false;
-      } else {
-        this.disable = true;
-      }
+      } 
     },
     disabledDates(date) {
       return date > new Date().toISOString().substr(0, 10);
@@ -167,7 +164,7 @@ export default {
           start_date: this.start_date,
           end_date: this.end_date,
           content: this.content,
-          is_public: this.checkbox,
+          is_public: this.checkbox ? 1 : 0,
           event_type_id: this.event_type,
           user_id: this.user_id
         }
@@ -180,10 +177,14 @@ export default {
           this.error1 === false &&
           this.errorMessage1 === null
         ){
+          this.$store.commit("state_loading", true);
           this.$axios.post("events", params).then(response => {
+            this.$store.commit("state_loading", false);
             this.$parent.$parent.retrieve()
             this.dialog = false
-          })
+          }, this.timeout).catch(err => {
+            this.$store.commit("state_loading", false);            
+          });
         } else {
           this.errorMessage1 = "Please fill up all fields";
         }
@@ -193,7 +194,7 @@ export default {
           start_date: this.start_date,
           end_date: this.end_date,
           content: this.content,
-          is_public: 1,
+          is_public: 0,
           event_type_id: this.event_type,
           user_id: this.user_id
         }
