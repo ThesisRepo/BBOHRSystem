@@ -158,7 +158,7 @@ export default {
       this.validate('title')
       this.validate('event')
       this.validate('details')
-      if(this.user_type === 'hr mngr') {
+      if(this.user_type.includes('hr mngr')) {
         let params = {
           title: this.title,
           start_date: this.start_date,
