@@ -5,23 +5,25 @@ namespace App\Http\Controllers\Employees;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Eloquent\Implementations\CalendarEventEloquent;
+use App\Services\UserRequestService;
 
 class CalendarEventController extends Controller
 {
     protected $calendar_event;
 
     public function __construct(
-        CalendarEventEloquent $calendar_event
+        CalendarEventEloquent $calendar_event,
+        UserRequestService $user_request_service
     ) {
         $this->middleware(['auth', 'verify.employee']);  
         $this->calendar_event = $calendar_event;
+        $this->user_request_service = $user_request_service;
     }
 
     public function getByUser($user_id) {
-        // $user_id = $request->user_id;
         $relationship = 'event_type';
         $res = $this->calendar_event->whereWith('user_id', $user_id, $relationship)->orWhere('is_public', 1)->get();
-        // dd($user_id)
+        // dd($user_id, $res->toArray());
         return $res;
     }
 
@@ -36,6 +38,7 @@ class CalendarEventController extends Controller
             'event_type_id' => $request->event_type_id
         ];
         $res = $this->calendar_event->create($data);
+        // $this->notifyNewEventCalendar ('added', $employee_name, $prp_assigned_id, $this->request_name, $data);
         return $res;
     }
 
@@ -56,6 +59,12 @@ class CalendarEventController extends Controller
     public function delete($id) {
         $res = $this->calendar_event->delete($id);
         return response()->json($res, 200);
+    }
+
+    public function notifyNewRequest($action, $user, $id, $type, $data) {
+
+        return $this->user_request_service->notifyNewRequest($action, $user, $id, $type, $data);  
+
     }
 
 }

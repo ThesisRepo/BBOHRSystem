@@ -118,7 +118,7 @@ export default {
   data(){
     return {
       user_pic: this.$store.getters.profileUrl,
-      notification_count: this.$store.getters.notificationCount ,
+      notification_count: this.$store.getters.notificationCount,
       user_type: localStorage.getItem('user_type'),
       user_name: localStorage.getItem('user_name'),
       user_id: localStorage.getItem("id"),

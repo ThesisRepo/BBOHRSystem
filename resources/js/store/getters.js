@@ -11,5 +11,8 @@ let getters = {
     notifications: state => {
         return state.notifications
     },
+    isLoading: state => {
+        return state.isLoading
+    },
 }
 export default getters
