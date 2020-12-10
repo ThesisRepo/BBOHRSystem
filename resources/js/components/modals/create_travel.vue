@@ -30,8 +30,15 @@
                   label="Destination*"
                   prepend-icon=" mdi-home-modern"
                   v-model="destination"
+                  @keyup="validate('destination')"
                   required
                 ></v-text-field>
+                <span
+                  class="ml-8"
+                  v-if="errorMessage1 !== null"
+                  style="color: red; font-size: 12px"
+                  >{{ errorMessage1 }}</span
+                >
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-select
@@ -40,9 +47,16 @@
                   item-value="id"
                   label="Employee to Cover*"
                   v-model="employee_to_cover"
+                  @change="validate('cover')"
                   prepend-icon=" mdi-account-outline"
                   required
                 ></v-select>
+                <span
+                  class="ml-8"
+                  v-if="errorMessage2 !== null"
+                  style="color: red; font-size: 12px"
+                  >{{ errorMessage2 }}</span
+                >
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-menu
@@ -58,6 +72,7 @@
                       readonly
                       v-bind="attrs"
                       v-on="on"
+                      @change="validate('date')"
                       prepend-icon=" mdi-calendar"
                     ></v-text-field>
                   </template>
@@ -67,13 +82,19 @@
                     no-title
                     scrollable
                     color="primary"
-                    @change="changeDate()"
+                    @change="changeDate(), validate('date')"
                   >
                     <v-spacer></v-spacer>
                     <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
                     <v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
                   </v-date-picker>
                 </v-menu>
+                <span
+                  class="ml-8"
+                  v-if="errorMessage3 !== null"
+                  style="color: red; font-size: 12px"
+                  >{{ errorMessage3 }}</span
+                >
               </v-col>
               <v-spacer></v-spacer>
               <v-col cols="12" sm="6" md="6">
@@ -90,6 +111,7 @@
                       readonly
                       v-bind="attrs"
                       v-on="on"
+                      @change="validate('endDate')"
                       :disabled="disable"
                       prepend-icon=" mdi-calendar"
                     ></v-text-field>
@@ -100,17 +122,30 @@
                     no-title
                     color="primary"
                     scrollable
-                    @change="changeDate()"
+                    @change="changeDate(), validate('endDate')"
                   ></v-date-picker>
                 </v-menu>
+                <span
+                  class="ml-8"
+                  v-if="errorMessage4 !== null"
+                  style="color: red; font-size: 12px"
+                  >{{ errorMessage4 }}</span
+                >
               </v-col>
               <v-col cols="6">
                 <v-text-field
                   label="Contact Person*"
                   prepend-icon=" mdi-account-outline"
                   v-model="emergency_contact"
+                  @keyup="validate('contactPerson')"
                   required
                 ></v-text-field>
+                <span
+                  class="ml-8"
+                  v-if="errorMessage6 !== null"
+                  style="color: red; font-size: 12px"
+                  >{{ errorMessage6 }}</span
+                >
               </v-col>
               <v-col cols="6">
                 <v-text-field
@@ -118,12 +153,25 @@
                   label="Contact Person's Number*"
                   prepend-icon=" mdi-account-outline"
                   v-model="contact_number"
+                  @keyup="validate('contactNumber')"
                   required
                 ></v-text-field>
+                <span
+                  class="ml-8"
+                  v-if="errorMessage5 !== null"
+                  style="color: red; font-size: 12px"
+                  >{{ errorMessage5 }}</span
+                >
               </v-col>
               <v-col cols="12">
                 <v-icon large color="blue darken-2">mdi-attachment</v-icon>
-                <input accept="image/*" v-on:change="checkFile" type="file">
+                <input accept="image/*" v-on:change="checkFile" type="file"><br>
+                <span
+                  class="ml-8"
+                  v-if="errorMessage7 !== null"
+                  style="color: red; font-size: 12px"
+                  >{{ errorMessage7 }}</span
+                >
               </v-col>
             </v-row>
           </v-container>
@@ -143,15 +191,21 @@ export default {
   data: () => ({
     dialog: false,
     error: false,
+    errorMessage1: null,
+    errorMessage2: null,
+    errorMessage3: null,
+    errorMessage4: null,
+    errorMessage5: null,
+    errorMessage6: null,
+    errorMessage7: null,
     disable: false,
     focused: false,
-    destination: null,
-    substitute: null,
-    contact_number: null,
-    start_date: null,
-    end_date: null,
-    emergency_contact: null,
-    employee_to_cover: null,
+    destination: '',
+    contact_number: '',
+    start_date: '',
+    end_date: '',
+    emergency_contact: '',
+    employee_to_cover: '',
     prp_assigned_id: null,
     details: null,
     files: [],
@@ -175,16 +229,85 @@ export default {
     },
     checkFile(e) {
       this.selectedFile = e.target.files[0];
+      if(this.selectedFile !== null){
+        this.errorMessage7 = null
+      }
       this.file_uri = URL.createObjectURL(e.target.files[0]);
     },
+    validate(input) {
+      let reqWhiteSpace = /\d/;
+      if (input === "destination") {
+        this.errorMessage1 = null;
+        if (this.destination === "" || this.destination === null) {
+          this.errorMessage1 = "Destination is Required";
+        } else {
+          this.errorMessage1 = null;
+        }
+      }else if (input === "cover") {
+        this.errorMessage2 = null;
+        if (this.employee_to_cover === "" || this.employee_to_cover === null) {
+          this.errorMessage2 = "Employee to cover is Required";
+        } else {
+          this.errorMessage2 = null;
+        }
+      }else if (input === "date") {
+        this.errorMessage3 = null;
+        if (this.start_date === "" || this.start_date === null) {
+          this.errorMessage3 = "Start date is Required";
+        } else {
+          this.errorMessage3 = null;
+        }
+      }else if (input === "endDate") {
+        this.errorMessage4 = null;
+        if (this.end_date === "" || this.end_date === null) {
+          this.errorMessage4 = "End date is Required";
+        } else {
+          this.errorMessage4 = null;
+        }
+      } else if (input === "contactNumber") {
+        this.errorMessage5 = null;
+        if(this.contact_number === '' || this.contact_number === null){
+          this.errorMessage5 = "Contact number is required";
+        }else if (this.contact_number.length > 11) {
+          this.errorMessage5 = "Contact Number is exceed 11 numbers";
+        } else if (this.contact_number.length === 0) {
+          this.errorMessage5 = "Contact number is required";
+        } else if (this.contact_number.slice(0, 2) != "09") {
+          this.errorMessage5 = "Contact number must start with 09";
+        } else if (this.contact_number.length <= 10) {
+          this.errorMessage5 = "Contact number is invalid";
+        } else {
+          this.errorMessage5 = null;
+        }
+      } else if(input === 'contactPerson'){
+        this.errorMessage6 = null;
+        if(this.emergency_contact === '' || this.emergency_contact === null){
+          this.errorMessage6 = 'Contact person is required'
+        } else if (reqWhiteSpace.test(this.emergency_contact)){
+          this.errorMessage6 = 'Contact person must not include digits'
+        } else {
+          this.errorMessage6 = null
+        }
+      }
+    },
     createTravel() {
+      this.validate('destination')
+      this.validate('cover')
+      this.validate('date')
+      this.validate('endDate')
+      this.validate('contactNumber')
+      this.validate('contactPerson')
+      if(this.selectedFile === null){
+        this.errorMessage7 = 'Image is required'
+      }
       if (
-        this.destination !== null &&
-        this.start_date !== null &&
-        this.end_date !== null &&
-        this.emergency_contact !== null &&
-        this.employee_to_cover !== null &&
-        this.contact_number !== null
+        this.errorMessage1 === null &&
+        this.errorMessage2 === null &&
+        this.errorMessage3 === null &&
+        this.errorMessage4 === null &&
+        this.errorMessage5 === null &&
+        this.errorMessage6 === null &&
+        this.errorMessage7 === null
       ) {
         let obj = this;
         const config = {
@@ -203,16 +326,11 @@ export default {
         this.$axios
           .post("travel_auth_request", formData, config)
           .then(res => {
-            console.log(res.data)
             this.$parent.$parent.$parent.$parent.$parent.retrieve();
           });
         this.dialog = false;
         this.error = false;
         this.val = false;
-      } else {
-        this.error = true;
-        this.dialog = true;
-        this.val = true;
       }
     },
     disabledDates(date) {
@@ -229,14 +347,21 @@ export default {
       })
     },
     removeData() {
-      this.destination = null,
-        this.employee_to_cover = null,
-        this.start_date = null,
-        this.end_date = null,
-        this.emergency_contact = null,
-        this.prp_assigned_id = null;
-        this.selectedFile = null
-        this.contact_number = null
+      this.destination = '',
+      this.employee_to_cover = '',
+      this.start_date = null,
+      this.end_date = null,
+      this.emergency_contact = '',
+      this.prp_assigned_id = null;
+      this.selectedFile = null
+      this.contact_number = ''
+      this.errorMessage1 = null
+      this.errorMessage2 = null
+      this.errorMessage3 = null
+      this.errorMessage4 = null
+      this.errorMessage5 = null
+      this.errorMessage6 = null
+      this.errorMessage7 = null
       this.changeDate();
     }
   }

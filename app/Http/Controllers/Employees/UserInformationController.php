@@ -52,12 +52,10 @@ class UserInformationController extends Controller
         if($hasUserInfo) {
             $data = [
                 'address'=> $request->address,
-                'civil_status'=> $request->civil_status,
+                'civil_status_id'=> $request->civil_status,
                 'contact_number'=> $request->contact_number,
-                'pag_ibig_number'=> $request->pag_ibig_number,
-                'sss_number'=> $request->sss_number,
-                'tin_number'=> $request->tin_number,
-                'philhealth_number'=> $request->philhealth_number
+                'first_name'=> $request->first_name,
+                'last_name'=> $request->last_name
             ];
         }
         if(!$hasUserInfo) {
@@ -67,6 +65,7 @@ class UserInformationController extends Controller
         
         return $res;
     }
+    
     public function updateProfileImg($id,Request $request){
         $user_info = $this->user->findWith($id, 'userInformation')->userInformation;
         if($user_info) {

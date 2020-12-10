@@ -11,15 +11,14 @@
             <v-row>
               <v-col>
 
-                <v-avatar v-if="profile_url === null" class="ml-15" size="200">
+                <!-- <v-avatar v-if="profile_url === null" class="ml-15" size="200">
                   <img src="images/user.png" width="100%" height="100%" id="profile">
-                </v-avatar>
-                <v-avatar v-else class="ml-15 avatar" color="grey darken-1" size="200">
+                </v-avatar> -->
+                <v-avatar class="ml-15" color="grey darken-1" size="200">
                   <img :src="profile_url" width="100%" height="100%" id="profile">
-                   <div class="overlay" @click="onButtonClick">upload image</div>
                 </v-avatar>
                 <v-row>
-                  <v-col class="ml-15">
+                  <v-col class="ml-16">
                   <v-btn
                     margin
                     color="primary"
@@ -28,8 +27,8 @@
                     outlined
                     depressed
                     :loading="isSelecting"
-                    @click="updateFileChanged"
-                  >Change Profile Image</v-btn>
+                    @click="onButtonClick"
+                  >Upload Image</v-btn>
 
                   <input
                     ref="uploader"
@@ -76,21 +75,11 @@
                 </v-row>
               </v-col>
               <v-col class="text-right">
-              <editProfile :datas="datas"></editProfile>
+              <editProfile :datas="datas" :datum="datum"></editProfile>
             </v-col>
             </v-row>
           </v-container>
       </v-card>
-      <Reminder
-      ref="reminder"
-      :message="myMessage"
-      ></Reminder>
-      <Confirmation
-      ref="confirms"
-      :title="confirmationTitle"
-      :message="confirmationMessage"
-      @onConfirm="confirm($event)"
-    ></Confirmation>
     </v-container>
     
   </v-layout>
@@ -100,11 +89,11 @@
             <v-container>
               <h4 class="primary--text" mb-1 style="margin-left: 3%;">Personal Information:</h4>
               <v-row style="margin-left: 5%;">
-                <v-col cols="6 sm-6 md-6">
-                  <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-map-marker</v-icon>{{ address ? address : 'No Address' }}</p>
+                <v-col cols="12" md="6">
+                  <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-map-marker</v-icon> {{ address ? address : 'No Address' }}</p>
                   <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-calendar</v-icon> {{ birthdate ? birthdate : 'No Birthdate'}}</p>
                 </v-col>
-                <v-col cols="6">
+                <v-col cols="12" md="6">
                   <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-contacts</v-icon> {{ contact_number ? contact_number : 'No Contact No.' }}</p>
                   <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-account</v-icon> {{ status === 'single' ? 'Single' : status === 'married' ? 'Married' : status ? status : 'No Status' }}</p>
                 </v-col>
@@ -112,11 +101,11 @@
               <!-- end Personal Info -->
               <h4 class="primary--text" mb-1 style="margin-left: 3%;">Business Information:</h4>
               <v-row style="margin-left: 5%;">
-                <v-col cols="6">
+                <v-col cols="12" md="6">
                   <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-account-group</v-icon> {{ department ? department : 'No Department' }}</p>
                   <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-google-street-view</v-icon> {{ company_status === 'regular' ? 'Regular' : company_status ? company_status : 'No Company Status' }}</p>
                 </v-col>
-                <v-col cols="6">
+                <v-col cols="12" md="6">
                   <p class="black--text"  style="font-size:20px"><v-icon class="primary--text">mdi-calendar-check</v-icon> {{ date_hired ? date_hired : 'No Date Hired'}}</p>
                   <p class="black--text"  style="font-size:20px"><v-icon class="primary--text">mdi-timetable</v-icon> {{ shift ? shift : 'No Shift Time'}}</p>
                 </v-col>
@@ -124,11 +113,11 @@
               <!-- end Business Info -->
               <h4 class="primary--text" mb-1 style="margin-left: 3%;">Others:</h4>
               <v-row style="margin-left: 5%;">
-                <v-col cols="6">
+                <v-col cols="12" md="6">
                   <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-calculator</v-icon> {{ pag_ibig ? pag_ibig : 'No Pag-ibig Account' }}</p>
                   <p class="black--text" style="font-size:20px"><v-icon class="primary--text">mdi-calculator</v-icon> {{ tin_number ? tin_number : 'No TIN'}}</p>
                 </v-col>
-                <v-col cols="6">
+                <v-col cols="12" md="6">
                   <p class="black--text"  style="font-size:20px"><v-icon class="primary--text">mdi-calculator</v-icon> {{ philhealth_num ? philhealth_num : 'No PhilHealth'}}</p>
                   <p class="black--text"  style="font-size:20px"><v-icon class="primary--text">mdi-calculator</v-icon> {{ sss_num ? sss_num : 'No SSS'}}</p>
                 </v-col>
@@ -139,41 +128,18 @@
     </v-container>
 </v-app>
 </template>
-<style scoped>
-.avatar {
-  position: relative;
-  width: 50%;
-  max-width: 300px;
-}
-.overlay {
-  position: absolute;
-  bottom: 0;
-  background: rgb(0, 0, 0);
-  background: rgba(0, 0, 0, 0.5); /* Black see-through */
-  color: #f1f1f1;
-  width: 100%;
-  transition: .5s ease;
-  /* opacity:0; */
-  color: white;
-  font-size: 20px;
-  padding: 20px;
-  text-align: center;
-}
-
-/* When you mouse over the container, fade in the overlay title */
-.avatar:hover .overlay {
-  /* opacity: 1; */
-  cursor: pointer;
+<style>
+.v-btn:not(.v-btn--round).v-size--default {
+  height: 36px;
+  min-width: 64px;
+  padding: 0 37px;
 }
 </style>
-
 
 <script>
 import editProfile from "./modals/edit_profile.vue";
 import updatePrp from "./modals/edit_prp.vue";
 import updateFinance from "./modals/edit_finance.vue";
-import Reminder from "./modals/confirmation/reminder.vue";
-import Confirmation from "./modals/confirmation/confirm.vue";
 import { mapGetters } from "vuex";
 export default {
   data() {
@@ -206,12 +172,7 @@ export default {
       profile_url: this.profileUrl,
       isSelecting: false,
       testClass: 'red--text',
-      formData: null,
-      isEditabelProfile: false,
-      myMessage: null,
-      imgMaxSize: 2.097152,
-      confirmationTitle:null,
-      confirmationMessage: null
+      datum: []
     };
   },
   created() {
@@ -220,9 +181,7 @@ export default {
   components: {
     editProfile,
     updatePrp,
-    updateFinance,
-    Reminder,
-    Confirmation
+    updateFinance
   },
   methods: {
     updatePrp(){
@@ -239,6 +198,7 @@ export default {
           this.user_finance = localStorage.getItem("user_finance");
           if(response.data.user_information !== null){
             this.datas = response.data.user_information;
+            this.datum = response.data
             this.company_position = response.data.user_information.company_positions[0].position_name;
             this.shift = response.data.user_information.shift_time.shift_time_name;
             this.department = response.data.user_information.department.department_name;
@@ -271,43 +231,18 @@ export default {
       );
       this.$refs.uploader.click();
     },
-    confirm(){
-      if(this.confirmationTitle == 'Update Profile'){
-        this.uploadImg();
-      }
-    },
-    uploadImg() {
-      this.$store.dispatch('ChangeProfileUrl', {user:this.user_id, profileUrl:this.formData}).then(()=> {
-        // alert('ddf');
-        this.isEditabelProfile = false;
-        this.isConfirmed = false;
-      });
-    },
-    updateFileChanged() {
-      if(this.isEditabelProfile) {
-        this.confirmationTitle = 'Update Profile',
-        this.confirmationMessage = 'Are you sure you want to update your profile photo?',
-        this.$refs.confirms.show()
-      }else{
-        this.myMessage = 'seems like you didn\'t upload an image.'
-        this.$refs.reminder.show();
-      }
-    },
     onFileChanged(e) {
       this.selectedFile = e.target.files[0];
-      if(this.selectedFile.size > this.imgMaxSize * 1024 * 1024) {
-        this.myMessage = 'Opps! Image too large.'
-        this.$refs.reminder.show();
-      }else {
-        this.isEditabelProfile = this.profile_url !=  URL.createObjectURL(e.target.files[0])
-        this.profile_url = URL.createObjectURL(e.target.files[0]);
-        const config = {
-          header: { "content-type": "multipart/form-data" }
-        };
-        let formData = new FormData();
-        formData.append("image", this.selectedFile);
-        this.formData = formData;
-      }
+      this.profile_url = URL.createObjectURL(e.target.files[0]);
+      const config = {
+        header: { "content-type": "multipart/form-data" }
+      };
+      let formData = new FormData();
+      formData.append("image", this.selectedFile);
+      let param = {
+        id: this.user_id
+      };
+      this.$store.dispatch('ChangeProfileUrl', {user:this.user_id, profileUrl:formData});
       // this.$axios
       //   .post(
       //     "update_profile_img/" + this.user_id,

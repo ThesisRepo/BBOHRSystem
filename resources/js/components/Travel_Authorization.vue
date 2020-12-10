@@ -139,15 +139,18 @@
               <v-col cols="12" sm="6" md="6">
                 <v-text-field
                   v-model="editedItem.destination"
+                  @keyup="validate('destination')"
                   label="Destination"
                   prepend-icon=" mdi-home-modern"
                 ></v-text-field>
+                <span
+                  class="ml-8"
+                  v-if="errorMessage1 !== null"
+                  style="color: red; font-size: 12px"
+                  >{{ errorMessage1 }}</span
+                >
               </v-col>
               <v-col cols="12" sm="6" md="6">
-                <span v-if="error2" style="color: red; font-style: italic">
-                  Start date must not be higher than End
-                  date!
-                </span>
                 <v-menu
                   :close-on-content-click="true"
                   transition="scale-transition"
@@ -161,6 +164,7 @@
                       readonly
                       v-bind="attrs"
                       v-on="on"
+                      @change="validate('date')"
                       prepend-icon=" mdi-calendar"
                     ></v-text-field>
                   </template>
@@ -170,9 +174,15 @@
                     no-title
                     scrollable
                     color="primary"
-                    @change="changeDate()"
+                    @change="changeDate(), validate('date')"
                   ></v-date-picker>
                 </v-menu>
+                <span
+                  class="ml-8"
+                  v-if="errorMessage3 !== null"
+                  style="color: red; font-size: 12px"
+                  >{{ errorMessage3 }}</span
+                >
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <span v-if="error1" style="color: red; font-style: italic">
@@ -188,6 +198,7 @@
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
                       v-model="editedItem.end_date"
+                      @change="validate('endDate')"
                       label="End Date"
                       readonly
                       v-bind="attrs"
@@ -202,9 +213,15 @@
                     no-title
                     scrollable
                     color="primary"
-                    @change="changeDate()"
+                    @change="changeDate(), validate('endDate')"
                   ></v-date-picker>
                 </v-menu>
+                <span
+                  class="ml-8"
+                  v-if="errorMessage4 !== null"
+                  style="color: red; font-size: 12px"
+                  >{{ errorMessage4 }}</span
+                >
               </v-col>
               <v-col cols="6">
                 <v-select
@@ -213,23 +230,44 @@
                   item-value="id"
                   label="Employee to Cover*"
                   v-model="editedItem.employee_to_cover"
+                  @change="validate('cover')"
                   prepend-icon=" mdi-account-outline"
                   required
                 ></v-select>
+                <span
+                  class="ml-8"
+                  v-if="errorMessage2 !== null"
+                  style="color: red; font-size: 12px"
+                  >{{ errorMessage2 }}</span
+                >
               </v-col>
               <v-col cols="6">
                 <v-text-field
                   v-model="editedItem.emergency_contact"
+                  @keyup="validate('contactPerson')"
                   label="Emergency Contact"
                   prepend-icon="mdi-account-outline"
                 ></v-text-field>
+                <span
+                  class="ml-8"
+                  v-if="errorMessage6 !== null"
+                  style="color: red; font-size: 12px"
+                  >{{ errorMessage6 }}</span
+                >
               </v-col>
               <v-col cols="6">
                 <v-text-field
                   v-model="editedItem.contact_number"
+                  @keyup="validate('contactNumber')"
                   label="Contact Number"
                   prepend-icon="mdi-account-outline"
                 ></v-text-field>
+                <span
+                  class="ml-8"
+                  v-if="errorMessage5 !== null"
+                  style="color: red; font-size: 12px"
+                  >{{ errorMessage5 }}</span
+                >
               </v-col>
             </v-row>
           </v-container>
@@ -326,6 +364,7 @@
     <SummaryTemplate
     ref="summary"
     ></SummaryTemplate>
+    <loading v-if="showloading"></loading>
   </div>
 </template>
 
@@ -335,9 +374,17 @@ import moment from "moment";
 import Confirmation from "./modals/confirmation/confirm.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
 import Reminder from "./modals/confirmation/reminder.vue";
+import loading from "./Loading.vue";
 import SummaryTemplate from "./modals/exports/travel_export.vue";
 export default {
   data: () => ({
+    errorMessage1: null,
+    errorMessage2: null,
+    errorMessage3: null,
+    errorMessage4: null,
+    errorMessage5: null,
+    errorMessage6: null,
+    errorMessage7: null,
     file_uri: "",
     user_type: localStorage.getItem("user_type"),
     user_id: localStorage.getItem("id"),
@@ -409,7 +456,6 @@ export default {
     editedIndex: null,
     editedItem: {
       destination: null,
-      substitute: null,
       start_date: null,
       end_date: null,
       emergency_contact: null,
@@ -420,14 +466,16 @@ export default {
     },
     dates: [new Date().toISOString().substr(0, 10), ],
     approveThis: '',
-    user_id: localStorage.getItem("id")
+    user_id: localStorage.getItem("id"),
+    showloading: false
   }),
   components: {
     createTravel,
     Confirmation,
     ConfirmationDel,
     SummaryTemplate,
-    Reminder
+    Reminder,
+    loading
   },
   computed: {
     dateRangeText () {
@@ -452,6 +500,62 @@ export default {
     }
   },
   methods: {
+    validate(input) {
+      let reqWhiteSpace = /\d/;
+      if (input === "destination") {
+        this.errorMessage1 = null;
+        if (this.editedItem.destination === "" || this.editedItem.destination === null) {
+          this.errorMessage1 = "Destination is Required";
+        } else {
+          this.errorMessage1 = null;
+        }
+      }else if (input === "cover") {
+        this.errorMessage2 = null;
+        if (this.editedItem.employee_to_cover === "" || this.editedItem.employee_to_cover === null) {
+          this.errorMessage2 = "Employee to cover is Required";
+        } else {
+          this.errorMessage2 = null;
+        }
+      }else if (input === "date") {
+        this.errorMessage3 = null;
+        if (this.editedItem.start_date === "" || this.editedItem.start_date === null) {
+          this.errorMessage3 = "Start date is Required";
+        } else {
+          this.errorMessage3 = null;
+        }
+      }else if (input === "endDate") {
+        this.errorMessage4 = null;
+        if (this.editedItem.end_date === "" || this.editedItem.end_date === null) {
+          this.errorMessage4 = "End date is Required";
+        } else {
+          this.errorMessage4 = null;
+        }
+      } else if (input === "contactNumber") {
+        this.errorMessage5 = null;
+        if(this.editedItem.contact_number === '' || this.editedItem.contact_number === null){
+          this.errorMessage5 = "Contact number is required";
+        }else if (this.editedItem.contact_number.length > 11) {
+          this.errorMessage5 = "Contact Number is exceed 11 numbers";
+        } else if (this.editedItem.contact_number.length === 0) {
+          this.errorMessage5 = "Contact number is required";
+        } else if (this.editedItem.contact_number.slice(0, 2) != "09") {
+          this.errorMessage5 = "Contact number must start with 09";
+        } else if (this.editedItem.contact_number.length <= 10) {
+          this.errorMessage5 = "Contact number is invalid";
+        } else {
+          this.errorMessage5 = null;
+        }
+      } else if(input === 'contactPerson'){
+        this.errorMessage6 = null;
+        if(this.editedItem.emergency_contact === '' || this.editedItem.emergency_contact === null){
+          this.errorMessage6 = 'Contact person is required'
+        } else if (reqWhiteSpace.test(this.editedItem.emergency_contact)){
+          this.errorMessage6 = 'Contact person must not include digits'
+        } else {
+          this.errorMessage6 = null
+        }
+      }
+    },
     convertData(item){
       return item.destination.toUpperCase()
     },
@@ -468,32 +572,39 @@ export default {
       }
     },
     getAllPrp() {
+      this.showloading = true
       this.$axios.get("prp").then(response => {
+        this.showloading = false
         this.prp = response.data;
       });
     },
     getCoDepartment(){
+      this.showloading = true
       this.$axios.get("departments/employees").then (response => {
+        this.showloading = false
         response.data.forEach(element => {
           this.coDepartment.push(element)
         })
       })
     },
     retrieve() {
+      this.showloading = true
       this.$axios
         .get("travel_auth_request/" + this.user_id)
         .then(response => {
-          console.log(response.data)
+          this.showloading = false
           this.travel = response.data;
         })
         .catch(e => {
-          console.log(e);
+          this.showloading = false
         });
     },
     checkUser(){
+      this.showloading = true
       this.$axios
         .get("user_info/" + this.user_id)
         .then(response => {
+          this.showloading = false
           if(response.data.user_information === null){
             this.informationCheck = null
           }else{
@@ -514,16 +625,18 @@ export default {
       }
     },
     retrieveTravel() {
+      this.showloading = true
       this.$axios
         .get(
           "prp/travel_auth_request/pending/" +
             this.user_id
         )
         .then(response => {
+          this.showloading = false
           this.travelPending = response.data;
         })
         .catch(e => {
-          console.log(e);
+          this.showloading = true
         });
     },
     editItem(item) {
@@ -539,20 +652,37 @@ export default {
       this.dialog = true;
     },
     save() {
+      this.validate('destination')
+      this.validate('cover')
+      this.validate('date')
+      this.validate('endDate')
+      this.validate('contactNumber')
+      this.validate('contactPerson')
+      if(this.selectedFile === null){
+        this.errorMessage7 = 'Image is required'
+      }
       if (
-        this.editedItem.destination !== null &&
-        this.editedItem.start_date !== null &&
-        this.editedItem.end_date !== null &&
-        this.editedItem.emergency_contact !== null &&
-        this.editedItem.employee_to_cover !== null &&
-        this.editedItem.contact_number !== "" &&
-        this.editedItem.contact_number !== null &&
-        this.editedItem.emergency_contact !== "" &&
-        this.editedItem.employee_to_cover !== "" &&
-        this.editedItem.start_date !== "" &&
-        this.editedItem.end_date !== "" &&
-        this.error2 === false
+        this.errorMessage1 === null &&
+        this.errorMessage2 === null &&
+        this.errorMessage3 === null &&
+        this.errorMessage4 === null &&
+        this.errorMessage5 === null &&
+        this.errorMessage6 === null &&
+        this.errorMessage7 === null
+        // this.editedItem.destination !== null &&
+        // this.editedItem.start_date !== null &&
+        // this.editedItem.end_date !== null &&
+        // this.editedItem.emergency_contact !== null &&
+        // this.editedItem.employee_to_cover !== null &&
+        // this.editedItem.contact_number !== "" &&
+        // this.editedItem.contact_number !== null &&
+        // this.editedItem.emergency_contact !== "" &&
+        // this.editedItem.employee_to_cover !== "" &&
+        // this.editedItem.start_date !== "" &&
+        // this.editedItem.end_date !== "" &&
+        // this.error2 === false
       ) {
+        this.showloading = true
         let params = {
           destination: this.editedItem.destination,
           start_date: this.editedItem.start_date,
@@ -568,11 +698,10 @@ export default {
             params
           )
           .then(response => {
+            this.showloading = false
             this.retrieve();
+            this.dialog = false;
           });
-        this.dialog = false;
-      } else {
-        this.error = true;
       }
     },
     deleteItem(item) {
@@ -581,9 +710,11 @@ export default {
     },
 
     confirmDel() {
+      this.showloading = true
       this.$axios
         .delete("travel_auth_request/" + this.id)
         .then(response => {
+          this.showloading = false
           this.retrieve();
         });
     },
@@ -621,6 +752,7 @@ export default {
     },
     approve(item) {
       if(item.id.approver_role_id === 5){
+        this.showloading = true
         let parameter = {
           user_id: this.user_id,
           status_id: 2
@@ -631,10 +763,12 @@ export default {
             parameter
           )
           .then(response => {
+            this.showloading = false
             this.retrieveTravel();
             this.getAllFeedback();
           });
       }else{
+        this.showloading = true
         let parameter = {
           user_id: this.user_id,
           status_id: 1
@@ -645,12 +779,14 @@ export default {
             parameter
           )
           .then(response => {
+            this.showloading = false
             this.retrieveTravel();
             this.getAllFeedback();
           });
       }
     },
     disapprove() {
+      this.showloading = true
       let parameter = {
         user_id: this.user_id,
         status_id: 3
@@ -661,17 +797,20 @@ export default {
           parameter
         )
         .then(res => {
+          this.showloading = false
           this.retrieveTravel();
           this.getAllFeedback();
         });
     },
     getAllFeedback() {
+      this.showloading = true
       this.$axios
         .get(
           "prp/travel_auth_request/feedbacked/" +
             this.user_id
         )
         .then(response => {
+          this.showloading = false
           this.feedbacks = response.data.feedbacked_travel_auth_requests;
         });
     },
