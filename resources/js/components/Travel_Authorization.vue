@@ -6,18 +6,34 @@
           dark
           background-color="primary"
           fixed-tabs
-          v-if="(user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr'))">
+          v-if="(user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr'))"
+        >
           <v-tabs-slider></v-tabs-slider>
-          <v-tab v-if="!user_type.includes('general mngr')" @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
+          <v-tab
+            v-if="!user_type.includes('general mngr')"
+            @click="employees = false, requests = true, feedback = false"
+          >My Requests</v-tab>
           <v-tab @click="requests = false, employees = true, feedback = false">Employees Requests</v-tab>
           <v-tab @click="requests = false, employees = false, feedback = true">History</v-tab>
         </v-tabs>
       </template>
     </v-toolbar>
     <!-- Feedback -->
-    <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" :search="search" class="elevation-3">
+    <v-data-table
+      v-if="feedback"
+      :headers="headersFeed"
+      :items="feedbacks"
+      :search="search"
+      class="elevation-3"
+    >
       <template v-slot:top>
-        <v-toolbar class="mb-2" color="blue darken-1" dark flat v-if="(user_type.includes('hr mngr') || user_type.includes('general mngr'))">
+        <v-toolbar
+          class="mb-2"
+          color="blue darken-1"
+          dark
+          flat
+          v-if="(user_type.includes('hr mngr') || user_type.includes('general mngr'))"
+        >
           <v-col class="mt-8">
             <v-menu
               :close-on-content-click="false"
@@ -37,33 +53,19 @@
                   v-on="on"
                 ></v-text-field>
               </template>
-               <v-date-picker
-                v-model="dates"
-                range
-              ></v-date-picker>
+              <v-date-picker v-model="dates" range></v-date-picker>
             </v-menu>
           </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <v-menu
-            transition="slide-y-transition"
-            bottom
-          >
+          <v-menu transition="slide-y-transition" bottom>
             <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                class="purple"
-                color="primary"
-                dark
-                v-bind="attrs"
-                v-on="on"
-              >
-                Summary
-              </v-btn>
+              <v-btn class="purple" color="primary" dark v-bind="attrs" v-on="on">Summary</v-btn>
             </template>
             <v-list>
-              <v-list-item
-                v-for="(item, i) in items"
-                :key="i"
-              >
-                <v-list-item-title @click="summary(item.title)" style="cursor: pointer;">{{ item.title }}</v-list-item-title>
+              <v-list-item v-for="(item, i) in items" :key="i">
+                <v-list-item-title
+                  @click="summary(item.title)"
+                  style="cursor: pointer;"
+                >{{ item.title }}</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -79,7 +81,13 @@
             label="Search"
           ></v-text-field>
         </v-toolbar>
-        <v-toolbar class="mb-2" color="blue darken-1" dark flat v-if="((user_type.includes('prp emp') || user_type.includes('finance mngr')) && (!user_type.includes('hr mngr') && !user_type.includes('general mngr')))">
+        <v-toolbar
+          class="mb-2"
+          color="blue darken-1"
+          dark
+          flat
+          v-if="((user_type.includes('prp emp') || user_type.includes('finance mngr')) && (!user_type.includes('hr mngr') && !user_type.includes('general mngr')))"
+        >
           <v-text-field
             v-model="search"
             clearable
@@ -91,12 +99,29 @@
           ></v-text-field>
         </v-toolbar>
       </template>
-      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
-      <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
+      <template v-slot:item.status.status_name="{ item }">
+        <v-chip
+          :color="getColor(item.status.status_name)"
+          :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'"
+        >{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip>
+      </template>
+      <template v-slot:item.approver_role.role_name="{ item }">
+        <v-chip
+          class="ma-2"
+          outlined
+          :color="prpColor(item.approver_role.role_name)"
+        >{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip>
+      </template>
     </v-data-table>
 
     <!-- Pending Requests -->
-    <v-data-table v-if="employees" :headers="headersEmp" :items="travelPending" :search="search" class="elevation-3">
+    <v-data-table
+      v-if="employees"
+      :headers="headersEmp"
+      :items="travelPending"
+      :search="search"
+      class="elevation-3"
+    >
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-text-field
@@ -110,10 +135,26 @@
           ></v-text-field>
         </v-toolbar>
       </template>
-      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
-      <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
+      <template v-slot:item.status.status_name="{ item }">
+        <v-chip
+          :color="getColor(item.status.status_name)"
+          :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'"
+        >{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip>
+      </template>
+      <template v-slot:item.approver_role.role_name="{ item }">
+        <v-chip
+          class="ma-2"
+          outlined
+          :color="prpColor(item.approver_role.role_name)"
+        >{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip>
+      </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon medium class="mr-2" @click="approveModal(item)" style="color:green">mdi-check-decagram</v-icon>
+        <v-icon
+          medium
+          class="mr-2"
+          @click="approveModal(item)"
+          style="color:green"
+        >mdi-check-decagram</v-icon>
         <v-icon medium @click="disapproveModal(item)" style="color:red">mdi-close-circle</v-icon>
       </template>
     </v-data-table>
@@ -147,8 +188,7 @@
                   class="ml-8"
                   v-if="errorMessage1 !== null"
                   style="color: red; font-size: 12px"
-                  >{{ errorMessage1 }}</span
-                >
+                >{{ errorMessage1 }}</span>
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-menu
@@ -181,8 +221,7 @@
                   class="ml-8"
                   v-if="errorMessage3 !== null"
                   style="color: red; font-size: 12px"
-                  >{{ errorMessage3 }}</span
-                >
+                >{{ errorMessage3 }}</span>
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <span v-if="error1" style="color: red; font-style: italic">
@@ -220,8 +259,7 @@
                   class="ml-8"
                   v-if="errorMessage4 !== null"
                   style="color: red; font-size: 12px"
-                  >{{ errorMessage4 }}</span
-                >
+                >{{ errorMessage4 }}</span>
               </v-col>
               <v-col cols="6">
                 <v-select
@@ -238,8 +276,7 @@
                   class="ml-8"
                   v-if="errorMessage2 !== null"
                   style="color: red; font-size: 12px"
-                  >{{ errorMessage2 }}</span
-                >
+                >{{ errorMessage2 }}</span>
               </v-col>
               <v-col cols="6">
                 <v-text-field
@@ -252,8 +289,7 @@
                   class="ml-8"
                   v-if="errorMessage6 !== null"
                   style="color: red; font-size: 12px"
-                  >{{ errorMessage6 }}</span
-                >
+                >{{ errorMessage6 }}</span>
               </v-col>
               <v-col cols="6">
                 <v-text-field
@@ -266,8 +302,7 @@
                   class="ml-8"
                   v-if="errorMessage5 !== null"
                   style="color: red; font-size: 12px"
-                  >{{ errorMessage5 }}</span
-                >
+                >{{ errorMessage5 }}</span>
               </v-col>
             </v-row>
           </v-container>
@@ -281,21 +316,25 @@
     </v-dialog>
 
     <!-- ************Delete Modal*************** -->
-    <ConfirmationDel
-      ref="confirmDel"
-      @onConfirm="confirmDel($event)"
-    ></ConfirmationDel>
+    <ConfirmationDel ref="confirmDel" @onConfirm="confirmDel($event)"></ConfirmationDel>
 
     <v-dialog v-model="fileDialog" width="700px">
       <v-card>
+        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
         <v-card-title>
           <span class="headline">Attached File</span>
         </v-card-title>
-        <v-divider></v-divider>
+        </v-toolbar>
+        <!-- <v-divider></v-divider> -->
         <v-card class="mx-auto" max-width="344">
           <v-img :src="file_uri" width="500"></v-img>
         </v-card>
         <br>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="red" dark @click="fileDialog = false">Cancel</v-btn>
+          <v-btn color="success" dark>Update</v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
 
@@ -320,50 +359,85 @@
           ></v-text-field>
           <createTravel v-if="prp_assigned_id !== 'No PRP assign' && informationCheck !== null"></createTravel>
           <v-btn
-          style="margin-left: 5%"
-          v-if="prp_assigned_id === 'No PRP assign' || informationCheck === null"
-          color="light blue darken-2"
-          rounded
-          outlined
-          dark
-          @click="messagePop()"
-        >
-          <v-icon>mdi-plus</v-icon>
-          <v-toolbar-title style="font-size: 16px">Make Request</v-toolbar-title>
-        </v-btn>
+            style="margin-left: 5%"
+            v-if="prp_assigned_id === 'No PRP assign' || informationCheck === null"
+            color="light blue darken-2"
+            rounded
+            outlined
+            dark
+            @click="messagePop()"
+          >
+            <v-icon>mdi-plus</v-icon>
+            <v-toolbar-title style="font-size: 16px">Make Request</v-toolbar-title>
+          </v-btn>
 
-        <Reminder
-          ref="reminder"
-          :message="messageCheck === 'prp' ? 'Please set your PRP Assign' : messageCheck === 'user' ? 'Please set your personal information' : messageCheck === 'combine' ? 'Please set your PRP assign and your Personal Information' : ''"
-          link= "/MyAccount"
-          routeName='go to MY ACCOUNT'
-        ></Reminder>
-
+          <Reminder
+            ref="reminder"
+            :message="messageCheck === 'prp' ? 'Please set your PRP Assign' : messageCheck === 'user' ? 'Please set your personal information' : messageCheck === 'combine' ? 'Please set your PRP assign and your Personal Information' : ''"
+            link="/MyAccount"
+            routeName="go to MY ACCOUNT"
+          ></Reminder>
         </v-toolbar>
       </template>
 
       <template v-slot:item.file_uri="{ item }">
         <v-btn color="primary" @click="fileDialog = true; file_uri = item.file_uri">File</v-btn>
       </template>
-      
-      <template v-slot:item.destination="{ item }"> {{convertData(item)}} </template>
-      <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
-      <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
+
+      <template v-slot:item.destination="{ item }">{{convertData(item)}}</template>
+      <template v-slot:item.status.status_name="{ item }">
+        <v-chip
+          :color="getColor(item.status.status_name)"
+          :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'"
+        >{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip>
+      </template>
+      <template v-slot:item.approver_role.role_name="{ item }">
+        <v-chip
+          class="ma-2"
+          outlined
+          :color="prpColor(item.approver_role.role_name)"
+        >{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip>
+      </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon medium disabled class="mr-2" v-if="((user_type.includes('emp') && user_type.includes('prp emp') && user_type.includes('hr mngr')) && item.status.status_name === 'approved')">mdi-pencil</v-icon>
-        <v-icon medium disabled class="mr-2" v-else-if="((user_type.includes('emp') && user_type.includes('prp emp') && !(user_type.includes('hr mngr'))) && item.approver_role.role_name === 'general mngr')">mdi-pencil</v-icon>
-        <v-icon medium disabled class="mr-2" v-else-if="((user_type.includes('emp') && !user_type.includes('prp emp') && !user_type.includes('hr mngr')) && ((item.approver_role.role_name === 'hr mngr') || item.approver_role.role_name === 'general mngr'))">mdi-pencil</v-icon>
+        <v-icon
+          medium
+          disabled
+          class="mr-2"
+          v-if="((user_type.includes('emp') && user_type.includes('prp emp') && user_type.includes('hr mngr')) && item.status.status_name === 'approved')"
+        >mdi-pencil</v-icon>
+        <v-icon
+          medium
+          disabled
+          class="mr-2"
+          v-else-if="((user_type.includes('emp') && user_type.includes('prp emp') && !(user_type.includes('hr mngr'))) && item.approver_role.role_name === 'general mngr')"
+        >mdi-pencil</v-icon>
+        <v-icon
+          medium
+          disabled
+          class="mr-2"
+          v-else-if="((user_type.includes('emp') && !user_type.includes('prp emp') && !user_type.includes('hr mngr')) && ((item.approver_role.role_name === 'hr mngr') || item.approver_role.role_name === 'general mngr'))"
+        >mdi-pencil</v-icon>
         <v-icon medium class="mr-2" @click="editItem(item)" style="color:blue" v-else>mdi-pencil</v-icon>
-        
-        <v-icon medium disabled v-if="((user_type.includes('emp') && user_type.includes('prp emp') && user_type.includes('hr mngr')) && item.status.status_name === 'approved')">mdi-delete</v-icon>  
-        <v-icon medium disabled v-else-if="((user_type.includes('emp') && user_type.includes('prp emp') && !(user_type.includes('hr mngr'))) && item.approver_role.role_name === 'general mngr')">mdi-delete</v-icon>  
-        <v-icon medium disabled v-else-if="((user_type.includes('emp') && !user_type.includes('prp emp') && !user_type.includes('hr mngr')) && ((item.approver_role.role_name === 'hr mngr') || item.approver_role.role_name === 'general mngr'))">mdi-delete</v-icon>  
+
+        <v-icon
+          medium
+          disabled
+          v-if="((user_type.includes('emp') && user_type.includes('prp emp') && user_type.includes('hr mngr')) && item.status.status_name === 'approved')"
+        >mdi-delete</v-icon>
+        <v-icon
+          medium
+          disabled
+          v-else-if="((user_type.includes('emp') && user_type.includes('prp emp') && !(user_type.includes('hr mngr'))) && item.approver_role.role_name === 'general mngr')"
+        >mdi-delete</v-icon>
+        <v-icon
+          medium
+          disabled
+          v-else-if="((user_type.includes('emp') && !user_type.includes('prp emp') && !user_type.includes('hr mngr')) && ((item.approver_role.role_name === 'hr mngr') || item.approver_role.role_name === 'general mngr'))"
+        >mdi-delete</v-icon>
         <v-icon medium @click="deleteItem(item)" style="color:red" v-else>mdi-delete</v-icon>
       </template>
-    </v-data-table> 
-    <SummaryTemplate
-    ref="summary"
-    ></SummaryTemplate>
+    </v-data-table>
+    <SummaryTemplate ref="summary"></SummaryTemplate>
     <loading v-if="showloading"></loading>
   </div>
 </template>
@@ -402,13 +476,18 @@ export default {
     disable: false,
     end_date: null,
     error2: false,
-    search: '',
-    messageCheck: '',
+    search: "",
+    messageCheck: "",
     informationCheck: null,
     deleteModal: false,
     dialogDelete: false,
     headers: [
-      { text: "DESTINATION", align: "start", sortable: false, value: "destination" },
+      {
+        text: "DESTINATION",
+        align: "start",
+        sortable: false,
+        value: "destination"
+      },
       { text: "START DATE", value: "start_date" },
       { text: "END DATE", value: "end_date" },
       { text: "EMERGENCY CONTACT", value: "emergency_contact" },
@@ -448,10 +527,7 @@ export default {
     travelPending: [],
     feedbacks: [],
     coDepartment: [],
-    items: [
-      { title: 'Approved Requests' },
-      { title: 'Disapproved Requests' }
-    ],
+    items: [{ title: "Approved Requests" }, { title: "Disapproved Requests" }],
     id: null,
     editedIndex: null,
     editedItem: {
@@ -464,8 +540,8 @@ export default {
       prp_assigned_id: null,
       details: null
     },
-    dates: [new Date().toISOString().substr(0, 10), ],
-    approveThis: '',
+    dates: [new Date().toISOString().substr(0, 10)],
+    approveThis: "",
     user_id: localStorage.getItem("id"),
     showloading: false
   }),
@@ -478,25 +554,29 @@ export default {
     loading
   },
   computed: {
-    dateRangeText () {
-      return this.dates.join(' ~ ')
-    },
+    dateRangeText() {
+      return this.dates.join(" ~ ");
+    }
   },
   mounted() {
-    if ((this.user_type.includes("hr mngr") || this.user_type.includes("prp emp")) && !(this.user_type.includes("finance mngr"))) {
+    if (
+      (this.user_type.includes("hr mngr") ||
+        this.user_type.includes("prp emp")) &&
+      !this.user_type.includes("finance mngr")
+    ) {
       this.retrieveTravel();
       this.retrieve();
       this.getAllFeedback();
-      this.getCoDepartment()
-      this.checkUser()
-    } else if(this.user_type.includes("general mngr")){
-      this.checkUser()
+      this.getCoDepartment();
+      this.checkUser();
+    } else if (this.user_type.includes("general mngr")) {
+      this.checkUser();
       this.retrieveTravel();
       this.getAllFeedback();
-    }else{
+    } else {
       this.retrieve();
-      this.getCoDepartment()
-      this.checkUser()
+      this.getCoDepartment();
+      this.checkUser();
     }
   },
   methods: {
@@ -504,37 +584,52 @@ export default {
       let reqWhiteSpace = /\d/;
       if (input === "destination") {
         this.errorMessage1 = null;
-        if (this.editedItem.destination === "" || this.editedItem.destination === null) {
+        if (
+          this.editedItem.destination === "" ||
+          this.editedItem.destination === null
+        ) {
           this.errorMessage1 = "Destination is Required";
         } else {
           this.errorMessage1 = null;
         }
-      }else if (input === "cover") {
+      } else if (input === "cover") {
         this.errorMessage2 = null;
-        if (this.editedItem.employee_to_cover === "" || this.editedItem.employee_to_cover === null) {
+        if (
+          this.editedItem.employee_to_cover === "" ||
+          this.editedItem.employee_to_cover === null
+        ) {
           this.errorMessage2 = "Employee to cover is Required";
         } else {
           this.errorMessage2 = null;
         }
-      }else if (input === "date") {
+      } else if (input === "date") {
         this.errorMessage3 = null;
-        if (this.editedItem.start_date === "" || this.editedItem.start_date === null) {
+        if (
+          this.editedItem.start_date === "" ||
+          this.editedItem.start_date === null
+        ) {
           this.errorMessage3 = "Start date is Required";
         } else {
           this.errorMessage3 = null;
         }
-      }else if (input === "endDate") {
+      } else if (input === "endDate") {
         this.errorMessage4 = null;
-        if (this.editedItem.end_date === "" || this.editedItem.end_date === null) {
+        if (
+          this.editedItem.end_date === "" ||
+          this.editedItem.end_date === null
+        ) {
           this.errorMessage4 = "End date is Required";
         } else {
           this.errorMessage4 = null;
         }
       } else if (input === "contactNumber") {
         this.errorMessage5 = null;
-        if(this.editedItem.contact_number === '' || this.editedItem.contact_number === null){
+        if (
+          this.editedItem.contact_number === "" ||
+          this.editedItem.contact_number === null
+        ) {
           this.errorMessage5 = "Contact number is required";
-        }else if (this.editedItem.contact_number.length > 11) {
+        } else if (this.editedItem.contact_number.length > 11) {
           this.errorMessage5 = "Contact Number is exceed 11 numbers";
         } else if (this.editedItem.contact_number.length === 0) {
           this.errorMessage5 = "Contact number is required";
@@ -545,19 +640,22 @@ export default {
         } else {
           this.errorMessage5 = null;
         }
-      } else if(input === 'contactPerson'){
+      } else if (input === "contactPerson") {
         this.errorMessage6 = null;
-        if(this.editedItem.emergency_contact === '' || this.editedItem.emergency_contact === null){
-          this.errorMessage6 = 'Contact person is required'
-        } else if (reqWhiteSpace.test(this.editedItem.emergency_contact)){
-          this.errorMessage6 = 'Contact person must not include digits'
+        if (
+          this.editedItem.emergency_contact === "" ||
+          this.editedItem.emergency_contact === null
+        ) {
+          this.errorMessage6 = "Contact person is required";
+        } else if (reqWhiteSpace.test(this.editedItem.emergency_contact)) {
+          this.errorMessage6 = "Contact person must not include digits";
         } else {
-          this.errorMessage6 = null
+          this.errorMessage6 = null;
         }
       }
     },
-    convertData(item){
-      return item.destination.toUpperCase()
+    convertData(item) {
+      return item.destination.toUpperCase();
     },
     changeDate() {
       if (
@@ -572,71 +670,69 @@ export default {
       }
     },
     getAllPrp() {
-      this.showloading = true
+      this.showloading = true;
       this.$axios.get("prp").then(response => {
-        this.showloading = false
+        this.showloading = false;
         this.prp = response.data;
       });
     },
-    getCoDepartment(){
-      this.showloading = true
-      this.$axios.get("departments/employees").then (response => {
-        this.showloading = false
+    getCoDepartment() {
+      this.showloading = true;
+      this.$axios.get("departments/employees").then(response => {
+        this.showloading = false;
         response.data.forEach(element => {
-          this.coDepartment.push(element)
-        })
-      })
+          this.coDepartment.push(element);
+        });
+      });
     },
     retrieve() {
-      this.showloading = true
+      this.showloading = true;
       this.$axios
         .get("travel_auth_request/" + this.user_id)
         .then(response => {
-          this.showloading = false
+          this.showloading = false;
           this.travel = response.data;
         })
         .catch(e => {
-          this.showloading = false
+          this.showloading = false;
         });
     },
-    checkUser(){
-      this.showloading = true
-      this.$axios
-        .get("user_info/" + this.user_id)
-        .then(response => {
-          this.showloading = false
-          if(response.data.user_information === null){
-            this.informationCheck = null
-          }else{
-            this.informationCheck = true
-          }
-        })
+    checkUser() {
+      this.showloading = true;
+      this.$axios.get("user_info/" + this.user_id).then(response => {
+        this.showloading = false;
+        if (response.data.user_information === null) {
+          this.informationCheck = null;
+        } else {
+          this.informationCheck = true;
+        }
+      });
     },
-    messagePop(){
-      if(this.prp_assigned_id === 'No PRP assign' && this.informationCheck === null){
-        this.messageCheck = 'combine'
-        this.$refs.reminder.show()
-      }else if(this.informationCheck === null){
-        this.messageCheck = 'user'
-        this.$refs.reminder.show()
-      }else {
-        this.messageCheck = 'prp'
-        this.$refs.reminder.show()
+    messagePop() {
+      if (
+        this.prp_assigned_id === "No PRP assign" &&
+        this.informationCheck === null
+      ) {
+        this.messageCheck = "combine";
+        this.$refs.reminder.show();
+      } else if (this.informationCheck === null) {
+        this.messageCheck = "user";
+        this.$refs.reminder.show();
+      } else {
+        this.messageCheck = "prp";
+        this.$refs.reminder.show();
       }
     },
     retrieveTravel() {
-      this.showloading = true
+      this.showloading = true;
       this.$axios
-        .get(
-          "prp/travel_auth_request/pending/" +
-            this.user_id
-        )
+        .get("prp/travel_auth_request/pending/" + this.user_id)
         .then(response => {
-          this.showloading = false
+          this.showloading = false;
           this.travelPending = response.data;
         })
         .catch(e => {
-          this.showloading = true
+          this.showloading = true;
         });
     },
     editItem(item) {
@@ -652,14 +748,14 @@ export default {
       this.dialog = true;
     },
     save() {
-      this.validate('destination')
-      this.validate('cover')
-      this.validate('date')
-      this.validate('endDate')
-      this.validate('contactNumber')
-      this.validate('contactPerson')
-      if(this.selectedFile === null){
-        this.errorMessage7 = 'Image is required'
+      this.validate("destination");
+      this.validate("cover");
+      this.validate("date");
+      this.validate("endDate");
+      this.validate("contactNumber");
+      this.validate("contactPerson");
+      if (this.selectedFile === null) {
+        this.errorMessage7 = "Image is required";
       }
       if (
         this.errorMessage1 === null &&
@@ -682,7 +778,7 @@ export default {
         // this.editedItem.end_date !== "" &&
         // this.error2 === false
       ) {
-        this.showloading = true
+        this.showloading = true;
         let params = {
           destination: this.editedItem.destination,
           start_date: this.editedItem.start_date,
@@ -693,12 +789,9 @@ export default {
           file_uri: "test"
         };
         this.$axios
-          .post(
-            "travel_auth_request/" + this.editedItem.id,
-            params
-          )
+          .post("travel_auth_request/" + this.editedItem.id, params)
           .then(response => {
-            this.showloading = false
+            this.showloading = false;
             this.retrieve();
             this.dialog = false;
           });
@@ -706,17 +799,15 @@ export default {
     },
     deleteItem(item) {
       this.id = item.id;
-      this.$refs.confirmDel.show(item)
+      this.$refs.confirmDel.show(item);
     },
 
     confirmDel() {
-      this.showloading = true
-      this.$axios
-        .delete("travel_auth_request/" + this.id)
-        .then(response => {
-          this.showloading = false
-          this.retrieve();
-        });
+      this.showloading = true;
+      this.$axios.delete("travel_auth_request/" + this.id).then(response => {
+        this.showloading = false;
+        this.retrieve();
+      });
     },
     close() {
       this.dialog = false;
@@ -727,90 +818,78 @@ export default {
       else return "red";
     },
     prpColor(approver_role) {
-      if (approver_role === "prp emp") return "#0047ab"
-      else if (approver_role === "hr mngr") return "blue"
-      else if (approver_role === "finance mngr") return "#00004d"
-      else if (approver_role === "emp") return "0f52ba"
+      if (approver_role === "prp emp") return "#0047ab";
+      else if (approver_role === "hr mngr") return "blue";
+      else if (approver_role === "finance mngr") return "#00004d";
+      else if (approver_role === "emp") return "0f52ba";
       else return "#002366";
     },
     approveModal(item) {
-      this.approveThis = 'approve'
+      this.approveThis = "approve";
       this.id = item.id;
-      this.$refs.confirms.show(item)
+      this.$refs.confirms.show(item);
     },
-    confirm(item){
-      if(this.approveThis === 'approve'){
-        this.approve(item)
-      }else{
-        this.disapprove()
+    confirm(item) {
+      if (this.approveThis === "approve") {
+        this.approve(item);
+      } else {
+        this.disapprove();
       }
     },
     disapproveModal(item) {
-      this.approveThis = 'disapproved'
+      this.approveThis = "disapproved";
       this.id = item.id;
-      this.$refs.confirms.show(item)
+      this.$refs.confirms.show(item);
     },
     approve(item) {
-      if(item.id.approver_role_id === 5){
-        this.showloading = true
+      if (item.id.approver_role_id === 5) {
+        this.showloading = true;
         let parameter = {
           user_id: this.user_id,
           status_id: 2
         };
         this.$axios
-          .post(
-            "prp/travel_auth_request/feedback/" + this.id,
-            parameter
-          )
+          .post("prp/travel_auth_request/feedback/" + this.id, parameter)
           .then(response => {
-            this.showloading = false
+            this.showloading = false;
             this.retrieveTravel();
             this.getAllFeedback();
           });
-      }else{
-        this.showloading = true
+      } else {
+        this.showloading = true;
         let parameter = {
           user_id: this.user_id,
           status_id: 1
         };
         this.$axios
-          .post(
-            "prp/travel_auth_request/feedback/" + this.id,
-            parameter
-          )
+          .post("prp/travel_auth_request/feedback/" + this.id, parameter)
           .then(response => {
-            this.showloading = false
+            this.showloading = false;
             this.retrieveTravel();
             this.getAllFeedback();
           });
       }
     },
     disapprove() {
-      this.showloading = true
+      this.showloading = true;
       let parameter = {
         user_id: this.user_id,
         status_id: 3
       };
       this.$axios
-        .post(
-          "prp/travel_auth_request/feedback/" + this.id,
-          parameter
-        )
+        .post("prp/travel_auth_request/feedback/" + this.id, parameter)
         .then(res => {
-          this.showloading = false
+          this.showloading = false;
           this.retrieveTravel();
           this.getAllFeedback();
         });
     },
     getAllFeedback() {
-      this.showloading = true
+      this.showloading = true;
       this.$axios
-        .get(
-          "prp/travel_auth_request/feedbacked/" +
-            this.user_id
-        )
+        .get("prp/travel_auth_request/feedbacked/" + this.user_id)
         .then(response => {
-          this.showloading = false
+          this.showloading = false;
           this.feedbacks = response.data.feedbacked_travel_auth_requests;
         });
     },
@@ -823,8 +902,8 @@ export default {
       );
       this.differenceDates();
     },
-    summary(item){
-      this.$refs.summary.show(this.dates[0], this.dates[1], item)
+    summary(item) {
+      this.$refs.summary.show(this.dates[0], this.dates[1], item);
     }
   }
 };

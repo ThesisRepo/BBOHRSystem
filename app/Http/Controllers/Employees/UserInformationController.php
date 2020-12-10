@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\UserService;
 use App\Traits\ImageUpload;
+use Illuminate\Support\Facades\Hash;
 
 class UserInformationController extends Controller
 {
@@ -34,7 +35,7 @@ class UserInformationController extends Controller
      */
     public function show($id)
     {
-        $res = $this->user->findWith($id, ['userInformation.department','userInformation.shift_time', 'userInformation.company_positions']);
+        $res = $this->user->findWith($id, ['userInformation.department', 'userInformation.shift_time', 'userInformation.company_positions']);
         return $res;
     }
 
@@ -85,7 +86,7 @@ class UserInformationController extends Controller
             ]; 
             
             $result = $this->user->updateWithUserInfo($data, $id);
-            if(file_exists(public_path() . '/' . $currentImg)) {
+            if($currentImg && file_exists(public_path() . '/' . $currentImg)) {
                 unlink(public_path().'/' . $currentImg);
             }
             $res = response()->json($result, 200);
@@ -104,7 +105,10 @@ class UserInformationController extends Controller
         $max_role = $this->user_service->getMaxRoles($user->roles);
         if($max_role == 1){
             $res = response()->json($this->user->getPrp($user)->toArray(), 200);
-        }else {
+        }else if($max_role == 4){
+            $res = response()->json($this->user->getGenMngr()->toArray(), 200);
+        }
+        else {
             $res = response()->json($this->user->getHR()->toArray(), 200);
         }
 
@@ -194,6 +198,17 @@ class UserInformationController extends Controller
         ];
         $res = $this->user->find($user_id)->event_types()->create($data);
         return $res;
+    }
+
+    public function updatePassword(Request $request){
+        $password = User::firstOrCreate(['id' => $request->id]);
+        if(!(Hash::check($request->old_password, $password['password']))){
+            return response()->json(['error' => 'Current password is not recognized']);
+        }else{
+            $password['password'] = Hash::make($request->password);
+            $password->save();
+            return response()->json(['success' => 'Successfully updated']);
+        }
     }
 
 }

@@ -13,10 +13,10 @@
             <span v-if="errorMessage1" style="color: red; font-size: 13px">{{ errorMessage1 }}</span>
             <v-row>
               <v-col cols="12" sm="6">
-                <v-text-field label="Title*" v-model="title" required></v-text-field>
+                <v-text-field label="Title*" v-model="title" autocomplete="off" @keyup="validate('title')" required></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
-                <v-select label="Event Type*" :items="event_types" item-text="event_name" item-value="id" v-model="event_type" required></v-select>
+                <v-select label="Event Type*" :items="event_types" item-text="event_name" item-value="id"  @keyup="validate('event')" v-model="event_type" required></v-select>
               </v-col>
               <v-col cols="12">
                 <!-- <v-text-field label="Content*" v-model="content" required></v-text-field> -->
@@ -24,15 +24,16 @@
                   outlined
                   label="Details*"
                   v-model="content"
+                  @keyup="validate('details')"
                   rows="3"
                   required
                 ></v-textarea>
               </v-col>
               <v-col cols="12" sm="6">
-                <v-text-field label="Start Date" type="datetime-local" v-model="start_date" :allowed-dates="disabledDates" @change="changeDate()" color="primary"></v-text-field>
+                <v-text-field label="Start Date & Time" type="datetime-local" v-model="start_date" :allowed-dates="disabledDates" @change="changeDate()" color="primary"></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
-                <v-text-field label="End Date" type="datetime-local" :allowed-dates="disabledDates2" v-model="end_date" @change="changeDate()" color="primary"></v-text-field>
+                <v-text-field label="End Date & Time" type="datetime-local" :allowed-dates="disabledDates2" v-model="end_date" @change="changeDate()" color="primary"></v-text-field>
               </v-col>
               <span
                 v-if="error1"
@@ -87,6 +88,27 @@ export default {
     this.getEventType()
   },
   methods: {
+    validate(item){
+      if(item === 'title'){
+        if(this.title === '' || this.title === null){
+          this.errorMessage1 = 'Title field is required'
+        }else{
+          this.errorMessage1 = null
+        }
+      }else if(item === 'event'){
+        if(this.event_type === '' || this.event_type === null){
+          this.errorMessage1 = 'Event type field is required'
+        }else{
+          this.errorMessage1 = null
+        }
+      }else if(item === 'details'){
+        if(this.content === '' || this.content === null){
+          this.errorMessage1 = 'Content field is required'
+        }else{
+          this.errorMessage1 = null
+        }
+      }
+    },
     changeDate() {
       if (this.start_date !== null && this.start_date !== "") {
         let start = moment(String(this.start_date));
@@ -123,6 +145,9 @@ export default {
       this.differenceInDay = differenceInDay;
     },
     show(){
+      this.error = false,
+      this.error1 = false,
+      this.errorMessage1 = null,
       this.dialog = true
       this.title = '',
       this.start_date = '',
@@ -133,6 +158,9 @@ export default {
       this.getEventType()
     },
     save(){
+      this.validate('title')
+      this.validate('event')
+      this.validate('details')
       if(this.user_type === 'hr mngr') {
         let params = {
           title: this.title,

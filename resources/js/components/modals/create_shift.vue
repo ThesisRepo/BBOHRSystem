@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-dialog v-model="dialog" persistent max-width="600px">
+    <v-dialog scrollable v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
         <v-btn
           color="light blue darken-2"
@@ -20,7 +20,7 @@
       <v-card>
          <v-toolbar class="mb-2" color="blue darken-1" dark flat>
             <v-card-title>
-              <span class="headline-bold">SHIFT CHANGE REQUEST FORM</span>
+              <span class="headline-bold">CREATE SHIFT CHANGE REQUEST</span>
             </v-card-title>
           </v-toolbar>
         <v-card-text>
@@ -28,7 +28,12 @@
             <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
             <v-row>
               <v-col cols="12">
-                <v-text-field label="Reason*" v-model="reason" required></v-text-field>
+                <v-textarea 
+                    clearable
+                    clear-icon="mdi-close-circle"
+                    label="Reason*" 
+                    v-model="reason" required>
+                </v-textarea>
               </v-col>
               <v-col cols="12" sm="6">
                 <v-menu
@@ -82,6 +87,7 @@
   </v-row>
 </template>
 <script>
+import {isTwoFourHrLater} from  "../../helpers/date_format.js"
 export default {
   data: () => ({
     dialog: false,
@@ -97,8 +103,9 @@ export default {
     this.getShift()
   },
   methods: {
+    isTwoFourHrLater,
     disabledDates(date) {
-      return date > new Date().toISOString().substr(0, 10);
+      return this.isTwoFourHrLater(date);
     },
     hideModal(){
       this.dialog = false
@@ -123,6 +130,7 @@ export default {
     },
     getShift(){
       this.$axios.get("shift_time/mine").then(response => {
+        console.log(response.data)
         this.sTime = response.data
       })
     },

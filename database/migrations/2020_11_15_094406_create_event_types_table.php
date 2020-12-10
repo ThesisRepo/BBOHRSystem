@@ -18,6 +18,7 @@ class CreateEventTypesTable extends Migration
             $table->UnsignedBigInteger('user_id');
             $table->string('event_name');
             $table->string('color');
+            $table->boolean('is_editable')->default(0);
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

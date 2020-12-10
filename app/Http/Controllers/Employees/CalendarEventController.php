@@ -21,7 +21,7 @@ class CalendarEventController extends Controller
         // $user_id = $request->user_id;
         $relationship = 'event_type';
         $res = $this->calendar_event->whereWith('user_id', $user_id, $relationship)->orWhere('is_public', 1)->get();
-        // dd($user_id);
+        // dd($user_id)
         return $res;
     }
 

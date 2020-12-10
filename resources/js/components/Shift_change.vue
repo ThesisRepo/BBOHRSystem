@@ -14,7 +14,7 @@
     <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat v-if="(user_type.includes('hr mngr') || user_type.includes('general mngr'))">
-          <v-col class="mt-8">
+          <v-col class="mt-8" v-if="!user_type.includes('general mngr')">
             <v-menu
               :close-on-content-click="false"
               transition="scale-transition"
@@ -43,7 +43,7 @@
             transition="slide-y-transition"
             bottom
           >
-            <template v-slot:activator="{ on, attrs }">
+            <template v-slot:activator="{ on, attrs }" v-if="!user_type.includes('general mngr')">
               <v-btn
                 class="purple"
                 color="primary"
@@ -63,8 +63,8 @@
               </v-list-item>
             </v-list>
           </v-menu>
-          <v-divider class="mx-4" vertical></v-divider>
-          <v-spacer></v-spacer>
+          <v-divider class="mx-4" vertical v-if="!user_type.includes('general mngr')"></v-divider>
+          <!-- <v-spacer></v-spacer> -->
           <v-text-field
             v-model="search"
             clearable
@@ -123,11 +123,11 @@
     ></Confirmation>
 
     <!-- editModal -->
-    <v-dialog v-model="dialog" max-width="500px">
+    <v-dialog scrollable v-model="dialog" max-width="500px">
       <v-card>
          <v-toolbar class="mb-2" color="blue darken-1" dark flat>
             <v-card-title>
-              <span class="headline-bold">SHIFT CHANGE REQUEST FORM</span>
+              <span class="headline-bold">UPDATE SHIFT CHANGE REQUEST</span>
             </v-card-title>
           </v-toolbar>
         <v-card-text>
@@ -135,7 +135,10 @@
             <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
             <v-row>
               <v-col cols="12" sm="6" md="12">
-                <v-text-field v-model="editedItem.reason" label="Reason"></v-text-field>
+                <v-textarea 
+                  clearable
+                  clear-icon="mdi-close-circle"
+                  v-model="editedItem.reason" label="Reason"></v-textarea>
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-menu
@@ -143,7 +146,7 @@
                   transition="scale-transition"
                   offset-y
                   min-width="290px"
-                >
+                 >
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
                       v-model="editedItem.shift_date"
@@ -170,7 +173,7 @@
                   label="Shift Time*"
                   item-text="shift_time_name"
                   item-value="id"
-                  v-model="editedItem.shift_time"
+                  v-model="editedItem.shift_time.id"
                   required
                 ></v-select>
               </v-col>
@@ -180,14 +183,17 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red" class="white--text" @click="close">Cancel</v-btn>
-          <v-btn color="success" @click="save">Save</v-btn>
+          <v-btn color="success" @click="save">Update</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <Loading v-if="loading"></Loading>
 
     <!-- DeleteModal -->
     <ConfirmationDel
       ref="confirmDel"
+      :title="deleteTitle"
+      :description="deleteDescription"
       @onConfirm="confirmDel($event)"
     ></ConfirmationDel>
 
@@ -197,10 +203,10 @@
       :items="shifts"
       :search="search"
       class="elevation-3"
-    >
+      >
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
-          <v-toolbar-title class="col pa-3 py-4 white--text" style="font-size: 16px">SHIFT REQUEST</v-toolbar-title>
+          <v-toolbar-title class="col pa-3 py-4 white--text" style="font-size: 16px" v-if="!user_type.includes('general mngr')">SHIFT REQUEST</v-toolbar-title>
           <v-text-field
             v-model="search"
             clearable
@@ -213,15 +219,15 @@
           <createShift v-if="prp_assigned_id !== 'No PRP assign' && informationCheck !== null"></createShift>
           <v-btn
           style="margin-left: 5%"
-          v-if="prp_assigned_id === 'No PRP assign' || informationCheck === null"
+          v-if="(prp_assigned_id === 'No PRP assign' || informationCheck === null) && !user_type.includes('general mngr')"
           color="light blue darken-2"
           rounded
           outlined
           dark
           @click="messagePop()"
         >
-          <v-icon>mdi-plus</v-icon>
-          <v-toolbar-title style="font-size: 16px">Make Request</v-toolbar-title>
+          <v-icon v-if="!user_type.includes('general mngr')">mdi-plus</v-icon>
+          <v-toolbar-title style="font-size: 16px" v-if="!user_type.includes('general mngr')">Make Request</v-toolbar-title>
         </v-btn>
 
           <Reminder
@@ -246,6 +252,11 @@
         <v-icon medium disabled v-else-if="((user_type.includes('emp') && !user_type.includes('prp emp') && !user_type.includes('hr mngr')) && ((item.approver_role.role_name === 'hr mngr') || item.approver_role.role_name === 'general mngr'))">mdi-delete</v-icon>  
         <v-icon medium @click="deleteItem(item)" style="color:red" v-else>mdi-delete</v-icon>
       </template>
+       <template v-slot:item.shift_date="{ item }">
+        {{
+        formatDateStandardDateOnly(item.shift_date)
+        }}
+      </template>
     </v-data-table>
 
     <SummaryTemplate
@@ -259,15 +270,16 @@ import Confirmation from "./modals/confirmation/confirm.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
 import SummaryTemplate from "./modals/exports/shift_export.vue";
 import Reminder from "./modals/confirmation/reminder.vue";
-// import { constants } from 'fs';
+import Loading from "./Loading.vue";
+import {isTwoFourHrLater, formatDateStandardDateOnly} from  "../helpers/date_format.js"
 export default {
   data: () => ({
     user_type: localStorage.getItem("user_type"),
     user_id: localStorage.getItem("id"),
     prp_assigned_id: localStorage.getItem("assigned_prp_id"),
-    employees: false,
-    requests: true,
-    feedback: false,
+    employees: localStorage.getItem("user_type").includes('general mngr') ? true: false,
+    requests: localStorage.getItem("user_type").includes('general mngr') ? false: true,
+    feedback: localStorage.getItem("user_type").includes('general mngr') ? false: false,
     dialog: false,
     search: '',
     sTime: null,
@@ -275,6 +287,7 @@ export default {
     shift_date: null,
     reason: null,
     shift_time: null,
+    loading: false,
     headers: [
       {
         text: "REASON",
@@ -316,19 +329,25 @@ export default {
     informationCheck: null,
     editedIndex: null,
     editedItem: {
+      id: null,
       reason: null,
       shift_date: null,
-      shift_time: null
+      shift_time: {
+        id: null
+      }
     },
     start_date: null,
-    dates: [new Date().toISOString().substr(0, 10), ]
+    dates: [new Date().toISOString().substr(0, 10), ],
+    deleteTitle: null,
+    deleteDescription: null
   }),
   components: {
     createShift,
     Confirmation,
     ConfirmationDel,
     SummaryTemplate,
-    Reminder
+    Reminder,
+    Loading
   },
   computed: {
     dateRangeText () {
@@ -336,6 +355,7 @@ export default {
     },
   },
   mounted() {
+    
     this.getShift()
     if ((this.user_type.includes("hr mngr") || this.user_type.includes("prp emp")) && !(this.user_type.includes("finance mngr"))) {
       this.retrieveShift();
@@ -352,14 +372,18 @@ export default {
     }
   },
   methods: {
+    isTwoFourHrLater,
+    formatDateStandardDateOnly,
     disabledDates(date) {
-      return date > new Date().toISOString().substr(0, 10);
+      return this.isTwoFourHrLater(date);
     },
     retrieve() {
+      this.loading = true;
       this.$axios
         .get("shift_change_request/" + this.user_id)
         .then(response => {
           this.shifts = response.data;
+          this.loading = false;
         })
         .catch(e => {
           console.log(e);
@@ -404,14 +428,12 @@ export default {
           reason: this.editedItem.reason,
           prp_assigned_id: 1
         };
-        console.log(params)
         this.$axios
           .post(
             "shift_change_request/" + this.editedItem.id,
             params
           )
           .then(response => {
-            console.log(response.data)
             this.retrieve();
           });
         this.dialog = false;
@@ -422,6 +444,8 @@ export default {
 
     deleteItem(item) {
       this.id = item.id;
+      this.deleteTitle = "Delete Request"
+      this.deleteDescription = "Are you sure you want to delete this request?"
       this.$refs.confirmDel.show(item)
     },
 
@@ -437,8 +461,7 @@ export default {
       this.dialog = false;
     },
     getShift() {
-      this.$axios.get("shift_time").then(response => {
-        console.log(response.data)
+      this.$axios.get("shift_time/mine").then(response => {
         this.sTime = response.data;
       });
     },

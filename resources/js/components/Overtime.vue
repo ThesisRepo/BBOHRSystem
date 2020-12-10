@@ -20,7 +20,7 @@
     <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat v-if="(user_type.includes('hr mngr') || user_type.includes('general mngr'))">
-          <v-col class="mt-8">
+          <v-col class="mt-8" v-if="!user_type.includes('general mngr')">
             <v-menu
               :close-on-content-click="false"
               transition="scale-transition"
@@ -49,7 +49,7 @@
             transition="slide-y-transition"
             bottom
           >
-            <template v-slot:activator="{ on, attrs }">
+            <template v-slot:activator="{ on, attrs }" v-if="!user_type.includes('general mngr')">
               <v-btn
                 class="purple"
                 color="primary"
@@ -69,8 +69,8 @@
               </v-list-item>
             </v-list>
           </v-menu>
-          <v-divider class="mx-4" vertical></v-divider>
-          <v-spacer></v-spacer>
+          <v-divider class="mx-4" vertical v-if="!user_type.includes('general mngr')"></v-divider>
+          <!-- <v-spacer></v-spacer> -->
           <v-text-field
             v-model="search"
             clearable
@@ -128,26 +128,28 @@
     ></Confirmation>
 
     <!-- EditModal -->
-      <v-dialog v-model="dialog" max-width="500px">
+      <v-dialog scrollable v-model="dialog" max-width="600px">
         <v-card>
          <v-toolbar class="mb-2" color="blue darken-1" dark flat>
             <v-card-title>   
-              <span class="headline-bold">OVERTIME REQUEST FORM</span>
+              <span class="headline-bold">UPDATE OVERTIME REQUEST</span>
             </v-card-title>
           </v-toolbar>
-          <v-divider></v-divider>
+          <!-- <v-divider></v-divider> -->
           <v-card-text>
             <v-container>
             <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
               <v-row>
-                <v-col cols="12" sm="6" md="6">
-                  <v-text-field
+                <v-col cols="12" sm="6" md="12">
+                  <v-textarea 
+                    clearable
+                    clear-icon="mdi-close-circle"
                     v-model="editedItem.reason"
                     label="Reason"
                     prepend-icon="mdi-file-document"
-                  ></v-text-field>
+                  ></v-textarea>
                 </v-col>
-                <v-col cols="12" sm="6" md="6">
+                <v-col cols="12" sm="6" md="12">
                   <v-menu
                   :close-on-content-click="false"
                   transition="scale-transition"
@@ -195,10 +197,12 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="red" class="white--text" @click="close"> Cancel </v-btn>
-            <v-btn color="success" @click="save"> Save </v-btn>
+            <v-btn color="success" @click="save"> Update </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <Loading v-if="loading"></Loading>
+
 
       <!-- DeleteModal -->
       <ConfirmationDel
@@ -212,10 +216,14 @@
       :search="search"
       class="elevation-3">
       <template v-slot:top>
-      <v-toolbar class="mb-2" color="blue darken-1" dark flat>
-        <v-toolbar-title class="col pa-3 py-4 white--text"  style="font-size:16px "
-          >OVERTIME REQUEST</v-toolbar-title
-        >
+
+      <v-toolbar class="mb-2  hidden-sm-and-down" color="blue darken-1" dark flat>
+      
+        <v-toolbar-title v-if="!user_type.includes('general mngr')"
+          >
+          OVERTIME REQUEST
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
         <v-text-field
           v-model="search"
           clearable
@@ -232,25 +240,55 @@
 
         <v-btn
           style="margin-left: 5%"
-          v-if="prp_assigned_id === 'No PRP assign' || informationCheck === null"
+          v-if="(prp_assigned_id === 'No PRP assign' || informationCheck === null) && !user_type.includes('general mngr')"
           color="light blue darken-2"
           rounded
           outlined
           dark
           @click="messagePop()"
-        >
-          <v-icon>mdi-plus</v-icon>
-          <v-toolbar-title style="font-size: 16px">Make Request</v-toolbar-title>
+          >
+          <v-icon v-if="!user_type.includes('general mngr')">mdi-plus</v-icon>
+          <v-toolbar-title style="font-size: 16px" v-if="!user_type.includes('general mngr')">Make Request</v-toolbar-title>
         </v-btn>
 
-          <Reminder
+        <Reminder
           ref="reminder"
           :message="messageCheck === 'prp' ? 'Please set your PRP Assign' : messageCheck === 'user' ? 'Please set your personal information' : messageCheck === 'combine' ? 'Please set your PRP assign and your Personal Information' : ''"
           link= "/MyAccount"
           routeName='go to MY ACCOUNT'
-          ></Reminder>
-
+          >
+        </Reminder>
       </v-toolbar>
+      <v-container class="mb-2  hidden-md-and-up"  style="background-color:#3490dc" dark flat>
+        <v-row>
+          <v-col xs="6"><b style="color:white" >OVERTIME REQUEST</b>
+          </v-col>
+          <v-col xs="4">
+             <v-btn
+              color="light blue darken-2"
+              rounded
+              outlined
+              dark
+              @click="messagePop()"
+              >
+              <v-icon v-if="!user_type.includes('general mngr')">mdi-plus</v-icon>
+              <v-toolbar-title style="font-size: 16px" v-if="!user_type.includes('general mngr')">Make Request</v-toolbar-title>
+            </v-btn>
+          </v-col>
+        </v-row>
+        <v-row>
+           <v-text-field
+          v-model="search"
+          clearable
+          flat
+          solo-inverted
+          hide-details
+          prepend-inner-icon="mdi-magnify"
+          label="Search"
+        ></v-text-field>
+        </v-row>
+      </v-container>
+
     </template>
       <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
@@ -277,19 +315,22 @@ import Confirmation from "./modals/confirmation/confirm.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
 import SummaryTemplate from "./modals/exports/overtime_export.vue";
 import Reminder from "./modals/confirmation/reminder.vue";
+import Loading from "./Loading.vue";
+
 export default {
   data: () => ({
     user_type: localStorage.getItem("user_type"),
     user_id: localStorage.getItem("id"),
     prp_assigned_id: localStorage.getItem("assigned_prp_id"),
-    employees: false,
-    requests: true,
-    feedback: false,
+    employees: localStorage.getItem("user_type").includes('general mngr') ? true: false,
+    requests: localStorage.getItem("user_type").includes('general mngr') ? false: true,
+    feedback: localStorage.getItem("user_type").includes('general mngr') ? false: false,
     dialog: false,
     error: false,
     overtime_date: null,
     messageCheck: '',
     informationCheck: null,
+    loading:false,
     search: '',
     headers: [
       { text: "REASON", align: "start", value: "reason" },
@@ -344,7 +385,8 @@ export default {
     Confirmation,
     ConfirmationDel,
     SummaryTemplate,
-    Reminder
+    Reminder,
+    Loading
   },
   computed: {
     dateRangeText () {
@@ -371,8 +413,10 @@ export default {
       return date >  new Date().toISOString().substr(0, 10)
     },
     retrieve(){
+      this.loading = true;
       this.$axios.get("overtime_request/" + this.user_id).then(response => {
         this.overtime = response.data
+        this.loading = false;
       })
       .catch(e => {
         console.log(e);

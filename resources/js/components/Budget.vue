@@ -19,7 +19,7 @@
     <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
-          <v-col class="mt-8">
+          <v-col class="mt-8" v-if="!user_type.includes('general mngr')">
             <v-menu
               :close-on-content-click="false"
               transition="scale-transition"
@@ -48,7 +48,7 @@
             transition="slide-y-transition"
             bottom
           >
-            <template v-slot:activator="{ on, attrs }">
+            <template v-slot:activator="{ on, attrs }" v-if="!user_type.includes('general mngr')">
               <v-btn
                 class="purple"
                 color="primary"
@@ -68,8 +68,8 @@
               </v-list-item>
             </v-list>
           </v-menu>
-          <v-divider class="mx-4" vertical></v-divider>
-          <v-spacer></v-spacer>
+          <v-divider class="mx-4" vertical v-if="!user_type.includes('general mngr')"></v-divider>
+          <!-- <v-spacer></v-spacer> -->
           <v-text-field
             v-model="search"
             clearable
@@ -186,7 +186,7 @@
     >
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
-          <v-toolbar-title class="col pa-3 py-4 white--text" style="font-size: 16px">BUDGET REQUEST</v-toolbar-title>
+          <v-toolbar-title class="col pa-3 py-4 white--text" style="font-size: 16px" v-if="!user_type.includes('general mngr')">BUDGET REQUEST</v-toolbar-title>
           <v-text-field
             v-model="search"
             clearable
@@ -203,15 +203,15 @@
 
         <v-btn
           style="margin-left: 5%"
-          v-if="user_finance === 'No Finance assign' || informationCheck === null"
+          v-if="(user_finance === 'No Finance assign' || informationCheck === null) && !user_type.includes('general mngr')"
           color="light blue darken-2"
           rounded
           outlined
           dark
           @click="messagePop()"
         >
-          <v-icon>mdi-plus</v-icon>
-          <v-toolbar-title style="font-size: 16px">Make Request</v-toolbar-title>
+          <v-icon v-if="!user_type.includes('general mngr')">mdi-plus</v-icon>
+          <v-toolbar-title style="font-size: 16px" v-if="!user_type.includes('general mngr')">Make Request</v-toolbar-title>
         </v-btn>
 
       <Reminder
@@ -238,6 +238,7 @@
     <SummaryTemplate
     ref="summary"
     ></SummaryTemplate>
+    <Loading v-if="loading"></Loading>
   </div>
 </template>
 <script>
@@ -246,6 +247,7 @@ import Confirmation from "./modals/confirmation/confirm.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
 import SummaryTemplate from "./modals/exports/overtime_export.vue";
 import Reminder from "./modals/confirmation/reminder.vue";
+import Loading from "./Loading.vue";
 export default {
   data: () => ({
     user_type: localStorage.getItem("user_type"),
@@ -261,6 +263,7 @@ export default {
     search: '',
     messageCheck: '',
     informationCheck: null,
+    loading:false,
     headers: [
       { text: "DATE", value: "date" },
       { text: "DEPARTMENT", value: "department.department_name" },
@@ -320,7 +323,8 @@ export default {
     Confirmation,
     ConfirmationDel,
     SummaryTemplate,
-    Reminder
+    Reminder,
+    Loading
   },
   computed: {
     dateRangeText () {
@@ -347,12 +351,15 @@ export default {
       return date > new Date().toISOString().substr(0, 10);
     },
     retrieve() {
+      this.loading = true
       this.$axios
         .get("budget_request/" + this.user_id)
         .then(response => {
+          this.loading = false
           this.budget = response.data;
         })
         .catch(e => {
+          this.loading = false
           console.log(e);
         });
     },

@@ -31,12 +31,7 @@ class AllRequestsService extends AllUserRequestsService
     $this->petty_cash_request = $petty_cash_request;
     $this->travel_auth_request = $travel_auth_request;
     parent::__construct(
-      $leave_request,
-    ShiftChangeRequestEloquent $shift_change_request,
-    OvertimeRequestEloquent $overtime_request,
-    BudgetRequestEloquent $budget_request,
-    PettyCashRequestEloquent $petty_cash_request,
-    TravelAuthRequestEloquent $travel_auth_request
+      $leave_request, $shift_change_request, $overtime_request, $budget_request, $petty_cash_request, $travel_auth_request
     );
 
   }

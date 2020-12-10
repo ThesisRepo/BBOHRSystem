@@ -15,7 +15,7 @@ class VerifyIfGenManager
      */
     public function handle($request, Closure $next)
     {
-        if(!in_array('gen mngr', $request->user()->roles->pluck('role_name')->toArray())) {
+        if(!in_array('general mngr', $request->user()->roles->pluck('role_name')->toArray())) {
             if($request->wantsJSON()) {
                 return response()->json(['Message', 'opps! your not authorized'], 403);
             }

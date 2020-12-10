@@ -9,6 +9,8 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use App\Models\Notification;
+use DB;
 
 class NewRequest implements ShouldBroadcast
 {
@@ -24,7 +26,6 @@ class NewRequest implements ShouldBroadcast
     public $id;
 
     public $data;
-
     /**
      * Create a new event instance.
      *
@@ -34,7 +35,7 @@ class NewRequest implements ShouldBroadcast
     public function __construct($action, $username, $id, $request_type, $data)
     {
         $this->username = $username;
-        $this->data = $data;
+        // $this->data = $data;
         $this->id = $id;
         switch($request_type){
             case 'leave_request':
@@ -58,10 +59,14 @@ class NewRequest implements ShouldBroadcast
         }
         // $this->message  = "{$username} {$action}" "a\an {$this->request_type}";
         $this->message  = "{$username} {$action}" . (in_array($this->request_type[0], ['A', 'E', 'I', 'O', 'U'] ) ?   " an " :  " a ") . $this->request_type;
+        $data = [
+            'user_id' => $this->id,
+            'request_type' => $this->request_type,
+            'message' => $this->message
+        ];
+        $this->data = Notification::create($data);
     }
-
     public function broadcastOn() {
-
         return new PrivateChannel('newrequest.' . $this->id);
         
     }

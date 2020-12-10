@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-row>
-      <v-col lg="4" cols="sm" class="pb-2">
+      <v-col lg="4" cols="sm" class="pb-2" v-if="!user_type.includes('general mngr')">
         <v-card>
           <v-row class="no-gutters">
             <div class="col-auto">
@@ -9,12 +9,12 @@
             </div>
             <div class="col pa-3 py-4 primary--text">
               <h5 class="text-truncate text-uppercase">Remaining Leave Request</h5>
-              <h1>{{ leave_number == null ?  0 : leave_number }}</h1>
+              <h1>{{ leave_number == 'null' ?  0 : leave_number }}</h1>
             </div>
           </v-row>
         </v-card>
       </v-col>
-      <v-col lg="4" cols="sm" class="pb-2">
+      <v-col lg="4" cols="sm" class="pb-2" v-if="!user_type.includes('general mngr')">
         <v-card>
           <v-row class="no-gutters">
             <div class="col-auto">
@@ -28,7 +28,7 @@
         </v-card>
       </v-col>
 
-      <v-col lg="4" cols="sm" class="pb-2">
+      <v-col lg="4" cols="sm" class="pb-2" v-if="!user_type.includes('general mngr')">
         <v-card>
           <v-row class="no-gutters">
             <div class="col-auto">
@@ -53,7 +53,7 @@
     <div class="text-right">
       <v-btn color="light blue darken-2" rounded outlined @click="eventType()">
         <v-icon>mdi-plus</v-icon>Event Type
-      </v-btn>&nbsp;&nbsp;&nbsp;
+      </v-btn>
       <v-btn color="light blue darken-2" rounded outlined @click="eventAdd()">
         <v-icon>mdi-plus</v-icon>Add Event
       </v-btn>
@@ -107,11 +107,14 @@
         <v-sheet height="600">
           <v-calendar
             ref="calendar"
+            id="calendar"
             v-model="focus"
             color="primary"
             :events="events"
             :type="type"
+            :now="today"
             :event-color="getEventColor"
+            :event-text-color="getProperColor"
             @click:event="showEvent"
             @click:more="viewDay"
             @click:date="viewDay"
@@ -124,14 +127,22 @@
             offset-x
           >
             <v-card color="grey lighten-4" width="350px" flat>
-              <v-toolbar :color="selectedEvent.color" dark>
-                <v-btn icon>
-                  <v-icon @click="editItem(selectedEvent)">mdi-pencil</v-icon>
+              <v-toolbar :color="selectedEvent.color"
+                :style="[lightColoredTextData.includes(selectedEvent.color) ? {'color':'black!important'} : {}]"
+               dark>
+                <v-btn
+                 icon>
+                  <v-icon 
+                  :style="[lightColoredTextData.includes(selectedEvent.color) ? {'color':'black!important'} : {}]"                                  
+                  @click="editItem(selectedEvent)">mdi-pencil</v-icon>
                 </v-btn>
-                <v-toolbar-title v-html="selectedEvent.name + ' ' + '(' + selectedEvent.event_type + ')'"></v-toolbar-title>
+                <v-toolbar-title 
+                v-html="selectedEvent.name + ' ' + '(' + selectedEvent.event_type + ')'"></v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-btn icon>
-                  <v-icon @click="deleteItem(selectedEvent)">mdi-delete</v-icon>
+                  <v-icon 
+                  :style="[lightColoredTextData.includes(selectedEvent.color) ? {'color':'black!important'} : {}]"
+                  @click="deleteItem(selectedEvent)">mdi-delete</v-icon>
                 </v-btn>
 
                 <ConfirmationDel
@@ -160,33 +171,37 @@
       <v-card>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-card-title>
-            <span class="headline-bold">ADD EVENT</span>
+            <span class="headline-bold">EDIT EVENT</span>
           </v-card-title>
         </v-toolbar>
         <v-card-text>
           <v-container>
+            <span v-if="errorMessage1" style="color: red; font-size: 13px">{{ errorMessage1 }}</span>
+            <span v-if="errorMessage2" style="color: red; font-size: 13px">{{ errorMessage2 }}</span>
+            <span v-if="errorMessage3" style="color: red; font-size: 13px">{{ errorMessage3 }}</span>
             <v-row>
               <v-col cols="12" sm="6">
-                <v-text-field label="Title*" v-model="editedItem.title" required></v-text-field>
+                <v-text-field label="Title*" @keyup="validate('title')" autocomplete="off" v-model="editedItem.title" required></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
-                <v-select label="Event Type*" :items="event_types" item-text="event_name" item-value="id" v-model="editedItem.event_type" required></v-select>
+                <v-select label="Event Type*" :items="event_types" @keyup="validate('event')" item-text="event_name" item-value="id" v-model="editedItem.event_type" required></v-select>
               </v-col>
               <v-col cols="12">
                 <!-- <v-text-field label="Content*" v-model="content" required></v-text-field> -->
                 <v-textarea
                   outlined
                   label="Content*"
+                   @keyup="validate('details')"
                   v-model="editedItem.content"
                   rows="3"
                   required
                 ></v-textarea>
               </v-col>
               <v-col cols="12" sm="6">
-                <v-text-field label="Start Date" type="datetime-local" v-model="editedItem.start_date" color="primary"></v-text-field>
+                <v-text-field label="Start Date & Time" type="datetime-local" v-model="editedItem.start_date" color="primary"></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
-                <v-text-field label="End Date" type="datetime-local" v-model="editedItem.end_date" color="primary"></v-text-field>
+                <v-text-field label="End Date & Time" type="datetime-local" v-model="editedItem.end_date" color="primary"></v-text-field>
               </v-col>
               <v-col cols="12" v-if="user_type.includes('hr mngr')">
                 <v-checkbox
@@ -200,14 +215,21 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red" dark @click="dialog = false">Cancel</v-btn>
-          <v-btn color="success" @click="updateCalendar()">Update</v-btn>
+          <v-btn color="success" @click="confirm()">Update</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <Confirmation
+      ref="confirm"
+      :title="'Confirmation'"
+      :message="'Are you sure you want to update ?'"
+      @onConfirm="updateCalendar($event)"
+    ></Confirmation>
     <Loading v-if="loading"></Loading>
   </v-app>
 </template>
 <script>
+import Confirmation from "./modals/confirmation/confirmation.vue";
 import DashBoardtable from "./Dashboard_table";
 import CalendarAdd from "./modals/addCalendar.vue";
 import AddEvent from "./modals/add_event_title.vue";
@@ -219,10 +241,12 @@ export default {
     DashBoardtable,
     CalendarAdd,
     ConfirmationDel,
+    Confirmation,
     AddEvent,
     Loading
   },
   data: () => ({
+    today: new Date().toISOString().substr(0,10),
     user_type: localStorage.getItem("user_type"),
     leave_number: localStorage.getItem("leave_number"),
     user_id: localStorage.getItem("id"),
@@ -231,7 +255,7 @@ export default {
     update: false,
     dialog: false,
     event_types: [],
-    focus: "",
+    focus:  new Date().toISOString().substr(0,10),
     type: "month",
     typeToLabel: {
       month: "Month",
@@ -252,7 +276,14 @@ export default {
       checkbox: false,
       event_type: null,
     },
-    loading: false
+    loading: false,
+    errorMessage1: null,
+    errorMessage2: null,
+    errorMessage3: null,
+    lightColoredTextData: [
+      '#FFFF00'
+    ],
+    year: null
   }),
   mounted() {
     this.$refs.calendar.checkChange();
@@ -260,8 +291,38 @@ export default {
     this.getNoPending();
     this.getEventType();
     this.retrieve();
+
   },
   methods: {
+    confirm(){
+      if(this.editedItem.title !== null && this.editedItem.title !== "" && this.editedItem.event_type !== null && this.editedItem.event_type !== "" && this.editedItem.content !== null && this.editedItem.content !== "" && this.editedItem.start_date !== null && this.editedItem.start_date !== "" && this.editedItem.end_date !== null && this.editedItem.end_date !== ""){
+        this.$refs.confirm.show()
+      }else {
+        this.error = true
+        this.dialog = true
+      }
+    },
+    validate(item){
+      if(item === 'title'){
+        if(this.editedItem.title === '' || this.editedItem.title === null){
+          this.errorMessage1 = 'Title field is required'
+        }else{
+          this.errorMessage1 = null
+        }
+      }else if(item === 'event'){
+        if(this.editedItem.event_type === '' || this.editedItem.event_type === null){
+          this.errorMessage2 = 'Event type field is required'
+        }else{
+          this.errorMessage2 = null
+        }
+      }else if(item === 'details'){
+        if(this.editedItem.content === '' || this.editedItem.content === null){
+          this.errorMessage3 = 'Details field is required'
+        }else{
+          this.errorMessage3 = null
+        }
+      }
+    },
     eventAdd(){
       this.$refs.addEvent.show()
     },
@@ -292,14 +353,48 @@ export default {
     getEventColor(event) {
       return event.color;
     },
+    getProperColor(event) {
+      var bright = this.isBright(event.color);
+      return bright ? 'black': 'white';
+    },
+    isBright(color) {
+      var element, bgColor, brightness, r, g, b, hsp;
+      if (color.match(/^rgb/)) {
+        color = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/);
+
+        r = color[1];
+        g = color[2];
+        b = color[3];
+      } 
+      else {
+        color = +("0x" + color.slice(1).replace(color.length < 5 && /./g, '$&$&'));
+        r = color >> 16;
+        g = color >> 8 & 255;
+        b = color & 255;
+      }
+      hsp = Math.sqrt(
+        0.299 * (r * r) +
+        0.587 * (g * g) +
+        0.114 * (b * b)
+      );
+
+      // Using the HSP value, determine whether the color is light or dark
+      if (hsp>127.5) {
+
+        return true;
+      } 
+      else {
+
+        return false;
+      }
+    },
     setToday() {
       this.focus = "";
     },
     prev() {
       this.$refs.calendar.prev();
     },
-    next() {
-      // console.log(this.$refs.calendar);
+    next() { 
       this.$refs.calendar.next();
     },
     showEvent({ nativeEvent, event }) {
@@ -316,18 +411,29 @@ export default {
       } else {
         open();
       }
-      nativeEvent.stopPropagation();
+      nativeEvent.stopPropagation();  
     },
     updateRange() {
+      console.log('year', this.$refs.calendar);
+      // if(this.year != this.$refs.calendar.days.year || this.year == null){
+      //   this.year = this.$refs.calendar.days.year;
+      //   this.events = this.events.map(function(val) {
+      //     if(val.event_type == 'Holiday' || val.event_type == 'Birthday') {
+      //       val.start = new Date(val.start).setFullYear(this.year);
+      //       val.end = new Date(val.start).setFullYear(this.year);
+      //     }
+      //     return val;
+      //   });
+      // }
       const events = [];
       for (let i = 0; i < this.events.length; i++) {
-        events.push({
+          events.push({
           name: this.events[i].name,
           content: this.events[i].content,
-          start: this.events[i].start_date,
-          end: this.events[i].end_date,
-          color: this.events[i].event_type.color,
-          event_type: this.events[i].event_type.event_name,
+          start: this.events[i].start,
+          end: this.events[i].end,
+          color: this.events[i].color,
+          event_type: this.events[i].event_type,
           checkbox: this.events[i].is_public,
           timed: this.events[i].timed
         });
@@ -368,7 +474,7 @@ export default {
             timed: true
           };
           this.events.push(temp)
-        });
+        }, 1);
       });
     },
     deleteItem(selectedEvent) {
@@ -386,6 +492,9 @@ export default {
         });
     },    
     editItem(selectedEvent) {
+      this.errorMessage1 = null
+      this.errorMessage2 = null
+      this.errorMessage3 = null                                        
       this.editedItem.id = selectedEvent.id;
       this.editedIndex = this.events.indexOf(selectedEvent);
       this.editedItem.content = selectedEvent.content;
@@ -401,40 +510,32 @@ export default {
       })
     },
     updateCalendar(){
-      this.loading = true
-      let params = {
-          id: this.editedItem.id,
-          user_id: this.user_id,
-          content: this.editedItem.content,
-          is_public: this.editedItem.checkbox,
-          start_date: this.editedItem.start_date,
-          end_date: this.editedItem.end_date,
-          event_type_id: this.editedItem.event_type.id ? this.editedItem.event_type.id : this.editedItem.event_type,
-          title: this.editedItem.title
-        };
-        if (
-          this.title !== '' &&
-          this.start_date !== '' &&
-          this.end_date !== '' &&
-          this.content !== '' &&
-          this.event_type !== '' &&
-          this.error1 === false &&
-          this.errorMessage1 === null
-        ){
+      this.validate('title')
+      this.validate('event')
+      this.validate('details')
+      if(this.errorMessage1 === null && this.errorMessage2 === null && this.errorMessage3 === null){
+        this.loading = true
+        let params = {
+            id: this.editedItem.id,
+            user_id: this.user_id,
+            content: this.editedItem.content,
+            is_public: this.editedItem.checkbox,
+            start_date: this.editedItem.start_date,
+            end_date: this.editedItem.end_date,
+            event_type_id: this.editedItem.event_type.id ? this.editedItem.event_type.id : this.editedItem.event_type,
+            title: this.editedItem.title
+          };
           this.$axios
-          .post(
-            "events/" + this.editedItem.id,
-            params
-          )
-          .then(response => {
-            this.loading = false
-            this.retrieve();
-            this.dialog = false;
-          });
-        } else {
-          this.errorMessage1 = "Please fill up all fields";
+            .post(
+              "events/" + this.editedItem.id,
+              params
+            )
+            .then(response => {
+              this.loading = false
+              this.retrieve();
+              this.dialog = false;
+            });
         }
-        
       }
   }
 };

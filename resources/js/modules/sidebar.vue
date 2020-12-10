@@ -10,10 +10,11 @@
             <img :src="user_pic" alt="profile pic">
           </v-avatar>
           <div style="color:white">{{ user_name }}</div>
+          <!-- <div style="color:white">{{ user_name }}</div> -->
         </v-sheet>
       </center>
 
-      <v-divider></v-divider>
+      <v-divider style="background-color:#1976d2 "></v-divider>
 
       <v-list v-if="user_type.includes('emp') || user_type.includes('finance mngr') || user_type.includes('prp emp')">
         <v-list-item-group active-class="sky blue blue--text">
@@ -53,9 +54,19 @@
         src="../storage/img/logoCircle.png"
         class="ml-5 mr-2"
       ></v-img> -->
-      <v-toolbar-title style="color:black">
+      <v-toolbar-title style="color:black;width:100%">
       
         <span style="color:#3490dc">Blue Bee One</span>  Request Management System</v-toolbar-title>
+        <div id="cont">
+          <span v-if="notification_count > 0" style="float:right;background-color:red;color:white;border-radius:50px;height:20px;width:20px;margin-top:-5px;"
+          >{{ notification_count > 99 ? '99+': notification_count}}
+          </span>
+          <span v-else style="float:right;background-color:white;color:white;border-radius:50px;height:20px;width:20px;margin-top:-5px;"
+          >{{ notification_count > 99 ? '99+': notification_count}}
+          </span>
+          <i class="fas fa-bell" id="bell" style="float:right;" @click="show()"></i>
+          <Notification id="notification" ref="notification"/>
+        </div>
     </v-app-bar>
      <Confirmation
       ref="confirms"
@@ -72,56 +83,95 @@
         
 
 </template>
-<style>
+<style scoped>
+/* #container {
+  background-color: red;
+} */
+#cont {
+  /* background-color: yellow; */
+  width:500px;
+  text-align:center;
+  position:relative;
+  /* right: 0;
+  position:absolute; */
+};
+#notification{
+  /* right:150%;
+  position:absolute; */
+}
+#bell {
+  color: #01579b;
+  font-size: 25px;
+  cursor:pointer;
+}
 </style>
 
 <script>
 import ROUTER from "../router";
 import { mapGetters } from "vuex";
 import Confirmation from "../components/modals/confirmation/confirm.vue";
-export default {
-  data: () => ({
-    user_pic: localStorage.getItem('user_pic'),
-    user_type: localStorage.getItem('user_type'),
-    user_name: localStorage.getItem('user_name'),
-    drawer: null,
-    data: null,
-    employ: [
-      { icon: "mdi-account", text: "My Account", route: "/MyAccount" },
-      { icon: "mdi-apps", text: "Dashboard", route: "/" },
-      { icon: "mdi-calendar-edit", text: "Leave", route: "/Leave" },
-      { icon: "mdi-calendar-account", text: "Shift Change", route: "/ShiftChange" },
-      { icon: "mdi-calendar-clock", text: "Overtime", route: "/Overtime" },
-      { icon: "mdi-account-cash", text: "Petty Cash", route: "/PettyCash" },
-      { icon: "mdi-account-cash-outline", text: "Budget", route: "/Budget" },
-      { icon: "mdi-airplane", text: "Travel Authorization", route: "/TravelAuthorization" },
-      { icon: "mdi-logout", text: "LogOut"}
-      // { icon: "mdi-logout", text: "LogOut", route: "/logout" }
+import Notification from "../components/notification.vue";
+// import {isPRP, hasFinanceManager,  hasHRManager, hasGeneralManager} from "../helpers/user_roles.js";
 
-    ],
-    confirmationTitle: null,
-    confirmationMessage: null
-  }),
+
+export default {
+  data(){
+    return {
+      user_pic: this.$store.getters.profileUrl,
+      notification_count: this.$store.getters.notificationCount ,
+      user_type: localStorage.getItem('user_type'),
+      user_name: localStorage.getItem('user_name'),
+      user_id: localStorage.getItem("id"),
+      drawer: null,
+      data: null,
+      employ: [
+        { icon: "mdi-account", text: "My Account", route: "/MyAccount" },
+        { icon: "mdi-apps", text: "Dashboard", route: "/" },
+        { icon: "mdi-calendar-edit", text: "Leave", route: "/Leave" },
+        { icon: "mdi-calendar-account", text: "Shift Change", route: "/ShiftChange" },
+        { icon: "mdi-calendar-clock", text: "Overtime", route: "/Overtime" },
+        { icon: "mdi-account-cash", text: "Petty Cash", route: "/PettyCash" },
+        { icon: "mdi-account-cash-outline", text: "Budget", route: "/Budget" },
+        { icon: "mdi-airplane", text: "Travel Authorization", route: "/TravelAuthorization" },
+        { icon: "mdi-logout", text: "LogOut"}
+        // { icon: "mdi-logout", text: "LogOut", route: "/logout" }
+
+      ],
+      confirmationTitle: null,
+      confirmationMessage: null
+    }
+  },
   components: {
-    Confirmation
+    Confirmation,
+    Notification
   },
   mounted(){
+
     if(this.user_type.includes('hr mngr')){
       this.employ.splice(this.employ.length-1, 0, { icon: "mdi-account-group", text: "Manage Users", route: "/ManageUsers" })
     }
     if(this.user_pic === null){
       this.user_pic = 'images/user.png'
     }
+    this.$store.dispatch('getNotifications',{user_id: this.user_id}).then(()=> {});
+    this.$store.dispatch('getCountUnreadNotifications',{user_id: this.user_id}).then(()=> {});
+
   },
   computed: {
-    ...mapGetters(["profileUrl"])
+    ...mapGetters(["profileUrl", "notificationCount"])
   },
   watch: {
     profileUrl: function(newVal) {
         this.user_pic = newVal;
+    },
+    notificationCount: function(newVal) {
+      this.notification_count = newVal;
     }
   },
   methods: {
+    show() {
+      this.$refs.notification.show();
+    },
     confirm(){
       this.$axios
       .post(

@@ -2,8 +2,8 @@
  <v-app id="sample">
         <!-- <h1>{{user}}</h1> -->
         <v-main>
-            <sidebar id="sidebar"></sidebar>
             <v-container class="container" fluid>
+                <sidebar id="sidebar"></sidebar>
                 <router-view>
                 </router-view>
             </v-container>
@@ -53,6 +53,8 @@ export default {
         console.log('listening', this.user);
         Echo.private('newrequest.' + this.user.id)
           .listen('NewRequest', notif => {
+            this.$store.commit('notificationCountAdd');
+            this.$store.commit('notificationAdd', {data:notif});       
             this.browserPopUp(notif);
           })
 

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Eloquent\Implementations\Requests\LeaveRequestEloquent;
 use App\Services\ApproverRequestService;
 use App\Services\UserRequestService;
+use App\Services\UserService;
 
 class LeaveRequestController extends RequestBaseController
 {
@@ -14,12 +15,12 @@ class LeaveRequestController extends RequestBaseController
     public function __construct(
         LeaveRequestEloquent $leave_request,
         ApproverRequestService $request_service,
-        UserRequestService $user_request_service
+        UserRequestService $user_request_service,
+        UserService $user_service
     ) {
-
         $this->middleware(['auth', 'verify.prp']);  
         $this->leave_request = $leave_request;
-        parent::__construct($request_service,  $leave_request, $user_request_service, 'leave_request');
+        parent::__construct($request_service,  $leave_request, $user_request_service, 'leave_request', $user_service);
     }
     
     public function getPendingRequest($id){

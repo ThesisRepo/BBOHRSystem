@@ -41,10 +41,17 @@ Route::delete('hr/manage/user/{id}','UserInformationController@delete')->name('u
 // Route::post('hr/summary/travel_auth_request/{id}','Requests\TravelAuthRequestController@getApprovedLeaveRequestSummary')->name('user.summary.travel_auth_request.approved');
 
 Route::post('hr/summary/leave_request','UserInformationController@getAllFeedbackedDateLeave')->name('hr.summary.leave_request.approved');
-Route::post('hr/summary/shift_change_request','UserInformationController@getAllFeedbackedDateShiftChange')->name('hr.summary.shift_change_request.approved');
+
+Route::post('hr/summary/shift_change_request/approved','UserInformationController@getAllFeedbackedDateShiftChange')->name('hr.summary.shift_change_request.approved');
+
+Route::post('hr/summary/shift_change_request/disapproved','UserInformationController@getAllFeedbackedDateShiftChange')->name('hr.summary.shift_change_request.approved');
+
 Route::post('hr/summary/overtime_request','UserInformationController@getAllFeedbackedDateOvertime')->name('hr.summary.overtime_request.approved');
+
 Route::post('hr/summary/petty_cash_request/{user_id}','UserInformationController@getAllFeedbackedDatePettyCash')->name('hr.summary.petty_cash_request.approved');
+
 Route::post('hr/summary/budget_request/{user_id}','UserInformationController@getAllFeedbackedDateBudget')->name('hr.summary.budget_request.approved');
+
 Route::post('hr/summary/travel_auth_request','UserInformationController@getAllFeedbackedDateTravelAuth')->name('hr.summary.travel_auth_request.approved');
 
 // for getting all available company position
