@@ -6,26 +6,41 @@
                 <sidebar id="sidebar"></sidebar>
                 <router-view>
                 </router-view>
+                <Loading v-if="loading"></Loading>
             </v-container>
         </v-main>
+        
     </v-app>
 </template>
 <script>
 import Vuetify from "vuetify";
 import sidebar from "./modules/sidebar.vue";
+import Loading from "./components/Loading.vue";
+import { mapGetters } from "vuex";
+
 export default {
     name: "app",
     props: ['user'],
     components: {
-        sidebar
+        sidebar,
+        Loading
     },
     data(){
         return {
-            user_id: localStorage.getItem("id")
+            user_id: localStorage.getItem("id"),
+            loading:  this.$store.getters.isLoading,
         }
     },
     created() {
         this.setUserType();
+    },
+    computed: {
+        ...mapGetters(["isLoading"])
+    },
+    watch: {
+        isLoading: function(newVal) {
+            this.loading = newVal;
+        },
     },
     mounted(){
         this.listenForChanges();
