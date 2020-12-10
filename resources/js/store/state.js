@@ -2,6 +2,8 @@ let state = {
   todos: [],
   profileUrl: null,
   notificationCount: 0,
-  notifications: []
+  notifications: [],
+  isLoading: false,
+  roleList: []
 }
 export default state
