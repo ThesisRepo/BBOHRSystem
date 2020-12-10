@@ -6,7 +6,7 @@
           dark
           background-color="primary"
           fixed-tabs
-          v-if="(user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr'))"
+          v-if="((user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr')) && !user_type.includes('finance mngr'))"
         >
           <v-tabs-slider></v-tabs-slider>
           <v-tab
@@ -154,7 +154,7 @@
             solo-inverted
             hide-details
             prepend-inner-icon="mdi-magnify"
-            label="Seadddrch"
+            label="Search"
           ></v-text-field>
         </v-toolbar>
       </template>
