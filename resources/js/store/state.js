@@ -3,6 +3,7 @@ let state = {
   profileUrl: null,
   notificationCount: 0,
   notifications: [],
-  isLoading: false
+  isLoading: false,
+  roleList: []
 }
 export default state

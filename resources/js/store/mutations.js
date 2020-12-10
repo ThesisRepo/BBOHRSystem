@@ -47,5 +47,8 @@ let mutations = {
     state_loading(state, payload) {
         state.isLoading = payload;
     },
+    intantiate_roleList(state, payload) {
+        state.roleList = payload;
+    },
 }
 export default mutations
