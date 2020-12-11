@@ -113,13 +113,15 @@
             :events="events"
             :type="type"
             :now="today"
+            eventOverlap: false
             :event-color="getEventColor"
             :event-text-color="getProperColor"
             @click:event="showEvent"
             @click:more="viewDay"
             @click:date="viewDay"
             @change="updateRange"
-          ></v-calendar>
+          >
+          </v-calendar>
           <v-menu
             v-model="selectedOpen"
             :close-on-content-click="false"
@@ -133,6 +135,7 @@
                 <v-btn
                  icon>
                   <v-icon 
+                  v-if="selectedEvent.user_id == user_id"
                   :style="[lightColoredTextData.includes(selectedEvent.color) ? {'color':'black!important'} : {}]"                                  
                   @click="editItem(selectedEvent)">mdi-pencil</v-icon>
                 </v-btn>
@@ -141,6 +144,7 @@
                 <v-spacer></v-spacer>
                 <v-btn icon>
                   <v-icon 
+                  v-if="selectedEvent.user_id == user_id"
                   :style="[lightColoredTextData.includes(selectedEvent.color) ? {'color':'black!important'} : {}]"
                   @click="deleteItem(selectedEvent)">mdi-delete</v-icon>
                 </v-btn>
@@ -154,9 +158,9 @@
                   <v-icon>mdi-dots-vertical</v-icon>
                 </v-btn> -->
               </v-toolbar>
-              <v-card-text>
+              <v-card-text >
                 <span v-html="selectedEvent.details"></span>
-                <p>{{selectedEvent.start}} - {{selectedEvent.end}}</p>
+                <p v-if="selectedEvent.event_type !=  'Holiday' && selectedEvent.event_type !=  'Birthday' ">{{selectedEvent.start}} - {{selectedEvent.end}}</p>
                 <p><b>Details:</b> {{selectedEvent.content}}</p>
               </v-card-text>
               <v-card-actions>
@@ -167,7 +171,7 @@
         </v-sheet>
       </v-col>
     </v-row>
-    <v-dialog v-model="dialog" persistent max-width="600px">
+    <v-dialog scrollable v-model="dialog" persistent max-width="600px">
       <v-card>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-card-title>
@@ -413,29 +417,37 @@ export default {
       }
       nativeEvent.stopPropagation();  
     },
-    updateRange() {
-      console.log('year', this.$refs.calendar);
-      // if(this.year != this.$refs.calendar.days.year || this.year == null){
-      //   this.year = this.$refs.calendar.days.year;
-      //   this.events = this.events.map(function(val) {
-      //     if(val.event_type == 'Holiday' || val.event_type == 'Birthday') {
-      //       val.start = new Date(val.start).setFullYear(this.year);
-      //       val.end = new Date(val.start).setFullYear(this.year);
-      //     }
-      //     return val;
-      //   });
-      // }
+    updateRange(e) {
+      var yearCurrent =  e.start.year;
+      if(this.year != yearCurrent || this.year == null){
+        this.year = yearCurrent;
+        this.events = this.events.map(function(val) {
+          if(val.is_yearly == 1) {
+            var end_date = new Date(val.start);
+            var start_date = new Date(val.end);
+            val.start = new Date( end_date.getTime() + Math.abs(end_date.getTimezoneOffset()*60000) ) .toISOString().substr(0,10).split('-');
+            val.end = new Date( start_date.getTime() + Math.abs(start_date.getTimezoneOffset()*60000) ) .toISOString().substr(0,10).split('-');
+            val.start[0] = yearCurrent;
+            val.end[0] = yearCurrent;
+            val.start = val.start.join('-');
+            val.end = val.end.join('-');
+          }
+          return val;
+        });
+      }
       const events = [];
       for (let i = 0; i < this.events.length; i++) {
           events.push({
+          user_id: this.events[i].user_id,
           name: this.events[i].name,
           content: this.events[i].content,
           start: this.events[i].start,
           end: this.events[i].end,
           color: this.events[i].color,
           event_type: this.events[i].event_type,
-          checkbox: this.events[i].is_public,
-          timed: this.events[i].timed
+          checkbox: this.events[i].checkbox,
+          timed: this.events[i].timed,
+          is_yearly:this.events[i].is_yearly
         });
       }
       this.events = events;
@@ -461,8 +473,10 @@ export default {
       this.$axios.get("events/"+  this.user_id).then(response => {
         this.loading = false
         this.events = []
+        console.log(response.data);
         response.data.forEach(element => {
           var temp = {
+            user_id: element.user_id,
             id: element.id,
             name: element.title,
             content: element.content,
@@ -471,6 +485,7 @@ export default {
             color: element.event_type.color,
             event_type: element.event_type.event_name,
             checkbox: element.is_public,
+            is_yearly: element.is_yearly,
             timed: true
           };
           this.events.push(temp)

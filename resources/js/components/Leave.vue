@@ -6,7 +6,7 @@
           dark
           background-color="primary"
           fixed-tabs
-          v-if="(user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr'))"
+          v-if="((user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr')) && !user_type.includes('finance mngr'))"
         >
           <v-tabs-slider></v-tabs-slider>
           <v-tab
@@ -524,16 +524,15 @@ export default {
     }
   },
   mounted() {
-    if (
-      (this.user_type.includes("hr mngr") ||
-        this.user_type.includes("prp emp")) &&
-      !this.user_type.includes("finance mngr")
+    if (this.$store.getters.roleList.includes("general mngr")
     ) {
       this.retrievePendingPrp();
       this.retrieve();
       this.getAllFeedback();
       this.checkUser();
-    } else if (this.user_type.includes("general mngr")) {
+    } else if ((this.user_type.includes("hr mngr") ||
+        this.user_type.includes("prp emp")) &&
+      !this.user_type.includes("finance mngr")) {
       this.retrievePendingPrp();
       this.getAllFeedback();
       this.checkUser();

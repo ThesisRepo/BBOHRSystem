@@ -49,7 +49,6 @@ class RequestBaseController extends Controller
         }else {
             $res = $this->model->getPendingRequestForApproverAdmin($id, $max_role, $relationship);            
         }
-        // dd($res, $user->toArray());getPendingRequestForApproverAdmin
         return $res;
 
     }
@@ -118,7 +117,7 @@ class RequestBaseController extends Controller
 
     public function notifyApprovedRequest($action, $user, $id, $type, $data) {
 
-        return $this->user_request_service->notifyNewRequest($action, $user, $id, $type, $data);  
+        // return $this->user_request_service->notifyNewRequest($action, $user, $id, $type, $data);  
 
     }
 }

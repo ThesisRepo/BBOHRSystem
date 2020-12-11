@@ -2,7 +2,7 @@
   <div>
     <v-toolbar flat>
       <template v-slot:extension>
-        <v-tabs dark background-color="primary" fixed-tabs v-if="(user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr'))">
+        <v-tabs dark background-color="primary" fixed-tabs v-if="((user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr')) && !user_type.includes('finance mngr'))">
           <v-tabs-slider></v-tabs-slider>
           <v-tab v-if="!user_type.includes('general mngr')" @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
           <v-tab @click="requests = false, employees = true, feedback = false">Employees Requests</v-tab>
