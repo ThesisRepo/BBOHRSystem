@@ -117,7 +117,7 @@ class RequestBaseController extends Controller
 
     public function notifyApprovedRequest($action, $user, $id, $type, $data) {
 
-        // return $this->user_request_service->notifyNewRequest($action, $user, $id, $type, $data);  
+        return $this->user_request_service->notifyNewRequest($action, $user, $id, $type, $data);  
 
     }
 }

@@ -153,7 +153,6 @@ class RequestBaseController extends Controller
             $res = response()->json($this->model->update($data, $id), 200);
             $employee_name = $this->getFullName();
             $prp_assigned_id = $this->getApproverId($this->request_name);
-            dd($editable);
             $this->notifyNewRequest('edited', $employee_name, $prp_assigned_id, $this->request_name, $editable);
         }else{
             $res =  response()->json(['data'=>['message'=> 'you can\'t edit']], 400);
@@ -168,22 +167,6 @@ class RequestBaseController extends Controller
         return $this->user_request_service->notifyNewRequest($action, $user, $id, $type, $data);  
 
     }
-
-    // public function storeRequest($data, $prp_assigned_id) {
-    //     if($prp_assigned_id) {
-    //         $res = response()->json($this->model->createRequest($data, $prp_assigned_id), 200);
-    //         $employee_name = $this->getFullName($data['user_id']);
-    //         $this->notifyNewRequest('added', $employee_name, $prp_assigned_id, $this->request_name);
-
-    //     }else {
-
-    //         $res = response()->json($this->model->create($data), 200);
-
-    //     }
-
-    //     return $res;
-
-    // }
 
     public function storeRequest($data) {
 
@@ -210,10 +193,10 @@ class RequestBaseController extends Controller
     public function deleteRequest($id) {
         
         $prp_assigned_id = $this->getApproverId($this->request_name);
+        $data = $this->model->findOrFail($id);
         $res = $this->model->delete($id);
         $employee_name = $this->getFullName();
-        // $this->notifyNewRequest('deleted', $employee_name, $prp_assigned_id, $this->request_name, $data);
-
+        $this->notifyNewRequest('deleted', $employee_name, $prp_assigned_id, $this->request_name, $data);
         return response()->json($res, 200);
 
     }

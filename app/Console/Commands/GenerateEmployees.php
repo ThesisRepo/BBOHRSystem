@@ -60,7 +60,7 @@ class GenerateEmployees extends Command
             if( $employee_info['event_types']) {
                 $user->event_types()->createMany($employee_info['event_types']);
             }
-            $this->sendVerificationEmailOnRegister($user);
+            // $this->sendVerificationEmailOnRegister($user);
         }
         $this->info('initial employees were added to application');
     }

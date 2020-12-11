@@ -18,3 +18,7 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
 Broadcast::channel('newrequest.{userId}', function ($user, $userId) {
     return $user->id === (int) $userId;
   });
+
+Broadcast::channel('newcalendarevent', function () {
+    return true;
+  });
