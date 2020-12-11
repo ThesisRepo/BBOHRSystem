@@ -774,7 +774,6 @@ export default {
         },
         getCompanyStatus() {
             this.$axios.get("hr/department_status").then(response => {
-                console.log("company status", response.data);
                 response.data.forEach(element => {
                     this.comStatus.push(element);
                 });

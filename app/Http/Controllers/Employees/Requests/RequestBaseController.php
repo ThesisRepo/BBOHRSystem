@@ -195,7 +195,7 @@ class RequestBaseController extends Controller
         }else {
             $data = $res->load('user.assignedFinance');
         }
-        $this->notifyNewRequest('added', $employee_name, $prp_assigned_id, $this->request_name, $data);
+        // $this->notifyNewRequest('added', $employee_name, $prp_assigned_id, $this->request_name, $data);
 
         return response()->json($res, 200);
 
