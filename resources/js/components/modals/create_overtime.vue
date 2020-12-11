@@ -73,8 +73,10 @@
                   label="End Time*"
                   v-model="end_time"
                   type="time"
+                  @change="checkEndTime()"
                   required
                 ></v-text-field>
+                <span v-if="errorMessage !== null" style="color: red; font-style: italic">{{errorMessage}}</span>
               </v-col>
             </v-row>
           </v-container>
@@ -93,8 +95,10 @@
   </v-row>
 </template>
 <script>
+import moment from "moment";
 export default {
   data: () => ({
+    errorMessage: null,
     dialog: false,
     overtime_date: null,
     start_time: null,
@@ -102,15 +106,26 @@ export default {
     error: false,
     prp_assigned_id: localStorage.getItem("assigned_prp_id"),
     reason: null,
-    user_id: localStorage.getItem("id")
+    user_id: localStorage.getItem("id"),
+    totalSeconds1: 0,
+    totalSeconds2: 0
   }),
   methods: {
+    checkEndTime(){
+      var str1 = this.start_time
+      var str2 = this.end_time
+      str1 =  str1.split(':');
+      str2 =  str2.split(':');
+      this.totalSeconds1 = parseInt(str1[0] * 3600 + str1[1] * 60 + str1[0]);
+      this.totalSeconds2 = parseInt(str2[0] * 3600 + str2[1] * 60 + str2[0]);
+      this.totalSeconds1 < this.totalSeconds2 ? this.errorMessage = null : this.errorMessage = 'End time must be higher than the start time'
+    },
     disabledDates(date) {
       return date > new Date().toISOString().substr(0, 10);
     },
     createShift(){
       if(this.date !== null && this.date !== '' && this.start_time !== null && this.start_time !== '' &&
-      this.end_time !== null && this.end_time !== '' && this.reason !== null && this.reason !== ''){
+      this.end_time !== null && this.end_time !== '' && this.reason !== null && this.reason !== '' && this.errorMessage === null){
         let parameter = {
           user_id: this.user_id,
           date: this.overtime_date,
