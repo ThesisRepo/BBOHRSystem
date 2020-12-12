@@ -6,7 +6,7 @@
           dark
           background-color="primary"
           fixed-tabs
-          v-if="(user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr'))"
+          v-if="((user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr')) && !user_type.includes('finance mngr'))"
         >
           <v-tabs-slider></v-tabs-slider>
           <v-tab
@@ -154,9 +154,25 @@
             solo-inverted
             hide-details
             prepend-inner-icon="mdi-magnify"
-            label="Seadddrch"
+            label="Search"
           ></v-text-field>
         </v-toolbar>
+      </template>
+      <template v-slot:item.number_of_days="{ item }">
+        {{
+        displayTimeLengthInText(item.number_of_days)
+        }}
+      </template>
+      <!-- format time -->
+      <template v-slot:item.start_date="{ item }">
+        {{
+        formatDateStandard(item.start_date)
+        }}
+      </template>
+      <template v-slot:item.end_date="{ item }">
+        {{
+        formatDateStandard(item.end_date)
+        }}
       </template>
       <template v-slot:item.status.status_name="{ item }">
         <v-chip
@@ -417,9 +433,9 @@ export default {
     user_type: localStorage.getItem("user_type"),
     user_id: localStorage.getItem("id"),
     prp_assigned_id: localStorage.getItem("assigned_prp_id"),
-    employees: false,
-    requests: true,
-    feedback: false,
+    employees: localStorage.getItem("user_type").includes('general mngr') ? true: false,
+    requests: localStorage.getItem("user_type").includes('general mngr') ? false: true,
+    feedback: localStorage.getItem("user_type").includes('general mngr') ? false: false,
     dialog: false,
     error: false,
     error1: false,
@@ -524,6 +540,7 @@ export default {
       this.retrieve();
       this.checkUser();
     }
+    console.log(this.requests, this.employees, this.feedback)
   },
   methods: {
     // confirm(){
@@ -581,6 +598,7 @@ export default {
         .get("prp/leave_request/pending/" + this.user_id)
         .then(response => {
           this.prpPending = response.data;
+          console.log('mao ni cya', response.data)
         })
         .catch(e => {
           console.log(e);

@@ -22,7 +22,7 @@ class PettyCashRequestsController extends RequestBaseController
 
         $this->middleware(['auth','verify.prp', 'verify.manager.finance']);  
         $this->petty_cash_request = $petty_cash_request;
-        parent::__construct($request_service,  $petty_cash_request, $user_request_service, 'petty_cash_request');
+        parent::__construct($request_service,  $petty_cash_request, $user_request_service, 'petty_cash_request', $user_service);
     }
     
     public function getPendingRequest($id){

@@ -774,7 +774,6 @@ export default {
         },
         getCompanyStatus() {
             this.$axios.get("hr/department_status").then(response => {
-                console.log("company status", response.data);
                 response.data.forEach(element => {
                     this.comStatus.push(element);
                 });
@@ -827,25 +826,6 @@ export default {
             let reqWhiteSpace = /\d/;
             let specialChar = /^[A-Za-z0-9 ]+$/;
             let numberExclude = /^[0-9 ]+$/;
-            // this.errorMessage1 = "";
-            // this.errorMessage2 = "";
-            // this.errorMessage3 = "";
-            // this.errorMessage4 = "";
-            // this.errorMessage5 = "";
-            // this.errorMessage6 = "";
-            // this.errorMessage7 = "";
-            // this.errorMessage8 = "";
-            // this.errorMessage9 = "";
-            // this.errorMessage10 = "";
-            // this.errorMessage11 = "";
-            // this.errorMessage12 = "";
-            // this.errorMessage13 = "";
-            // this.errorMessage14 = "";
-            // this.errorMessage15 = "";
-            // this.errorMessage16 = "";
-            // this.errorMessage17 = "";
-            // this.errorMessage18 = "";
-            // this.errorMessage19 = "";
             if (input === "firstname") {
                 this.errorMessage1 = null;
                 this.errorMessage2 = null;

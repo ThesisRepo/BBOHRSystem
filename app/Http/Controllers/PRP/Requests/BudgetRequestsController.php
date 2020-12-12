@@ -16,7 +16,7 @@ class BudgetRequestsController extends RequestBaseController
         BudgetRequestEloquent $budget_request,
         ApproverRequestService $request_service,
         UserRequestService $user_request_service,
-        UserService $user_service
+        UserService $user_service,
 
     ) {
 
