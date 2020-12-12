@@ -10,7 +10,6 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use App\Models\Notification;
-use DB;
 
 class NewRequest implements ShouldBroadcast
 {
