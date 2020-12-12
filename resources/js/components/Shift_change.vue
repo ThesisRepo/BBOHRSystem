@@ -2,7 +2,7 @@
   <div>
     <v-toolbar flat>
       <template v-slot:extension>
-        <v-tabs dark background-color="primary" fixed-tabs v-if="(user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr'))">
+        <v-tabs dark background-color="primary" fixed-tabs v-if="((user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr')) && !user_type.includes('finance mngr'))">
           <v-tabs-slider></v-tabs-slider>
           <v-tab v-if="!user_type.includes('general mngr')" @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
           <v-tab @click="requests = false, employees = true, feedback = false">Employees Requests</v-tab>
@@ -277,9 +277,9 @@ export default {
     user_type: localStorage.getItem("user_type"),
     user_id: localStorage.getItem("id"),
     prp_assigned_id: localStorage.getItem("assigned_prp_id"),
-    employees: false,
-    requests: true,
-    feedback: false,
+    employees: localStorage.getItem("user_type").includes('general mngr') ? true: false,
+    requests: localStorage.getItem("user_type").includes('general mngr') ? false: true,
+    feedback: localStorage.getItem("user_type").includes('general mngr') ? false: false,
     dialog: false,
     search: '',
     sTime: null,

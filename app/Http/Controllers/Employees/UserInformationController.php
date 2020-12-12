@@ -66,6 +66,7 @@ class UserInformationController extends Controller
         
         return $res;
     }
+    
     public function updateProfileImg($id,Request $request){
         $user_info = $this->user->findWith($id, 'userInformation')->userInformation;
         if($user_info) {

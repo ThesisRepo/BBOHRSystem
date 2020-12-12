@@ -14,8 +14,6 @@ class TravelAuthRequestController extends RequestBaseController
 {
 
     use ImageUpload;
-
-    
     protected $travel_auth_request;
 
     public function __construct(
@@ -66,7 +64,6 @@ class TravelAuthRequestController extends RequestBaseController
         $res = $this->storeRequest($requestData);
 
         return $res;
-
     }
     
     public function update(Request $request, $id) {
@@ -81,7 +78,7 @@ class TravelAuthRequestController extends RequestBaseController
             'end_date'=> $request->end_date,
             'emergency_contact'=> $request->emergency_contact,
             'contact_number'=> $request->contact_number,
-            'employee_to_cover'=> $request->employee_to_cover,
+            'employee_to_cover_id'=> $request->employee_to_cover,
             'file_uri'=> $request->file_uri,
         ];
 

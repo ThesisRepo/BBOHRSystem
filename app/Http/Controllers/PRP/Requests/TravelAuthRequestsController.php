@@ -21,7 +21,7 @@ class TravelAuthRequestsController extends RequestBaseController
 
         $this->middleware(['auth', 'verify.prp']);  
         $this->travel_auth_request = $travel_auth_request;
-        parent::__construct($request_service,  $travel_auth_request, $user_request_service, 'travel_auth_request');
+        parent::__construct($request_service,  $travel_auth_request, $user_request_service, 'travel_auth_request', $user_service);
     }
     
     public function getPendingRequest($id){
