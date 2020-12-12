@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Eloquent\Implementations\CalendarEventEloquent;
 use App\Services\UserRequestService;
 use App\Services\UserService;
+use App\Models\CalendarEvent;
 
 class CalendarEventController extends Controller
 {
@@ -14,19 +15,23 @@ class CalendarEventController extends Controller
 
     protected $user_service;
 
+    protected $calendar_eves;
 
     public function __construct(
         CalendarEventEloquent $calendar_event,
         UserRequestService $user_request_service,
-        UserService $user_service
+        UserService $user_service,
+        CalendarEvent $calendar_eves
     ) {
         $this->middleware(['auth', 'verify.employee']);  
         $this->calendar_event = $calendar_event;
         $this->user_request_service = $user_request_service;
         $this->user_service = $user_service;
+        $this->calendar_eves = $calendar_eves;
     }
 
     public function getByUser($user_id) {
+        dd($this->calendar_eves->due_event()->toArray());
         $relationship = 'event_type';
         $res = $this->calendar_event->whereWith('user_id', $user_id, $relationship)->orWhere('is_public', 1)->get();
         return $res;

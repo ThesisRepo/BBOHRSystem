@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('notification:ignoredRequests')->everyMinute();
+        $schedule->command('notification:ignoredRequests')->everyMinute();
         // $schedule->call(function() {
         //     $job =new IgnoredRequestsJob();
         //     dispatch($job);

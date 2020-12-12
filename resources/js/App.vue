@@ -72,7 +72,7 @@ export default {
             this.browserPopUp(notif);
           })
 
-        Echo.channel('newcalendarevent.' + this.user.id)
+        Echo.channel('newcalendarevent')
           .listen('NewCalendarEvent', notif => {
             this.$store.commit('notificationCountAdd');
             this.$store.commit('notificationAdd', {data:notif});       
