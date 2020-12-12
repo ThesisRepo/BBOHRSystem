@@ -31,7 +31,6 @@ class CalendarEventController extends Controller
     }
 
     public function getByUser($user_id) {
-        dd($this->calendar_eves->due_event()->toArray());
         $relationship = 'event_type';
         $res = $this->calendar_event->whereWith('user_id', $user_id, $relationship)->orWhere('is_public', 1)->get();
         return $res;
