@@ -179,6 +179,7 @@
                   <v-text-field
                     v-model="editedItem.start_time"
                     type="time"
+                    @change="checkEndTime()"
                     prepend-icon="mdi-timer"
                     label="Start Time"
                   ></v-text-field>
@@ -187,9 +188,11 @@
                   <v-text-field
                     v-model="editedItem.end_time"
                     type="time"
-                     prepend-icon="mdi-timer"
+                    @change="checkEndTime()"
+                    prepend-icon="mdi-timer"
                     label="End Time"
                   ></v-text-field>
+                  <span v-if="errorMessage !== null" style="color: red; font-style: italic">{{errorMessage}}</span>
                 </v-col>
               </v-row>
             </v-container>
@@ -327,11 +330,14 @@ export default {
     feedback: localStorage.getItem("user_type").includes('general mngr') ? false: false,
     dialog: false,
     error: false,
+    errorMessage: null,
     overtime_date: null,
     messageCheck: '',
     informationCheck: null,
     loading:false,
     search: '',
+    totalSeconds1: 0,
+    totalSeconds2: 0,
     headers: [
       { text: "REASON", align: "start", value: "reason" },
       { text: "OVERTIME DATE", value: "date" },
@@ -409,6 +415,15 @@ export default {
     }
   },
   methods: {
+    checkEndTime(){
+      var str1 = this.editedItem.start_time
+      var str2 = this.editedItem.end_time
+      str1 =  str1.split(':');
+      str2 =  str2.split(':');
+      this.totalSeconds1 = parseInt(str1[0] * 3600 + str1[1] * 60 + str1[0]);
+      this.totalSeconds2 = parseInt(str2[0] * 3600 + str2[1] * 60 + str2[0]);
+      this.totalSeconds1 < this.totalSeconds2 ? this.errorMessage = null : this.errorMessage = 'End time must be higher than the start time'
+    },
     disabledDates(date) {
       return date >  new Date().toISOString().substr(0, 10)
     },
@@ -469,7 +484,7 @@ export default {
     },
     save() {
       if(this.editedItem.date !== null && this.editedItem.date !== '' && this.editedItem.start_time !== null && this.editedItem.start_time !== '' &&
-      this.editedItem.end_time !== null && this.editedItem.end_time !== '' && this.editedItem.reason !== null && this.editedItem.reason !== ''){
+      this.editedItem.end_time !== null && this.editedItem.end_time !== '' && this.editedItem.reason !== null && this.editedItem.reason !== '' && this.errorMessage === null){
         let params = {
           id: this.editedItem.id,
           date: this.editedItem.overtime_date,
