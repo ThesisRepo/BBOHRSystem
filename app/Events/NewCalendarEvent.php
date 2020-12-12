@@ -12,7 +12,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use App\Models\Notification;
 use App\Models\User;
 
-class NewCalendarEvent
+class NewCalendarEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

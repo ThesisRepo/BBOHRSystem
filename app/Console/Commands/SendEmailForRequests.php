@@ -51,14 +51,11 @@ class SendEmailForRequests extends Command
         
         // dd($this->user->request_ignored());
         $users = $this->user->request_ignored();
-        // foreach( $users as $user_indv) {
-        //     $this->request_service->getAllPendingRequests($user_indv) {
-
-        //     };
-        // }
-        dd($this->request_service->getAllPendingRequests($users[0]));
-
+        $job =new IgnoredRequestsJob();
+        dispatch($job);
+    
+        // dd($this->request_service->getAllPendingRequests($users[0]));
+        $this->info('initial employees were added to application');
         $time_in_24_hour_format  = date("H:i", strtotime("1pm"));
-        // dd($time_in_24_hour_format  );
     }
 }

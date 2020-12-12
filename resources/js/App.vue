@@ -72,17 +72,23 @@ export default {
             this.browserPopUp(notif);
           })
 
-        Echo.channel('newcalendarevent.' + this.user.id)
+        Echo.channel('newcalendarevent')
           .listen('NewCalendarEvent', notif => {
             this.$store.commit('notificationCountAdd');
             this.$store.commit('notificationAdd', {data:notif});       
             this.browserPopUp(notif);
           })
 
-        // Echo.private('feedbackrequest.' + this.user.id)
-        //   .listen('FeebackRequest', notif => {
-        //     this.browserPopUp(notif);
-        //   })
+         Echo.channel('public-calendar')
+          .listen('PublicCalendarEvent', notif => {
+            this.$store.commit('notificationCountAdd');
+            this.$store.commit('notificationAdd', {data:notif});       
+            this.browserPopUp(notif);
+          })
+        Echo.private('private-calendar.' + this.user.id)
+          .listen('PrivateCalendarEvent', notif => {
+            this.browserPopUp(notif);
+          })
         },
         browserPopUp(notif) {
             // console.log('NewRequest', notif)
