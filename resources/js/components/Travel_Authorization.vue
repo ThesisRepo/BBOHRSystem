@@ -162,7 +162,7 @@
     <Confirmation
       ref="confirms"
       :title="approveThis === 'approve' || 'disapproved' ? 'Confirmation' : ''"
-      :message="approveThis === 'approve' ? 'Are you sure you want to approve this request?' : 'Are you sure you want to reject this request?'"
+      :message="approveThis === 'approve' ? 'Are you sure you want to approve this request?' : approveThis === 'disapprove' ? 'Are you sure you want to reject this request?' : approveThis === 'image' ? 'Are you sure you want to update this image?' : ''"
       @onConfirm="confirm($event)"
     ></Confirmation>
 
@@ -327,13 +327,23 @@
         </v-toolbar>
         <!-- <v-divider></v-divider> -->
         <v-card class="mx-auto" max-width="344">
-          <v-img :src="file_uri" width="500"></v-img>
+          <v-img :src="file_uri" width="100%" height="100%"></v-img>
         </v-card>
-        <br>
         <v-card-actions>
           <v-spacer></v-spacer>
+          <v-btn class="text-center" color="primary" @click="onButtonClick">UPLOAD IMAGE</v-btn>
+
           <v-btn color="red" dark @click="fileDialog = false">Cancel</v-btn>
-          <v-btn color="success" dark>Update</v-btn>
+          <v-btn color="success"   
+          :loading="isSelecting"
+          @click="updateFileChanged" dark>Update</v-btn>
+        <input
+            ref="uploader"
+            class="d-none"
+            type="file"
+            accept="image/*"
+           @change="onFileChanged"
+         >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -377,6 +387,11 @@
             link="/MyAccount"
             routeName="go to MY ACCOUNT"
           ></Reminder>
+
+            <Remind
+            ref="remind"
+           :messages="'Seems like you didn\'t upload an image.'"
+          ></Remind>
         </v-toolbar>
       </template>
 
@@ -447,6 +462,7 @@ import createTravel from "./modals/create_travel.vue";
 import moment from "moment";
 import Confirmation from "./modals/confirmation/confirm.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
+import Remind from "./modals/confirmation/Remind.vue";
 import Reminder from "./modals/confirmation/reminder.vue";
 import loading from "./Loading.vue";
 import SummaryTemplate from "./modals/exports/travel_export.vue";
@@ -459,19 +475,21 @@ export default {
     errorMessage5: null,
     errorMessage6: null,
     errorMessage7: null,
-    file_uri: "",
+    file_uri: null,
     user_type: localStorage.getItem("user_type"),
     user_id: localStorage.getItem("id"),
     prp_assigned_id: localStorage.getItem("assigned_prp_id"),
     employees: false,
     requests: true,
     feedback: false,
+    isSelecting: false,
     dialog: false,
     error: false,
     error1: false,
     fileDialog: false,
     files: "",
     uploadPercentage: 0,
+    imgMaxSize: 2.097152,
     contact_number: null,
     disable: false,
     end_date: null,
@@ -538,7 +556,12 @@ export default {
       employee_cover: null,
       contact_number: null,
       prp_assigned_id: null,
-      details: null
+      details: null,
+      formData: null,
+      myMessage: null,
+      isEditabelProfile: false,
+      confirmationTitle:null,
+      confirmationMessage: null,
     },
     dates: [new Date().toISOString().substr(0, 10)],
     approveThis: "",
@@ -551,6 +574,7 @@ export default {
     ConfirmationDel,
     SummaryTemplate,
     Reminder,
+    Remind,
     loading
   },
   computed: {
@@ -657,6 +681,55 @@ export default {
     convertData(item) {
       return item.destination.toUpperCase();
     },
+   
+  onButtonClick() {
+      this.isSelecting = false;
+      window.addEventListener(
+        "focus",
+        () => {
+          this.isSelecting = false;
+        },
+        { once: true }
+      );
+      this.$refs.uploader.click();
+    },
+     confirm(){
+      if(this.confirmationTitle == 'Update Image'){
+        this.uploadImg();
+      }
+    },
+    uploadImg() {
+      this.$store.dispatch('ChangeProfileUrl', {user:this.user_id, profileUrl:this.formData}).then(()=> {
+        // alert('ddf');
+        this.isEditabelProfile = false;
+        this.isConfirmed = false;
+      });
+    },
+    updateFileChanged() {
+      if(this.isEditabelProfile) {
+        this.approveThis = 'image'
+        this.$refs.confirms.show()
+      }else{
+        this.$refs.remind.show();
+      }
+    },
+     onFileChanged(e) {
+      this.selectedFile = e.target.files[0];
+      if(this.selectedFile.size > this.imgMaxSize * 1024 * 1024) {
+        this.myMessage = 'Opps! Image too large.'
+        this.$refs.remind.show();
+      }else {
+        this.isEditabelProfile = this.file_uri !=  URL.createObjectURL(e.target.files[0])
+        this.file_uri = URL.createObjectURL(e.target.files[0]);
+        const config = {
+          header: { "content-type": "multipart/form-data" }
+        };
+        let formData = new FormData();
+        formData.append("image", this.selectedFile);
+        this.formData = formData;
+      }
+    },
+
     changeDate() {
       if (
         this.editedItem.start_date !== null &&
@@ -715,18 +788,20 @@ export default {
       ) {
         this.messageCheck = "combine";
         this.$refs.reminder.show();
+        this.$refs.remind.show();
       } else if (this.informationCheck === null) {
         this.messageCheck = "user";
         this.$refs.reminder.show();
+        this.$refs.remind.show();
       } else {
         this.messageCheck = "prp";
-        this.$refs.reminder.show();
+        this.$refs.remind.show();
       }
     },
     retrieveTravel() {
       this.showloading = true;
       this.$axios
-        .get("prp/travel_auth_request/pending/" + this.user_id)
+        .get("travel_auth_request/pending/" + this.user_id)
         .then(response => {
           this.showloading = false;
           this.travelPending = response.data;
