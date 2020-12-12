@@ -163,6 +163,7 @@
                   label="Total Amount"
                   prepend-icon=" mdi-calculator"
                 ></v-text-field>
+                <span v-if="errorMessage !== null" style="color: red; font-size: 13px">{{errorMessage}}</span>
               </v-col>
             </v-row>
           </v-container>
@@ -311,6 +312,7 @@ export default {
     feedbacks: [],
     approveThis: '',
     editedIndex: 1,
+    errorMessage: null,
     editedItem: {
       description_need: null,
       date: null,
@@ -392,6 +394,13 @@ export default {
     },
 
     save() {
+      this.error = false
+      if(this.total_amount < 1 && this.date !== null && this.description_need !== null && this.date !== "" && this.description_need !== "") { 
+        this.error = false
+        this.errorMessage = "Amount must not be less than 1"
+      }else {
+        this.errorMessage = null
+      }
       if(this.date !== null && this.description_need !== null &&
       this.total_amount !== null && this.date !== '' && this.description_need !== ''  &&
       this.total_amount !== ''){
@@ -405,10 +414,13 @@ export default {
         }
         this.$axios.post('petty_cash_request/' + this.editedItem.id, params).then(response=>{
           this.retrieve()
-          this.dialog = false
         })
-      }else{
-        this.error = true;
+        this.dialog = false
+      }else {
+        if(this.errorMessage === null){
+          this.error = true;
+        }
+        this.dialog = true;
       }
     },
 

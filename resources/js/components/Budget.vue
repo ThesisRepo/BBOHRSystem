@@ -156,6 +156,7 @@
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-text-field v-model="editedItem.total_amount" type="number" label="Total Amount" prepend-icon=" mdi-calculator"></v-text-field>
+                <span v-if="errorMessage !== null" style="color: red; font-size: 13px">{{errorMessage}}</span>
               </v-col>
               <v-col cols="12" sm="6" md="12">
                 <v-text-field v-model="editedItem.details" label="Details" prepend-icon=" mdi-file-document"></v-text-field>
@@ -309,6 +310,7 @@ export default {
       { title: 'Disapproved Requests' }
     ],
     approveThis: '',
+    errorMessage: null,
     editedIndex: 1,
     editedItem: {
       date_needed: null,
@@ -387,6 +389,13 @@ export default {
     },
 
     save() {
+      this.error = false
+      if(this.total_amount < 1 && this.date !== null && this.details !== null && this.date !== "" && this.details !== "") { 
+        this.error = false
+        this.errorMessage = "Amount must not be less than 1"
+      }else {
+        this.errorMessage = null
+      }
       if (
         this.editedItem.date !== null &&
         this.editedItem.total_amount !== null &&
@@ -413,7 +422,10 @@ export default {
           });
         this.dialog = false;
       } else {
-        this.error = true;
+        if(this.errorMessage === null){
+          this.error = true;
+        }
+        this.dialog = true;
       }
     },
 
