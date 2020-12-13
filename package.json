@@ -24,6 +24,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "@syncfusion/ej2-vue-grids": "^18.3.53",
         "axios": "^0.20.0",
         "laravel-echo": "^1.9.0",
         "laravel-vue-pagination": "^2.3.1",

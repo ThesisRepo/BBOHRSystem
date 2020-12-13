@@ -25,12 +25,12 @@ class TravelAuthRequestsController extends RequestBaseController
     }
     
     public function getPendingRequest($id){
-        $res = $this->getBasePendingRequest($id, ['status','approver_role', 'user']);
+        $res = $this->getBasePendingRequest($id, ['status','approver_role', 'user', 'employee_to_cover']);
         return $res;
     }
 
     public function getAllFeedbackedRequest($user_id){
-        $res = $this->getBaseAllFeedbackedRequest($user_id, 'feedbacked_travel_auth_requests', ['status','approver_role', 'user']);
+        $res = $this->getBaseAllFeedbackedRequest($user_id, 'feedbacked_travel_auth_requests', ['status','approver_role', 'user', 'employee_to_cover']);
         return $res;
     }
 

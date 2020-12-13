@@ -96,7 +96,7 @@
                   </v-col>
                 </v-row>
 
-                <v-row  style="background-color:#FBFCFC;border-bottom:1px solid #D6DBDF">
+                <v-row  style="background-color:#FBFCFC;border-bottom:1px solid #D6DBDF" v-if="notGen">
                   <v-col md="4">
                      <v-icon class="primary--text">mdi-account-tie</v-icon> 
                      <span class="ml-2 primary--text  text-caption text-sm-body-2 text-md-body-1">PRP Assigned</span>
@@ -108,7 +108,7 @@
                   </h2>
                   </v-col>
                 </v-row>
-                <v-row  style="background-color:#FBFCFC;border-bottom:1px solid #D6DBDF">
+                <v-row  style="background-color:#FBFCFC;border-bottom:1px solid #D6DBDF" v-if="notGen">
                   <v-col md="4">
                       <v-icon class="primary--text">mdi-account-cash</v-icon>
                       <span class="ml-2 primary--text  text-caption text-sm-body-2 text-md-body-1">Finance Assigned</span>
@@ -237,6 +237,7 @@ import {formatDateStandardDateOnly} from  "../helpers/date_format.js"
 export default {
   data() {
     return {
+      user_type: localStorage.getItem("user_type"),
       isSelecting: false,
       user_name: localStorage.getItem("user_name"),
       prp_assign: localStorage.getItem("prp_assign"),
@@ -246,6 +247,7 @@ export default {
       company_number: localStorage.getItem("company_id"),
       dialog: false,
       department: null,
+      notGen: true,
       company_position: null,
       employment_status: null,
       position: null,
@@ -274,6 +276,9 @@ export default {
       datum: []
     };
   },
+  mounted() {
+    this.notGeneral()
+  },
   created() {
     this.getInfo();
   },
@@ -286,6 +291,11 @@ export default {
     Password
   },
   methods: {
+    notGeneral(){
+      if(this.user_type.includes("general mngr")){
+        this.notGen = false
+      }
+    },
     password(){
       this.$refs.pass.show()
     },

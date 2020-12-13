@@ -81,6 +81,8 @@
           ></v-text-field>
         </v-toolbar>
       </template>
+      <template v-slot:item.details="{ item }">{{convertData(item)}}</template>
+      <template v-slot:item.total_amount="{ item }">₱ {{item.total_amount}}</template>
       <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
     </v-data-table>
@@ -100,6 +102,8 @@
           ></v-text-field>
         </v-toolbar>
       </template>
+      <template v-slot:item.details="{ item }">{{convertData(item)}}</template>
+      <template v-slot:item.total_amount="{ item }">₱ {{item.total_amount}}</template>
       <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
       <template v-slot:item.actions="{ item }">
@@ -156,6 +160,7 @@
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-text-field v-model="editedItem.total_amount" type="number" label="Total Amount" prepend-icon=" mdi-calculator"></v-text-field>
+                <span v-if="errorMessage !== null" style="color: red; font-size: 13px">{{errorMessage}}</span>
               </v-col>
               <v-col cols="12" sm="6" md="12">
                 <v-text-field v-model="editedItem.details" label="Details" prepend-icon=" mdi-file-document"></v-text-field>
@@ -223,6 +228,8 @@
 
         </v-toolbar>
       </template>
+      <template v-slot:item.details="{ item }">{{convertData(item)}}</template>
+      <template v-slot:item.total_amount="{ item }">₱ {{item.total_amount}}</template>
       <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
       <template v-slot:item.actions="{ item }">
@@ -309,6 +316,7 @@ export default {
       { title: 'Disapproved Requests' }
     ],
     approveThis: '',
+    errorMessage: null,
     editedIndex: 1,
     editedItem: {
       date_needed: null,
@@ -387,6 +395,13 @@ export default {
     },
 
     save() {
+      this.error = false
+      if(this.total_amount < 1 && this.date !== null && this.details !== null && this.date !== "" && this.details !== "") { 
+        this.error = false
+        this.errorMessage = "Amount must not be less than 1"
+      }else {
+        this.errorMessage = null
+      }
       if (
         this.editedItem.date !== null &&
         this.editedItem.total_amount !== null &&
@@ -413,7 +428,10 @@ export default {
           });
         this.dialog = false;
       } else {
-        this.error = true;
+        if(this.errorMessage === null){
+          this.error = true;
+        }
+        this.dialog = true;
       }
     },
 
@@ -431,6 +449,9 @@ export default {
     },
     close(){
       this.dialog = false
+    },
+    convertData(item) {
+      return item.details.toUpperCase();
     },
     approveModal(item) {
       this.approveThis = 'approve'
