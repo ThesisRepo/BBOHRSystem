@@ -2,15 +2,15 @@
   <v-card id="container" v-if="isPop" v-on-clickaway="away">
     <v-btn  class="primary" id="title"><b>Notifications</b></v-btn>
 
-    <p v-if="data.length == 0 " id="empMessage">nothing new</p>
+    <p v-if="data.length == 0 " id="empMessage">no notification</p>
     <div v-if="data.length > 0" id="body">
       <v-card id="indvNotification" 
       v-for="(item,index) in data" :key="index"
-      :style="[item.is_seen ? {'background-color':'#e3e3e7', 'cursor':'default'}: {}]"
+      :style="[item.is_seen ? item.message.includes('due')? {'background-color':'#e3e3e7', 'cursor':'default'} : {'background-color':'red', 'color': 'white', 'cursor':'default'} : {}]"
       @click="!item.is_seen? redirect(item) : ''"
       >
         <span>{{item.message}}</span><br>
-        <span id="message">{{item.created_at}}</span>
+        <span id="message" v-if="!item.message.includes('due')">{{item.created_at}}</span>
       </v-card>
     </div>
     <v-btn id="seeMore" @click="more()">see more</v-btn>
