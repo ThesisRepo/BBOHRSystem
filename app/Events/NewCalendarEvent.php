@@ -30,7 +30,7 @@ class NewCalendarEvent implements ShouldBroadcast
     {
         $this->username = $username;
         $this->data = $data;
-        $this->message  = "{$username} {$action}" . " a calendar event" ;
+        $this->message  = "{$username} {$action}" . " a calendar event" . "{$id}" ;
         $datum = [
             'message' => $this->message
         ];    
