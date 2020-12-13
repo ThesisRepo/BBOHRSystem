@@ -99,6 +99,14 @@
           ></v-text-field>
         </v-toolbar>
       </template>
+      <template v-slot:item.destination="{ item }">{{convertData(item)}}</template>
+      <template v-slot:item.file_uri="{ item }">
+        <v-btn color="primary" @click="fileDialog = true; file_uri = item.file_uri">File</v-btn>
+      </template>
+        <!-- <v-divider></v-divider> -->
+        <v-card class="mx-auto" max-width="344">
+          <v-img :src="file_uri" width="500"></v-img>
+        </v-card>
       <template v-slot:item.status.status_name="{ item }">
         <v-chip
           :color="getColor(item.status.status_name)"
@@ -135,6 +143,15 @@
           ></v-text-field>
         </v-toolbar>
       </template>
+      <template v-slot:item.destination="{ item }">{{convertData(item)}}</template>
+      <template v-slot:item.file_uri="{ item }">
+        <v-btn color="primary" @click="fileDialog = true; file_uri = item.file_uri">File</v-btn>
+      </template>
+        <!-- <v-divider></v-divider> -->
+        <v-card class="mx-auto" max-width="344">
+          <v-img :src="file_uri" width="500"></v-img>
+        </v-card>
+
       <template v-slot:item.status.status_name="{ item }">
         <v-chip
           :color="getColor(item.status.status_name)"
@@ -479,10 +496,9 @@ export default {
     user_type: localStorage.getItem("user_type"),
     user_id: localStorage.getItem("id"),
     prp_assigned_id: localStorage.getItem("assigned_prp_id"),
-    employees: false,
-    requests: true,
-    feedback: false,
-    isSelecting: false,
+    employees: localStorage.getItem("user_type").includes('general mngr') ? true: false,
+    requests: localStorage.getItem("user_type").includes('general mngr') ? false: true,
+    feedback: localStorage.getItem("user_type").includes('general mngr') ? false: false,
     dialog: false,
     error: false,
     error1: false,
@@ -805,6 +821,7 @@ export default {
         .then(response => {
           this.showloading = false;
           this.travelPending = response.data;
+          console.log('travelPending', this.travelPending)
         })
         .catch(e => {
           this.showloading = true;

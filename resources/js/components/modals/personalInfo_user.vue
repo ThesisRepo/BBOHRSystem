@@ -418,7 +418,7 @@
                                     required
                                 ></v-select>
                             </v-col>
-                            <v-col cols="12" md="6">
+                            <v-col cols="12" md="4">
                                 <v-select
                                     :items="position"
                                     item-text="position_name"
@@ -429,7 +429,18 @@
                                     required
                                 ></v-select>
                             </v-col>
-                            <v-col cols="12" md="6">
+                            <v-col cols="12" md="4">
+                                <v-select
+                                    :items="rolesItem"
+                                    item-text="text"
+                                    item-value="value"
+                                    label="Roles*"
+                                    prepend-icon="mdi-account-group"
+                                    v-model="roles"
+                                    required
+                                ></v-select>
+                            </v-col>
+                            <v-col cols="12" md="4">
                                 <v-text-field
                                     class="input-name"
                                     v-model="allowed_leave_number"
@@ -610,6 +621,11 @@
         <!-- <businessInfo ref="businesss"></businessInfo> -->
     </v-row>
 </template>
+<style>
+.con{
+  text-transform: uppercase
+}
+</style>
 
 <script>
 // import businessInfo from "./businessInfo_user.vue";
@@ -638,6 +654,7 @@ export default {
         selectPrp: null,
         prp: null,
         finance: null,
+        roles: null,
         selectFinance: null,
         sTime: null,
         error: false,
@@ -667,7 +684,11 @@ export default {
             { text: "Single", value: 1 },
             { text: "Married", value: 2 },
             { text: "Widow", value: 3 },
-            { text: "Widower", value: 4 },
+            { text: "Widower", value: 4 }
+        ],
+        rolesItem: [
+            { text: "Employee", value: 1 },
+            { text: "PRP", value: 2 }
         ],
         comStatus: [],
         position: [],

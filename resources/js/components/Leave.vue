@@ -445,7 +445,6 @@ export default {
     end_date: null,
     start_date: null,
     loading: false,
-
     search: "",
     headers: [
       {
@@ -534,6 +533,7 @@ export default {
         this.user_type.includes("prp emp")) &&
       !this.user_type.includes("finance mngr")) {
       this.retrievePendingPrp();
+      this.retrieve();
       this.getAllFeedback();
       this.checkUser();
     } else {
@@ -587,6 +587,7 @@ export default {
         .get("leave_request/" + this.user_id)
         .then(response => {
           this.request = response.data;
+          console.log('sf', this.request)
           this.loading = false;
         })
         .catch(e => {
@@ -598,7 +599,6 @@ export default {
         .get("prp/leave_request/pending/" + this.user_id)
         .then(response => {
           this.prpPending = response.data;
-          console.log('mao ni cya', response.data)
         })
         .catch(e => {
           console.log(e);
@@ -622,7 +622,6 @@ export default {
       var time = datetime[1]
         .toString()
         .match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [datetime];
-
       if (time.length > 1) {
         // If time format correct
         time = time.slice(1); // Remove full string match value
@@ -632,14 +631,12 @@ export default {
       datetime[1] = time.join("");
       return datetime.join(" "); // return adjusted time or original string
     },
-
     displayTimeLengthInText(num) {
       var item = {
         number_of_days: num
       };
       return item.number_of_days >= 1
         ? // true
-
           Math.floor(item.number_of_days) == item.number_of_days
           ? Math.floor(item.number_of_days) > 1
             ? // true
@@ -659,7 +656,6 @@ export default {
                     60
                 ) > 1
                 ? // hours and minute/s
-
                   Math.floor(item.number_of_days) +
                   " " +
                   "days" +
@@ -770,7 +766,6 @@ export default {
                   60
               ) > 1
               ? // hours and minute/s
-
                 Math.floor(item.number_of_days) +
                 " " +
                 "day" +
@@ -868,7 +863,6 @@ export default {
             " " +
             "min"
         : // false
-
         Math.round(item.number_of_days * 24) >= 1
         ? Math.round(item.number_of_days * 24) > 1
           ? Math.round(
@@ -963,7 +957,6 @@ export default {
       );
       this.differenceDates();
     },
-
     deleteItem(item) {
       this.id = item.id;
       this.$refs.confirmDel.show(item);

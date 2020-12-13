@@ -110,16 +110,18 @@ class UserInformationController extends Controller
 
     public function update(Request $request, $id)
     {
-
+        $prp = ['prp_assigned' => $request->prp_assigned];
         $user = [
             // 'prp_assigned' => $this->user_service->getPRPId(),
             // 'finance_mngr_assigned' => $this->user_service->getFinanceMngrAssignedId(),
-            'prp_assigned' => $request->prp_assigned,
             'finance_mngr_assigned' => $request->finance_assigned,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
         ];
+        if($request->prp_assigned !== null){
+            array_push($user, $prp);
+        }
         if($request->password) {
             $user['password'] = $request->password;
         }

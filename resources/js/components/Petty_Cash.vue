@@ -76,12 +76,14 @@
           ></v-text-field>
         </v-toolbar>
       </template>
+      <template v-slot:item.description_need="{ item }">{{convertData(item)}}</template>
+      <template v-slot:item.total_amount="{ item }">₱ {{item.total_amount}}</template>
       <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
     </v-data-table>
 
     <!-- Employee Overtime -->
-    <v-data-table v-if="employees" :headers="user_type.includes('finance mngr') || user_type.includes('general mngr') ? headersEmp : headersEmployee" :items="pettyPending" :search="search" class="elevation-3">
+    <v-data-table v-if="employees" :headers="(user_type.includes('finance mngr') || user_type.includes('general mngr')) && !user_type.includes('hr mngr') ? headersEmp : headersEmployee" :items="pettyPending" :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-text-field
@@ -95,6 +97,8 @@
           ></v-text-field>
         </v-toolbar>
       </template>
+      <template v-slot:item.description_need="{ item }">{{convertData(item)}}</template>
+      <template v-slot:item.total_amount="{ item }">₱ {{item.total_amount}}</template>
       <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
       <template v-slot:item.actions="{ item }">
@@ -163,6 +167,7 @@
                   label="Total Amount"
                   prepend-icon=" mdi-calculator"
                 ></v-text-field>
+                <span v-if="errorMessage !== null" style="color: red; font-size: 13px">{{errorMessage}}</span>
               </v-col>
             </v-row>
           </v-container>
@@ -226,6 +231,8 @@
 
       </v-toolbar>
     </template>
+      <template v-slot:item.description_need="{ item }">{{convertData(item)}}</template>
+      <template v-slot:item.total_amount="{ item }">₱ {{item.total_amount}}</template>
       <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
       <template v-slot:item.actions="{ item }">
@@ -311,11 +318,11 @@ export default {
     feedbacks: [],
     approveThis: '',
     editedIndex: 1,
+    errorMessage: null,
     editedItem: {
       description_need: null,
       date: null,
-      total_amount: null,
-      details: null
+      total_amount: null
     },
     items: [
       { title: 'Approved Requests' },
@@ -376,6 +383,7 @@ export default {
         )
         .then(response => {
           this.pettyPending = response.data;
+          console.log(this.pettyPending)
         })
         .catch(e => {
           console.log(e);
@@ -392,6 +400,13 @@ export default {
     },
 
     save() {
+      this.error = false
+      if(this.total_amount < 1 && this.date !== null && this.description_need !== null && this.date !== "" && this.description_need !== "") { 
+        this.error = false
+        this.errorMessage = "Amount must not be less than 1"
+      }else {
+        this.errorMessage = null
+      }
       if(this.date !== null && this.description_need !== null &&
       this.total_amount !== null && this.date !== '' && this.description_need !== ''  &&
       this.total_amount !== ''){
@@ -405,10 +420,13 @@ export default {
         }
         this.$axios.post('petty_cash_request/' + this.editedItem.id, params).then(response=>{
           this.retrieve()
-          this.dialog = false
         })
-      }else{
-        this.error = true;
+        this.dialog = false
+      }else {
+        if(this.errorMessage === null){
+          this.error = true;
+        }
+        this.dialog = true;
       }
     },
 
@@ -426,6 +444,9 @@ export default {
             this.informationCheck = true
           }
         })
+    },
+    convertData(item) {
+      return item.description_need.toUpperCase();
     },
     messagePop(){
       if(this.user_finance === 'No Finance assign' && this.informationCheck === null){
