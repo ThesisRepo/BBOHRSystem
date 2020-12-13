@@ -16,11 +16,10 @@ class BudgetRequestsController extends RequestBaseController
         BudgetRequestEloquent $budget_request,
         ApproverRequestService $request_service,
         UserRequestService $user_request_service,
-        UserService $user_service,
-
+        UserService $user_service
     ) {
 
-        $this->middleware(['auth', 'verify.prp', 'verify.manager.finance']);  
+        $this->middleware(['auth', 'verify.prp']);  
         $this->budget_request = $budget_request;
         parent::__construct($request_service,  $budget_request, $user_request_service, 'budget_request', $user_service);
     }
