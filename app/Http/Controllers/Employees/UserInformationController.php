@@ -121,9 +121,18 @@ class UserInformationController extends Controller
     }
 
     public function getAllFinance() {
-
-        $res = response()->json($this->user->getFinance()->toArray(), 200);
-        
+        $isFinance = false;
+        foreach($this->user_service->getAuth()->roles as $role) {
+            if($role->id == 3) {
+                $isFinance = true;
+                break;   
+            }
+        };
+        if(!$isFinance) {
+            $res = response()->json($this->user->getFinance()->toArray(), 200);
+        } else {
+            $res = response()->json($this->user->getGenMngr()->toArray(), 200);            
+        }
         return $res;
     }
 
