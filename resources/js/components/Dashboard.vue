@@ -113,7 +113,8 @@
             :events="events"
             :type="type"
             :now="today"
-            eventOverlap: false
+            eventOverlap: false,
+            selectOverlap: false
             :event-color="getEventColor"
             :event-text-color="getProperColor"
             @click:event="showEvent"
