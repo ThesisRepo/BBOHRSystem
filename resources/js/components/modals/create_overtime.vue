@@ -145,6 +145,8 @@ export default {
       }
     },
     removeData(){
+      this.errorMessage = null,
+      this.error = false,
       this.reason = null,
       this.start_time = null,
       this.end_time = null,

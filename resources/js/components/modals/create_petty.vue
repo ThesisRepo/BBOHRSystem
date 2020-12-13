@@ -23,6 +23,7 @@
         </v-toolbar>
         <v-card-text>
           <v-container>
+            <span v-if="error" style="color: red; font-size: 13px">All data are required</span>
             <v-row>
               <v-col cols="12">
                 <v-text-field label="Purpose*" v-model="description_need" required></v-text-field>
@@ -61,6 +62,7 @@
                   prefix="₱"
                   required
                 ></v-text-field>
+                <span v-if="errorMessage !== null" style="color: red; font-size: 13px">{{errorMessage}}</span>
               </v-col>
             </v-row>
           </v-container>
@@ -85,7 +87,8 @@ export default {
     description_need: null,
     total_amount: null,
     user_department: localStorage.getItem("user_department"),
-    user_id: localStorage.getItem("id")
+    user_id: localStorage.getItem("id"),
+    errorMessage: null
   }),
   mounted() {},
   methods: {
@@ -93,13 +96,21 @@ export default {
       return date > new Date().toISOString().substr(0, 10);
     },
     createPetty() {
+      this.error = false
+      if(this.total_amount < 1 && this.date !== null && this.description_need !== null && this.date !== "" && this.description_need !== "") { 
+        this.error = false
+        this.errorMessage = "Amount must not be less than 1"
+      }else {
+        this.errorMessage = null
+      }
       if (
         this.date !== null &&
         this.description_need !== null &&
         this.total_amount !== null &&
         this.date !== "" &&
         this.description_need !== "" &&
-        this.total_amount !== ""
+        this.total_amount !== "" && 
+        this.errorMessage === null
       ) {
         let parameter = {
           user_id: this.user_id,
@@ -117,14 +128,18 @@ export default {
           });
         this.dialog = false;
       } else {
-        this.error = true;
+        if(this.errorMessage === null){
+          this.error = true;
+        }
         this.dialog = true;
       }
     },
     removeData() {
-      (this.date = null),
-        (this.description_need = null),
-        (this.total_amount = null);
+      this.error = false
+      this.date = null
+      this.description_need = ''
+      this.total_amount = ''
+      this.errorMessage = null
     }
   }
 };
