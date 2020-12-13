@@ -30,7 +30,7 @@ class PrivateCalendarEvent
     {
         $this->id = $data->user->id;
         $this->data = $data;
-        $this->message  = "{$data->event_type->event_name} : {$data->title} " . " will be due within an hour";
+        $this->message  = "{$data->event_type->event_name} : {$data->title} " . " is due within this hour";
         $datum = [
             'message' => $this->message
         ];
