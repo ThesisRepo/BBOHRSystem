@@ -103,9 +103,8 @@ export default {
     this.getShift()
   },
   methods: {
-    isTwoFourHrLater,
     disabledDates(date) {
-      return this.isTwoFourHrLater(date);
+      return date > new Date().toISOString().substr(0, 10);
     },
     hideModal(){
       this.dialog = false
