@@ -12,6 +12,9 @@
         
     </v-app>
 </template>
+<style>
+</style>
+
 <script>
 import Vuetify from "vuetify";
 import sidebar from "./modules/sidebar.vue";

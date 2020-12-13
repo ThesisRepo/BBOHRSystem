@@ -124,8 +124,9 @@ export default {
           }
           this.$axios.post("budget_request", parameter).then(res =>{
             this.$parent.$parent.$parent.$parent.$parent.retrieve()
-            this.dialog = false
+            // this.dialog = false
           })
+          this.dialog = false
         } else {
         if(this.errorMessage === null){
           this.error = true;

@@ -679,19 +679,18 @@ export default {
         comStatus: [],
         position: [],
         civilItem: [
-            { text: "Single", value: 0 },
-            { text: "Married", value: 1 },
-            { text: "Widow", value: 2 }
+            { text: "Single", value: 1 },
+            { text: "Married", value: 2 },
+            { text: "Widow", value: 3 },
+            { text: "Widower", value: 4 },
         ],
         genderItem: [
             { text: "Female", value: 0 },
             { text: "Male", value: 1 }
         ],
         rolesItem: [
-            { text: "Admin", value: 0 },
-            { text: "Finance", value: 1 },
-            { text: "Employee", value: 2 },
-            { text: "Manager", value: 3 }
+            { text: "Employee", value: 1 },
+            { text: "PRP", value: 2 }
         ],
         headers: [
             {
@@ -1063,8 +1062,8 @@ export default {
             this.editItem.tin_number = item.user_information.tin_number;
             this.editItem.philhealth_number =
                 item.user_information.philhealth_number;
-            this.editItem.selectPrp = item.assigned_prp.id;
-            this.editItem.selectFinance = item.assigned_finance.id;
+            this.editItem.selectPrp = item.assigned_prp ? item.assigned_prp.id : null;
+            this.editItem.selectFinance = item.assigned_finance ? item.assigned_finance.id : null;
             this.editItem.first_name = item.first_name;
             this.editItem.last_name = item.last_name;
             this.editItem.email = item.email;
