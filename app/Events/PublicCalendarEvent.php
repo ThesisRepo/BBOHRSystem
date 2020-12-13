@@ -11,7 +11,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use App\Models\User;
 
-class PublicCalendarEvent
+class PublicCalendarEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -44,6 +44,6 @@ class PublicCalendarEvent
      */
     public function broadcastOn()
     {
-        return new Channel('public-calendar');
+        return new Channel('publiccalendar');
     }
 }

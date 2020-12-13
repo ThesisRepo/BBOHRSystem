@@ -11,7 +11,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use App\Models\User;
 
-class PrivateCalendarEvent
+class PrivateCalendarEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -44,6 +44,6 @@ class PrivateCalendarEvent
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('private-calendar.' . $this->id);
+        return new PrivateChannel('privatecalendar.' . $this->id);
     }
 }
