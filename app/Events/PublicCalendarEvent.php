@@ -44,6 +44,6 @@ class PublicCalendarEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('public-calendar');
+        return new Channel('publiccalendar');
     }
 }

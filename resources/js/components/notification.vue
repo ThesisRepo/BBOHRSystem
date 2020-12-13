@@ -6,7 +6,7 @@
     <div v-if="data.length > 0" id="body">
       <v-card id="indvNotification" 
       v-for="(item,index) in data" :key="index"
-      :style="[item.is_seen ? item.message.includes('due')? {'background-color':'#e3e3e7', 'cursor':'default'} : {'background-color':'red', 'color': 'white', 'cursor':'default'} : {}]"
+      :style="[item.is_seen ? !item.message.includes('due')? {'background-color':'#e3e3e7', 'cursor':'default'} : {'background-color':'red', 'color': 'white', 'cursor':'default'} : {}]"
       @click="!item.is_seen? redirect(item) : ''"
       >
         <span>{{item.message}}</span><br>
