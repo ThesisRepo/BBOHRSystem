@@ -30,18 +30,33 @@ class UserEloquent extends EloquentImplementation {
    }
     public function updateUserWithInfo($id, $user, $user_info, $company_position){
       // dd($user_info, $company_position); 
+      // dd('hi');
       $company_position = [
 
       ];
+      $user_in = [
+        'department_id' => $user_info['department_id']['id'],
+        'shift_time_id'=> $user_info['shift_time_id'],
+        'gender' => $user_info['gender'],
+        'company_number'  => $user_info['company_number'],
+        'date_hired'  =>  $user_info['date_hired'],
+        'contact_number'  => $user_info['contact_number'],
+        'civil_status_id'  => $user_info['civil_status_id'],
+        'company_status_id'  => $user_info['company_status']['id'],
+        'regularization_date'  => $user_info['regularization_date'],
+        'birthday'  => $user_info['birthday'],
+        'address'  => $user_info['address'],
+        'allowed_leave_number' => $user_info['allowed_leave_number'],
+      ];
+      // dd($user_info);
       try {
         DB::beginTransaction();
           $res = $this->model->findorFail($id);
           $res->update($user);
-          $res->userInformation->update($user_info);
-          // dd($res->userInformation());
-          $res->userInformation->company_positions()->attach($company_position);
+          $res->userInformation()->update($user_in);
+          // $res->userInformation->company_positions()->attach($company_position);
         DB::commit();
-        // dd($res->toArray());
+        dd($res);
         return $res;
       }catch(\Exception $e) {
         DB::rollback();

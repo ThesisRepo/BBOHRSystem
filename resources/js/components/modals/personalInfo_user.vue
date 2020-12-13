@@ -491,9 +491,9 @@
                 <v-card-text>
                     <v-container>
                         <span
-                            v-if="errorMessage18 !== null"
+                            v-if="errorMessage17 !== null"
                             style="color: red; font-size: 14px"
-                            >{{ errorMessage18 }}</span
+                            >{{ errorMessage17 }}</span
                         >
                         <v-row>
                             <v-col cols="12" md="6">
@@ -664,9 +664,10 @@ export default {
             { text: "Male", value: 1 }
         ],
         civilItem: [
-            { text: "Single", value: 0 },
-            { text: "Married", value: 1 },
-            { text: "Widow", value: 2 }
+            { text: "Single", value: 1 },
+            { text: "Married", value: 2 },
+            { text: "Widow", value: 3 },
+            { text: "Widower", value: 4 },
         ],
         comStatus: [],
         position: [],
@@ -1056,7 +1057,7 @@ export default {
             ) {
                 let params = {
                     address: this.address,
-                    civil_status: this.civil_status,
+                    civil_status_id: this.civil_status,
                     contact_number: this.contact_number,
                     pag_ibig_number: this.pag_ibig_number,
                     sss_number: this.sss_number,
@@ -1080,7 +1081,7 @@ export default {
                     birthday: this.birthday,
                     company_number: this.company_number
                 };
-                console.log("params here", params);
+                console.log('params', params)
                 this.$axios
                     .post("hr/manage/user", params)
                     .then(response => {
