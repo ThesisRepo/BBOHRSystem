@@ -187,4 +187,24 @@ class User extends Authenticatable implements MustVerifyEmail
         });
         return $user;
     }
+
+    public function due_calendar_event() {
+        $this->timezone = 'Asia/Manila';
+        $user = $this->with('roles')->has('shift_time')->whereHas('roles', function($q){
+            $q->whereIn('role_id', [2]);
+          })->get()->filter(function($q) {
+            $isDue = false;
+            $shift_time = explode("-", $q->userInformation->shift_time->shift_time_name);
+            foreach($shift_time as $shift) {
+                $shift_in_24_hour_format  = date("H", strtotime($shift));
+                $this->expression = '* ' . $shift_in_24_hour_format . ' * * *';
+                if( $this->isDue()){
+                    $isDue = true;
+                    break;
+                }
+            };
+          return !$isDue;
+        });
+        return $user;
+    }
 }
