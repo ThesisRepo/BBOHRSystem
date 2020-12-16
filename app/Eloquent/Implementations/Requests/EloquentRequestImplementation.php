@@ -72,7 +72,7 @@ class EloquentRequestImplementation extends EloquentImplementation {
   public function disapproveRequest($id, $data, $current_request, $approver) {
 
     $res = $this->requestFeedback($id, $data, $current_request, $approver);
-
+    return $res;
   }
 
   public function requestFeedback($id, $data, $current_request, $approver) {

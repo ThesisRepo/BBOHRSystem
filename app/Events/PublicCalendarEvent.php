@@ -11,7 +11,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use App\Models\User;
 
-class PublicCalendarEvent
+class PublicCalendarEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -27,7 +27,7 @@ class PublicCalendarEvent
     public function __construct($data)
     {
         $this->data = $data;
-        $this->message  = "{$data->event_type->event_name} : {$data->title} " . " is now due";
+        $this->message  = "{$data->event_type->event_name} : {$data->title} " . " is due within this hour";
         $datum = [
             'message' => $this->message
         ]; 

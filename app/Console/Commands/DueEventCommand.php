@@ -43,7 +43,7 @@ class DueEventCommand extends Command
         $calendar = new CalendarEvent();
         foreach($calendar->due_event() as $event) {
             if($event->is_public == 1) {
-                // event(new PublicCalendarEvent($event));
+                event(new PublicCalendarEvent($event));
             }else {
                 event(new PrivateCalendarEvent($event));
                 $this->info('calendar events were added to application');

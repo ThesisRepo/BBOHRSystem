@@ -23,7 +23,7 @@
                             <v-col cols="12" sm="6" md="4">
                                 <v-text-field
                                     label="Firstname*"
-                                    @keyup="validate('firstname')"
+                                    @keyup="validate('editItem.first_name')"
                                     v-model="editItem.first_name"
                                     prepend-icon="mdi-account-tie"
                                     dense
@@ -43,7 +43,7 @@
                             <v-col cols="12" sm="6" md="4">
                                 <v-text-field
                                     label="Lastname*"
-                                    @keyup="validate('lastname')"
+                                    @keyup="validate('editItem.last_name')"
                                     v-model="editItem.last_name"
                                     prepend-icon="mdi-account-tie"
                                     dense
@@ -76,7 +76,7 @@
                             <v-col cols="12" sm="6" md="6">
                                 <v-text-field
                                     label="Contact Number*"
-                                    @keyup="validate('contact_number')"
+                                    @keyup="validate('editItem.contact_number')"
                                     v-model="editItem.contact_number"
                                     prepend-icon="mdi-contacts"
                                     type="number"
@@ -102,7 +102,7 @@
                                     item-text="text"
                                     item-value="value"
                                     label="Civil Status*"
-                                    @keyup="validate('civil_status')"
+                                    @keyup="validate('editItem.civil_status')"
                                     v-model="editItem.civil_status"
                                     prepend-icon="mdi-account"
                                     dense
@@ -148,7 +148,7 @@
                                     label="Email*"
                                     type="email"
                                     v-model="editItem.email"
-                                    @keyup="validate('email')"
+                                    @keyup="validate('editItem.email')"
                                     prepend-icon="mdi-email"
                                     dense
                                     required
@@ -209,7 +209,7 @@
                                 <v-text-field
                                     label="Address*"
                                     v-model="editItem.address"
-                                    @keyup="validate('address')"
+                                    @keyup="validate('editItem.address')"
                                     prepend-icon="mdi-map-marker"
                                     dense
                                     required
@@ -257,7 +257,7 @@
                                     v-model="editItem.company_number"
                                     label="Company ID"
                                     prepend-icon="mdi-id-card"
-                                    @keyup="validate('company_number')"
+                                    @keyup="validate('editItem.company_number')"
                                 ></v-text-field>
                                 <span
                                     v-if="errorMessage12 !== null"
@@ -303,7 +303,7 @@
                                     item-text="company_status_name"
                                     item-value="id"
                                     label="Status*"
-                                    @keyup="validate('company_status')"
+                                    @keyup="validate('editItem.company_status')"
                                     v-model="editItem.company_status"
                                     prepend-icon="mdi-account"
                                     required
@@ -363,7 +363,7 @@
                                     label="Allowed Leave No."
                                     prepend-icon="mdi-calendar-check"
                                     type="number"
-                                    @keyup="validate('allowed_leave_number')"
+                                    @keyup="validate('editItem.allowed_leave_number')"
                                 ></v-text-field>
                                 <span
                                     class="ml-8"
@@ -404,7 +404,7 @@
                                     :items="finance"
                                     label="Finance Assign"
                                     prepend-icon="mdi-account"
-                                    @keyup="validate('finance_assign')"
+                                    @keyup="validate('editItem.selectFinance')"
                                     :item-text="
                                         finance =>
                                             finance.first_name +
@@ -426,7 +426,7 @@
                                     "
                                     item-value="id"
                                     v-model="editItem.selectPrp"
-                                    @keyup="validate('prp_assign')"
+                                    @keyup="validate('editItem.selectPrp')"
                                     prepend-icon="mdi-account"
                                     required
                                 ></v-select>
@@ -456,16 +456,18 @@
                         Back
                     </v-btn>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" dark @click="next1()">
-                        <v-icon> mdi-arrow-right-bold</v-icon>
-                        Next
+                    <v-btn color="red" dark @click="dialogBusiness = false">
+                        Cancel
+                    </v-btn>
+                    <v-btn color="blue darken-1" dark @click="update()">
+                        Save
                     </v-btn>
                 </v-card-actions>
                 <!-- <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === '"approved"' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template> -->
             </v-card>
         </v-dialog>
         <!-- ******************End of Business Info********************* -->
-        <v-dialog v-model="dialogOthers" persistent max-width="600px">
+        <!-- <v-dialog v-model="dialogOthers" persistent max-width="600px">
             <v-card>
                 <v-toolbar class="mb-2" color="blue darken-1" dark flat>
                     <v-card-title>
@@ -474,6 +476,11 @@
                 </v-toolbar>
                 <v-card-text>
                     <v-container>
+                        <span
+                        v-if="errorMessage17 !== null"
+                        style="color: red; font-size: 14px"
+                        >{{ errorMessage17 }}</span
+                        >
                         <v-row>
                             <v-col cols="12" md="6">
                                 <v-text-field
@@ -484,7 +491,7 @@
                                     prepend-icon="mdi-credit-card"
                                     type="number"
                                 ></v-text-field>
-                                <span
+                                 <span
                                     class="ml-8"
                                     v-if="errorMessage18 !== null"
                                     style="color: red; font-size: 12px"
@@ -585,7 +592,7 @@
                     </v-btn>
                 </v-card-actions>
             </v-card>
-        </v-dialog>
+        </v-dialog> -->
         <!-- <businessInfo ref="businesss"></businessInfo> -->
         <v-data-table
             :headers="headers"
@@ -679,19 +686,18 @@ export default {
         comStatus: [],
         position: [],
         civilItem: [
-            { text: "Single", value: 0 },
-            { text: "Married", value: 1 },
-            { text: "Widow", value: 2 }
+            { text: "Single", value: 1 },
+            { text: "Married", value: 2 },
+            { text: "Widow", value: 3 },
+            { text: "Widower", value: 4 },
         ],
         genderItem: [
             { text: "Female", value: 0 },
             { text: "Male", value: 1 }
         ],
         rolesItem: [
-            { text: "Admin", value: 0 },
-            { text: "Finance", value: 1 },
-            { text: "Employee", value: 2 },
-            { text: "Manager", value: 3 }
+            { text: "Employee", value: 1 },
+            { text: "PRP", value: 2 }
         ],
         headers: [
             {
@@ -857,114 +863,88 @@ export default {
             // this.errorMessage18 = "";
             // this.errorMessage19 = "";
 
-            if (input === "firstname") {
+            if (input === "editItem.first_name") {
                 this.errorMessage1 = null;
                 this.errorMessage2 = null;
-                if (reqWhiteSpace.test(this.first_name)) {
+                if (reqWhiteSpace.test(this.editItem.first_name)) {
                     this.errorMessage1 =
                         "Firstname should not contain a number.";
-                } else if (this.first_name === "") {
+                } else if (this.editItem.first_name === "") {
                     this.errorMessage2 = "Firstname is required.";
-                } else if (!specialChar.test(this.first_name)) {
+                } else if (!specialChar.test(this.editItem.first_name)) {
                     this.errorMessage2 =
                         "Firstname should not contain a special character.";
                 } else {
                     this.errorMessage1 = null;
                     this.errorMessage2 = null;
                 }
-            } else if (input === "lastname") {
+            } else if (input === "editItem.last_name") {
                 this.errorMessage3 = null;
                 this.errorMessage4 = null;
-                if (reqWhiteSpace.test(this.last_name)) {
+                if (reqWhiteSpace.test(this.editItem.last_name)) {
                     this.errorMessage3 =
-                        "lastname should not contain a number.";
-                } else if (this.last_name === "") {
-                    this.errorMessage4 = "lastname is required.";
-                } else if (!specialChar.test(this.last_name)) {
+                        "Lastname should not contain a number.";
+                } else if (this.editItem.last_name === "") {
+                    this.errorMessage4 = "Lastname is required.";
+                } else if (!specialChar.test(this.editItem.last_name)) {
                     this.errorMessage4 =
-                        "lastname should not contain a special character.";
+                        "Lastname should not contain a special character.";
                 } else {
                     this.errorMessage3 = null;
                     this.errorMessage4 = null;
                 }
-            } else if (input === "contact_number") {
+            } else if (input === "editItem.contact_number") {
                 this.errorMessage5 = null;
                 this.successMessage6 = null;
-                if (this.contact_number.length > 11) {
+                if (this.editItem.contact_number.length > 11) {
                     this.errorMessage5 =
                         "Contact number must not exceed 11 numbers";
-                } else if (this.contact_number.length == 0) {
+                } else if (this.editItem.contact_number.length == 0) {
                     this.errorMessage6 = "Contact number is required";
-                } else if (this.contact_number.slice(0, 2) != "09") {
+                } else if (this.editItem.contact_number.slice(0, 2) != "09") {
                     this.errorMessage6 = "Contact number must start with 09";
                 } else {
                     this.errorMessage5 = null;
                     this.errorMessage6 = null;
                 }
-            } else if (input === "address") {
+            } else if (input === "editItem.address") {
                 this.errorMessage7 = null;
-                if (this.address === "") {
+                if (this.editItem.address === "") {
                     this.errorMessage7 = "Address is required";
                 } else {
                     this.errorMessage7 = null;
                 }
-            } else if (input === "email") {
+            } else if (input === "editItem.email") {
                 this.errorMessage8 = null;
-                if (this.validateEmail(this.email) === false) {
+                if (this.validateEmail(this.editItem.email) === false) {
                     this.errorMessage8 =
                         "You have entered an invalid email address.";
-                } else if (this.validateEmail(this.email) === "") {
+                } else if (this.validateEmail(this.editItem.email) === "") {
                     this.errorMessage8 = "Email is required";
                 } else {
                     this.errorMessage8 = null;
                 }
-            } else if (input === "password") {
-                this.errorMessage9 = null;
-                this.errorMessage10 = null;
-                if (this.password.length < 8) {
-                    this.errorMessage9 =
-                        " Password must be atleast 8 characters.";
-                } else if (
-                    /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/.test(
-                        this.password
-                    )
-                ) {
-                    this.successMessage = "Strong password";
-                    this.errorMessage9 = null;
-                    this.errorMessage10 = null;
-                } else {
-                    this.errorMessage10 =
-                        "Password must be alphanumeric characters. It should contain 1 number, 1 special character and 1 capital letter";
-                }
-            } else if (input === "confirm_password") {
-                this.errorMessage11 = null;
-                this.successMessage = null;
-                if (this.password.localeCompare(this.confirm_password) !== 0) {
-                    this.errorMessage11 = "Password did not match";
-                } else {
-                    this.errorMessage11 = null;
-                    this.successMessage = null;
-                }
-            } else if (input === "company_number") {
+           
+            } else if (input === "editItem.company_number") {
                 this.errorMessage12 = null;
                 this.errorMessage13 = null;
-                if (this.company_number.length > 12) {
+                if (this.editItem.company_number.length > 12) {
                     this.errorMessage12 = "Company ID must have 12 characters ";
-                } else if (this.company_number.length == 0) {
+                } else if (this.editItem.company_number.length == 0) {
                     this.errorMessage13 = "Company ID is required";
-                } else if (this.company_number.length < 12) {
+                } else if (this.editItem.company_number.length < 12) {
                     this.errorMessage13 = "Company ID is invalid";
                 } else {
                     this.errorMessage12 = null;
                     this.errorMessage13 = null;
                 }
-            } else if (input === "allowed_leave_number") {
+            } else if (input === "editItem.allowed_leave_number") {
                 this.errorMessage14 = null;
                 this.errorMessage15 = null;
-                if (this.allowed_leave_number > 7) {
+                if (this.editItem.allowed_leave_number > 7) {
                     this.errorMessage14 =
                         "Leave Request must not exceed to 7 days";
-                } else if (this.allowed_leave_number <= 0) {
+                } else if (this.editItem.allowed_leave_number <= 0) {
                     this.errorMessage15 = "Leave number is required";
                 } else {
                     this.errorMessage14 = null;
@@ -1053,18 +1033,16 @@ export default {
             console.log('item', item)
             this.editItem.id = item.id;
             this.editItem.address = item.user_information.address;
-            this.editItem.civil_status = parseInt(
-                item.user_information.civil_status
-            );
+            this.editItem.civil_status = item.user_information.civil_status_id
             this.editItem.contact_number = item.user_information.contact_number;
-            this.editItem.pag_ibig_number =
-                item.user_information.pag_ibig_number;
-            this.editItem.sss_number = item.user_information.sss_number;
-            this.editItem.tin_number = item.user_information.tin_number;
-            this.editItem.philhealth_number =
-                item.user_information.philhealth_number;
-            this.editItem.selectPrp = item.assigned_prp.id;
-            this.editItem.selectFinance = item.assigned_finance.id;
+            // this.editItem.pag_ibig_number =
+            //     item.user_information.pag_ibig_number;
+            // this.editItem.sss_number = item.user_information.sss_number;
+            // this.editItem.tin_number = item.user_information.tin_number;
+            // this.editItem.philhealth_number =
+            //     item.user_information.philhealth_number;
+            this.editItem.selectPrp = item.assigned_prp ? item.assigned_prp.id : null;
+            this.editItem.selectFinance = item.assigned_finance ? item.assigned_finance.id : null;
             this.editItem.first_name = item.first_name;
             this.editItem.last_name = item.last_name;
             this.editItem.email = item.email;
@@ -1084,6 +1062,7 @@ export default {
             this.editItem.birthday = item.user_information.birthday;
             this.editItem.company_number = item.user_information.company_number;
             this.dialogPersonal = true;
+            console.log(item.user_information.civil_status_id)
         },
 
         getCompanyStatus() {
@@ -1116,20 +1095,20 @@ export default {
             let params = {
                 id: this.editItem.id,
                 address: this.editItem.address,
-                civil_status: this.editItem.civil_status,
+                civil_status_id: this.editItem.civil_status,
                 contact_number: this.editItem.contact_number,
-                pag_ibig_number: this.editItem.pag_ibig_number,
-                sss_number: this.editItem.sss_number,
-                tin_number: this.editItem.tin_number,
-                philhealth_number: this.editItem.philhealth_number,
+                // pag_ibig_number: this.editItem.pag_ibig_number,
+                // sss_number: this.editItem.sss_number,
+                // tin_number: this.editItem.tin_number,
+                // philhealth_number: this.editItem.philhealth_number,
                 prp_assigned: this.editItem.selectPrp,
                 finance_assigned: this.editItem.selectFinance,
                 first_name: this.editItem.first_name,
                 last_name: this.editItem.last_name,
                 email: this.editItem.email,
-                password: this.editItem.password,
+                // password: this.editItem.password,
                 regularization_date: this.editItem.regularization_date,
-                password_confirmation: this.editItem.confirm_password,
+                // password_confirmation: this.editItem.confirm_password,
                 department: this.editItem.department,
                 shift_time: this.editItem.shift_time,
                 gender: this.editItem.gender,
@@ -1140,6 +1119,7 @@ export default {
                 birthday: this.editItem.birthday,
                 company_number: this.editItem.company_number
             };
+            console.log('mao ni', params)
             this.$axios
                 .post("hr/manage/user/" + this.editItem.id, params)
                 .then(response => {

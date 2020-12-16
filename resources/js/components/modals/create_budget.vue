@@ -66,6 +66,7 @@
                   prefix="₱"
                   required
                 ></v-text-field>
+                <span v-if="errorMessage !== null" style="color: red; font-size: 13px">{{errorMessage}}</span>
               </v-col>
             </v-row>
           </v-container>
@@ -94,16 +95,25 @@ export default {
     details: null,
     total_amount: null,
     user_department: localStorage.getItem("user_department"),
-    user_id: localStorage.getItem("id")
+    user_id: localStorage.getItem("id"),
+    errorMessage: null
   }),
   methods: {
     disabledDates(date) {
       return date > new Date().toISOString().substr(0, 10);
     },
     createBudget(){
+      this.error = false
+      if(this.total_amount < 1 && this.date !== null && this.details !== null && this.date !== "" && this.details !== "") { 
+        this.error = false
+        this.errorMessage = "Amount must not be less than 1"
+      }else {
+        this.errorMessage = null
+      }
         if(this.date !== null && this.details !== null &&
         this.total_amount !== null && this.date !== '' &&
-        this.total_amount !== '' && this.details !== ''){
+        this.total_amount !== '' && this.details !== '' &&
+        this.errorMessage === null){
           let parameter = {
             user_id: this.user_id,
             date: this.date,
@@ -114,17 +124,22 @@ export default {
           }
           this.$axios.post("budget_request", parameter).then(res =>{
             this.$parent.$parent.$parent.$parent.$parent.retrieve()
-            this.dialog = false
+            // this.dialog = false
           })
-        }else{
-          this.error = true
-          this.dialog = true
+          this.dialog = false
+        } else {
+        if(this.errorMessage === null){
+          this.error = true;
         }
+        this.dialog = true;
+      }
       },
       removeData(){
         this.date = null,
         this.details = null,
         this.total_amount = null
+        this.error = false
+        this.errorMessage = null
       }
   }
   }

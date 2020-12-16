@@ -41,7 +41,7 @@ class CalendarEvent extends Model
             $due_in_year_format  = date("Y", strtotime($due_time));
             // dd($due_in_24_hour_format, $due_in_minute_format, $due_in_day_format, $due_in_month_format ,$due_in_year_format );
             // $this->expression = $due_in_minute_format . ' ' . $due_in_24_hour_format . ' ' .$due_in_day_format . ' ' . $due_in_month_format. ' * ';
-            $this->expression = $due_in_minute_format . ' ' . $due_in_24_hour_format . ' ' .$due_in_day_format . ' ' . $due_in_month_format. ' * ';            
+            $this->expression = ' * ' . $due_in_24_hour_format . ' ' .$due_in_day_format . ' ' . $due_in_month_format. ' * ';            
             if( $this->isDue()){
                 $isDue = true;
                 return $isDue;
