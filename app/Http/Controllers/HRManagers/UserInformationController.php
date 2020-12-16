@@ -68,7 +68,7 @@ class UserInformationController extends Controller
             'birthday' => $request->birthday,
             'allowed_leave_number' => $request->allowed_leave_number,
             'address' => $request->address,
-            'civil_status' => $request->civil_status,
+            'civil_status_id' => $request->civil_status_id,
             'contact_number' => $request->contact_number,
             'pag_ibig_number' => $request->pag_ibig_number,
             'sss_number' => $request->sss_number,
@@ -130,22 +130,16 @@ class UserInformationController extends Controller
             'shift_time_id' => $request->shift_time,
             'gender'=> $request->gender,
             'company_number' => $request->company_number,
-            'profile_url' => $request->profile_url,
             'date_hired' => $request->date_hired,
             'company_status' => $request->company_status,
             'regularization_date' => $request->regularization_date,
             'birthday' => $request->birthday,
             'allowed_leave_number' => $request->allowed_leave_number,
             'address' => $request->address,
-            'civil_status' => $request->civil_status,
-            'contact_number' => $request->contact_number,
-            'pag_ibig_number' => $request->pag_ibig_number,
-            'sss_number' => $request->sss_number,
-            'tin_number' => $request->tin_number,
-            'philhealth_number' => $request->philhealth_number
+            'civil_status_id' => $request->civil_status_id,
+            'contact_number' => $request->contact_number
         ];
         $company_position = $request->company_position;
-        // dd($user_info);
         return $this->user->updateUserWithInfo($id, $user, $user_info, $company_position['id']);        
     }
 

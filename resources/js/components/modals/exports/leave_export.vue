@@ -8,6 +8,16 @@
               <v-col>
                 <span style="font-size: 18px">SUMMARY OF LEAVE REQUEST:</span>
               </v-col>
+              
+              <span style="font-size: 15px">
+                {{
+                start_date
+                ? start_date
+                : "No start date selected"
+                }}
+                /
+                {{ end_date ? end_date : start_date }}
+              </span>
             </v-card-title>
           </v-toolbar>
           <v-card-text>
@@ -24,18 +34,6 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="red" @click="dialog = false" class="mr-2" dark>Close</v-btn>
-            <!-- <vue-json-to-csv
-              :json-data="summary"
-              :csv-title="
-                                'SUMMARY OF OVERTIME REQUEST FROM' +
-                                    start_date +
-                                    '-' +
-                                    end_date
-                            "
-            >
-              <v-btn color="success" v-if="summary.length > 0" class="mr-8">Export as CSV</v-btn>
-              <v-btn disabled v-else class="mr-8">Export as CSV</v-btn>
-            </vue-json-to-csv> -->
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -86,6 +84,7 @@ export default {
         start_date: param1 > param2 ? param2 : param1,
         end_date: param2 ? (param1 > param2 ? param1 : param2) : param1
       };
+      console.log(param)
       if (item === "Approved Requests") {
         this.$axios
           .post("hr/summary/leave_request", param)
