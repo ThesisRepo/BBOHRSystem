@@ -351,8 +351,7 @@
           <v-btn class="text-center" color="primary" @click="onButtonClick">UPLOAD IMAGE</v-btn>
 
           <v-btn color="red" dark @click="fileDialog = false">Cancel</v-btn>
-          <v-btn color="success"   
-          :loading="isSelecting"
+          <v-btn color="success"
           @click="updateFileChanged" dark>Update</v-btn>
         <input
             ref="uploader"
@@ -699,11 +698,9 @@ export default {
     },
    
   onButtonClick() {
-      this.isSelecting = false;
       window.addEventListener(
         "focus",
         () => {
-          this.isSelecting = false;
         },
         { once: true }
       );

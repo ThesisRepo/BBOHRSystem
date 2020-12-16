@@ -82,13 +82,13 @@ export default {
             this.browserPopUp(notif);
           })
 
-         Echo.channel('public-calendar')
+         Echo.channel('publiccalendar')
           .listen('PublicCalendarEvent', notif => {
             this.$store.commit('notificationCountAdd');
             this.$store.commit('notificationAdd', {data:notif});       
             this.browserPopUp(notif);
           })
-        Echo.private('private-calendar.' + this.user.id)
+        Echo.private('privatecalendar.' + this.user.id)
           .listen('PrivateCalendarEvent', notif => {
             this.browserPopUp(notif);
           })

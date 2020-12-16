@@ -101,7 +101,7 @@ export default {
         this.$axios
         .post("hr/summary/shift_change_request/approved/", param)
         .then(response => {
-            this.summary = response.data;
+            // this.summary = response.data;
             this.summary = response.data.feedbacked_shift_change_requests;
             // this.summary.forEach(el => {
             //   this.summary.push(el)
@@ -111,7 +111,7 @@ export default {
         this.$axios
         .post("hr/summary/shift_change_request/disapproved/", param)
         .then(response => {
-            this.summary = response.data;
+            this.summary = response.data.feedbacked_shift_change_requests;
         });
       }
       this.dialog = true;

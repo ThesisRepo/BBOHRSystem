@@ -22,3 +22,11 @@ Broadcast::channel('newrequest.{userId}', function ($user, $userId) {
 Broadcast::channel('newcalendarevent', function () {
     return true;
   });
+
+Broadcast::channel('privatecalendar.{userId}', function ($user, $userId) {
+return $user->id === (int) $userId;
+});
+
+Broadcast::channel('publiccalendar', function () {
+    return true;
+  });
