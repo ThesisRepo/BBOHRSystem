@@ -44,6 +44,6 @@ class PrivateCalendarEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('private-calendar.' . $this->id);
+        return new PrivateChannel('privatecalendar.' . $this->id);
     }
 }

@@ -6,7 +6,7 @@
           <v-toolbar class="mb-2" color="blue darken-1" dark flat>
             <v-card-title>
               <v-col>
-                <span style="font-size: 18px">SUMMARY OF OVERTIME REQUEST:</span>
+                <span style="font-size: 18px">SUMMARY OF LEAVE REQUEST:</span>
               </v-col>
               
               <span style="font-size: 15px">
@@ -23,12 +23,11 @@
           <v-card-text>
             <ejs-grid ref='grid' id='Grid' :dataSource='summary' :toolbar='toolbarOptions' height='270px' :allowPaging='true' :allowExcelExport='true' :toolbarClick='toolbarClick'>
                 <e-columns>
-                    <e-column field='Date' headerText='Date' width=120></e-column>
-                    <e-column field='Products' headerText='All Products' width=150></e-column>
-                    <e-column field='Add_ons' headerText='Add-Ons' width=150></e-column>
-                    <e-column field='DeliveryFee' headerText='Delivery Fee' width=150></e-column>
-                    <e-column field='CupType' headerText='Cup Type' width=150></e-column>
-                    <e-column field='TotalSales' headerText='Total Sales' width=150></e-column>
+                    <e-column field='user.email' headerText='Email' width=120></e-column>
+                    <e-column field='leave_type.leave_type_name' headerText='Type of Leave' width=150></e-column>
+                    <e-column field='number_of_days' headerText='Number of Days' width=150></e-column>
+                    <e-column field='start_date' headerText='Start Date' width=150></e-column>
+                    <e-column field='end_date' headerText='End Date' width=150></e-column>
                 </e-columns>
             </ejs-grid>
           </v-card-text>
@@ -90,14 +89,14 @@ export default {
         this.$axios
           .post("hr/summary/leave_request", param)
           .then(response => {
-            this.summary = response.data;
+            this.summary = response.data.feedbacked_leave_requests;
             console.log(this.summary)
           });
       } else if (item === "Disapproved Requests") {
         this.$axios
           .post("hr/summary/leave_request", param)
           .then(response => {
-            this.summary = response.data;
+            this.summary = response.data.feedbacked_leave_requests;
           });
       }
       this.dialog = true;
@@ -105,25 +104,16 @@ export default {
     toolbarClick(args) {
         if (args.item.id === 'Grid_excelexport') { // 'Grid_excelexport' -> Grid component id + _ + toolbar item name
             let excelExportProperties = {
-                // fileName: this.formatDate + ' Sales.xlsx',
+                fileName: ' Leave Request.xlsx',
                 header: {
-                    headerRows: 7,
+                    headerRows: 5,
                     rows: [
-                        { cells: [{ colSpan: 6, value: "Driptea System", style: { fontColor: '#C67878', fontSize: 20, hAlign: 'Center', bold: true, } }] },
-                        { cells: [{ colSpan: 6, value: "A.C. Cortes Ave., Looc", style: { fontColor: '#C67878', fontSize: 15, hAlign: 'Center', bold: true, } }] },
-                        { cells: [{ colSpan: 6, value: "6014 Mandaue City, Philippine", style: { fontColor: '#C67878', fontSize: 15, hAlign: 'Center', bold: true, } }] },
-                        { cells: [{ colSpan: 6, value: "0917 329 7269", style: { fontColor: '#C67878', fontSize: 15, hAlign: 'Center', bold: true, } }] },
-                        { cells: [{ colSpan: 6, hyperlink: { target: 'https://www.facebook.com/driptealoocmandaue/', displayText: 'www.facebook.com/driptealoocmandaue' }, style: { hAlign: 'Center' } }] },
-                        { cells: [{ colSpan: 6, hyperlink: { target: 'samuelazurajr@gmail.com' }, style: { hAlign: 'Center' } }] },
+                        { cells: [{ colSpan: 5, value: "BBO REQUEST MANAGEMENT SYSTEM", style: { fontColor: '#C67878', fontSize: 20, hAlign: 'Center', bold: true, } }] },
+                        { cells: [{ colSpan: 5, value: "Unit 1, 8F Mabuhay Tower IT Park", style: { fontColor: '#C67878', fontSize: 15, hAlign: 'Center', bold: true, } }] },
+                        { cells: [{ colSpan: 5, value: "Cebu City, 6000 Cebu, Philippine", style: { fontColor: '#C67878', fontSize: 15, hAlign: 'Center', bold: true, } }] },
+                        { cells: [{ colSpan: 5, value: "09269753710", style: { fontColor: '#C67878', fontSize: 15, hAlign: 'Center', bold: true, } }] }
                     ]
                 },
-                footer: {
-                    footerRows: 3,
-                    rows: [
-                        { cells: [{ colSpan: 6, value: ("Total Sales: " + this.overAllTotal), style: { hAlign: 'Right', bold: true } }] },
-                        { cells:  [{ colSpan: 2, value: "Print By: " + this.adminName + '  ' +  moment(new Date()).format('MM/DD/YYYY'), style: {fontSize: 15, hAlign: 'Left', bold: true, }},]},
-                    ]
-                }
             };
             this.$refs.grid.excelExport(excelExportProperties);
         }
