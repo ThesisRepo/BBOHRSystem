@@ -20,67 +20,43 @@
               </span>
             </v-card-title>
           </v-toolbar>
-          <v-card-text v-if="summary.length > 0">
-            <v-container>
-              <template>
-                <v-data-table :headers="headers" :items="summary" class="elevation-1">
-                  <template v-slot:header.name="{ header }">{{ header.text.toUpperCase() }}</template>
-                </v-data-table>
-              </template>
-            </v-container>
+          <v-card-text>
+            <ejs-grid ref='grid' id='Grid' :dataSource='summary' :toolbar='toolbarOptions' height='270px' :allowPaging='true' :allowExcelExport='true' :toolbarClick='toolbarClick'>
+                <e-columns>
+                    <e-column field='user.email' headerText='REQUESTER' width=150></e-column>
+                    <e-column field='destination' headerText='DESTINATION' width=150></e-column>
+                    <e-column field='start_date' headerText='START DATE' width=120></e-column>
+                    <e-column field='end_date' headerText='END DATE' width=150></e-column>
+                    <e-column field='emergency_contact' headerText='EMERGENCY CONTACT' width=150></e-column>
+                </e-columns>
+            </ejs-grid>
           </v-card-text>
-            <v-card-text v-else>
-                <center>
-                <h1>No data</h1>
-                </center>
-            </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="red" @click="dialog = false" class="mr-2" dark>Close</v-btn>
-            <vue-json-to-csv
-              :json-data="summary"
-              :csv-title="
-                                'SUMMARY OF TRAVEL REQUEST FROM' +
-                                    start_date +
-                                    '-' +
-                                    end_date
-                            "
-            >
-              <v-btn color="success" v-if="summary.length > 0" class="mr-8">Export as CSV</v-btn>
-              <v-btn disabled v-else class="mr-8">Export as CSV</v-btn>
-            </vue-json-to-csv>
           </v-card-actions>
         </v-card>
       </v-dialog>
     </v-row>
   </div>
 </template>
+<style scoped>
+@import url('https://cdn.syncfusion.com/ej2/material.css');
+</style>
 <script>
-import VueJsonToCsv from "vue-json-to-csv";
+import { GridPlugin, Toolbar, ExcelExport } from "@syncfusion/ej2-vue-grids";
+import Vue from "vue";
+Vue.use(GridPlugin)
 export default {
   data: () => ({
+    toolbarOptions: ['ExcelExport'],
     dialog: false,
     summary: [],
     start_date: "",
-    end_date: "",
-    headers: [
-      {
-        text: "REQUESTER",
-        align: "start",
-        value: "user_id"
-      },
-      { text: "DESTINATION", value: "destination" },
-      { text: "START DATE", value: "start_date" },
-      { text: "END DATE", value: "end_date" },
-      { text: "EMERGENCY CONTACT", value: "emergency_contact" },
-      { text: "EMPLOYEE TO COVER", value: "employee_to_cover" },
-      { text: "EMPLOYEE TO COVER'S NUMBER", value: "contact_number" },
-      { text: "DOCUMENT", value: "file_uri" },
-      { text: "STATUS", value: "status.status_name" }
-    ]
+    end_date: ""
   }),
-  components: {
-    "vue-json-to-csv": VueJsonToCsv
+  provide: {
+      grid: [Toolbar, ExcelExport]
   },
   methods: {
     show(param1, param2, item) {
@@ -94,17 +70,34 @@ export default {
         this.$axios
         .post("hr/summary/travel_auth_request", param)
         .then(response => {
-            this.summary = response.data;
+            this.summary = response.data.feedbacked_travel_auth_requests;
         });
       }else if(item === 'Disapproved Requests'){
         this.$axios
         .post("hr/summary/travel_auth_request", param)
         .then(response => {
-            this.summary = response.data;
+            this.summary = response.data.feedbacked_travel_auth_requests;
         });
       }
       this.dialog = true;
-    }
+    },
+    toolbarClick(args) {
+        if (args.item.id === 'Grid_excelexport') { // 'Grid_excelexport' -> Grid component id + _ + toolbar item name
+            let excelExportProperties = {
+                fileName: ' Travel Authorization Request.xlsx',
+                header: {
+                    headerRows: 5,
+                    rows: [
+                        { cells: [{ colSpan: 5, value: "BBO REQUEST MANAGEMENT SYSTEM", style: { fontColor: '#0000FF', fontSize: 20, hAlign: 'Center', bold: true, } }] },
+                        { cells: [{ colSpan: 5, value: "Unit 1, 8F Mabuhay Tower IT Park", style: { fontColor: '#0000FF', fontSize: 15, hAlign: 'Center', bold: true, } }] },
+                        { cells: [{ colSpan: 5, value: "Cebu City, 6000 Cebu, Philippine", style: { fontColor: '#0000FF', fontSize: 15, hAlign: 'Center', bold: true, } }] },
+                        { cells: [{ colSpan: 5, value: "(032) 328 2321", style: { fontColor: '#0000FF', fontSize: 15, hAlign: 'Center', bold: true, } }] }
+                    ]
+                },
+            };
+            this.$refs.grid.excelExport(excelExportProperties);
+        }
+    },
   }
 };
 </script>

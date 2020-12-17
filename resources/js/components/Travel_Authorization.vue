@@ -179,7 +179,7 @@
     <Confirmation
       ref="confirms"
       :title="approveThis === 'approve' || 'disapproved' ? 'Confirmation' : ''"
-      :message="approveThis === 'approve' ? 'Are you sure you want to approve this request?' : approveThis === 'disapprove' ? 'Are you sure you want to reject this request?' : approveThis === 'image' ? 'Are you sure you want to update this image?' : ''"
+      :message="approveThis === 'approve' ? 'Are you sure you want to approve this request?' : approveThis === 'disapproved' ? 'Are you sure you want to reject this request?' : approveThis === 'image' ? 'Are you sure you want to update this image?' : ''"
       @onConfirm="confirm($event)"
     ></Confirmation>
 
@@ -351,8 +351,7 @@
           <v-btn class="text-center" color="primary" @click="onButtonClick">UPLOAD IMAGE</v-btn>
 
           <v-btn color="red" dark @click="fileDialog = false">Cancel</v-btn>
-          <v-btn color="success"   
-          :loading="isSelecting"
+          <v-btn color="success"
           @click="updateFileChanged" dark>Update</v-btn>
         <input
             ref="uploader"
@@ -699,11 +698,9 @@ export default {
     },
    
   onButtonClick() {
-      this.isSelecting = false;
       window.addEventListener(
         "focus",
         () => {
-          this.isSelecting = false;
         },
         { once: true }
       );
@@ -817,7 +814,7 @@ export default {
     retrieveTravel() {
       this.showloading = true;
       this.$axios
-        .get("travel_auth_request/pending/" + this.user_id)
+        .get("prp/travel_auth_request/pending/" + this.user_id)
         .then(response => {
           this.showloading = false;
           this.travelPending = response.data;
