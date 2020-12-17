@@ -23,29 +23,17 @@
           <v-card-text>
             <ejs-grid ref='grid' id='Grid' :dataSource='summary' :toolbar='toolbarOptions' height='270px' :allowPaging='true' :allowExcelExport='true' :toolbarClick='toolbarClick'>
                 <e-columns>
-                    <e-column field='user.email' headerText='Email' width=120></e-column>
-                    <e-column field='reason' headerText='Reason' width=150></e-column>
-                    <e-column field='date' headerText='Date' width=150></e-column>
-                    <e-column field='start_time' headerText='Start Time' width=150></e-column>
-                    <e-column field='end_time' headerText='End Time' width=150></e-column>
+                    <e-column field='user.email' headerText='REQUESTER' width=120></e-column>
+                    <e-column field='reason' headerText='REASON' width=150></e-column>
+                    <e-column field='date' headerText='DATE' width=150></e-column>
+                    <e-column field='start_time' headerText='START TIME' width=150></e-column>
+                    <e-column field='end_time' headerText='END TIME' width=150></e-column>
                 </e-columns>
             </ejs-grid>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="red" @click="dialog = false" class="mr-2" dark>Close</v-btn>
-            <!-- <vue-json-to-csv
-              :json-data="summary"
-              :csv-title="
-                                'SUMMARY OF OVERTIME REQUEST FROM' +
-                                    start_date +
-                                    '-' +
-                                    end_date
-                            "
-            >
-              <v-btn color="success" v-if="summary.length > 0" class="mr-8">Export as CSV</v-btn>
-              <v-btn disabled v-else class="mr-8">Export as CSV</v-btn>
-            </vue-json-to-csv> -->
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -115,10 +103,10 @@ export default {
                 header: {
                     headerRows: 5,
                     rows: [
-                        { cells: [{ colSpan: 5, value: "BBO REQUEST MANAGEMENT SYSTEM", style: { fontColor: '#C67878', fontSize: 20, hAlign: 'Center', bold: true, } }] },
-                        { cells: [{ colSpan: 5, value: "Unit 1, 8F Mabuhay Tower IT Park", style: { fontColor: '#C67878', fontSize: 15, hAlign: 'Center', bold: true, } }] },
-                        { cells: [{ colSpan: 5, value: "Cebu City, 6000 Cebu, Philippine", style: { fontColor: '#C67878', fontSize: 15, hAlign: 'Center', bold: true, } }] },
-                        { cells: [{ colSpan: 5, value: "09269753710", style: { fontColor: '#C67878', fontSize: 15, hAlign: 'Center', bold: true, } }] }
+                        { cells: [{ colSpan: 5, value: "BBO REQUEST MANAGEMENT SYSTEM", style: { fontColor: '#0000FF', fontSize: 20, hAlign: 'Center', bold: true, } }] },
+                        { cells: [{ colSpan: 5, value: "Unit 1, 8F Mabuhay Tower IT Park", style: { fontColor: '#0000FF', fontSize: 15, hAlign: 'Center', bold: true, } }] },
+                        { cells: [{ colSpan: 5, value: "Cebu City, 6000 Cebu, Philippine", style: { fontColor: '#0000FF', fontSize: 15, hAlign: 'Center', bold: true, } }] },
+                        { cells: [{ colSpan: 5, value: "(032) 328 2321", style: { fontColor: '#0000FF', fontSize: 15, hAlign: 'Center', bold: true, } }] }
                     ]
                 },
             };

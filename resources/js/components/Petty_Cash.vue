@@ -256,7 +256,7 @@
 import createPetty from "./modals/create_petty.vue";
 import Confirmation from "./modals/confirmation/confirm.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
-import SummaryTemplate from "./modals/exports/overtime_export.vue";
+import SummaryTemplate from "./modals/exports/petty_export.vue";
 import Reminder from "./modals/confirmation/reminder.vue";
 import Loading from "./Loading.vue";
 
