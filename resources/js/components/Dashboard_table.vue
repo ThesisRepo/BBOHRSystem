@@ -10,7 +10,7 @@
     </v-toolbar>
     </template>
     <template v-if="!isGenManager" v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name === 'pending' ? 'PENDING' : ''}}</v-chip> </template>
-    <template v-if="!isGenManager" v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
+    <template v-if="!isGenManager" v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip></template>
     <template v-if="isGenManager" v-slot:item.user="{ item }">
       {{item.user.first_name + ' ' + item.user.last_name }}
     </template>

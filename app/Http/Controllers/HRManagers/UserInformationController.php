@@ -233,9 +233,9 @@ class UserInformationController extends Controller
                  $end_date = $start_date;
             }
         }
+        // dd($table_name, $relationship, $start_date, $end_date, $user_id);
         $res = $this->user->getRequestFeedbackedDate( $user_id, $table_name, $relationship, $start_date, $end_date);  
         return $res;
-        
     }
 
 }

@@ -371,6 +371,7 @@ class UserEloquent extends EloquentImplementation {
       array_push( $new_relationship, $relationship . '.' . 'leave_type' );
     }
     $res = $this->findWith( $user_id, $new_relationship);
+    // dd();
     return $res;
 
   }
