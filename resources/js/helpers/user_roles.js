@@ -17,3 +17,8 @@ export function isPRP(roles) {
   let hasFinancenManager = roles.includes("finance mngr");
   return hasFinancenManager;
 }
+
+export function hasAdmin(roles) {
+  let hasAdmin = roles.includes("admin");
+  return hasAdmin;
+}

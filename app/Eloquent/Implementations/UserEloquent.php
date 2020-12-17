@@ -22,7 +22,25 @@ class UserEloquent extends EloquentImplementation {
     }
     
     public function updateWithUserInfo($data, $id){
-       return  $this->model->findorFail($id)->userInformation()->updateOrCreate(['user_id' => $id], $data);
+      $user = [
+        'first_name'=> $data['first_name'],
+        'last_name'=> $data['last_name'],
+      ];
+      if(array_key_exists('email', $data)) {
+        $user['email'] =$data['email'];
+      }
+      $user_info =array_diff($data,$user);
+      try {
+        DB::beginTransaction();
+          $res = $this->model->findorFail($id);
+          $res->update($user);
+          $res->userInformation()->update($user_info);
+        DB::commit();
+        return $res;
+      }catch(\Exception $e) {
+        DB::rollback();
+        return $e;
+      }
     }
 
     public function allWith($relationship){
@@ -56,7 +74,6 @@ class UserEloquent extends EloquentImplementation {
           $res->userInformation()->update($user_in);
           // $res->userInformation->company_positions()->attach($company_position);
         DB::commit();
-        dd($res);
         return $res;
       }catch(\Exception $e) {
         DB::rollback();
@@ -95,8 +112,10 @@ class UserEloquent extends EloquentImplementation {
       
       $res = $this->model->whereHas('roles', function($q){
         $q->whereIn('role_id', [4]);
+      })->whereDoesntHave('roles', function($q) {
+        $q->whereIn('role_id', [6]);
       })->get();
-      
+
       return $res;
 
     }

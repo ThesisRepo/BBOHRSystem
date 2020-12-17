@@ -61,7 +61,7 @@
               <v-col cols="12" md="6">
                 <v-text-field
                   label="Contact No.*"
-                  type="number"
+                  type="text"
                   v-model="datas.contact_number"
                   @keyup="validate('contact_number')"
                   required
