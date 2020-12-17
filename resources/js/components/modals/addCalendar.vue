@@ -41,7 +41,7 @@
                 class="ml-7"
                 style="color: red; font-size: 13px"
               >Higher the End Date</span>
-              <v-col cols="12" v-if="user_type.includes('hr mngr')">
+              <v-col cols="12" v-if="user_type.includes('hr mngr') || user_type.includes('admin')">
                 <v-checkbox
                   v-model="checkbox"
                   label="Public"
@@ -158,7 +158,7 @@ export default {
       this.validate('title')
       this.validate('event')
       this.validate('details')
-      if(this.user_type.includes('hr mngr')) {
+      if(this.user_type.includes('hr mngr') || this.user_type.includes('admin')) {
         let params = {
           title: this.title,
           start_date: this.start_date,

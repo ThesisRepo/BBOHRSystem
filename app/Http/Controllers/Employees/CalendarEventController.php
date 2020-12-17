@@ -48,7 +48,9 @@ class CalendarEventController extends Controller
         ];
         $res = $this->calendar_event->create($data);
         $employee_name = $this->getFullName();
-        $this->notifyNewEventCalendar('added', $employee_name, $res);
+        if($request->is_public) {
+            $this->notifyNewEventCalendar('added', $employee_name, $res);
+        }
         return $res;
     }
 
@@ -64,14 +66,19 @@ class CalendarEventController extends Controller
         ];
         $res = $this->calendar_event->find($id)->update($data);
         $employee_name = $this->getFullName();
-        $this->notifyNewEventCalendar('updated', $employee_name, $res);        
+        if($request->is_public) {
+            $this->notifyNewEventCalendar('updated', $employee_name, $res);
+        }
         return response()->json($res, 200);
     }
 
     public function delete($id) {
+        $is_public = $this->calendar_event->find($id)->is_public;
         $res = $this->calendar_event->delete($id);
         $employee_name = $this->getFullName();
-        $this->notifyNewEventCalendar('deleted', $employee_name, $res);
+        if($is_public) {
+            $this->notifyNewEventCalendar('deleted', $employee_name, $res);            
+        }
         return response()->json($res, 200);
     }
 

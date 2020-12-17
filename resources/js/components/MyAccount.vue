@@ -13,7 +13,7 @@
               justify="center"
               >
               <!-- style="background-color:blue" -->
-              <v-col  md="3" style="text-align:center">
+              <v-col md="3" style="text-align:center">
                 <!-- <v-avatar v-if="profile_url === null" class="ml-15" size="200">
                   <img src="images/user.png" width="100%" height="100%" id="profile">
                   <div class="overlay" @click="onButtonClick">upload image</div>
@@ -51,13 +51,14 @@
                 </v-row> 
               </v-col>
 
-              <v-col  class="pl-md-10 pr-md-10">
+              <v-col  class="pl-md-10 pr-md-10"  md="8">
                 <v-row >
                   <v-col col="12" md="6">
                     <h4 class="text-truncate text-center text-md-left primary--text">{{ user_name ? user_name : 'No User Name' }}</h4>
                   </v-col>
                   <v-col col="12" md="6">
-                    <editProfile :datas="datas" :datum="datum" class="float-md-right"></editProfile>
+                    <editProfile v-if="!isAdmin" :datas="datas" :datum="datum" class="float-md-right"></editProfile>
+                    <EditProfileAdmin v-else :userData="editProfileInformation" @update="getInfo()" ref="editProfileAdmin"></EditProfileAdmin>
                   </v-col>
                 </v-row>
                 <v-row style="background-color:#FBFCFC;border-bottom:1px solid #D6DBDF">
@@ -66,8 +67,8 @@
                      <span class="ml-2 primary--text  text-caption text-sm-body-2 text-md-body-1">Company Position</span>
                   </v-col>
                   <v-col md="8">
-                    <h2 class="text--primary text-caption text-md-right text-sm-body-2 text-md-body-1">              
-                      {{ company_position != null ? company_position : 'No Position' }}
+                    <h2 class="text--primary text-caption text-md-right text-sm-body-2 text-md-body-1"  :style="[company_position ? {}: {'color': 'grey!important'}]">              
+                      {{ company_position != null ? company_position : 'NA' }}
                     </h2>
                   </v-col>
                 </v-row>
@@ -77,8 +78,8 @@
                      <span class="ml-2 primary--text  text-caption text-sm-body-2 text-md-body-1">Company E-mail</span>
                   </v-col>
                   <v-col md="6">
-                    <h2 class="text--primary text-caption  text-md-right text-sm-body-2 text-md-body-1 "> 
-                      {{ user_email ? user_email : 'No email' }}
+                    <h2 class="text--primary text-caption  text-md-right text-sm-body-2 text-md-body-1 "  :style="[user_email ? {}: {'color': 'grey!important'}]"> 
+                      {{ user_email ? user_email : 'NA' }}
                     </h2>
                   </v-col>
                 </v-row>
@@ -90,32 +91,32 @@
 
                   </v-col>
                   <v-col md="6">
-                    <h2 class="text--primary text-caption text-md-right text-sm-body-2 text-md-body-1" :style="[company_number != 'null' ? {}: {'color': 'grey!important'}]">
-                      {{ company_number != 'null' ? company_number : 'NA' }}
+                    <h2 class="text--primary text-caption text-md-right text-sm-body-2 text-md-body-1" :style="[company_number ? {}: {'color': 'grey!important'}]">
+                      {{ company_number ? company_number : 'NA' }}
                     </h2>
                   </v-col>
                 </v-row>
 
-                <v-row  style="background-color:#FBFCFC;border-bottom:1px solid #D6DBDF" v-if="notGen">
+                <v-row  style="background-color:#FBFCFC;border-bottom:1px solid #D6DBDF" v-if="notGen && notAdmin">
                   <v-col md="4">
                      <v-icon class="primary--text">mdi-account-tie</v-icon> 
                      <span class="ml-2 primary--text  text-caption text-sm-body-2 text-md-body-1">PRP Assigned</span>
                   </v-col>
                   <v-col md="8">
-                    <h2 class="text--primary text-caption text-md-right text-sm-body-2 text-md-body-1">
-                    {{ prp_assign }}
+                    <h2 class="text--primary text-caption text-md-right text-sm-body-2 text-md-body-1"  :style="[prp_assign ? {}: {'color': 'grey!important'}]">
+                    {{ prp_assign ?  prp_assign : 'No Assigned PRP'}}
                     <u class="indigo--text text-md-right lighten-1--text" style="cursor:pointer" @click="updatePrp">UPDATE PRP</u>                    
                   </h2>
                   </v-col>
                 </v-row>
-                <v-row  style="background-color:#FBFCFC;border-bottom:1px solid #D6DBDF" v-if="notGen">
+                <v-row  style="background-color:#FBFCFC;border-bottom:1px solid #D6DBDF" v-if="notGen && notAdmin">
                   <v-col md="4">
                       <v-icon class="primary--text">mdi-account-cash</v-icon>
                       <span class="ml-2 primary--text  text-caption text-sm-body-2 text-md-body-1">Finance Assigned</span>
                   </v-col>
                   <v-col md="8">
-                    <h2 class="text--primary text-caption text-md-right text-sm-body-2 text-md-body-1">
-                    {{  user_finance }}
+                    <h2 class="text--primary text-caption text-md-right text-sm-body-2 text-md-body-1"  :style="[user_finance ? {}: {'color': 'grey!important'}]">
+                    {{  user_finance ?  user_finance : 'No Assigned Finance' }}
                     <u class="indigo--text text-md-right lighten-1--text" style="cursor:pointer" @click="updateFinance">UPDATE FINANCE</u>                    
                   </h2>
                   </v-col>
@@ -230,9 +231,10 @@ import updatePrp from "./modals/edit_prp.vue";
 import updateFinance from "./modals/edit_finance.vue";
 import Reminder from "./modals/confirmation/reminder.vue";
 import Confirmation from "./modals/confirmation/confirm.vue";
-import Password from "./modals/change_password.vue"
+import Password from "./modals/change_password.vue";
+import EditProfileAdmin from "./modals/personalInfo_user.vue";
 import { mapGetters } from "vuex";
-import {formatDateStandardDateOnly} from  "../helpers/date_format.js"
+import {formatDateStandardDateOnly} from  "../helpers/date_format.js";
 
 export default {
   data() {
@@ -248,6 +250,7 @@ export default {
       dialog: false,
       department: null,
       notGen: true,
+      notAdmin: true,
       company_position: null,
       employment_status: null,
       position: null,
@@ -273,11 +276,54 @@ export default {
       imgMaxSize: 2.097152,
       confirmationTitle:null,
       confirmationMessage: null,
-      datum: []
+      datum: [],
+      editProfileInformation: {
+        address: null,
+        contact_number: null,
+        pag_ibig_number: null,
+        sss_number: null,
+        tin_number: null,
+        philhealth_number: null,
+        first_name: null,
+        last_name: null,
+        password: null,
+        confirm_password: null,
+        email: null,
+        valuePass: true,
+        value: true,
+        dialogPersonal: false,
+        dialogBusiness: false,
+        dialogOthers: false,
+        departmentItem: null,
+        birthday: null,
+        menu: false,
+        selectPrp: null,
+        prp: null,
+        finance: null,
+        roles: null,
+        selectFinance: null,
+        sTime: null,
+        error: false,
+        civil_status: null,
+        regularization_date: null,
+        prp_assigned: null,
+        finance_assigned: null,
+        allowed_leave_number: null,
+        department: null,
+        shift_time: null,
+        gender: null,
+        company_position: null,
+        date_hired: null,
+        company_status: null,
+        company_number: null,
+      },
+      isAdmin: false
     };
   },
   mounted() {
-    this.notGeneral()
+    this.isAdmin = this.isAdminFunc(this.$store.getters.roleList);
+    this.notGeneral();
+    this.notAdminstration();
   },
   created() {
     this.getInfo();
@@ -288,12 +334,18 @@ export default {
     updateFinance,
     Reminder,
     Confirmation,
-    Password
+    Password,
+    EditProfileAdmin
   },
   methods: {
     notGeneral(){
       if(this.user_type.includes("general mngr")){
-        this.notGen = false
+        this.notGen = false;
+      }
+    },
+    notAdminstration(){
+      if(this.user_type.includes("admin")){
+        this.notAdmin = false;
       }
     },
     password(){
@@ -312,6 +364,7 @@ export default {
         .then(response => {
           this.prp_assign = localStorage.getItem("prp_assign");
           this.user_finance = localStorage.getItem("user_finance");
+          console.log('hi', response.data);
           if(response.data.user_information !== null){
             this.datas = response.data.user_information;
             this.datum = response.data
@@ -326,15 +379,39 @@ export default {
             this.address = response.data.user_information.address;
             this.status = response.data.user_information.civil_status;
             this.company_status = response.data.user_information.company_status;
-            // this.profile_url = response.data.user_information.profile_url;
             this.birthdate = response.data.user_information.birthday;
             this.contact_number = response.data.user_information.contact_number;
             this.pag_ibig = response.data.user_information.pag_ibig_number;
             this.tin_number = response.data.user_information.tin_number;
             this.philhealth_num = response.data.user_information.philhealth_number;
             this.sss_num = response.data.user_information.sss_number;
+            // applicable for admin users only
+            if(this.isAdmin) {
+              this.editProfileInformation.address = response.data.user_information.address;
+              this.editProfileInformation.contact_number = response.data.user_information.contact_number;
+              this.editProfileInformation.pag_ibig_number = response.data.user_information.pag_ibig_number;
+              this.editProfileInformation.sss_number = response.data.user_information.sss_number;
+              this.editProfileInformation.philhealth_number = response.data.user_information.philhealth_number;
+              this.editProfileInformation.first_name = response.data.first_name;
+              this.editProfileInformation.last_name = response.data.last_name;
+              this.editProfileInformation.email =  response.data.email;
+              this.editProfileInformation.birthday = response.data.user_information.birthday;
+              this.editProfileInformation.civil_status = response.data.user_information.civil_status_id;
+              this.editProfileInformation.regularization_date = response.data.user_information.regularization_date;
+              this.editProfileInformation.prp_assigned = response.data.prp_assigned;
+              this.editProfileInformation.finance_assigned = response.data.finance_mngr_assigned;
+              this.editProfileInformation.department = response.data.user_information.department;
+              this.editProfileInformation.shift_time = response.data.user_information.shift_time;
+              this.editProfileInformation.gender = response.data.user_information.gender;
+              this.editProfileInformation.company_position = response.data.company_position;
+              this.editProfileInformation.date_hired = response.data.user_information.date_hired;
+              this.editProfileInformation.company_status = response.data.user_information.company_status_id;
+              this.editProfileInformation.company_number = response.data.user_information.company_number;
+            }
             this.$store.commit('ChangeProfileUrl', response.data.user_information.profile_url == null ? 'images/user.png' : response.data.user_information.profile_url);
           }
+        }).catch(err => {
+          console.log('err', err);
         })
     },
     onButtonClick() {
@@ -391,14 +468,29 @@ export default {
       //     formData
       //   )
       //   .then(response => {});
+    },
+    isAdminFunc(list) {
+      let roleList = list;
+      let res = roleList.includes('hr mngr') || 
+      roleList.includes('finance mngr') || 
+      roleList.includes('general mngr') || 
+      roleList.includes('admin');
+      return res;
     }
   },
   computed: {
-    ...mapGetters(["profileUrl"])
+    ...mapGetters(["profileUrl", "roleList"])
   },
   watch: {
     profileUrl(newVal) {
       this.profile_url = newVal;
+    },
+    roleList(newVal) {
+      this.isAdmin = newVal.includes('hr mngr') || 
+      newVal.includes('finance mngr') || 
+      newVal.includes('general mngr') || 
+      newVal.includes('admin');
+      alert(this.isAdmin);
     }
   }
 };

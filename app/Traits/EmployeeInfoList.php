@@ -919,7 +919,7 @@ trait EmployeeInfoList
             // 'philhealth_number'=>
             // 'allowed_leave_number'=> 7
           ],
-          'user_roles' => [6],
+          'user_roles' => [1,2,4,6],
           'user_company_positions' => [],
           'event_types' => [
             [

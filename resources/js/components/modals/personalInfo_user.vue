@@ -1,6 +1,9 @@
 <template>
-    <v-row justify="center">
+    <v-row 
+        justify="center" 
+        :class="{'float-right' : userData}">
         <v-dialog
+            scrollable
             v-model="dialogPersonal"
             show-overlay
             persistent
@@ -8,24 +11,26 @@
         >
             <template v-slot:activator="{ on, attrs }">
                 <v-btn
-                    color="light blue darken-2"
+                    :color=" userData ? 'blue darken-2' : 'light blue darken-2'"
                     rounded
                     outlined
                     dark
                     v-bind="attrs"
                     v-on="on"
-                    @click="removeData()"
+                    @click=" userData? instantiateFieldForUpdate() : ''"
+                    
                 >
-                    <v-icon>mdi-plus</v-icon>
-                    <v-toolbar-title style="font-size: 16px"
-                        >New User</v-toolbar-title
+                    <v-icon v-if="userData">mdi-pencil</v-icon>
+                    <v-icon v-else>mdi-plus</v-icon>
+                    <v-toolbar-title style="font-size: 16px" color="red"
+                        >{{ userData ? 'EDIT PROFILE' : 'New User'}}</v-toolbar-title
                     >
                 </v-btn>
             </template>
             <v-card>
                 <v-toolbar class="mb-2" color="blue darken-1" dark flat>
                     <v-card-title>
-                        <span class="headline-bold">Personal Information</span>
+                        <span class="headline-bold"> Personal Information </span>
                     </v-card-title>
                 </v-toolbar>
                 <v-card-text>
@@ -95,7 +100,7 @@
                                     @keyup="validate('contact_number')"
                                     v-model="contact_number"
                                     prepend-icon="mdi-contacts"
-                                    type="number"
+                                    type="text"
                                     dense
                                     required
                                 ></v-text-field>
@@ -175,7 +180,7 @@
                                     >{{ errorMessage8 }}</span
                                 >
                             </v-col>
-                            <v-col cols="12" sm="6" md="6">
+                            <v-col cols="12" sm="6" md="6" v-if="!userData">
                                 <v-text-field
                                     v-model="password"
                                     prepend-icon="mdi-lock"
@@ -208,7 +213,7 @@
                                     >{{ errorMessage10 }}</span
                                 >
                             </v-col>
-                            <v-col cols="12" sm="6" md="6">
+                            <v-col cols="12" sm="6" md="6" v-if="!userData">
                                 <v-text-field
                                     label="Confirm Password"
                                     :append-icon="
@@ -253,7 +258,8 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="red" dark @click="dialogPersonal = false"
+                    <v-btn color="red" dark
+                    @click="removeData()"
                         >Cancel</v-btn
                     >
                     <v-btn color="blue darken-1" dark @click="next()"
@@ -263,7 +269,9 @@
             </v-card>
         </v-dialog>
         <!-- End of Personal******************************************************************* -->
-        <v-dialog v-model="dialogBusiness" persistent max-width="600px">
+        <v-dialog 
+            scrollable
+            v-model="dialogBusiness" persistent max-width="600px">
             <v-card>
                 <v-toolbar class="mb-2" color="blue darken-1" dark flat>
                     <v-card-title>
@@ -385,7 +393,7 @@
                                     ></v-date-picker>
                                 </v-menu>
                             </v-col>
-                            <v-col cols="12" md="6">
+                            <v-col cols="12" md="6" v-if="!userData">
                                 <v-select
                                     :items="finance"
                                     label="Finance Assign"
@@ -402,7 +410,7 @@
                                     required
                                 ></v-select>
                             </v-col>
-                            <v-col cols="12" md="6">
+                            <v-col cols="12" md="6" v-if="!userData">
                                 <v-select
                                     :items="prp"
                                     label="PRP Assign"
@@ -418,7 +426,7 @@
                                     required
                                 ></v-select>
                             </v-col>
-                            <v-col cols="12" md="4">
+                            <v-col cols="12" md="4" v-if="!userData">
                                 <v-select
                                     :items="position"
                                     item-text="position_name"
@@ -429,7 +437,7 @@
                                     required
                                 ></v-select>
                             </v-col>
-                            <v-col cols="12" md="4">
+                            <v-col cols="12" md="4" v-if="!userData">
                                 <v-select
                                     :items="rolesItem"
                                     item-text="text"
@@ -440,7 +448,7 @@
                                     required
                                 ></v-select>
                             </v-col>
-                            <v-col cols="12" md="4">
+                            <v-col cols="12" md="4" v-if="!userData">
                                 <v-text-field
                                     class="input-name"
                                     v-model="allowed_leave_number"
@@ -492,7 +500,9 @@
             </v-card>
         </v-dialog>
         <!-- ******************End of Business Info********************* -->
-        <v-dialog v-model="dialogOthers" persistent max-width="600px">
+        <v-dialog 
+            scrollable            
+            v-model="dialogOthers" persistent max-width="600px">
             <v-card>
                 <v-toolbar class="mb-2" color="blue darken-1" dark flat>
                     <v-card-title>
@@ -514,7 +524,7 @@
                                     label="Pag-IBIG No."
                                     @keyup="validate('pag_ibig_number')"
                                     prepend-icon="mdi-credit-card"
-                                    type="number"
+                                    type="text"
                                 ></v-text-field>
                                 <span
                                     class="ml-8"
@@ -536,7 +546,7 @@
                                     label="SSS No."
                                     @keyup="validate('sss_number')"
                                     prepend-icon="mdi-credit-card"
-                                    type="number"
+                                    type="text"
                                 ></v-text-field>
                                 <span
                                     class="ml-8"
@@ -558,7 +568,7 @@
                                     label="TIN"
                                     @keyup="validate('tin_number')"
                                     prepend-icon="mdi-credit-card"
-                                    type="number"
+                                    type="text"
                                 ></v-text-field>
                                 <span
                                     class="ml-8"
@@ -580,7 +590,7 @@
                                     label="PhilHealth No."
                                     @keyup="validate('philhealth_number')"
                                     prepend-icon="mdi-credit-card"
-                                    type="number"
+                                    type="text"
                                 ></v-text-field>
                                 <span
                                     class="ml-8"
@@ -612,13 +622,19 @@
                     <v-btn color="red" dark @click="dialogOthers = false">
                         Cancel
                     </v-btn>
-                    <v-btn color="blue darken-1" dark @click="addNew()">
-                        Save
+                    <v-btn color="blue darken-1" dark @click="!userData ? addNew() : updateProfileAdminConfirm()">
+                        {{ !userData ? 'Save' : 'Update' }}
                     </v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
         <!-- <businessInfo ref="businesss"></businessInfo> -->
+         <Confirmation
+        ref="confirms"
+        :title="confirmationTitle"
+        :message="confirmationMessage"
+        @onConfirm="confirm($event)"
+        ></Confirmation>
     </v-row>
 </template>
 <style>
@@ -629,97 +645,111 @@
 
 <script>
 // import businessInfo from "./businessInfo_user.vue";
+import Confirmation from "./confirmation/confirm.vue";
 export default {
-    data: () => ({
-        //String
-        address: "",
-        contact_number: "",
-        pag_ibig_number: "",
-        sss_number: "",
-        tin_number: "",
-        philhealth_number: "",
-        first_name: "",
-        last_name: "",
-        password: "",
-        confirm_password: "",
-        email: "",
-        valuePass: true,
-        value: true,
-        dialogPersonal: false,
-        dialogBusiness: false,
-        dialogOthers: false,
-        departmentItem: null,
-        birthday: null,
-        menu: false,
-        selectPrp: null,
-        prp: null,
-        finance: null,
-        roles: null,
-        selectFinance: null,
-        sTime: null,
-        error: false,
-        civil_status: null,
-        regularization_date: null,
-        prp_assigned: null,
-        finance_assigned: null,
-        allowed_leave_number: null,
-        department: null,
-        shift_time: null,
-        gender: null,
-        company_position: null,
-        date_hired: null,
-        company_status: null,
-        company_number: null,
-        rules: {
-            required: value => !!value || "Required",
-            min: v => v.length >= 8 || "Minumum of 8 characters",
-            emailMatch: () => "The email and password you entered don't match"
-        },
-        // hideDialogue: false,
-        genderItem: [
-            { text: "Female", value: 0 },
-            { text: "Male", value: 1 }
-        ],
-        civilItem: [
-            { text: "Single", value: 1 },
-            { text: "Married", value: 2 },
-            { text: "Widow", value: 3 },
-            { text: "Widower", value: 4 }
-        ],
-        rolesItem: [
-            { text: "Employee", value: 1 },
-            { text: "PRP", value: 2 }
-        ],
-        comStatus: [],
-        position: [],
-        successMessage: null,
-        errorMessage1: null,
-        errorMessage2: null,
-        errorMessage3: null,
-        errorMessage4: null,
-        errorMessage5: null,
-        errorMessage6: null,
-        errorMessage7: null,
-        errorMessage8: null,
-        errorMessage9: null,
-        errorMessage10: null,
-        errorMessage11: null,
-        errorMessage12: null,
-        errorMessage13: null,
-        errorMessage14: null,
-        errorMessage15: null,
-        errorMessage16: null,
-        errorMessage17: null,
-        errorMessage18: null,
-        errorMessage19: null,
-        errorMessage20: null,
-        errorMessage21: null,
-        errorMessage22: null,
-        errorMessage23: null,
-        errorMessage24: null,
-        errorMessage25: null
-    }),
+    data () {
+        return {
+            //String
+            isConfirmed:false,
+            confirmationMessage: null,
+            confirmationTitle: null,
+            user_id: localStorage.getItem("id"),
+            address: "",
+            contact_number: "",
+            pag_ibig_number: "",
+            sss_number: "",
+            tin_number: "",
+            philhealth_number: "",
+            first_name: "",
+            last_name: "",
+            password: "",
+            confirm_password: "",
+            email: "",
+            valuePass: true,
+            value: true,
+            dialogPersonal: false,
+            dialogBusiness: false,
+            dialogOthers: false,
+            departmentItem: null,
+            birthday: null,
+            menu: false,
+            selectPrp: null,
+            prp: null,
+            finance: null,
+            roles: null,
+            selectFinance: null,
+            sTime: null,
+            error: false,
+            civil_status: null,
+            regularization_date: null,
+            prp_assigned: null,
+            finance_assigned: null,
+            allowed_leave_number: null,
+            department: null,
+            shift_time: null,
+            gender: null,
+            company_position: null,
+            date_hired: null,
+            company_status: null,
+            company_number: null,
+            rules: {
+                required: value => !!value || "Required",
+                min: v => v.length >= 8 || "Minumum of 8 characters",
+                emailMatch: () => "The email and password you entered don't match"
+            },
+            // hideDialogue: false,
+            genderItem: [
+                { text: "Female", value: 0 },
+                { text: "Male", value: 1 }
+            ],
+            civilItem: [
+                { text: "Single", value: 1 },
+                { text: "Married", value: 2 },
+                { text: "Widow", value: 3 },
+                { text: "Widower", value: 4 }
+            ],
+            rolesItem: [
+                { text: "Employee", value: 1 },
+                { text: "PRP", value: 2 }
+            ],
+            comStatus: [],
+            position: [],
+            successMessage: null,
+            errorMessage1: null,
+            errorMessage2: null,
+            errorMessage3: null,
+            errorMessage4: null,
+            errorMessage5: null,
+            errorMessage6: null,
+            errorMessage7: null,
+            errorMessage8: null,
+            errorMessage9: null,
+            errorMessage10: null,
+            errorMessage11: null,
+            errorMessage12: null,
+            errorMessage13: null,
+            errorMessage14: null,
+            errorMessage15: null,
+            errorMessage16: null,
+            errorMessage17: null,
+            errorMessage18: null,
+            errorMessage19: null,
+            errorMessage20: null,
+            errorMessage21: null,
+            errorMessage22: null,
+            errorMessage23: null,
+            errorMessage24: null,
+            errorMessage25: null
+        }
+    },
+    components: {
+    Confirmation,
+    },
+    props: ['userData'],
     mounted() {
+        if(this.userData) {
+            this.instantiateFieldForUpdate();
+        }
         this.getAllPrp();
         this.getAllFinance();
         this.getShift();
@@ -730,69 +760,127 @@ export default {
     watch: {
         menu(val) {
             val && setTimeout(() => (this.$refs.picker.activePicker = "YEAR"));
+        },
+        userData(val) {
+            this.instantiateFieldForUpdate();
         }
     },
-    //   components: {
-    //     businessInfo
-    //   },
     methods: {
+        confirm() {
+             if(this.confirmationTitle == 'Update Profile'){
+                this.updateProfileAdmin();
+            }
+        },
+        valueInList(value) {
+            return function(item) {
+                if(item.value || item.text === 'Female') {
+                    if(item.value === parseInt(value)) {
+                        return item;
+                    }
+                }else if(item.id) {
+                    if(item.id === parseInt(value)) {
+                        return item;
+                    }
+                }
+                
+            }
+        },
+        instantiateFieldForUpdate() {
+            this.address = this.userData.address;
+            this.contact_number = this.userData.contact_number;
+            this.pag_ibig_number = this.userData.pag_ibig_number;
+            this.sss_number = this.userData.sss_number;
+            this.tin_number = this.userData.tin_number;
+            this.philhealth_number = this.userData.philhealth_number;
+            this.first_name = this.userData.first_name;
+            this.last_name = this.userData.last_name;
+            this.email = this.userData.email;
+            this.birthday = this.userData.birthday;
+            this.roles = this.userData.roles;
+            // civil_status
+            this.civil_status = this.civilItem.filter(this.valueInList(this.userData.civil_status))[0];
+            this.regularization_date = this.userData.regularization_date;
+            this.prp_assigned = this.userData.prp_assigned;
+            this.finance_assigned = this.userData.finance_assigned;
+            this.department = this.userData.department;
+            this.shift_time = this.userData.shift_time;
+            // gender
+            this.gender = this.genderItem.filter(this.valueInList(this.userData.gender))[0];
+            this.company_position = this.userData.company_position;
+            this.date_hired = this.userData.date_hired;
+            this.company_status = this.comStatus.filter(this.valueInList(this.userData.company_status))[0];
+            this.company_number = this.userData.company_number;
+        },
         getPrp() {
-            console.log("prp ko", this.selectPrp);
         },
         next() {
-            if (
-                this.first_name != null &&
-                this.last_name != null &&
-                this.gender != null &&
-                this.contact_number != null &&
-                this.civil_status != null &&
-                this.birthday != null &&
-                this.email != null &&
-                this.password != null &&
-                this.confirm_password != null &&
-                this.address != null &&
-                this.errorMessage1 === null &&
-                this.errorMessage2 === null &&
-                this.errorMessage3 === null &&
-                this.errorMessage4 === null &&
-                this.errorMessage5 === null &&
-                this.errorMessage6 === null &&
-                this.errorMessage7 === null &&
-                this.errorMessage8 === null &&
-                this.errorMessage9 === null &&
-                this.errorMessage10 === null &&
-                this.errorMessage11 === null
-            ) {
+            if(!this.userData) {
+                if (
+                    this.first_name != null &&
+                    this.last_name != null &&
+                    this.gender != null &&
+                    this.contact_number != null &&
+                    this.civil_status != null &&
+                    this.birthday != null &&
+                    this.email != null &&
+                    this.password != null &&
+                    this.confirm_password != null &&
+                    this.address != null &&
+                    this.errorMessage1 === null &&
+                    this.errorMessage2 === null &&
+                    this.errorMessage3 === null &&
+                    this.errorMessage4 === null &&
+                    this.errorMessage5 === null &&
+                    this.errorMessage6 === null &&
+                    this.errorMessage7 === null &&
+                    this.errorMessage8 === null &&
+                    this.errorMessage9 === null &&
+                    this.errorMessage10 === null &&
+                    this.errorMessage11 === null
+                ) {
+                    this.dialogPersonal = false;
+                    this.dialogBusiness = true;
+                    this.dialogOthers = false;
+                } else {
+                    this.errorMessage17 = "Please fill up all fields";
+                }
+            }else {
                 this.dialogPersonal = false;
                 this.dialogBusiness = true;
                 this.dialogOthers = false;
-            } else {
-                this.errorMessage17 = "Please fill up all fields";
             }
+            
         },
         next1() {
-            if (
-                this.errorMessage12 === null &&
-                this.errorMessage13 === null &&
-                this.errorMessage14 === null &&
-                this.errorMessage15 === null &&
-                this.company_number !== null &&
-                this.regularization_date !== null &&
-                this.company_status !== null &&
-                this.department !== null &&
-                this.shift_time !== null &&
-                this.date_hired !== null &&
-                this.selectFinance !== null &&
-                this.selectPrp !== null &&
-                this.company_position !== null &&
-                this.allowed_leave_number !== null
-            ) {
+            if(!this.userData) {
+                if (
+                    this.errorMessage12 === null &&
+                    this.errorMessage13 === null &&
+                    this.errorMessage14 === null &&
+                    this.errorMessage15 === null &&
+                    this.company_number !== null &&
+                    this.regularization_date !== null &&
+                    this.company_status !== null &&
+                    this.department !== null &&
+                    this.shift_time !== null &&
+                    this.date_hired !== null &&
+                    this.selectFinance !== null &&
+                    this.selectPrp !== null &&
+                    this.company_position !== null &&
+                    this.allowed_leave_number !== null
+                ) {
+                    this.dialogBusiness = false;
+                    this.dialogOthers = true;
+                    this.dialogPersonal = false;
+                } else {
+                    this.errorMessage17 = "Please fill up all fields";
+                }
+            }else {
                 this.dialogBusiness = false;
                 this.dialogOthers = true;
                 this.dialogPersonal = false;
-            } else {
-                this.errorMessage17 = "Please fill up all fields";
             }
+            
         },
         getCompanyStatus() {
             this.$axios.get("hr/department_status").then(response => {
@@ -830,7 +918,6 @@ export default {
         },
         getAllDepartment() {
             this.$axios.get("departments").then(response => {
-                console.log("department", response.data);
                 this.departmentItem = response.data;
             });
         },
@@ -848,7 +935,7 @@ export default {
             let reqWhiteSpace = /\d/;
             let specialChar = /^[A-Za-z0-9 ]+$/;
             let numberExclude = /^[0-9 ]+$/;
-            if (input === "firstname") {
+            if (input === "first_name") {
                 this.errorMessage1 = null;
                 this.errorMessage2 = null;
                 if (reqWhiteSpace.test(this.first_name)) {
@@ -870,7 +957,11 @@ export default {
                     this.errorMessage3 =
                         "lastname should not contain a number.";
                 } else if (this.last_name === "") {
+                    if(!this.userData) { 
                     this.errorMessage4 = "lastname is required.";
+                    }else {
+                    this.errorMessage4 = null;
+                    }
                 } else if (!specialChar.test(this.last_name)) {
                     this.errorMessage4 =
                         "lastname should not contain a special character.";
@@ -881,23 +972,36 @@ export default {
             } else if (input === "contact_number") {
                 this.errorMessage5 = null;
                 this.successMessage6 = null;
-                if (this.contact_number.length > 11) {
-                    this.errorMessage5 =
-                        "Contact number must not exceed 11 numbers";
-                } else if (this.contact_number.length == 0) {
-                    this.errorMessage6 = "Contact number is required";
-                } else if (this.contact_number.slice(0, 2) != "09") {
-                    this.errorMessage6 = "Contact number must start with 09";
-                } else if (this.contact_number.length <= 10) {
-                    this.errorMessage6 = "Contact number is invalid";
-                } else {
-                    this.errorMessage5 = null;
-                    this.errorMessage6 = null;
+                if(this.contact_number) {
+                    if (this.contact_number.length > 11) {
+                        this.errorMessage5 = "Contact number must not exceed 11 numbers";
+                    } else if (this.contact_number.length == 0) {
+                        this.errorMessage6 = "Contact number is required";
+                    } else if (this.contact_number.slice(0, 2) != "09") {
+                        this.errorMessage6 = "Contact number must start with 09";
+                    } else if (this.contact_number.length <= 10) {
+                        this.errorMessage6 = "Contact number is invalid";
+                    } else {
+                        this.errorMessage5 = null;
+                        this.errorMessage6 = null;
+                    }
+                }else {
+                    if(!this.userData) {
+                        this.errorMessage6 = "Contact number is required";
+                    }else {
+                        this.errorMessage5 = null;
+                        this.errorMessage6 = null;
+                    }
                 }
+                
             } else if (input === "address") {
                 this.errorMessage7 = null;
                 if (this.address === "") {
-                    this.errorMessage7 = "Address is required";
+                     if(!this.userData) {
+                        this.errorMessage7 = "Address is required";
+                    }else {
+                        this.errorMessage7 = null;
+                    }
                 } else {
                     this.errorMessage7 = null;
                 }
@@ -907,29 +1011,37 @@ export default {
                     this.errorMessage8 =
                         "You have entered an invalid email address.";
                 } else if (this.validateEmail(this.email) === "") {
-                    this.errorMessage8 = "Email is required";
+                    if(!this.userData) {
+                        this.errorMessage8 = "Email is required";
+                    }else {
+                        this.errorMessage8 = null;
+                    }
                 } else {
                     this.errorMessage8 = null;
                 }
             } else if (input === "password") {
-                console.log("password");
                 this.errorMessage9 = null;
                 this.errorMessage10 = null;
-                if (this.password.length < 8) {
+                if(this.password) {
+                    if (this.password.length < 8) {
                     this.errorMessage9 =
                         " Password must be atleast 8 characters.";
-                } else if (
-                    /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/.test(
-                        this.password
-                    )
-                ) {
-                    this.successMessage = "Strong password";
-                    this.errorMessage9 = null;
-                    this.errorMessage10 = null;
-                } else {
-                    this.errorMessage10 =
-                        "Password must be alphanumeric characters. It should contain 1 number, 1 special character and 1 capital letter";
+                    } else if (
+                        /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/.test(
+                            this.password
+                        )
+                    ) {
+                        this.successMessage = "Strong password";
+                        this.errorMessage9 = null;
+                        this.errorMessage10 = null;
+                    } else {
+                        this.errorMessage10 =
+                            "Password must be alphanumeric characters. It should contain 1 number, 1 special character and 1 capital letter";
+                    }
+                }else {
+                    this.errorMessage9 = " Password must be atleast 8 characters.";
                 }
+                
             } else if (input === "confirm_password") {
                 this.errorMessage11 = null;
                 this.successMessage = null;
@@ -942,15 +1054,27 @@ export default {
             } else if (input === "company_number") {
                 this.errorMessage12 = null;
                 this.errorMessage13 = null;
-                if (this.company_number.length > 12) {
+                if(this.company_number) {
+                    if (this.company_number.length > 12) {
                     this.errorMessage12 = "Company ID must have 12 characters ";
-                } else if (this.company_number.length === 0) {
-                    this.errorMessage13 = "Company ID is required";
-                } else if (this.company_number.length < 12) {
-                    this.errorMessage13 = "Company ID is invalid";
-                } else {
-                    this.errorMessage12 = null;
-                    this.errorMessage13 = null;
+                    } else if (this.company_number.length === 0) {
+                        if(!this.userData) {
+                            this.errorMessage13 = "Company ID is required";                            
+                        }else {
+                            this.errorMessage13 = null;
+                        }
+                    } else if (this.company_number.length < 12) {
+                        this.errorMessage13 = "Company ID is invalid";
+                    } else {
+                        this.errorMessage12 = null;
+                        this.errorMessage13 = null;
+                    }
+                }else {
+                    if(!this.userData) {
+                        this.errorMessage12 = "Company ID must have 12 characters ";                        
+                    }else {
+                        this.errorMessage12 = null;
+                    }
                 }
             } else if (input === "allowed_leave_number") {
                 this.errorMessage14 = null;
@@ -967,62 +1091,119 @@ export default {
             } else if (input === "pag_ibig_number") {
                 this.errorMessage18 = null;
                 this.errorMessage19 = null;
-                if (this.pag_ibig_number.length > 12) {
+                if(this.pag_ibig_number) {
+                    if (this.pag_ibig_number.length > 12) {
                     this.errorMessage18 =
                         "Pag-IBIG number must be 12 digit number";
-                } else if (this.pag_ibig_number.length === 0) {
-                    this.errorMessage19 = "Pag-IBIG number is required";
-                } else if (this.pag_ibig_number.length < 12) {
-                    this.errorMessage19 = "Pag-IBIG number is invalid";
-                } else {
-                    this.errorMessage18 = null;
-                    this.errorMessage19 = null;
+                    } else if (this.pag_ibig_number.length === 0) {
+                        if(!this.userData) {
+                            this.errorMessage19 = "Pag-IBIG number is required";
+                        }else {
+                            this.errorMessage19 = null;
+                        }
+                    } else if (this.pag_ibig_number.length < 12) {
+                        this.errorMessage19 = "Pag-IBIG number is invalid";
+                    } else {
+                        this.errorMessage18 = null;
+                        this.errorMessage19 = null;
+                    }
+                }else {
+                    if(!this.userData) {
+                    this.errorMessage18 = "Pag-IBIG number must be 12 digit number";
+                    }else {
+                        this.errorMessage18 = null;
+                        this.errorMessage19 = null;
+                    }
                 }
             } else if (input === "sss_number") {
                 this.errorMessage20 = null;
                 this.errorMessage21 = null;
-                if (this.sss_number.length > 10) {
-                    this.errorMessage20 = "SSS number must be 10 digit number";
-                } else if (this.sss_number.length === 0) {
-                    this.errorMessage21 = "SSS number is required";
-                } else if (this.sss_number.length < 10) {
-                    this.errorMessage21 = "SSS number is invalid";
-                } else {
-                    this.errorMessage20 = null;
-                    this.errorMessage21 = null;
+                if(this.sss_number) {
+                    if (this.sss_number.length > 10) {
+                        this.errorMessage20 = "SSS number must be 10 digit number";
+                    } else if (this.sss_number.length === 0) {
+                        if(!this.userData) {
+                            this.errorMessage21 = "SSS number is required";
+                        }else {
+                            this.errorMessage21 = null;
+                        }
+                    } else if (this.sss_number.length < 10) {
+                        this.errorMessage21 = "SSS number is invalid";
+                    } else {
+                        this.errorMessage20 = null;
+                        this.errorMessage21 = null;
+                    }
+                }else {
+                    if(!this.userData) {
+                        this.errorMessage20 = "SSS number must be 10 digit number";                    
+                    }else {
+                        this.errorMessage20 = null;
+                        this.errorMessage21 = null;
+                    }
                 }
+            
             } else if (input === "tin_number") {
                 this.errorMessage22 = null;
                 this.errorMessage23 = null;
-                if (this.tin_number.length > 9 && this.tin_number.length < 13) {
-                    if (this.tin_number[9] !== "0") {
-                        this.errorMessage23 = "TIN 10th number must be 0";
-                    } else if (this.tin_number[10] !== "0") {
-                        this.errorMessage23 = "TIN 11th number must be 0";
-                    } else if (this.tin_number[11] !== "0") {
-                        this.errorMessage23 = "TIN 12th number must be 0";
+                if(this.tin_number) {
+                    if (this.tin_number.length > 9 && this.tin_number.length < 13) {
+                        if (this.tin_number[9] !== "0") {
+                            this.errorMessage23 = "TIN 10th number must be 0";
+                        } else if (this.tin_number[10] !== "0") {
+                            this.errorMessage23 = "TIN 11th number must be 0";
+                        } else if (this.tin_number[11] !== "0") {
+                            this.errorMessage23 = "TIN 12th number must be 0";
+                        }
+                    } else if (this.tin_number.length > 12) {
+                        this.errorMessage22 = "TIN number must be 12 digit number";
+                    } else if (this.tin_number.length === 0) {
+                         if(!this.userData) {
+                            this.errorMessage23 = "TIN number is required";                   
+                        }else {
+                            this.errorMessage23 = null;
+                        }
+                        
+                    } else {
+                        this.errorMessage22 = null;
+                        this.errorMessage23 = null;
                     }
-                } else if (this.tin_number.length > 12) {
-                    this.errorMessage22 = "TIN number must be 12 digit number";
-                } else if (this.tin_number.length === 0) {
-                    this.errorMessage23 = "TIN number is required";
                 } else {
-                    this.errorMessage22 = null;
-                    this.errorMessage23 = null;
+                    if(!this.userData) {
+                        this.errorMessage23 = "TIN number is required";                    
+                    }else {
+                        this.errorMessage22 = null;
+                        this.errorMessage23 = null;
+                    }
                 }
+            
             } else if (input === "philhealth_number") {
                 this.errorMessage24 = null;
                 this.errorMessage25 = null;
-                if (this.philhealth_number.length > 12) {
-                    this.errorMessage24 =
-                        "PhilHealth number must be 12 digit numbers";
-                } else if (this.philhealth_number.length === 0) {
-                    this.errorMessage25 = "PhilHealth is required";
-                } else if (this.philhealth_number.length < 12) {
-                    this.errorMessage25 = "PhilHealth number is invalid";
-                } else {
-                    this.errorMessage24 = null;
-                    this.errorMessage25 = null;
+                if(this.philhealth_number) {
+                    if (this.philhealth_number.length > 12) {
+                        this.errorMessage24 =
+                            "PhilHealth number must be 12 digit numbers";
+                    } else if (this.philhealth_number.length === 0) {
+                        if(!this.userData) {
+                            this.errorMessage25 = "PhilHealth is required";                  
+                        }else {
+                            this.errorMessage25 = null;
+                            
+                        }
+                    } else if (this.philhealth_number.length < 12) {
+                        this.errorMessage25 = "PhilHealth number is invalid";
+                    } else {
+                        this.errorMessage24 = null;
+                        this.errorMessage25 = null;
+                    }
+                }else {
+                    if(!this.userData) {
+                        this.errorMessage25 = "PhilHealth is required";                   
+                    }else {
+                        this.errorMessage24 = null;
+                        this.errorMessage25 = null;
+                    }
+                    
                 }
             }
         },
@@ -1034,8 +1215,7 @@ export default {
                 return true;
             }
         },
-        addNew() {
-            console.log("hoi");
+        addNew() {  
             this.validate("lastname");
             this.validate("firstname");
             this.validate("contact_number");
@@ -1102,13 +1282,9 @@ export default {
                     birthday: this.birthday,
                     company_number: this.company_number
                 };
-                console.log('params', params)
                 this.$axios
                     .post("hr/manage/user", params)
                     .then(response => {
-                        // this.errorMessage8 =
-                        console.log("here", response.data);
-                        console.log("here", response.data.message);
                         this.$emit("create", response.data);
                         this.$parent.$parent.$parent.$parent.$parent.$parent.retrieve();
                         this.dialogOthers = false;
@@ -1116,10 +1292,7 @@ export default {
                         this.dialogBusiness = false;
                     })
                     .catch(error => {
-                        console.log("here", error);
-                        console.log("here", error.response.data.errors);
                         let errors = error.response.data.errors;
-                        console.log("type", typeof errors);
                         Object.entries(errors).forEach(message => {
                             switch (message[0]) {
                                 case "email":
@@ -1142,48 +1315,93 @@ export default {
                 this.errorMessage18 = "Please put a valid information";
             }
         },
+        
+        updateProfileAdminConfirm(){
+            this.confirmationTitle = 'Update Profile',
+            this.confirmationMessage = 'Are you sure you want to update your profile information?',
+            this.$refs.confirms.show()
+        },
+        updateProfileAdmin() {
+            this.company_status = Number.isInteger(this.company_status) ? this.company_status : this.company_status ? this.company_status.id : this.company_status;
+            this.gender = Number.isInteger(this.gender) ? this.gender : this.gender ? this.gender.value : this.gender;
+            this.civil_status = Number.isInteger(this.civil_status) ? this.civil_status : this.civil_status ? this.civil_status.value : this.civil_status;
+            this.department = Number.isInteger(this.department) ? this.department : this.department ? this.department.id : this.department;
+            this.shift_time = Number.isInteger(this.shift_time) ? this.shift_time : this.shift_time ? this.shift_time.id : this.shift_time;
+            let params = {
+                address: this.address,
+                civil_status_id: this.civil_status,
+                contact_number: this.contact_number,
+                pag_ibig_number: this.pag_ibig_number,
+                sss_number: this.sss_number,
+                tin_number: this.tin_number,
+                philhealth_number: this.philhealth_number,
+                first_name: this.first_name,
+                last_name: this.last_name,
+                email: this.email,
+                regularization_date: this.regularization_date,
+                department_id: this.department,
+                shift_time_id: this.shift_time,
+                gender : this.gender,
+                date_hired: this.date_hired,
+                company_status_id: this.company_status,
+                birthday: this.birthday,
+                company_number: this.company_number
+            };
+            this.$axios
+            .post("user_info/admin/" + this.user_id, params)
+            .then(response => {
+                this.$emit('update');
+                this.dialogOthers = false;
+                this.dialogPersonal = false;
+                this.dialogBusiness = false;
+                this.isConfirmed = false;
+            }).catch(err => {
+                this.errorMessage8 = err.response.data.message;
+            });
+        },
         removeData() {
             (this.address = null),
-                (this.civil_status = null),
-                (this.contact_number = null),
-                (this.pag_ibig_number = null),
-                (this.sss_number = null),
-                (this.tin_number = null),
-                (this.philhealth_number = null),
-                (this.prp_assigned = null),
-                (this.finance_assigned = null),
-                (this.first_name = ""),
-                (this.last_name = ""),
-                (this.email = null),
-                (this.password = null),
-                (this.department = null),
-                (this.shift_time = null),
-                (this.regularization_date = null),
-                (this.allowed_leave_number = null),
-                (this.gender = null),
-                (this.company_position = null),
-                (this.date_hired = null),
-                (this.company_status = null),
-                (this.birthday = null),
-                (this.company_number = null),
-                (this.confirm_password = null),
-                (this.errorMessage1 = null),
-                (this.errorMessage2 = null),
-                (this.errorMessage3 = null),
-                (this.errorMessage4 = null),
-                (this.errorMessage5 = null),
-                (this.errorMessage6 = null),
-                (this.errorMessage7 = null),
-                (this.errorMessage8 = null),
-                (this.errorMessage9 = null),
-                (this.errorMessage10 = null),
-                (this.errorMessage11 = null),
-                (this.errorMessage12 = null),
-                (this.errorMessage13 = null),
-                (this.errorMessage14 = null),
-                (this.errorMessage15 = null),
-                (this.errorMessage16 = null),
-                (this.errorMessage17 = null);
+            (this.civil_status = null),
+            (this.contact_number = null),
+            (this.pag_ibig_number = null),
+            (this.sss_number = null),
+            (this.tin_number = null),
+            (this.philhealth_number = null),
+            (this.prp_assigned = null),
+            (this.finance_assigned = null),
+            (this.first_name = ""),
+            (this.last_name = ""),
+            (this.email = null),
+            (this.password = null),
+            (this.department = null),
+            (this.shift_time = null),
+            (this.regularization_date = null),
+            (this.allowed_leave_number = null),
+            (this.gender = null),
+            (this.company_position = null),
+            (this.date_hired = null),
+            (this.company_status = null),
+            (this.birthday = null),
+            (this.company_number = null),
+            (this.confirm_password = null),
+            (this.errorMessage1 = null),
+            (this.errorMessage2 = null),
+            (this.errorMessage3 = null),
+            (this.errorMessage4 = null),
+            (this.errorMessage5 = null),
+            (this.errorMessage6 = null),
+            (this.errorMessage7 = null),
+            (this.errorMessage8 = null),
+            (this.errorMessage9 = null),
+            (this.errorMessage10 = null),
+            (this.errorMessage11 = null),
+            (this.errorMessage12 = null),
+            (this.errorMessage13 = null),
+            (this.errorMessage14 = null),
+            (this.errorMessage15 = null),
+            (this.errorMessage16 = null),
+            (this.errorMessage17 = null);
+            this.dialogPersonal = false;
         }
     }
 };
