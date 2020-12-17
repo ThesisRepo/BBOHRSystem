@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-row>
+    <v-row v-if="!this.$store.getters.roleList.includes('admin')">
       <v-col lg="4" cols="sm" class="pb-2" v-if="!user_type.includes('general mngr')">
         <v-card>
           <v-row class="no-gutters">

@@ -16,6 +16,8 @@ Route::get('user_info/{id}','UserInformationController@show')->name('user_info.f
 // updates user info
 Route::post('user_info/{id}','UserInformationController@update')->name('user_info.update');
 
+Route::post('user_info/admin/{id}','UserInformationController@updateAdmin')->name('user_info.update.admin');
+
 //get all per department prps
 Route::get('prp/{user_id}','UserInformationController@getAllPrpInDepartment')->name('user_info.all.department.prp');
 
