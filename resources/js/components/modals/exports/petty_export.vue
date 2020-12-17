@@ -92,7 +92,7 @@ export default {
         });
       }else if(item === 'Disapproved Requests'){
         this.$axios
-        .post("hr/summary/petty_cash_request", param)
+        .post("finance/summary/petty_cash_request", param)
         .then(response => {
             this.summary = response.data.feedbacked_petty_cash_requests;
         });
