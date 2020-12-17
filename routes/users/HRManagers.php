@@ -48,9 +48,6 @@ Route::post('hr/summary/shift_change_request/disapproved','UserInformationContro
 
 Route::post('hr/summary/overtime_request','UserInformationController@getAllFeedbackedDateOvertime')->name('hr.summary.overtime_request.approved');
 
-Route::post('hr/summary/petty_cash_request/{user_id}','UserInformationController@getAllFeedbackedDatePettyCash')->name('hr.summary.petty_cash_request.approved');
-
-Route::post('hr/summary/budget_request/{user_id}','UserInformationController@getAllFeedbackedDateBudget')->name('hr.summary.budget_request.approved');
 
 Route::post('hr/summary/travel_auth_request','UserInformationController@getAllFeedbackedDateTravelAuth')->name('hr.summary.travel_auth_request.approved');
 
