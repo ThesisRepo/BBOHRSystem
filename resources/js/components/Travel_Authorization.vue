@@ -179,7 +179,7 @@
     <Confirmation
       ref="confirms"
       :title="approveThis === 'approve' || 'disapproved' ? 'Confirmation' : ''"
-      :message="approveThis === 'approve' ? 'Are you sure you want to approve this request?' : approveThis === 'disapprove' ? 'Are you sure you want to reject this request?' : approveThis === 'image' ? 'Are you sure you want to update this image?' : ''"
+      :message="approveThis === 'approve' ? 'Are you sure you want to approve this request?' : approveThis === 'disapproved' ? 'Are you sure you want to reject this request?' : approveThis === 'image' ? 'Are you sure you want to update this image?' : ''"
       @onConfirm="confirm($event)"
     ></Confirmation>
 
@@ -814,7 +814,7 @@ export default {
     retrieveTravel() {
       this.showloading = true;
       this.$axios
-        .get("travel_auth_request/pending/" + this.user_id)
+        .get("prp/travel_auth_request/pending/" + this.user_id)
         .then(response => {
           this.showloading = false;
           this.travelPending = response.data;

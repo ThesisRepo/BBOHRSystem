@@ -108,6 +108,8 @@ class RequestBaseController extends Controller
             }
             $action = "Approved";
             $res = $this->model->approveRequest($id, $data, $current_request, $user);
+            dd($current_request->user());
+            // $current_request->user()->userInformation()->update([]);
             $this->notifyApprovedRequest($action, $employee_name, $current_request->user->id, $this->request_type, $res);
             return $res;
         }else {
