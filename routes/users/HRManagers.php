@@ -42,14 +42,27 @@ Route::delete('hr/manage/user/{id}','UserInformationController@delete')->name('u
 
 Route::post('hr/summary/leave_request','UserInformationController@getAllFeedbackedDateLeave')->name('hr.summary.leave_request.approved');
 
+Route::post('hr/summary/leave_request/disapproved','UserInformationController@getAllFeedbackedDateLeaveNegate')->name('hr.summary.leave_request.approved');
+
 Route::post('hr/summary/shift_change_request/approved','UserInformationController@getAllFeedbackedDateShiftChange')->name('hr.summary.shift_change_request.approved');
 
-Route::post('hr/summary/shift_change_request/disapproved','UserInformationController@getAllFeedbackedDateShiftChange')->name('hr.summary.shift_change_request.approved');
+Route::post('hr/summary/shift_change_request/disapproved','UserInformationController@getAllFeedbackedDateShiftChangeNegate')->name('hr.summary.shift_change_request.approved');
 
 Route::post('hr/summary/overtime_request','UserInformationController@getAllFeedbackedDateOvertime')->name('hr.summary.overtime_request.approved');
 
+Route::post('hr/summary/overtime_request/disapproved','UserInformationController@getAllFeedbackedDateOvertimeNegate')->name('hr.summary.overtime_request.approved');
+
+Route::post('hr/summary/petty_cash_request','UserInformationController@getAllFeedbackedDatePettyCash')->name('hr.summary.petty_cash_request.approved');
+
+Route::post('hr/summary/petty_cash_request/disapproved','UserInformationController@getAllFeedbackedDatePettyCashNegate')->name('hr.summary.petty_cash_request.approved');
+
+Route::post('hr/summary/budget_request','UserInformationController@getAllFeedbackedDateBudget')->name('hr.summary.budget_request.approved');
+
+Route::post('hr/summary/budget_request/disapproved','UserInformationController@getAllFeedbackedDateBudgetNegate')->name('hr.summary.budget_request.approved');
 
 Route::post('hr/summary/travel_auth_request','UserInformationController@getAllFeedbackedDateTravelAuth')->name('hr.summary.travel_auth_request.approved');
+
+Route::post('hr/summary/travel_auth_request/disapproved','UserInformationController@getAllFeedbackedDateTravelAuthNegate')->name('hr.summary.travel_auth_request.approved');
 
 // for getting all available company position
 Route::get('hr/company_position','CompanyPositionController@index')->name('hr.company_position.all');

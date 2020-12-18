@@ -92,6 +92,10 @@ export default {
           .listen('PrivateCalendarEvent', notif => {
             this.browserPopUp(notif);
           })
+        Echo.private('adminevent.' + this.user.id)
+          .listen('AdminEvent', notif => {
+            this.browserPopUp(notif);
+          })
         },
         browserPopUp(notif) {
             // console.log('NewRequest', notif)

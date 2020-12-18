@@ -36,14 +36,6 @@ class TravelAuthRequestController extends RequestBaseController
     }
     
     public function store(Request $request) {
-
-        // $prp_assigned_id = $request->prp_assigned_id;
-
-        // $image="";
-        // $imageName = time().'.'.$request->file_uri->getClientOriginalExtension();
-        // $request->file_uri->move(public_path('images'),$imageName);
-        // $image = 'images/'.$imageName;
-
         $image = $this->image_upload_from_trait($request->file_uri);
 
         $requestData = [

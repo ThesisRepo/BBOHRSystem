@@ -43,4 +43,9 @@ class ShiftChangeRequest extends Model
     public function shift_time() {
         return $this->belongsTo(\App\Models\Requests\ShiftTime::class);
     }
+
+    public function overriden_requests()
+    {
+        return $this->morphMany(\App\Models\OverridenRequest::class, 'overriden_requestable');
+    }
 }

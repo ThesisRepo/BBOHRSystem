@@ -4,7 +4,7 @@
       <template v-slot:extension>
         <v-tabs dark background-color="primary" fixed-tabs v-if="((user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr')) && !user_type.includes('finance mngr'))">
           <v-tabs-slider></v-tabs-slider>
-          <v-tab v-if="!user_type.includes('general mngr')" @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
+          <v-tab v-if="!user_type.includes('general mngr') && !user_type.includes('admin')" @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
           <v-tab @click="requests = false, employees = true, feedback = false">Employees Requests</v-tab>
           <v-tab @click="requests = false, employees = false, feedback = true">History</v-tab>
         </v-tabs>
@@ -280,9 +280,9 @@ export default {
     user_type: localStorage.getItem("user_type"),
     user_id: localStorage.getItem("id"),
     prp_assigned_id: localStorage.getItem("assigned_prp_id"),
-    employees: localStorage.getItem("user_type").includes('general mngr') ? true: false,
-    requests: localStorage.getItem("user_type").includes('general mngr') ? false: true,
-    feedback: localStorage.getItem("user_type").includes('general mngr') ? false: false,
+    employees: localStorage.getItem("user_type").includes('general mngr') || localStorage.getItem("user_type").includes('admin') ? true: false,
+    requests: localStorage.getItem("user_type").includes('general mngr') || localStorage.getItem("user_type").includes('admin') ? false: true,
+    feedback: localStorage.getItem("user_type").includes('general mngr') || localStorage.getItem("user_type").includes('admin') ? false: false,
     dialog: false,
     search: '',
     sTime: null,

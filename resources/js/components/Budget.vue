@@ -9,9 +9,9 @@
           v-if="user_type.includes('hr mngr') || user_type.includes('finance mngr') || user_type.includes('general mngr')"
         >
           <v-tabs-slider></v-tabs-slider>
-          <v-tab v-if="!user_type.includes('general mngr')" @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
+          <v-tab v-if="!user_type.includes('general mngr') && !user_type.includes('admin')" @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
           <v-tab @click="requests = false, employees = true, feedback = false">Employees Requests</v-tab>
-          <v-tab v-if="user_type.includes('finance mngr') || user_type.includes('general mngr')" @click="requests = false, employees = false, feedback = true">History</v-tab>
+          <v-tab v-if="user_type.includes('finance mngr') || user_type.includes('general mngr') || user_type.includes('admin')" @click="requests = false, employees = false, feedback = true">History</v-tab>
         </v-tabs>
       </template>
     </v-toolbar>
@@ -261,9 +261,9 @@ export default {
     user_department: localStorage.getItem("user_department"),
     user_finance: localStorage.getItem('user_finance'),
     user_id: localStorage.getItem("id"),
-    employees: localStorage.getItem("user_type").includes('general mngr') ? true: false,
-    requests: localStorage.getItem("user_type").includes('general mngr') ? false: true,
-    feedback: localStorage.getItem("user_type").includes('general mngr') ? false: false,
+    employees: localStorage.getItem("user_type").includes('general mngr') || localStorage.getItem("user_type").includes('admin') ? true: false,
+    requests: localStorage.getItem("user_type").includes('general mngr') || localStorage.getItem("user_type").includes('admin') ? false: true,
+    feedback: localStorage.getItem("user_type").includes('general mngr') || localStorage.getItem("user_type").includes('admin') ? false: false,
     dialog: false,
     error: false,
     dialogDelete: false,

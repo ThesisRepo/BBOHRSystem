@@ -43,6 +43,10 @@ class EloquentImplementation implements EloquentContract {
     return $this->model->find( $id);
   }
 
+  public function whereDate( $column, $operator, $value) {
+    return $this->model->whereDate( $column,  $operator, $value);
+  }
+
   /**
    * @param int $id
    * 
@@ -97,6 +101,13 @@ class EloquentImplementation implements EloquentContract {
     })->get();
     return $res;
   }
+
+  public function whereDoesntHaveWhereIn($relationship, $column, $value){
+    return $this->with([$relationship])->whereDoesntHave($relationship, function($q) use($column, $value) {
+      return $q->whereIn($column, [$value]);
+    });
+  }
+
   /**
    * @param string $model
    * creates a model
@@ -106,6 +117,10 @@ class EloquentImplementation implements EloquentContract {
   public function setModel( $model) {
     $this->model = $model;
     return $this;
+  }
+
+  public function getModel() {
+    return $this->model;
   }
 
   public function where($column, $id){

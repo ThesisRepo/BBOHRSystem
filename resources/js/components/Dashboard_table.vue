@@ -9,8 +9,8 @@
       <v-toolbar-title class="col pa-3 py-4 white--text" style="font-size:16px">{{ !isGenManager &&  !isAdmin ? 'MY PENDING REQUESTS' : 'PENDING EMPLOYEE REQUESTS'}}</v-toolbar-title>
     </v-toolbar>
     </template>
-    <template v-if="!isGenManager && !isAdmin" v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name === 'pending' ? 'PENDING' : ''}}</v-chip> </template>
-    <template v-if="!isGenManager && !isAdmin" v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
+    <template v-if="!isGenManager" v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)">{{item.status.status_name === 'pending' ? 'PENDING' : ''}}</v-chip> </template>
+    <template v-if="!isGenManager" v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
     <template v-if="isGenManager || isAdmin" v-slot:item.user="{ item }">
       {{item.user.first_name + ' ' + item.user.last_name }}
     </template>
@@ -23,7 +23,7 @@
          item.request_type === 'travel_auth_requests' ? 'Travel Request' :
          item.request_type === 'overtime_requests' ? 'Overtime Request' :
           '' }}</span> </template>
-    <template v-slot:item.created_at="{ item }"> <span>{{getDate()}}</span> </template>
+    <template v-slot:item.created_at="{ item }"> <span>{{getDate(item.created_at)}}</span> </template>
   </v-data-table>
 </template>
 <script>
@@ -65,7 +65,6 @@ export default {
           { text: "DEPARTMENT", align: "start", value: "user.user_information.department.department_name" },   
         ];
         this.$axios.get('gm/user_info/pending_requests/' + this.user_id).then(response =>{
-          console.log('gm pending requests all', response.data)
           this.requests = response.data
         })
       }else if(this.isAdmin) {
@@ -73,6 +72,8 @@ export default {
           { text: "DATE", align: "start", value: "created_at" },
           { text: "TYPE OF REQUEST", value: "request_type" },
           { text: "REQUESTER", align: "start", value: "user" },
+          { text: "APPROVER", value: "approver_role.role_name" },
+          { text: "STATUS", value: "status.status_name" },
           { text: "COMPANY POSITION", align: "start", value: "user.user_information.company_positions[0].position_name" },
           { text: "DEPARTMENT", align: "start", value: "user.user_information.department.department_name" },   
         ];
@@ -82,7 +83,6 @@ export default {
       }
       else{
         this.$axios.get('user_info/pending_requests/' + this.user_id).then(response =>{
-          console.log('requests', response.data)
           this.requests = response.data
         })
       }

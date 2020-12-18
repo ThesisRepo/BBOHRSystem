@@ -110,4 +110,69 @@ class AllUserRequestsService
     array_push($temp_arr, ...$travel_auth_request);
     return $temp_arr;
   }
+
+  public function getAllFeedbackedDate($name, $start_date, $end_date, $status) {
+
+    $new_temp_date = $start_date;
+    if($start_date != null && $end_date!=null) {
+        if( new DateTime($new_temp_date) > new DateTime($end_date)) {
+            $start_date = $end_date;
+            $end_date = $new_temp_date;
+        }
+    }else {
+        if($start_date == null) {
+            $start_date = $end_date;
+        }
+        if($end_date == null) {
+              $end_date = $start_date;
+        }
+    }
+    switch($name) {
+      case 'feedbacked_leave_requests':
+          $model = $this->leave_request;
+        break;
+      case 'feedbacked_shift_change_requests':
+          $model = $this->shift_change_request;
+        break;
+      case 'feedbacked_overtime_requests':
+          $model = $this->overtime_request;
+        break;
+      case 'feedbacked_travel_auth_requests':
+          $model = $this->travel_auth_request;
+        break;
+      case 'feedbacked_petty_cash_requests':
+          $model = $this->petty_cash_request;
+        break;
+      case 'feedbacked_budget_requests':
+          $model = $this->budget_request;
+        break;
+    }
+    
+    return $model->whereDate('created_at','>=', $start_date)->whereDate('created_at','<=', $end_date)->where('status_id', $status)->orderBy('created_at', 'DESC')->get()->toArray();
+  }
+
+  public function getAllPendingPerRequest($name, $status, $with) {
+    switch($name) {
+      case 'leave_requests':
+          $model = $this->leave_request;
+        break;
+      case 'shift_change_requests':
+          $model = $this->shift_change_request;
+        break;
+      case 'overtime_requests':
+          $model = $this->overtime_request;
+        break;
+      case 'travel_auth_requests':
+          $model = $this->travel_auth_request;
+        break;
+      case 'petty_cash_requests':
+          $model = $this->petty_cash_request;
+        break;
+      case 'budget_requests':
+          $model = $this->budget_request;
+        break;
+    }
+    
+    return $model->whereWith('status_id', $status, $with)->orderBy('created_at', 'DESC')->get();
+  }
 }
