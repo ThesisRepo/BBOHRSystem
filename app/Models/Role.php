@@ -54,4 +54,8 @@ class Role extends Model
     public function petty_cash_requests() {
         return $this->hasMany(Requests\PettyCashRequest::class);
     }
+
+    public function overriden_request() {
+        return $this->hasOne(OverridenRequest::class);
+    }
 }

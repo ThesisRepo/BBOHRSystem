@@ -84,7 +84,7 @@ class UserEloquent extends EloquentImplementation {
 
     public function getPrp($user) {
 
-      $res = $this->model->where('id','!=',$user->id)
+      $res = $this->model->where('id','!=', $user->id)
       ->whereHas('roles', function($q){
         $q->whereIn('role_id', [2]);
       })
@@ -92,7 +92,6 @@ class UserEloquent extends EloquentImplementation {
         $q->where('department_id', $user->userInformation->department_id);
       })
       ->get();
-      
       return $res;
 
     }
@@ -389,7 +388,7 @@ class UserEloquent extends EloquentImplementation {
     if($relationship == 'feedbacked_leave_requests') {
       array_push( $new_relationship, $relationship . '.' . 'leave_type' );
     }
-    $res = $this->findWith( $user_id, $new_relationship);
+    $res = $this->findWith(1, $new_relationship);
     // dd();
     return $res;
 

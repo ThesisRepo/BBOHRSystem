@@ -37,6 +37,11 @@ class UserService
         
     }
 
+    public function getFullNameWithParams($first_name, $last_name) {
+        $full_name = $first_name . ' ' . $last_name;
+        return $full_name;
+    }
+
     public function getPRPId() {
         $prp_assigned_id = Auth::user()->prp_assigned;    
         return $prp_assigned_id;
@@ -74,6 +79,20 @@ class UserService
         $res = Auth::user();
         return $res;
     }
+
+    public function findUserWith($user_id, $with) {
+        $res = $this->user->findWith($user_id, $with);
+        return $res;
+    }
+
+    public function whereNotAdminUserWith($role_id, $with) {
+        $res = $this->user->whereDoesntHaveWhereIn('roles','roles.id', 6)->whereHas('roles', function($q) use($role_id) {
+            return $q->where('roles.id', $role_id);
+        })->first();
+        // dd($res->toArray());
+        return $res;
+    }
+
 
     public function hasUserInformation() {
         return $this->getUserInformation() != null;

@@ -4,9 +4,10 @@
       <template v-slot:extension>
         <v-tabs dark background-color="primary" fixed-tabs v-if="user_type.includes('hr mngr') || user_type.includes('finance mngr') || user_type.includes('general mngr')">
           <v-tabs-slider></v-tabs-slider>
-          <v-tab v-if="!user_type.includes('general mngr')" @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
+          <v-tab v-if="!user_type.includes('general mngr') && !user_type.includes('admin') " 
+          @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
           <v-tab @click="requests = false, employees = true, feedback = false">Employees Requests</v-tab>
-          <v-tab v-if="user_type.includes('finance mngr') || user_type.includes('general mngr')" @click="requests = false, employees = false, feedback = true">History</v-tab>
+          <v-tab v-if="user_type.includes('finance mngr') || user_type.includes('general mngr') || user_type.includes('admin') " @click="requests = false, employees = false, feedback = true">History</v-tab>
         </v-tabs>
       </template>
     </v-toolbar>
@@ -206,12 +207,12 @@
         ></v-text-field>
 
         <createPetty
-        v-if="user_finance !== 'No Finance assign'  && informationCheck !== null"
+        v-if="user_finance !== ''  && informationCheck !== null"
         ></createPetty>
 
         <v-btn
           style="margin-left: 5%"
-          v-if="(user_finance === 'No Finance assign' || informationCheck === null) && !user_type.includes('general mngr')"
+          v-if="(user_finance === '' || informationCheck === null) && !user_type.includes('general mngr')"
           color="light blue darken-2"
           rounded
           outlined
@@ -266,9 +267,9 @@ export default {
     user_id: localStorage.getItem("id"),
     user_finance: localStorage.getItem('user_finance'),
     user_department: localStorage.getItem("user_department"),
-    employees: localStorage.getItem("user_type").includes('general mngr') ? true: false,
-    requests: localStorage.getItem("user_type").includes('general mngr') ? false: true,
-    feedback: localStorage.getItem("user_type").includes('general mngr') ? false: false,
+    employees: localStorage.getItem("user_type").includes('general mngr') || localStorage.getItem("user_type").includes('admin') ? true: false,
+    requests: localStorage.getItem("user_type").includes('general mngr') || localStorage.getItem("user_type").includes('admin') ? false: true,
+    feedback: localStorage.getItem("user_type").includes('general mngr') || localStorage.getItem("user_type").includes('admin') ? false: false,
     dialog: false,
     error: false,
     loading: false,

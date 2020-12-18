@@ -31,7 +31,13 @@ class OvertimeRequest extends Model
     public function approvers() {
         return $this->morphToMany(\App\Models\User::class, 'recordable')->withTimestamps();
     }
+    
     public function approver_role() {
         return $this->belongsTo(\App\Models\Role::class);
+    }
+
+    public function overriden_requests()
+    {
+        return $this->morphMany(\App\Models\OverridenRequest::class, 'overriden_requestable');
     }
 }

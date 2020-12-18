@@ -81,21 +81,29 @@ class RequestBaseController extends Controller
     }
 
     public function nextApproverId($id) {
-
-        $this->setMaxRoles($this->getRoles($id));
-        if($this->request_name == 'petty_cash_request' || $this->request_name == 'budget_request' && $this->max_role != 2) {
-            if($this->max_role == 4) {
-                $this->max_role --;
-            }else {
+        $this->setMaxRoles($this->getRoles($id), $this->request_name);
+        if($this->request_name == 'petty_cash_request' || $this->request_name == 'budget_request') {
+            
+            if($this->max_role == 3 || $this->max_role == 1) {
                 $this->max_role += 2;
             }
+            if($this->max_role == 4) {
+                $this->max_role --;
+            }
+            if($this->max_role == 2) {
+                $this->max_role ++;
+            }
         }else {
-            $this->max_role ++;
-            if($this->max_role == 3){
+            if($this->max_role == 4) {
+                $this->max_role ++;
+            }
+            if($this->max_role == 2) {
+                $this->max_role += 2;
+            }
+            if($this->max_role != 4 && $this->max_role != 5) {
                 $this->max_role ++;
             }
         }
-
         return $this->max_role; 
 
     }
@@ -178,7 +186,7 @@ class RequestBaseController extends Controller
         }else {
             $data = $res->load('user.assignedFinance');
         }
-        // $this->notifyNewRequest('added', $employee_name, $prp_assigned_id, $this->request_name, $data);
+        $this->notifyNewRequest('added', $employee_name, $prp_assigned_id, $this->request_name, $data);
 
         return response()->json($res, 200);
 

@@ -42,4 +42,9 @@ class TravelAuthRequest extends Model
     return $this->belongsTo(\App\Models\User::class, 'employee_to_cover_id');
   }
 
+  public function overriden_requests()
+  {
+      return $this->morphMany(\App\Models\OverridenRequest::class, 'overriden_requestable');
+  }
+
 }

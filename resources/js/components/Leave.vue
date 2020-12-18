@@ -10,7 +10,7 @@
         >
           <v-tabs-slider></v-tabs-slider>
           <v-tab
-            v-if="!user_type.includes('general mngr')"
+            v-if="!user_type.includes('general mngr') && !user_type.includes('admin')"
             @click="employees = false, requests = true, feedback = false"
           >My Requests</v-tab>
           <v-tab @click="requests = false, employees = true, feedback = false">Employees Requests</v-tab>
@@ -158,6 +158,11 @@
           ></v-text-field>
         </v-toolbar>
       </template>
+      <template v-slot:item.user.first_name="{ item }">
+        {{
+        item.user.first_name + ' ' + item.user.last_name
+        }}
+      </template>
       <template v-slot:item.number_of_days="{ item }">
         {{
         displayTimeLengthInText(item.number_of_days)
@@ -201,7 +206,9 @@
     <Confirmation
       ref="confirms"
       :title="approveThis === 'approve' ||'disapproved' ? 'Confirmation' : ''"
-      :message="approveThis === 'approve' ? 'Are you sure you want to approve this request?' : approveThis === 'disapproved' ? 'Are you sure you want to reject this request?' : ''"
+      :message="!user_type.includes('admin') ? 
+      approveThis === 'approve' ? 'Are you sure you want to approve this request?' : approveThis === 'disapproved' ? 'Are you sure you want to reject this request?' : '' :
+      approveThis === 'approve' ? 'Are you sure you want to OVERRIDE approval of this request?' : approveThis === 'disapproved' ? 'Are you sure you want to OVERRIDE rejection of this request?' : '' "
       @onConfirm="confirm($event)"
     ></Confirmation>
     <!-- End of Table -->
@@ -340,6 +347,12 @@
         displayTimeLengthInText(item.number_of_days)
         }}
       </template>
+      
+      <template v-slot:item.user.first_name="{ item }">
+        {{
+        item.user.first_name + ' ' + item.user.last_name
+        }}
+      </template>
       <!-- format time -->
       <template v-slot:item.start_date="{ item }">
         {{
@@ -433,9 +446,9 @@ export default {
     user_type: localStorage.getItem("user_type"),
     user_id: localStorage.getItem("id"),
     prp_assigned_id: localStorage.getItem("assigned_prp_id"),
-    employees: localStorage.getItem("user_type").includes('general mngr') ? true: false,
-    requests: localStorage.getItem("user_type").includes('general mngr') ? false: true,
-    feedback: localStorage.getItem("user_type").includes('general mngr') ? false: false,
+    employees: localStorage.getItem("user_type").includes('general mngr') || localStorage.getItem("user_type").includes('admin') ? true: false,
+    requests: localStorage.getItem("user_type").includes('general mngr') || localStorage.getItem("user_type").includes('admin')  ? false: true,
+    feedback: localStorage.getItem("user_type").includes('general mngr') || localStorage.getItem("user_type").includes('admin')  ? false: false,
     dialog: false,
     error: false,
     error1: false,
@@ -447,36 +460,36 @@ export default {
     loading: false,
     search: "",
     headers: [
+      { text: "START DATE", value: "start_date" },
+      { text: "END DATE", value: "end_date" },  
+      { text: "DURATION OF LEAVE", value: "number_of_days" },
       {
         text: "TYPE OF LEAVE",
         align: "start",
         value: "leave_type.leave_type_name"
       },
-      { text: "DURATION OF LEAVE", value: "number_of_days" },
-      { text: "START DATE", value: "start_date" },
-      { text: "END DATE", value: "end_date" },
       { text: "APPROVER", value: "approver_role.role_name" },
       { text: "STATUS", value: "status.status_name" },
       { text: "ACTIONS", value: "actions", sortable: false }
     ],
     headersEmp: [
-      { text: "REQUESTER", align: "start", value: "user.first_name" },
-      { text: "TYPE OF LEAVE", value: "leave_type.leave_type_name" },
-      { text: "DURATION OF LEAVE", value: "number_of_days" },
       { text: "START DATE", value: "start_date" },
       { text: "END DATE", value: "end_date" },
+      { text: "DURATION OF LEAVE", value: "number_of_days" },
+      { text: "REQUESTER", align: "start", value: "user.first_name" },
+      { text: "TYPE OF LEAVE", value: "leave_type.leave_type_name" },
       { text: "APPROVER", value: "approver_role.role_name" },
       { text: "STATUS", value: "status.status_name" },
       { text: "ACTIONS", value: "actions", sortable: false }
     ],
     headersFeed: [
-      { text: "REQUESTER", align: "start", value: "user.first_name" },
-      { text: "TYPE OF LEAVE", value: "leave_type.leave_type_name" },
-      { text: "DURATION OF LEAVE", value: "number_of_days" },
       { text: "START DATE", value: "start_date" },
       { text: "END DATE", value: "end_date" },
+      { text: "DURATION OF LEAVE", value: "number_of_days" },
+      { text: "REQUESTER", align: "start", value: "user.first_name" },
+      { text: "TYPE OF LEAVE", value: "leave_type.leave_type_name" },
       { text: "APPROVER", value: "approver_role.role_name" },
-      { text: "STATUS", value: "status.status_name" }
+      { text: "STATUS", value: "status.status_name" },
     ],
     request: [],
     prpPending: [],
@@ -524,7 +537,7 @@ export default {
   },
   mounted() {
     if (this.$store.getters.roleList.includes("general mngr")
-    ) {
+      ) {
       this.retrievePendingPrp();
       this.retrieve();
       this.getAllFeedback();
@@ -587,7 +600,6 @@ export default {
         .get("leave_request/" + this.user_id)
         .then(response => {
           this.request = response.data;
-          console.log('sf', this.request)
           this.loading = false;
         })
         .catch(e => {
@@ -595,7 +607,18 @@ export default {
         });
     },
     retrievePendingPrp() {
-      this.$axios
+      if(this.user_type.includes('admin')) {
+        console.log('nig');
+        this.$axios
+        .get("admin/leave_request/pending")
+        .then(response => {
+          this.prpPending = response.data;
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      }else {
+        this.$axios
         .get("prp/leave_request/pending/" + this.user_id)
         .then(response => {
           this.prpPending = response.data;
@@ -603,6 +626,7 @@ export default {
         .catch(e => {
           console.log(e);
         });
+      }
     },
     editItem(item) {
       console.log('item', item)
@@ -1023,22 +1047,26 @@ export default {
       this.$refs.confirms.show(item);
     },
     approve(item) {
+      let parameter = {};
       if (item.id.approver_role_id === 5) {
-        let parameter = {
+        parameter = {
           user_id: this.user_id,
           status_id: 2
         };
+      } else {
+        parameter = {
+          user_id: this.user_id,
+          status_id: 1
+        };
+      }
+      if(this.user_type.includes('admin')) {
         this.$axios
-          .post("prp/leave_request/feedback/" + this.id, parameter)
+          .post("admin/leave_request/feedback/" + this.id, parameter)
           .then(response => {
             this.retrievePendingPrp();
             this.getAllFeedback();
           });
-      } else {
-        let parameter = {
-          user_id: this.user_id,
-          status_id: 1
-        };
+      }else {
         this.$axios
           .post("prp/leave_request/feedback/" + this.id, parameter)
           .then(response => {
@@ -1046,6 +1074,7 @@ export default {
             this.getAllFeedback();
           });
       }
+      
     },
     disapprove() {
       let parameter = {
@@ -1060,11 +1089,20 @@ export default {
         });
     },
     getAllFeedback() {
-      this.$axios
-        .get("prp/leave_request/feedbacked/" + this.user_id)
-        .then(response => {
-          this.feedbacks = response.data.feedbacked_leave_requests;
-        });
+      if(!this.user_type.includes('admin')) {
+        this.$axios
+          .get("prp/leave_request/feedbacked/" + this.user_id)
+          .then(response => {
+            this.feedbacks = response.data.feedbacked_leave_requests;
+          });
+      }else {
+        this.$axios
+          .get("admin/leave_request")
+          .then(response => {
+            this.feedbacks = response.data;
+          });
+      }
+      
     },
     summary(item) {
       this.$refs.summary.show(this.dates[0], this.dates[1], item);

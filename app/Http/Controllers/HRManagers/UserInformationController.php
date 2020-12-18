@@ -10,6 +10,7 @@ use App\Services\UserService;
 use Hash;
 use DateTime;
 use App\Traits\CallForActionEmail;
+use App\Services\AllUserRequestsService;
 
 class UserInformationController extends Controller
 {
@@ -17,14 +18,18 @@ class UserInformationController extends Controller
     
     protected $user;
     protected $user_service;
+    protected $all_user_request_service;
 
     public function __construct(
         UserEloquent $user,
-        UserService $user_service
+        UserService $user_service,
+        AllUserRequestsService $all_user_request_service
         ) {
         $this->middleware(['auth', 'verify.manager.hr']);
         $this->user = $user;
         $this->user_service = $user_service;
+        $this->all_user_request_service = $all_user_request_service;
+
     }
 
     /**
@@ -155,87 +160,126 @@ class UserInformationController extends Controller
     }
 
     public function resetPasswordOfUser( Request $request, $id) {
-
         $password = Hash::make($request->password);
         $data = [
             'password' => $password
         ];
-        
     }
 
     public function getAllFeedbackedDateLeave( Request $request) {
-        $table_name = $this->user->getTableFeedbackedLeaveRequests();
         $start_date = $request->start_date;
         $end_date = $request->end_date;
         $relationship = 'feedbacked_leave_requests';
-        $res = $this->getAllFeedbackedDate( $table_name, $relationship, $start_date, $end_date);
+        $res = $this->all_user_request_service->getAllFeedbackedDate($relationship, $start_date, $end_date, 2);
+        return $res;
+    }
+
+    public function getAllFeedbackedDateLeaveNegate( Request $request) {
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        $relationship = 'feedbacked_leave_requests';
+        $res = $this->all_user_request_service->getAllFeedbackedDate($relationship, $start_date, $end_date, 3);
         return $res;
     }
 
     public function getAllFeedbackedDateShiftChange( Request $request) {
-        $table_name = $this->user->getTableFeedbackedShiftChangeRequests();
         $start_date = $request->start_date;
         $end_date = $request->end_date;
         $relationship = 'feedbacked_shift_change_requests';
-        $res = $this->getAllFeedbackedDate( $table_name, $relationship, $start_date, $end_date);
+        $res = $this->all_user_request_service->getAllFeedbackedDate($relationship, $start_date, $end_date, 2);
+        return $res;
+    }
+    
+    public function getAllFeedbackedDateShiftChangeNegate( Request $request) {
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        $relationship = 'feedbacked_shift_change_requests';
+        $res = $this->all_user_request_service->getAllFeedbackedDate($relationship, $start_date, $end_date, 3);
         return $res;
     }
 
     public function getAllFeedbackedDateOvertime( Request $request) {
-        $table_name = $this->user->getTableFeedbackedOvertimeRequests();
         $start_date = $request->start_date;
         $end_date = $request->end_date;
         $relationship = 'feedbacked_overtime_requests';
-        $res = $this->getAllFeedbackedDate( $table_name, $relationship, $start_date, $end_date);
+        $res = $this->all_user_request_service->getAllFeedbackedDate($relationship, $start_date, $end_date, 2);        
+        return $res;
+    }
+
+    public function getAllFeedbackedDateOvertimeNegate( Request $request) {
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        $relationship = 'feedbacked_overtime_requests';
+        $res = $this->all_user_request_service->getAllFeedbackedDate($relationship, $start_date, $end_date, 3);        
         return $res;
     }
 
     public function getAllFeedbackedDateTravelAuth( Request $request) {
-        $table_name = $this->user->getTableFeedbackedTravelAuthRequests();
         $start_date = $request->start_date;
         $end_date = $request->end_date;
         $relationship = 'feedbacked_travel_auth_requests';
-        $res = $this->getAllFeedbackedDate( $table_name, $relationship, $start_date, $end_date);
+        $res = $this->all_user_request_service->getAllFeedbackedDate($relationship, $start_date, $end_date, 2);
+        return $res;
+    }
+
+    public function getAllFeedbackedDateTravelAuthNegate( Request $request) {
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        $relationship = 'feedbacked_travel_auth_requests';
+        $res = $this->all_user_request_service->getAllFeedbackedDate($relationship, $start_date, $end_date, 3);
         return $res;
     }
 
     public function getAllFeedbackedDatePettyCash($user_id, Request $request) {
-        $table_name = $this->user->getTableFeedbackedPettyCashRequests();
         $start_date = $request->start_date;
         $end_date = $request->end_date;
         $relationship = 'feedbacked_petty_cash_requests';
-        $res = $this->getAllFeedbackedDate( $table_name, $relationship, $start_date, $end_date, $user_id);
+        $res = $this->all_user_request_service->getAllFeedbackedDate($relationship, $start_date, $end_date, 2);        
+        return $res;
+    }
+
+    public function getAllFeedbackedDatePettyCashNegate($user_id, Request $request) {
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        $relationship = 'feedbacked_petty_cash_requests';
+        $res = $this->all_user_request_service->getAllFeedbackedDate($relationship, $start_date, $end_date, 3);        
         return $res;
     }
 
     public function getAllFeedbackedDateBudget($user_id, Request $request) {
-        $table_name = $this->user->getTableFeedbackedBudgetRequests();
         $start_date = $request->start_date;
         $end_date = $request->end_date;
         $relationship = 'feedbacked_budget_requests';
-        $res = $this->getAllFeedbackedDate( $table_name, $relationship, $start_date, $end_date, $user_id);
+        $res = $this->all_user_request_service->getAllFeedbackedDate($relationship, $start_date, $end_date, 2);        
         return $res;
     }
 
-    public function getAllFeedbackedDate( $table_name, $relationship, $start_date, $end_date, $user_id = null) {
-        $user_id = $user_id ? $user_id: $this->user_service->getUserId();
-        $new_temp_date = $start_date;
-        if($start_date != null && $end_date!=null) {
-            if( new DateTime($new_temp_date) > new DateTime($end_date)) {
-                $start_date = $end_date;
-                $end_date = $new_temp_date;
-            }
-        }else {
-            if($start_date == null) {
-                $start_date = $end_date;
-            }
-            if($end_date == null) {
-                 $end_date = $start_date;
-            }
-        }
-        // dd($table_name, $relationship, $start_date, $end_date, $user_id);
-        $res = $this->user->getRequestFeedbackedDate( $user_id, $table_name, $relationship, $start_date, $end_date);  
+    public function getAllFeedbackedDateBudgetNegate($user_id, Request $request) {
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        $relationship = 'feedbacked_budget_requests';
+        $res = $this->all_user_request_service->getAllFeedbackedDate($relationship, $start_date, $end_date, 3);        
         return $res;
     }
+
+    // public function getAllFeedbackedDate( $table_name, $relationship, $start_date, $end_date, $user_id = null) {
+    //     $user_id = $user_id ? $user_id: $this->user_service->getUserId();
+    //     $new_temp_date = $start_date;
+    //     if($start_date != null && $end_date!=null) {
+    //         if( new DateTime($new_temp_date) > new DateTime($end_date)) {
+    //             $start_date = $end_date;
+    //             $end_date = $new_temp_date;
+    //         }
+    //     }else {
+    //         if($start_date == null) {
+    //             $start_date = $end_date;
+    //         }
+    //         if($end_date == null) {
+    //              $end_date = $start_date;
+    //         }
+    //     }
+        // $res = $this->user->getRequestFeedbackedDate( $user_id, $table_name, $relationship, $start_date, $end_date);  
+    //     return $res;
+    // }
 
 }

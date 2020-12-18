@@ -28,9 +28,9 @@ class PettyCashRequest extends Model
         return $this->morphToMany(\App\Models\User::class, 'recordable')->withTimestamps();
     }
 
-    public function user_requester() {
-        return $this->morphToMany(\App\Models\User::class, 'requestable')->withTimestamps();        
-    }
+    // public function user_requester() {
+    //     return $this->morphToMany(\App\Models\User::class, 'requestable')->withTimestamps();        
+    // }
     
     public function approver_role() {
         return $this->belongsTo(\App\Models\Role::class);
@@ -38,5 +38,10 @@ class PettyCashRequest extends Model
 
     public function department() {
         return $this->belongsTo(\App\Models\Department::class);
+    }
+
+    public function overriden_requests()
+    {
+        return $this->morphMany(\App\Models\OverridenRequest::class, 'overriden_requestable');
     }
 }
