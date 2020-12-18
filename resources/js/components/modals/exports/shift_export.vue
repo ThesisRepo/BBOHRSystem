@@ -26,7 +26,7 @@
                     <e-column field='user.email' headerText='REQUESTER' width=120></e-column>
                     <e-column field='reason' headerText='REASON' width=150></e-column>
                     <e-column field='shift_date' headerText='SHIFT DATE' width=150></e-column>
-                    <e-column field='shift_time_id' headerText='SHIFT TIME' width=150></e-column>
+                    <e-column field='shift_time.shift_time_name' headerText='SHIFT TIME' width=150></e-column>
                 </e-columns>
             </ejs-grid>
           </v-card-text>
@@ -75,14 +75,14 @@ export default {
         this.$axios
         .post("hr/summary/shift_change_request/approved/", param)
         .then(response => {
-            this.summary = response.data.feedbacked_shift_change_requests;
+            this.summary = response.data;
             console.log('afd', this.summary)
         });
       }else if(item === 'Disapproved Requests'){
         this.$axios
         .post("hr/summary/shift_change_request/disapproved/", param)
         .then(response => {
-            this.summary = response.data.feedbacked_shift_change_requests;
+            this.summary = response.data;
         });
       }
       this.dialog = true;

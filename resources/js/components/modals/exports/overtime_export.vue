@@ -85,13 +85,14 @@ export default {
         this.$axios
           .post("hr/summary/overtime_request", param)
           .then(response => {
-            this.summary = response.data.feedbacked_overtime_requests;
+            this.summary = response.data;
+            console.log(this.summary)
           });
       } else if (item === "Disapproved Requests") {
         this.$axios
           .post("hr/summary/overtime_request", param)
           .then(response => {
-            this.summary = response.data.feedbacked_overtime_requests;
+            this.summary = response.data;
           });
       }
       this.dialog = true;
