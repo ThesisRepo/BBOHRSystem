@@ -1285,6 +1285,8 @@ export default {
                 this.$axios
                     .post("hr/manage/user", params)
                     .then(response => {
+                        this.$store.commit('changeMessage', 'Successfully Created')
+                        this.$store.commit('changeStatusMessage', true)
                         this.$emit("create", response.data);
                         this.$parent.$parent.$parent.$parent.$parent.$parent.retrieve();
                         this.dialogOthers = false;
@@ -1350,6 +1352,8 @@ export default {
             this.$axios
             .post("user_info/admin/" + this.user_id, params)
             .then(response => {
+                this.$store.commit('changeMessage', 'Successfully Updated')
+                this.$store.commit('changeStatusMessage', true)
                 this.$emit('update');
                 this.dialogOthers = false;
                 this.dialogPersonal = false;

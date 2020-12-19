@@ -76,7 +76,6 @@ export default {
           .post("hr/summary/leave_request", param)
           .then(response => {
             this.summary = response.data;
-            console.log(this.summary)
           });
       } else if (item === "Disapproved Requests") {
         this.$axios

@@ -553,7 +553,6 @@ export default {
       this.retrieve();
       this.checkUser();
     }
-    console.log(this.requests, this.employees, this.feedback)
   },
   methods: {
     // confirm(){
@@ -601,31 +600,30 @@ export default {
         .then(response => {
           this.request = response.data;
           this.loading = false;
-        })
-        .catch(e => {
-          console.log(e);
+        }).catch(err => {
+          this.$store.commit('changeMessage', 'Please Try Again')
+          this.$store.commit('changeStatusMessage', true)
         });
     },
     retrievePendingPrp() {
       if(this.user_type.includes('admin')) {
-        console.log('nig');
         this.$axios
         .get("admin/leave_request/pending")
         .then(response => {
           this.prpPending = response.data;
-        })
-        .catch(e => {
-          console.log(e);
-        });
+        }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
+          });
       }else {
         this.$axios
         .get("prp/leave_request/pending/" + this.user_id)
         .then(response => {
           this.prpPending = response.data;
-        })
-        .catch(e => {
-          console.log(e);
-        });
+        }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
+          });
       }
     },
     editItem(item) {
@@ -965,8 +963,13 @@ export default {
         this.$axios
           .post("leave_request/" + this.editedItem.id, params)
           .then(response => {
+            this.$store.commit('changeMessage', 'Successfully Updated')
+            this.$store.commit('changeStatusMessage', true)
             this.retrieve();
-          });
+          }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
+          })
         this.dialog = false;
       } else {
         this.error = true;
@@ -987,7 +990,12 @@ export default {
     },
     confirmDel() {
       this.$axios.delete("leave_request/" + this.id).then(response => {
+        this.$store.commit('changeMessage', 'Successfully Deleted')
+        this.$store.commit('changeStatusMessage', true)
         this.retrieve();
+      }).catch(err => {
+        this.$store.commit('changeMessage', 'Please Try Again')
+        this.$store.commit('changeStatusMessage', true)
       });
     },
     close() {
@@ -1063,15 +1071,25 @@ export default {
         this.$axios
           .post("admin/leave_request/feedback/" + this.id, parameter)
           .then(response => {
+            this.$store.commit('changeMessage', 'Approved Successfully')
+            this.$store.commit('changeStatusMessage', true)
             this.retrievePendingPrp();
             this.getAllFeedback();
+          }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
           });
       }else {
         this.$axios
           .post("prp/leave_request/feedback/" + this.id, parameter)
           .then(response => {
+            this.$store.commit('changeMessage', 'Approved Successfully')
+            this.$store.commit('changeStatusMessage', true)
             this.retrievePendingPrp();
             this.getAllFeedback();
+          }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
           });
       }
       
@@ -1084,8 +1102,13 @@ export default {
       this.$axios
         .post("prp/leave_request/feedback/" + this.id, parameter)
         .then(res => {
+          this.$store.commit('changeMessage', 'Disapproved Successfully')
+          this.$store.commit('changeStatusMessage', true)
           this.retrievePendingPrp();
           this.getAllFeedback();
+        }).catch(err => {
+          this.$store.commit('changeMessage', 'Please Try Again')
+          this.$store.commit('changeStatusMessage', true)
         });
     },
     getAllFeedback() {
@@ -1094,15 +1117,20 @@ export default {
           .get("prp/leave_request/feedbacked/" + this.user_id)
           .then(response => {
             this.feedbacks = response.data.feedbacked_leave_requests;
+          }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
           });
       }else {
         this.$axios
           .get("admin/leave_request")
           .then(response => {
             this.feedbacks = response.data;
+          }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
           });
       }
-      
     },
     summary(item) {
       this.$refs.summary.show(this.dates[0], this.dates[1], item);

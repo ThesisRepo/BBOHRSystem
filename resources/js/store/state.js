@@ -4,6 +4,8 @@ let state = {
   notificationCount: 0,
   notifications: [],
   isLoading: false,
-  roleList: []
+  roleList: [],
+  message: 'Successfully Added',
+  show: false
 }
 export default state

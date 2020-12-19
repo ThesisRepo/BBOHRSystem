@@ -251,10 +251,15 @@ export default {
                     prp_assigned_id: this.prp_assigned_id
                 };
                 this.$axios.post("leave_request", params).then(res => {
+                    this.$store.commit('changeMessage', 'Successfully Created')
+                    this.$store.commit('changeStatusMessage', true)
                     // console.log("Successfully Added");
                     this.$parent.$parent.$parent.$parent.$parent.retrieve();
                     this.dialog = false;
-                });
+                }).catch(err => {
+                this.$store.commit('changeMessage', 'Please Try Again')
+                this.$store.commit('changeStatusMessage', true)
+            });
             } else if (
                 this.selectedLeaveType === null ||
                 this.total_days === null ||
