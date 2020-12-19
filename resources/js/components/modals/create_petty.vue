@@ -123,10 +123,14 @@ export default {
         this.$axios
           .post("petty_cash_request", parameter)
           .then(res => {
-            // console.log("Successfully Added", res.data);
+            this.$store.commit('changeMessage', 'Successfully Created')
+            this.$store.commit('changeStatusMessage', true)
             this.$parent.$parent.$parent.$parent.$parent.retrieve();
-          });
-        this.dialog = false;
+            this.dialog = false;
+          }).catch(err => {
+                this.$store.commit('changeMessage', 'Please Try Again')
+                this.$store.commit('changeStatusMessage', true)
+            });
       } else {
         if(this.errorMessage === null){
           this.error = true;

@@ -157,11 +157,16 @@ export default {
         }
         console.log('parameter', parameter)
         this.$axios.post('update_password', parameter).then( response =>{
+          this.$store.commit('changeMessage', 'Successfully Updated')
+          this.$store.commit('changeStatusMessage', true)
           if(response.data.error){
             this.errorMessage8 = 'Current password is not recognized'
           }else{
             this.dialog = false
           }
+        }).catch(err => {
+          this.$store.commit('changeMessage', 'Please Try Again')
+          this.$store.commit('changeStatusMessage', true)
         })
       }
     }

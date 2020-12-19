@@ -8,6 +8,7 @@ use App\Eloquent\Implementations\Requests\OvertimeRequestEloquent;
 use App\Eloquent\Implementations\Requests\BudgetRequestEloquent;
 use App\Eloquent\Implementations\Requests\PettyCashRequestEloquent;
 use App\Eloquent\Implementations\Requests\TravelAuthRequestEloquent;
+use DateTime;
 
 class AllUserRequestsService 
 {
@@ -111,7 +112,7 @@ class AllUserRequestsService
     return $temp_arr;
   }
 
-  public function getAllFeedbackedDate($name, $start_date, $end_date, $status) {
+  public function getAllFeedbackedDate($name, $start_date, $end_date, $status, $with = []) {
 
     $new_temp_date = $start_date;
     if($start_date != null && $end_date!=null) {
@@ -148,7 +149,7 @@ class AllUserRequestsService
         break;
     }
     
-    return $model->whereDate('created_at','>=', $start_date)->whereDate('created_at','<=', $end_date)->where('status_id', $status)->orderBy('created_at', 'DESC')->get()->toArray();
+    return $model->with($with)->whereDate('created_at','>=', $start_date)->whereDate('created_at','<=', $end_date)->where('status_id', $status)->orderBy('created_at', 'DESC')->get()->toArray();
   }
 
   public function getAllPendingPerRequest($name, $status, $with) {

@@ -170,7 +170,8 @@ class UserInformationController extends Controller
         $start_date = $request->start_date;
         $end_date = $request->end_date;
         $relationship = 'feedbacked_leave_requests';
-        $res = $this->all_user_request_service->getAllFeedbackedDate($relationship, $start_date, $end_date, 2);
+        $with = ['user', 'leave_type'];
+        $res = $this->all_user_request_service->getAllFeedbackedDate($relationship, $start_date, $end_date, 2, $with);
         return $res;
     }
 
@@ -178,7 +179,8 @@ class UserInformationController extends Controller
         $start_date = $request->start_date;
         $end_date = $request->end_date;
         $relationship = 'feedbacked_leave_requests';
-        $res = $this->all_user_request_service->getAllFeedbackedDate($relationship, $start_date, $end_date, 3);
+        $with = ['user', 'leave_type'];
+        $res = $this->all_user_request_service->getAllFeedbackedDate($relationship, $start_date, $end_date, 3, $with);
         return $res;
     }
 
@@ -186,7 +188,8 @@ class UserInformationController extends Controller
         $start_date = $request->start_date;
         $end_date = $request->end_date;
         $relationship = 'feedbacked_shift_change_requests';
-        $res = $this->all_user_request_service->getAllFeedbackedDate($relationship, $start_date, $end_date, 2);
+        $with = ['user', 'shift_time'];
+        $res = $this->all_user_request_service->getAllFeedbackedDate($relationship, $start_date, $end_date, 2, $with);
         return $res;
     }
     
@@ -194,7 +197,8 @@ class UserInformationController extends Controller
         $start_date = $request->start_date;
         $end_date = $request->end_date;
         $relationship = 'feedbacked_shift_change_requests';
-        $res = $this->all_user_request_service->getAllFeedbackedDate($relationship, $start_date, $end_date, 3);
+        $with = ['user', 'shift_time'];
+        $res = $this->all_user_request_service->getAllFeedbackedDate($relationship, $start_date, $end_date, 3, $with);
         return $res;
     }
 
@@ -202,7 +206,8 @@ class UserInformationController extends Controller
         $start_date = $request->start_date;
         $end_date = $request->end_date;
         $relationship = 'feedbacked_overtime_requests';
-        $res = $this->all_user_request_service->getAllFeedbackedDate($relationship, $start_date, $end_date, 2);        
+        $with = ['user'];
+        $res = $this->all_user_request_service->getAllFeedbackedDate($relationship, $start_date, $end_date, 2, $with);        
         return $res;
     }
 
@@ -210,7 +215,8 @@ class UserInformationController extends Controller
         $start_date = $request->start_date;
         $end_date = $request->end_date;
         $relationship = 'feedbacked_overtime_requests';
-        $res = $this->all_user_request_service->getAllFeedbackedDate($relationship, $start_date, $end_date, 3);        
+        $with = ['user'];
+        $res = $this->all_user_request_service->getAllFeedbackedDate($relationship, $start_date, $end_date, 3, $with);        
         return $res;
     }
 
@@ -218,7 +224,8 @@ class UserInformationController extends Controller
         $start_date = $request->start_date;
         $end_date = $request->end_date;
         $relationship = 'feedbacked_travel_auth_requests';
-        $res = $this->all_user_request_service->getAllFeedbackedDate($relationship, $start_date, $end_date, 2);
+        $with = ['user'];
+        $res = $this->all_user_request_service->getAllFeedbackedDate($relationship, $start_date, $end_date, 2, $with);
         return $res;
     }
 
@@ -226,7 +233,8 @@ class UserInformationController extends Controller
         $start_date = $request->start_date;
         $end_date = $request->end_date;
         $relationship = 'feedbacked_travel_auth_requests';
-        $res = $this->all_user_request_service->getAllFeedbackedDate($relationship, $start_date, $end_date, 3);
+        $with = ['user'];
+        $res = $this->all_user_request_service->getAllFeedbackedDate($relationship, $start_date, $end_date, 3, $with);
         return $res;
     }
 

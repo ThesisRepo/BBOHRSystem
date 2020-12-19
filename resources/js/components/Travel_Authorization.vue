@@ -708,6 +708,8 @@ export default {
     },
      confirm(){
       if(this.confirmationTitle == 'Update Image'){
+        this.$store.commit('changeMessage', 'Image Updated Successfully')
+        this.$store.commit('changeStatusMessage', true)
         this.uploadImg();
       }
     },
@@ -778,10 +780,11 @@ export default {
         .then(response => {
           this.showloading = false;
           this.travel = response.data;
-        })
-        .catch(e => {
-          this.showloading = false;
-        });
+        }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
+            this.showloading = false;
+          })
     },
     checkUser() {
       this.showloading = true;
@@ -819,10 +822,11 @@ export default {
           this.showloading = false;
           this.travelPending = response.data;
           console.log('travelPending', this.travelPending)
-        })
-        .catch(e => {
-          this.showloading = true;
-        });
+        }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
+            this.showloading = true;
+          })
     },
     editItem(item) {
       this.editedItem.id = item.id;
@@ -881,8 +885,13 @@ export default {
           .post("travel_auth_request/" + this.editedItem.id, params)
           .then(response => {
             this.showloading = false;
+            this.$store.commit('changeMessage', 'Successfully Updated')
+            this.$store.commit('changeStatusMessage', true)
             this.retrieve();
             this.dialog = false;
+          }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
           });
       }
     },
@@ -895,8 +904,13 @@ export default {
       this.showloading = true;
       this.$axios.delete("travel_auth_request/" + this.id).then(response => {
         this.showloading = false;
+        this.$store.commit('changeMessage', 'Successfully Deleted')
+        this.$store.commit('changeStatusMessage', true)
         this.retrieve();
-      });
+      }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
+          });
     },
     close() {
       this.dialog = false;
@@ -941,8 +955,13 @@ export default {
           .post("prp/travel_auth_request/feedback/" + this.id, parameter)
           .then(response => {
             this.showloading = false;
+            this.$store.commit('changeMessage', 'Approved Successfully')
+            this.$store.commit('changeStatusMessage', true)
             this.retrieveTravel();
             this.getAllFeedback();
+          }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
           });
       } else {
         this.showloading = true;
@@ -954,8 +973,13 @@ export default {
           .post("prp/travel_auth_request/feedback/" + this.id, parameter)
           .then(response => {
             this.showloading = false;
+            this.$store.commit('changeMessage', 'Approved Successfully')
+            this.$store.commit('changeStatusMessage', true)
             this.retrieveTravel();
             this.getAllFeedback();
+          }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
           });
       }
     },
@@ -969,9 +993,14 @@ export default {
         .post("prp/travel_auth_request/feedback/" + this.id, parameter)
         .then(res => {
           this.showloading = false;
+          this.$store.commit('changeMessage', 'Disapproved Successfully')
+          this.$store.commit('changeStatusMessage', true)
           this.retrieveTravel();
           this.getAllFeedback();
-        });
+        }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
+          });
     },
     getAllFeedback() {
       this.showloading = true;
@@ -980,7 +1009,10 @@ export default {
         .then(response => {
           this.showloading = false;
           this.feedbacks = response.data.feedbacked_travel_auth_requests;
-        });
+        }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
+          });
     },
     disabledDates(date) {
       return date > new Date().toISOString().substr(0, 10);

@@ -70,13 +70,14 @@ export default {
         this.$axios
         .post("hr/summary/travel_auth_request", param)
         .then(response => {
-            this.summary = response.data.feedbacked_travel_auth_requests;
+            this.summary = response.data;
+            console.log(this.summary)
         });
       }else if(item === 'Disapproved Requests'){
         this.$axios
         .post("hr/summary/travel_auth_request", param)
         .then(response => {
-            this.summary = response.data.feedbacked_travel_auth_requests;
+            this.summary = response.datas;
         });
       }
       this.dialog = true;

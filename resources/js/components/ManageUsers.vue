@@ -1123,8 +1123,13 @@ export default {
             this.$axios
                 .post("hr/manage/user/" + this.editItem.id, params)
                 .then(response => {
+                    this.$store.commit('changeMessage', 'Successfully Updated')
+                    this.$store.commit('changeStatusMessage', true)
                     this.retrieve();
-                });
+                }).catch(err => {
+                this.$store.commit('changeMessage', 'Please Try Again')
+                this.$store.commit('changeStatusMessage', true)
+            });
             this.dialogPersonal = false;
             this.dialogBusiness = false;
             this.dialogOthers = false;
@@ -1138,7 +1143,12 @@ export default {
         },
         confirmDel() {
             this.$axios.delete("hr/manage/user/" + this.id).then(response => {
+                this.$store.commit('changeMessage', 'Successfully Deleted')
+                this.$store.commit('changeStatusMessage', true)
                 this.retrieve();
+            }).catch(err => {
+                this.$store.commit('changeMessage', 'Please Try Again')
+                this.$store.commit('changeStatusMessage', true)
             });
         },
         getAllPrp() {

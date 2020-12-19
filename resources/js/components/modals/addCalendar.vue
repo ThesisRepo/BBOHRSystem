@@ -179,12 +179,17 @@ export default {
         ){
           this.$store.commit("state_loading", true);
           this.$axios.post("events", params).then(response => {
+          this.$store.commit('changeMessage', 'Successfully Added')
+          this.$store.commit('changeStatusMessage', true)
             this.$store.commit("state_loading", false);
             this.$parent.$parent.retrieve()
             this.dialog = false
           }, this.timeout).catch(err => {
             this.$store.commit("state_loading", false);            
-          });
+          }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
+          })
         } else {
           this.errorMessage1 = "Please fill up all fields";
         }

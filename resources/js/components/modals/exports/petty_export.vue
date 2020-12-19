@@ -23,10 +23,11 @@
           <v-card-text>
             <ejs-grid ref='grid' id='Grid' :dataSource='summary' :toolbar='toolbarOptions' height='270px' :allowPaging='true' :allowExcelExport='true' :toolbarClick='toolbarClick'>
                 <e-columns>
-                    <e-column field='description_need' headerText='Description' width=120></e-column>
-                    <e-column field='date' headerText='Date' width=150></e-column>
-                    <e-column field='department.department_name' headerText='Department' width=150></e-column>
-                    <e-column field='amount' headerText='Amount' width=150></e-column>
+                    <e-column field='user.email' headerText='REQUESTER' width=120></e-column>
+                    <e-column field='description_need' headerText='DESCRIPTION' width=120></e-column>
+                    <e-column field='date' headerText='DATE' width=150></e-column>
+                    <e-column field='department.department_name' headerText='DEPARTMENT' width=150></e-column>
+                    <e-column field='amount' headerText='AMOUNT' width=150></e-column>
                 </e-columns>
             </ejs-grid>
           </v-card-text>
@@ -86,15 +87,16 @@ export default {
       };
       if(item === 'Approved Requests'){
         this.$axios
-        .post("hr/summary/petty_cash_request", param)
+        .post("finance/summary/petty_cash_request", param)
         .then(response => {
-          this.summary = response.data.feedbacked_petty_cash_requests;
+          this.summary = response.data;
+          console.log(this.summary)
         });
       }else if(item === 'Disapproved Requests'){
         this.$axios
         .post("finance/summary/petty_cash_request", param)
         .then(response => {
-            this.summary = response.data.feedbacked_petty_cash_requests;
+            this.summary = response.data;
         });
       }
       this.dialog = true;
@@ -106,10 +108,10 @@ export default {
                 header: {
                     headerRows: 5,
                     rows: [
-                        { cells: [{ colSpan: 4, value: "BBO REQUEST MANAGEMENT SYSTEM", style: { fontColor: '#C67878', fontSize: 20, hAlign: 'Center', bold: true, } }] },
-                        { cells: [{ colSpan: 4, value: "Unit 1, 8F Mabuhay Tower IT Park", style: { fontColor: '#C67878', fontSize: 15, hAlign: 'Center', bold: true, } }] },
-                        { cells: [{ colSpan: 4, value: "Cebu City, 6000 Cebu, Philippine", style: { fontColor: '#C67878', fontSize: 15, hAlign: 'Center', bold: true, } }] },
-                        { cells: [{ colSpan: 4, value: "09269753710", style: { fontColor: '#C67878', fontSize: 15, hAlign: 'Center', bold: true, } }] }
+                        { cells: [{ colSpan: 5, value: "BBO REQUEST MANAGEMENT SYSTEM", style: { fontColor: '#0000FF', fontSize: 20, hAlign: 'Center', bold: true, } }] },
+                        { cells: [{ colSpan: 5, value: "Unit 1, 8F Mabuhay Tower IT Park", style: { fontColor: '#0000FF', fontSize: 15, hAlign: 'Center', bold: true, } }] },
+                        { cells: [{ colSpan: 5, value: "Cebu City, 6000 Cebu, Philippine", style: { fontColor: '#0000FF', fontSize: 15, hAlign: 'Center', bold: true, } }] },
+                        { cells: [{ colSpan: 5, value: "(032) 328 2321", style: { fontColor: '#0000FF', fontSize: 15, hAlign: 'Center', bold: true, } }] }
                     ]
                 },
             };
