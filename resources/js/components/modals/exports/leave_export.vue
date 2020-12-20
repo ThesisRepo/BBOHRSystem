@@ -14,8 +14,7 @@
                 ? start_date
                 : "No start date selected"
                 }}
-                /
-                {{ end_date ? end_date : start_date }}
+                {{ end_date ? ' up to ' + end_date : '' }}
               </span>
             </v-card-title>
           </v-toolbar>
@@ -47,6 +46,9 @@ import { GridPlugin, Toolbar, ExcelExport } from "@syncfusion/ej2-vue-grids";
 // import { GridPlugin } from '@syncfusion/ej2-vue-grids';
 import Vue from "vue";
 import VueJsonToCsv from 'vue-json-to-csv'
+import {formatDateStandard} from  "../../../helpers/date_format.js"
+
+
 Vue.use(GridPlugin)
 export default {
   data: () => ({
@@ -71,20 +73,29 @@ export default {
         start_date: this.start_date,
         end_date: this.end_date
       };
+      var route = "hr/summary/leave_request";
       if (item === "Approved Requests") {
         this.$axios
-          .post("hr/summary/leave_request", param)
+          .post(route, param)
           .then(response => {
-            this.summary = response.data;
+            this.summary = response.data.map(this.formatData());
           });
       } else if (item === "Disapproved Requests") {
         this.$axios
-          .post("hr/summary/leave_request", param)
+          .post(route, param)
           .then(response => {
-            this.summary = response.data;
+            this.summary = response.data.map(this.formatData());
           });
       }
       this.dialog = true;
+    },
+    formatData() {
+      return (e) =>{
+        e.number_of_days = this.displayTimeLengthInText(e.number_of_days);
+        e.start_date =  formatDateStandard(e.start_date);
+        e.end_date = formatDateStandard(e.end_date);
+        return e;
+      }
     },
     toolbarClick(args) {
         if (args.item.id === 'Grid_excelexport') { // 'Grid_excelexport' -> Grid component id + _ + toolbar item name
@@ -103,6 +114,294 @@ export default {
             this.$refs.grid.excelExport(excelExportProperties);
         }
     },
+     displayTimeLengthInText(num) {
+      var item = {
+        number_of_days: num
+      };
+      return item.number_of_days >= 1
+        ? // true
+          Math.floor(item.number_of_days) == item.number_of_days
+          ? Math.floor(item.number_of_days) > 1
+            ? // true
+              Math.floor(item.number_of_days) + " " + "days"
+            : Math.floor(item.number_of_days) + " " + "day"
+          : // false
+          Math.floor(item.number_of_days) > 1
+          ? Math.round(
+              item.number_of_days * 24 - Math.trunc(item.number_of_days * 24)
+            ) >= 1
+            ? Math.round(
+                item.number_of_days * 24 - Math.trunc(item.number_of_days * 24)
+              ) > 1
+              ? Math.round(
+                  (item.number_of_days * 24 -
+                    Math.trunc(item.number_of_days * 24)) *
+                    60
+                ) > 1
+                ? // hours and minute/s
+                  Math.floor(item.number_of_days) +
+                  " " +
+                  "days" +
+                  " " +
+                  Math.round(
+                    item.number_of_days * 24 -
+                      Math.trunc(item.number_of_days * 24)
+                  ) +
+                  " hours and " +
+                  Math.round(
+                    (item.number_of_days * 24 -
+                      Math.trunc(item.number_of_days * 24)) *
+                      60
+                  ) +
+                  " " +
+                  "mins"
+                : Math.floor(item.number_of_days) +
+                  " " +
+                  "days" +
+                  " " +
+                  Math.round(
+                    item.number_of_days * 24 -
+                      Math.trunc(item.number_of_days * 24)
+                  ) +
+                  " hours and " +
+                  Math.round(
+                    (item.number_of_days * 24 -
+                      Math.trunc(item.number_of_days * 24)) *
+                      60
+                  ) +
+                  " " +
+                  "min"
+              : // hour and minute/s
+              Math.round(
+                  (item.number_of_days * 24 -
+                    Math.trunc(item.number_of_days * 24)) *
+                    60
+                ) > 1
+              ? Math.floor(item.number_of_days) +
+                " " +
+                "days" +
+                " " +
+                Math.round(
+                  item.number_of_days * 24 -
+                    Math.trunc(item.number_of_days * 24)
+                ) +
+                " hour and " +
+                Math.round(
+                  (item.number_of_days * 24 -
+                    Math.trunc(item.number_of_days * 24)) *
+                    60
+                ) +
+                " " +
+                "mins"
+              : Math.floor(item.number_of_days) +
+                " " +
+                "days" +
+                " " +
+                Math.round(
+                  item.number_of_days * 24 -
+                    Math.trunc(item.number_of_days * 24)
+                ) +
+                " hour and " +
+                Math.round(
+                  (item.number_of_days * 24 -
+                    Math.trunc(item.number_of_days * 24)) *
+                    60
+                ) +
+                " " +
+                "min"
+            : // minutes
+            Math.round(
+                (item.number_of_days * 24 -
+                  Math.trunc(item.number_of_days * 24)) *
+                  60
+              ) > 1
+            ? Math.floor(item.number_of_days) +
+              " " +
+              "days" +
+              " and " +
+              Math.round(
+                (item.number_of_days * 24 -
+                  Math.trunc(item.number_of_days * 24)) *
+                  60
+              ) +
+              " " +
+              "mins"
+            : Math.floor(item.number_of_days) +
+              " " +
+              "days" +
+              " and " +
+              Math.round(
+                (item.number_of_days * 24 -
+                  Math.trunc(item.number_of_days * 24)) *
+                  60
+              ) +
+              " " +
+              "min"
+          : Math.round(
+              item.number_of_days * 24 - Math.trunc(item.number_of_days * 24)
+            ) >= 1
+          ? Math.round(
+              item.number_of_days * 24 - Math.trunc(item.number_of_days * 24)
+            ) > 1
+            ? Math.round(
+                (item.number_of_days * 24 -
+                  Math.trunc(item.number_of_days * 24)) *
+                  60
+              ) > 1
+              ? // hours and minute/s
+                Math.floor(item.number_of_days) +
+                " " +
+                "day" +
+                " " +
+                Math.round(
+                  item.number_of_days * 24 -
+                    Math.trunc(item.number_of_days * 24)
+                ) +
+                " hours and " +
+                Math.round(
+                  (item.number_of_days * 24 -
+                    Math.trunc(item.number_of_days * 24)) *
+                    60
+                ) +
+                " " +
+                "mins"
+              : Math.floor(item.number_of_days) +
+                " " +
+                "day" +
+                " " +
+                Math.round(
+                  item.number_of_days * 24 -
+                    Math.trunc(item.number_of_days * 24)
+                ) +
+                " hours and " +
+                Math.round(
+                  (item.number_of_days * 24 -
+                    Math.trunc(item.number_of_days * 24)) *
+                    60
+                ) +
+                " " +
+                "min"
+            : // hour and minute/s
+            Math.round(
+                (item.number_of_days * 24 -
+                  Math.trunc(item.number_of_days * 24)) *
+                  60
+              ) > 1
+            ? Math.floor(item.number_of_days) +
+              " " +
+              "day" +
+              " " +
+              Math.round(
+                item.number_of_days * 24 - Math.trunc(item.number_of_days * 24)
+              ) +
+              " hour and " +
+              Math.round(
+                (item.number_of_days * 24 -
+                  Math.trunc(item.number_of_days * 24)) *
+                  60
+              ) +
+              " " +
+              "mins"
+            : Math.floor(item.number_of_days) +
+              " " +
+              "day" +
+              " " +
+              Math.round(
+                item.number_of_days * 24 - Math.trunc(item.number_of_days * 24)
+              ) +
+              " hour and " +
+              Math.round(
+                (item.number_of_days * 24 -
+                  Math.trunc(item.number_of_days * 24)) *
+                  60
+              ) +
+              " " +
+              "min"
+          : // minutes
+          Math.round(
+              (item.number_of_days * 24 -
+                Math.trunc(item.number_of_days * 24)) *
+                60
+            ) > 1
+          ? Math.floor(item.number_of_days) +
+            " " +
+            "day" +
+            " and " +
+            Math.round(
+              (item.number_of_days * 24 -
+                Math.trunc(item.number_of_days * 24)) *
+                60
+            ) +
+            " " +
+            "mins"
+          : Math.floor(item.number_of_days) +
+            " " +
+            "day" +
+            " and " +
+            Math.round(
+              (item.number_of_days * 24 -
+                Math.trunc(item.number_of_days * 24)) *
+                60
+            ) +
+            " " +
+            "min"
+        : // false
+        Math.round(item.number_of_days * 24) >= 1
+        ? Math.round(item.number_of_days * 24) > 1
+          ? Math.round(
+              (item.number_of_days * 24 -
+                Math.trunc(item.number_of_days * 24)) *
+                60
+            ) > 1
+            ? // hours and minute/s
+              Math.round(item.number_of_days * 24) +
+              " hours and " +
+              Math.round(
+                (item.number_of_days * 24 -
+                  Math.trunc(item.number_of_days * 24)) *
+                  60
+              ) +
+              " " +
+              "mins"
+            : Math.round(item.number_of_days * 24) +
+              " hours and " +
+              Math.round(
+                (item.number_of_days * 24 -
+                  Math.trunc(item.number_of_days * 24)) *
+                  60
+              ) +
+              " " +
+              "min"
+          : // hour and minute/s
+          Math.round(
+              (item.number_of_days * 24 -
+                Math.trunc(item.number_of_days * 24)) *
+                60
+            ) > 1
+          ? Math.round(item.number_of_days * 24) +
+            " hour and " +
+            Math.round(
+              (item.number_of_days * 24 -
+                Math.trunc(item.number_of_days * 24)) *
+                60
+            ) +
+            " " +
+            "mins"
+          : Math.round(item.number_of_days * 24) +
+            " hour and " +
+            Math.round(
+              (item.number_of_days * 24 -
+                Math.trunc(item.number_of_days * 24)) *
+                60
+            ) +
+            " " +
+            "min"
+        : // minutes
+        Math.round(item.number_of_days * 24 * 60) > 1
+        ? Math.round(item.number_of_days * 24 * 60) + " " + "mins"
+        : Math.round(item.number_of_days * 24 * 60) + " " + "min";
+    },
+    formatDateStandard
   }
 };
 </script>
