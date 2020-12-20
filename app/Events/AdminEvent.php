@@ -27,15 +27,22 @@ class AdminEvent implements ShouldBroadcast
 
     public $requester;
 
+    public $action;
+
+    public $user;
+
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($action, $username, $id, $request_type, $requester, $data)
+    public function __construct($action, $username, $id, $request_type, $requester, $data, $user = null)
     {
         $this->username = $username;
         $this->requester = $requester;
+        $this->action = $action;
+        $this->user = $user;
+
         $this->data = $data;
         $this->id = $id;
         switch($request_type){

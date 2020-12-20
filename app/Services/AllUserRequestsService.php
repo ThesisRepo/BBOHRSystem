@@ -8,6 +8,7 @@ use App\Eloquent\Implementations\Requests\OvertimeRequestEloquent;
 use App\Eloquent\Implementations\Requests\BudgetRequestEloquent;
 use App\Eloquent\Implementations\Requests\PettyCashRequestEloquent;
 use App\Eloquent\Implementations\Requests\TravelAuthRequestEloquent;
+use DateTime;
 
 class AllUserRequestsService 
 {
@@ -147,7 +148,7 @@ class AllUserRequestsService
           $model = $this->budget_request;
         break;
     }
-    
+    // dd('hi');
     return $model->whereDate('created_at','>=', $start_date)->whereDate('created_at','<=', $end_date)->where('status_id', $status)->orderBy('created_at', 'DESC')->get()->toArray();
   }
 

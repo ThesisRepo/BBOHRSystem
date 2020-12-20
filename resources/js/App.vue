@@ -2,7 +2,7 @@
  <v-app id="sample">
         <!-- <h1>{{user}}</h1> -->
         <v-main>
-            <v-container class="container" fluid>
+            <v-container fluid>
                 <sidebar id="sidebar"></sidebar>
                 <router-view>
                 </router-view>

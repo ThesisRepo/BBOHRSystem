@@ -1,429 +1,454 @@
 <template>
-  <div>
-    <v-toolbar flat>
-      <template v-slot:extension>
-        <v-tabs
-          dark
-          background-color="primary"
-          fixed-tabs
-          v-if="((user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr')) && !user_type.includes('finance mngr'))"
+    <v-container fluid>
+      <v-toolbar-title
+        class="py-4"
         >
-          <v-tabs-slider></v-tabs-slider>
-          <v-tab
-            v-if="!user_type.includes('general mngr') && !user_type.includes('admin')"
-            @click="employees = false, requests = true, feedback = false"
-          >My Requests</v-tab>
-          <v-tab @click="requests = false, employees = true, feedback = false">Employees Requests</v-tab>
-          <v-tab @click="requests = false, employees = false, feedback = true">History</v-tab>
-        </v-tabs>
-      </template>
-    </v-toolbar>
-
-    <!-- Feedback -->
-    <v-data-table
-      v-if="feedback"
-      :headers="headersFeed"
-      :items="feedbacks"
-      :search="search"
-      class="elevation-3"
-    >
-      <template v-slot:item.number_of_days="{ item }">
-        {{
-        displayTimeLengthInText(item.number_of_days)
-        }}
-      </template>
-      <!-- format time -->
-      <template v-slot:item.start_date="{ item }">
-        {{
-        formatDateStandard(item.start_date)
-        }}
-      </template>
-      <template v-slot:item.end_date="{ item }">
-        {{
-        formatDateStandard(item.end_date)
-        }}
-      </template>
-      <template v-slot:top>
-        <v-toolbar
-          class="mb-2"
-          color="blue darken-1"
-          dark
-          flat
-          v-if="(user_type.includes('hr mngr') || user_type.includes('general mngr'))"
-        >
-          <v-col class="mt-8" v-if="!user_type.includes('general mngr')">
-            <v-menu
-              :close-on-content-click="false"
-              transition="scale-transition"
-              offset-y
-              min-width="290px"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  class="input-name"
-                  v-model="dateRangeText"
-                  chips
-                  label="DATE"
-                  prepend-icon="mdi-calendar"
-                  readonly
-                  v-bind="attrs"
-                  v-on="on"
-                ></v-text-field>
-              </template>
-              <v-date-picker v-model="dates" range></v-date-picker>
-            </v-menu>
-          </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <!-- <v-btn color="light blue darken-2" @click="summary()" outlined>SUMMARY</v-btn> -->
-          <v-menu transition="slide-y-transition" bottom>
-            <template v-slot:activator="{ on, attrs }" v-if="!user_type.includes('general mngr')">
-              <v-btn class="purple" color="primary" dark v-bind="attrs" v-on="on">Summary</v-btn>
-            </template>
-            <v-list>
-              <v-list-item v-for="(item, i) in items" :key="i">
-                <v-list-item-title
-                  @click="summary(item.title)"
-                  style="cursor: pointer;"
-                >{{ item.title }}</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-          <v-divider class="mx-4" vertical v-if="!user_type.includes('general mngr')"></v-divider>
-          <!-- <v-spacer></v-spacer> -->
-          <v-text-field
-            v-model="search"
-            clearable
-            flat
-            solo-inverted
-            hide-details
-            prepend-inner-icon="mdi-magnify"
-            label="Search"
-          ></v-text-field>
-        </v-toolbar>
-        <v-toolbar
-          class="mb-2"
-          color="blue darken-1"
-          dark
-          flat
-          v-if="((user_type.includes('prp emp') || user_type.includes('finance mngr')) && (!user_type.includes('hr mngr') && !user_type.includes('general mngr')))"
-        >
-          <v-text-field
-            v-model="search"
-            clearable
-            flat
-            solo-inverted
-            hide-details
-            prepend-inner-icon="mdi-magnify"
-            label="Search"
-          ></v-text-field>
-        </v-toolbar>
-      </template>
-      <template v-slot:item.status.status_name="{ item }">
-        <v-chip
-          :color="getColor(item.status.status_name)"
-          :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'"
-        >{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip>
-      </template>
-      <template v-slot:item.approver_role.role_name="{ item }">
-        <v-chip
-          class="ma-2"
-          outlined
-          :color="prpColor(item.approver_role.role_name)"
-        >{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip>
-      </template>
-      <template v-slot:item.number_of_days="{ item }">
-        {{
-        displayTimeLengthInText(item.number_of_days)
-        }}
-      </template> 
-    </v-data-table>
-
-    <!-- Pending Requests -->
-    <v-data-table
-      v-if="employees"
-      :headers="headersEmp"
-      :items="prpPending"
-      :search="search"
-      class="elevation-3"
-    >
-      <template v-slot:top>
-        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
-          <v-text-field
-            v-model="search"
-            clearable
-            flat
-            solo-inverted
-            hide-details
-            prepend-inner-icon="mdi-magnify"
-            label="Search"
-          ></v-text-field>
-        </v-toolbar>
-      </template>
-      <template v-slot:item.user.first_name="{ item }">
-        {{
-        item.user.first_name + ' ' + item.user.last_name
-        }}
-      </template>
-      <template v-slot:item.number_of_days="{ item }">
-        {{
-        displayTimeLengthInText(item.number_of_days)
-        }}
-      </template>
-      <!-- format time -->
-      <template v-slot:item.start_date="{ item }">
-        {{
-        formatDateStandard(item.start_date)
-        }}
-      </template>
-      <template v-slot:item.end_date="{ item }">
-        {{
-        formatDateStandard(item.end_date)
-        }}
-      </template>
-      <template v-slot:item.status.status_name="{ item }">
-        <v-chip
-          :color="getColor(item.status.status_name)"
-          :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'"
-        >{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === '"approved"' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip>
-      </template>
-      <template v-slot:item.approver_role.role_name="{ item }">
-        <v-chip
-          class="ma-2"
-          outlined
-          :color="prpColor(item.approver_role.role_name)"
-        >{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip>
-      </template>
-      <template v-slot:item.actions="{ item }">
-        <v-icon
-          medium
-          class="mr-2"
-          @click="approveModal(item)"
-          style="color:green"
-        >mdi-check-decagram</v-icon>
-        <v-icon medium @click="disapproveModal(item)" style="color:red">mdi-close-circle</v-icon>
-      </template>
-    </v-data-table>
-
-    <Confirmation
-      ref="confirms"
-      :title="approveThis === 'approve' ||'disapproved' ? 'Confirmation' : ''"
-      :message="!user_type.includes('admin') ? 
-      approveThis === 'approve' ? 'Are you sure you want to approve this request?' : approveThis === 'disapproved' ? 'Are you sure you want to reject this request?' : '' :
-      approveThis === 'approve' ? 'Are you sure you want to OVERRIDE approval of this request?' : approveThis === 'disapproved' ? 'Are you sure you want to OVERRIDE rejection of this request?' : '' "
-      @onConfirm="confirm($event)"
-    ></Confirmation>
-    <!-- End of Table -->
-
-    <!-- Edit Modal -->
-    <v-dialog v-model="dialog" persistent max-width="600px">
-      <v-card >
-        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
-          <v-card-title>
-            <span class="headline-bold">UPDATE LEAVE REQUEST</span>
-          </v-card-title>
-        </v-toolbar>
-        <v-card-text>
-          <v-container>
-            <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
-            <v-row>
-              <v-col cols="12" sm="6" md="6">
-                <v-select
-                  :items="leaveType"
-                  label="Type of Leave"
-                  v-model="editedItem.selectedLeaveType"
-                  item-text="name"
-                  item-value="value"
-                  required
-                ></v-select>
-              </v-col>
-              <v-col cols="12" sm="6" md="6">
-                <v-text-field
-                  label="Duration of Leave*"
-                  type="text"
-                  v-model="total_days_with_text"
-                  disabled
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="6">
-                <span
-                  v-if="error2"
-                  style="color: red; font-style: italic"
-                >Start date must not be higher than End date!</span>
-                <v-text-field
-                  label="Start Date"
-                  type="datetime-local"
-                  v-model="editedItem.start_date"
-                  :allowed-dates="disabledDates"
-                  @change="changeDate()"
-                  color="primary"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="4">
-                <span
-                  v-if="error1"
-                  class="ml-7"
-                  style="color: red; font-size: 13px"
-                >Higher the End Date</span>
-                <v-text-field
-                  label="End Date"
-                  type="datetime-local"
-                  :allowed-dates="disabledDates2"
-                  v-model="editedItem.end_date"
-                  @change="changeDate()"
-                  color="primary"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="red" class="white--text" @click="close">Cancel</v-btn>
-          <v-btn color="success" @click="save()">Update</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    <Loading v-if="loading"></Loading>
-
-    <!-- Delete Modal -->
-    <ConfirmationDel ref="confirmDel" @onConfirm="confirmDel($event)"></ConfirmationDel>
-
-    <v-data-table
-      v-if="requests"
-      :headers="headers"
-      :items="request"
-      :search="search"
-      class="elevation-3"
-      >
-      <template v-slot:top>
-        <v-toolbar class="mb-2" color="blue darken-1" dark flat>
-          <v-toolbar-title
-            class="col pa-3 py-4 white--text"
-            v-if="!user_type.includes('general mngr')"
-          >LEAVE REQUEST</v-toolbar-title>
-          <v-text-field
-            v-model="search"
-            clearable
-            flat
-            solo-inverted
-            hide-details
-            prepend-inner-icon="mdi-magnify"
-            label="Search"
-          ></v-text-field>
-
-          <createLeave v-if="prp_assigned_id !== 'No PRP assign' && informationCheck !== null"></createLeave>
-
-          <v-btn
-            style="margin-left: 5%"
-            v-if="(prp_assigned_id === 'No PRP assign' || informationCheck === null) && !user_type.includes('general mngr')"
-            color="light blue darken-2"
-            rounded
-            outlined
+        LEAVE REQUESTS
+      </v-toolbar-title>
+      <v-toolbar flat >
+        <!-- <template v-slot:extension> -->
+          <v-tabs
             dark
-            @click="messagePop()"
-          >
-            <v-icon v-if="!user_type.includes('general mngr')">mdi-plus</v-icon>
-            <v-toolbar-title
-              style="font-size: 16px"
-              v-if="!user_type.includes('general mngr')"
-            >Make Request</v-toolbar-title>
-          </v-btn>
-
-          <Reminder
-            ref="reminder"
-            :message="messageCheck === 'prp' ? 'Please set your Assigned PRP' : messageCheck === 'user' ? 'Please set your personal information' : messageCheck === 'combine' ? 'Please set your PRP assign and your Personal Information' : ''"
-            link="/MyAccount"
-            routeName="go to MY ACCOUNT"
-          ></Reminder>
-        </v-toolbar>
-      </template>
-      <!--Math.round((item.number_of_days / 1000 / 60 / 60 % 24) * 60)  -->
-      <!-- item.number_of_days >= 1 ? 
-          (item.number_of_days / 1000 / 60 / 60 % 24) != 0 ? 
-          Math.floor(item.number_of_days / 1000 / 60 / 60 / 24) + ' ' + 'Day/s' + ' ' + (Math.round(item.number_of_days / 1000 / 60 / 60 % 24) * 60) + ' ' + 'Hour/s' :
-          Math.floor(item.number_of_days / 1000 / 60 / 60 / 24) + ' ' + 'Day/s' :
-      (item.number_of_days / 1000 / 60 / 60 % 24) *60+ ' ' + 'minute/s'-->
-      <template v-slot:item.number_of_days="{ item }">
-        {{
-        displayTimeLengthInText(item.number_of_days)
-        }}
-      </template>
+            background-color="primary"
+            fixed-tabs
+            v-if="((user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr')) && !user_type.includes('finance mngr'))"
+            >
+            <v-tabs-slider></v-tabs-slider>
+              <v-tab
+                v-if="!user_type.includes('general mngr') && !user_type.includes('admin')"
+                @click="employees = false, requests = true, feedback = false"
+                >My Requests
+              </v-tab>
+              <v-tab @click="requests = false, employees = true, feedback = false">Employees Requests</v-tab>
+              <v-tab @click="requests = false, employees = false, feedback = true">History</v-tab>
+          </v-tabs>
+        <!-- </template> -->
+      </v-toolbar>
       
-      <template v-slot:item.user.first_name="{ item }">
-        {{
-        item.user.first_name + ' ' + item.user.last_name
-        }}
-      </template>
-      <!-- format time -->
-      <template v-slot:item.start_date="{ item }">
-        {{
-        formatDateStandard(item.start_date)
-        }}
-      </template>
-      <template v-slot:item.end_date="{ item }">
-        {{
-        formatDateStandard(item.end_date)
-        }}
-      </template>
-      <template v-slot:item.status.status_name="{ item }">
-        <v-chip
-          :color="getColor(item.status.status_name)"
-          :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'"
-        >{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip>
-      </template>
-      <template v-slot:item.approver_role.role_name="{ item }">
-        <v-chip
-          class="ma-2"
-          outlined
-          :color="prpColor(item.approver_role.role_name)"
-        >{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip>
-      </template>
-      <template v-slot:item.actions="{ item }">
-        <v-icon
-          medium
-          disabled
-          class="mr-2"
-          v-if="((user_type.includes('emp') && user_type.includes('prp emp') && user_type.includes('hr mngr')) && item.status.status_name === 'approved')"
-        >mdi-pencil</v-icon>
-        <v-icon
-          medium
-          disabled
-          class="mr-2"
-          v-else-if="((user_type.includes('emp') && user_type.includes('prp emp') && !(user_type.includes('hr mngr'))) && item.approver_role.role_name === 'general mngr')"
-        >mdi-pencil</v-icon>
-        <v-icon
-          medium
-          disabled
-          class="mr-2"
-          v-else-if="((user_type.includes('emp') && !user_type.includes('prp emp') && !user_type.includes('hr mngr')) && ((item.approver_role.role_name === 'hr mngr') || item.approver_role.role_name === 'general mngr'))"
-        >mdi-pencil</v-icon>
-        <v-icon medium class="mr-2" @click="editItem(item)" style="color:blue" v-else>mdi-pencil</v-icon>
+      <!-- Feedback -->
+      <v-data-table
+        v-if="feedback"
+        :headers="headersFeed"
+        :items="feedbacks"
+        :search="search"
+        class="elevation-3"
+        >
+        <template v-slot:item.number_of_days="{ item }">
+          {{
+          displayTimeLengthInText(item.number_of_days)
+          }}
+        </template>
+        <!-- format time -->
+        <template v-slot:item.start_date="{ item }">
+          {{
+          formatDateStandard(item.start_date)
+          }}
+        </template>
+        <template v-slot:item.end_date="{ item }">
+          {{
+          formatDateStandard(item.end_date)
+          }}
+        </template>
+        <template v-slot:top>
+          <v-toolbar
+            class="mb-2"
+            color="blue darken-1"
+            dark
+            flat
+            v-if="(user_type.includes('hr mngr') || user_type.includes('general mngr'))"
+          >
+            <v-col class="mt-8" v-if="!user_type.includes('general mngr')">
+              <v-menu
+                :close-on-content-click="false"
+                transition="scale-transition"
+                offset-y
+                min-width="290px"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    class="input-name"
+                    v-model="dateRangeText"
+                    chips
+                    label="DATE"
+                    prepend-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker v-model="dates" range></v-date-picker>
+              </v-menu>
+            </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <!-- <v-btn color="light blue darken-2" @click="summary()" outlined>SUMMARY</v-btn> -->
+            <v-menu transition="slide-y-transition" bottom>
+              <template v-slot:activator="{ on, attrs }" v-if="!user_type.includes('general mngr')">
+                <v-btn class="purple" color="primary" dark v-bind="attrs" v-on="on">Summary</v-btn>
+              </template>
+              <v-list>
+                <v-list-item v-for="(item, i) in items" :key="i">
+                  <v-list-item-title
+                    @click="summary(item.title)"
+                    style="cursor: pointer;"
+                  >{{ item.title }}</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+            <v-divider class="mx-4" vertical v-if="!user_type.includes('general mngr')"></v-divider>
+            <!-- <v-spacer></v-spacer> -->
+            <v-text-field
+              v-model="search"
+              clearable
+              flat
+              solo-inverted
+              hide-details
+              prepend-inner-icon="mdi-magnify"
+              label="Search"
+            ></v-text-field>
+          </v-toolbar>
+          <v-toolbar
+            class="mb-2"
+            color="blue darken-1"
+            dark
+            flat
+            v-if="((user_type.includes('prp emp') || user_type.includes('finance mngr')) && (!user_type.includes('hr mngr') && !user_type.includes('general mngr')))"
+          >
+            <v-text-field
+              v-model="search"
+              clearable
+              flat
+              solo-inverted
+              hide-details
+              prepend-inner-icon="mdi-magnify"
+              label="Search"
+            ></v-text-field>
+          </v-toolbar>
+        </template>
+        <template v-slot:item.status.status_name="{ item }">
+          <v-chip
+            :color="getColor(item.status.status_name)"
+            :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'"
+          >{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip>
+        </template>
+        <template v-slot:item.approver_role.role_name="{ item }">
+          <v-chip
+            class="ma-2"
+            outlined
+            :color="prpColor(item.approver_role.role_name)"
+          >{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip>
+        </template>
+        <template v-slot:item.number_of_days="{ item }">
+          {{
+          displayTimeLengthInText(item.number_of_days)
+          }}
+        </template> 
+        <template 
+        v-if="user_type.includes('admin')"
+        v-slot:item.actions="{ item }">
+          <v-icon
+            v-if="item.status_id != 2"
+            medium
+            class="mr-2"
+            @click="approveModal(item)"
+            style="color:green"
+          >mdi-check-decagram</v-icon>
+          <v-icon 
+            v-else
+            medium 
+            @click="disapproveModal(item)" 
+            style="color:red"
+            >
+            mdi-close-circle
+          </v-icon>
+        </template>
+      </v-data-table>
 
-        <v-icon
-          medium
-          disabled
-          v-if="((user_type.includes('emp') && user_type.includes('prp emp') && user_type.includes('hr mngr')) && item.status.status_name === 'approved')"
-        >mdi-delete</v-icon>
-        <v-icon
-          medium
-          disabled
-          v-else-if="((user_type.includes('emp') && user_type.includes('prp emp') && !(user_type.includes('hr mngr'))) && item.approver_role.role_name === 'general mngr')"
-        >mdi-delete</v-icon>
-        <v-icon
-          medium
-          disabled
-          v-else-if="((user_type.includes('emp') && !user_type.includes('prp emp') && !user_type.includes('hr mngr')) && ((item.approver_role.role_name === 'hr mngr') || item.approver_role.role_name === 'general mngr'))"
-        >mdi-delete</v-icon>
-        <v-icon medium @click="deleteItem(item)" style="color:red" v-else>mdi-delete</v-icon>
-      </template>
-    </v-data-table>
-    <!-- <ConfirmationUp
-      ref="confirmUp"
-      :title="'Confirmation'"
-      :message="'Are you sure you want to update ?'"
-      @onConfirm="save($event)"
-    ></ConfirmationUp> -->
-    <SummaryTemplate ref="summary"></SummaryTemplate>
-  </div>
+      <!-- Pending Requests -->
+      <v-data-table
+        v-if="employees"
+        :headers="headersEmp"
+        :items="prpPending"
+        :search="search"
+        class="elevation-3"
+        >
+        <template v-slot:top>
+          <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+            <v-text-field
+              v-model="search"
+              clearable
+              flat
+              solo-inverted
+              hide-details
+              prepend-inner-icon="mdi-magnify"
+              label="Search"
+            ></v-text-field>
+          </v-toolbar>
+        </template>
+        <template v-slot:item.user.first_name="{ item }">
+          {{
+          item.user.first_name + ' ' + item.user.last_name
+          }}
+        </template>
+        <template v-slot:item.number_of_days="{ item }">
+          {{
+          displayTimeLengthInText(item.number_of_days)
+          }}
+        </template>
+        <!-- format time -->
+        <template v-slot:item.start_date="{ item }">
+          {{
+          formatDateStandard(item.start_date)
+          }}
+        </template>
+        <template v-slot:item.end_date="{ item }">
+          {{
+          formatDateStandard(item.end_date)
+          }}
+        </template>
+        <template v-slot:item.status.status_name="{ item }">
+          <v-chip
+            :color="getColor(item.status.status_name)"
+            :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'"
+          >{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === '"approved"' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip>
+        </template>
+        <template v-slot:item.approver_role.role_name="{ item }">
+          <v-chip
+            class="ma-2"
+            outlined
+            :color="prpColor(item.approver_role.role_name)"
+          >{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip>
+        </template>
+        <template v-slot:item.actions="{ item }">
+          <v-icon
+            medium
+            class="mr-2"
+            @click="approveModal(item)"
+            style="color:green"
+          >mdi-check-decagram</v-icon>
+          <v-icon medium @click="disapproveModal(item)" style="color:red">mdi-close-circle</v-icon>
+        </template>
+      </v-data-table>
+
+      <Confirmation
+        ref="confirms"
+        :title="approveThis === 'approve' ||'disapproved' ? 'Confirmation' : ''"
+        :message="!user_type.includes('admin') ? 
+        approveThis === 'approve' ? 'Are you sure you want to approve this request?' : approveThis === 'disapproved' ? 'Are you sure you want to reject this request?' : '' :
+        approveThis === 'approve' ? 'Are you sure you want to OVERRIDE approval of this request?' : approveThis === 'disapproved' ? 'Are you sure you want to OVERRIDE rejection of this request?' : '' "
+        @onConfirm="confirm($event)"
+      ></Confirmation>
+      <!-- End of Table -->
+
+      <!-- Edit Modal -->
+      <v-dialog v-model="dialog" persistent max-width="600px">
+        <v-card >
+          <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+            <v-card-title>
+              <span class="headline-bold">UPDATE LEAVE REQUEST</span>
+            </v-card-title>
+          </v-toolbar>
+          <v-card-text>
+            <v-container>
+              <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
+              <v-row>
+                <v-col cols="12" sm="6" md="6">
+                  <v-select
+                    :items="leaveType"
+                    label="Type of Leave"
+                    v-model="editedItem.selectedLeaveType"
+                    item-text="name"
+                    item-value="value"
+                    required
+                  ></v-select>
+                </v-col>
+                <v-col cols="12" sm="6" md="6">
+                  <v-text-field
+                    label="Duration of Leave*"
+                    type="text"
+                    v-model="total_days_with_text"
+                    disabled
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="6">
+                  <span
+                    v-if="error2"
+                    style="color: red; font-style: italic"
+                  >Start date must not be higher than End date!</span>
+                  <v-text-field
+                    label="Start Date"
+                    type="datetime-local"
+                    v-model="editedItem.start_date"
+                    :allowed-dates="disabledDates"
+                    @change="changeDate()"
+                    color="primary"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="4">
+                  <span
+                    v-if="error1"
+                    class="ml-7"
+                    style="color: red; font-size: 13px"
+                  >Higher the End Date</span>
+                  <v-text-field
+                    label="End Date"
+                    type="datetime-local"
+                    :allowed-dates="disabledDates2"
+                    v-model="editedItem.end_date"
+                    @change="changeDate()"
+                    color="primary"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="red" class="white--text" @click="close">Cancel</v-btn>
+            <v-btn color="success" @click="save()">Update</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <Loading v-if="loading"></Loading>
+
+      <!-- Delete Modal -->
+      <ConfirmationDel ref="confirmDel" @onConfirm="confirmDel($event)"></ConfirmationDel>
+
+      <v-data-table
+        v-if="requests"
+        :headers="headers"
+        :items="request"
+        :search="search"
+        class="elevation-3"
+        >
+        <template v-slot:top>
+          <v-toolbar class="mb-2" color="blue darken-1" dark flat>
+            <!-- <v-toolbar-title
+              class="col pa-3 py-4 white--text"
+              v-if="!user_type.includes('general mngr')"
+            ></v-toolbar-title> -->
+            <v-text-field
+              v-model="search"
+              clearable
+              flat
+              solo-inverted
+              hide-details
+              prepend-inner-icon="mdi-magnify"
+              label="Search"
+            ></v-text-field>
+
+            <createLeave v-if="prp_assigned_id !== 'No PRP assign' && informationCheck !== null"></createLeave>
+
+            <v-btn
+              style="margin-left: 5%"
+              v-if="(prp_assigned_id === 'No PRP assign' || informationCheck === null) && !user_type.includes('general mngr')"
+              color="light blue darken-2"
+              rounded
+              outlined
+              dark
+              @click="messagePop()"
+            >
+              <v-icon v-if="!user_type.includes('general mngr')">mdi-plus</v-icon>
+              <v-toolbar-title
+                style="font-size: 16px"
+                v-if="!user_type.includes('general mngr')"
+              >Make Request</v-toolbar-title>
+            </v-btn>
+
+            <Reminder
+              ref="reminder"
+              :message="messageCheck === 'prp' ? 'Please set your Assigned PRP' : messageCheck === 'user' ? 'Please set your personal information' : messageCheck === 'combine' ? 'Please set your PRP assign and your Personal Information' : ''"
+              link="/MyAccount"
+              routeName="go to MY ACCOUNT"
+            ></Reminder>
+          </v-toolbar>
+        </template>
+        <!--Math.round((item.number_of_days / 1000 / 60 / 60 % 24) * 60)  -->
+        <!-- item.number_of_days >= 1 ? 
+            (item.number_of_days / 1000 / 60 / 60 % 24) != 0 ? 
+            Math.floor(item.number_of_days / 1000 / 60 / 60 / 24) + ' ' + 'Day/s' + ' ' + (Math.round(item.number_of_days / 1000 / 60 / 60 % 24) * 60) + ' ' + 'Hour/s' :
+            Math.floor(item.number_of_days / 1000 / 60 / 60 / 24) + ' ' + 'Day/s' :
+        (item.number_of_days / 1000 / 60 / 60 % 24) *60+ ' ' + 'minute/s'-->
+        <template v-slot:item.number_of_days="{ item }">
+          {{
+          displayTimeLengthInText(item.number_of_days)
+          }}
+        </template>
+        
+        <template v-slot:item.user.first_name="{ item }">
+          {{
+          item.user.first_name + ' ' + item.user.last_name
+          }}
+        </template>
+        <!-- format time -->
+        <template v-slot:item.start_date="{ item }">
+          {{
+          formatDateStandard(item.start_date)
+          }}
+        </template>
+        <template v-slot:item.end_date="{ item }">
+          {{
+          formatDateStandard(item.end_date)
+          }}
+        </template>
+        <template v-slot:item.status.status_name="{ item }">
+          <v-chip
+            :color="getColor(item.status.status_name)"
+            :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'"
+          >{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip>
+        </template>
+        <template v-slot:item.approver_role.role_name="{ item }">
+          <v-chip
+            class="ma-2"
+            outlined
+            :color="prpColor(item.approver_role.role_name)"
+          >{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip>
+        </template>
+        <template v-slot:item.actions="{ item }">
+          <v-icon
+            medium
+            disabled
+            class="mr-2"
+            v-if="((user_type.includes('emp') && user_type.includes('prp emp') && user_type.includes('hr mngr')) && item.status.status_name === 'approved')"
+          >mdi-pencil</v-icon>
+          <v-icon
+            medium
+            disabled
+            class="mr-2"
+            v-else-if="((user_type.includes('emp') && user_type.includes('prp emp') && !(user_type.includes('hr mngr'))) && item.approver_role.role_name === 'general mngr')"
+          >mdi-pencil</v-icon>
+          <v-icon
+            medium
+            disabled
+            class="mr-2"
+            v-else-if="((user_type.includes('emp') && !user_type.includes('prp emp') && !user_type.includes('hr mngr')) && ((item.approver_role.role_name === 'hr mngr') || item.approver_role.role_name === 'general mngr'))"
+          >mdi-pencil</v-icon>
+          <v-icon medium class="mr-2" @click="editItem(item)" style="color:blue" v-else>mdi-pencil</v-icon>
+
+          <v-icon
+            medium
+            disabled
+            v-if="((user_type.includes('emp') && user_type.includes('prp emp') && user_type.includes('hr mngr')) && item.status.status_name === 'approved')"
+          >mdi-delete</v-icon>
+          <v-icon
+            medium
+            disabled
+            v-else-if="((user_type.includes('emp') && user_type.includes('prp emp') && !(user_type.includes('hr mngr'))) && item.approver_role.role_name === 'general mngr')"
+          >mdi-delete</v-icon>
+          <v-icon
+            medium
+            disabled
+            v-else-if="((user_type.includes('emp') && !user_type.includes('prp emp') && !user_type.includes('hr mngr')) && ((item.approver_role.role_name === 'hr mngr') || item.approver_role.role_name === 'general mngr'))"
+          >mdi-delete</v-icon>
+          <v-icon medium @click="deleteItem(item)" style="color:red" v-else>mdi-delete</v-icon>
+        </template>
+      </v-data-table>
+      <!-- <ConfirmationUp
+        ref="confirmUp"
+        :title="'Confirmation'"
+        :message="'Are you sure you want to update ?'"
+        @onConfirm="save($event)"
+      ></ConfirmationUp> -->
+      <SummaryTemplate ref="summary"></SummaryTemplate>
+    </v-container>
 </template>
 <style>
 .input-name {
@@ -553,7 +578,9 @@ export default {
       this.retrieve();
       this.checkUser();
     }
-    console.log(this.requests, this.employees, this.feedback)
+    if(this.$store.getters.roleList.includes("admin")) {
+      this.headersFeed.push({ text: "ACTIONS", value: "actions", sortable: false });
+    }
   },
   methods: {
     // confirm(){
@@ -1081,12 +1108,21 @@ export default {
         user_id: this.user_id,
         status_id: 3
       };
-      this.$axios
+      if(this.user_type.includes('admin')) {
+        this.$axios
+        .post("admin/leave_request/feedback/" + this.id, parameter)
+        .then(res => {
+          this.retrievePendingPrp();
+          this.getAllFeedback();
+        });
+      }else {
+        this.$axios
         .post("prp/leave_request/feedback/" + this.id, parameter)
         .then(res => {
           this.retrievePendingPrp();
           this.getAllFeedback();
         });
+      }
     },
     getAllFeedback() {
       if(!this.user_type.includes('admin')) {
