@@ -5,13 +5,14 @@
         >
         LEAVE REQUESTS
       </v-toolbar-title>
-      <v-toolbar flat >
+      <v-toolbar flat 
+        v-if="((user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr')) && !user_type.includes('finance mngr'))"
+       >
         <!-- <template v-slot:extension> -->
           <v-tabs
             dark
             background-color="primary"
             fixed-tabs
-            v-if="((user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr')) && !user_type.includes('finance mngr'))"
             >
             <v-tabs-slider></v-tabs-slider>
               <v-tab
