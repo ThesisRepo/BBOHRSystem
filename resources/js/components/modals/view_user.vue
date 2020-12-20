@@ -462,6 +462,8 @@ export default {
       this.$axios
         .post("hr/manage/user", params)
         .then(response => {
+          this.$store.commit('changeMessage', 'Successfully Updated')
+          this.$store.commit('changeStatusMessage', true)
           this.$parent.$parent.$parent.$parent.$parent.$parent.retrieve()
         });
     }

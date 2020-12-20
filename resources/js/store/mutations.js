@@ -50,5 +50,11 @@ let mutations = {
     intantiate_roleList(state, payload) {
         state.roleList = payload;
     },
+    changeMessage(state, payload) {
+        state.message = payload;
+    },
+    changeStatusMessage(state, payload){
+        state.show = payload;
+    }
 }
 export default mutations

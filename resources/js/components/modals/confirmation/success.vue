@@ -32,6 +32,7 @@ export default {
   props: ['messages'],
   methods: {
     show(){
+      console.log('sadf')
       this.snackbar = true
     },
     hideModal(){

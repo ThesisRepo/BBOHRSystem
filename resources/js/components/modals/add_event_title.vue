@@ -242,12 +242,16 @@ export default {
         color: this.color
       };
       this.$axios.post("user_info/event_types/" + this.user_id, params).then(response => {
+          this.$store.commit('changeMessage', 'Successfully Added')
+          this.$store.commit('changeStatusMessage', true)
           this.$store.commit("state_loading", false);
           this.getEventType();
           this.event_name = null, 
           this.color = "Colors"
         }, this.timeout)  
         .catch(err => {
+          this.$store.commit('changeMessage', 'Please Try Again')
+          this.$store.commit('changeStatusMessage', true)
           this.$store.commit("state_loading", false);
         });
     },
@@ -271,6 +275,8 @@ export default {
       this.$axios
         .post("event_types/" + this.storeage.id, parameter)
         .then(response => {
+          this.$store.commit('changeMessage', 'Successfully Updated')
+          this.$store.commit('changeStatusMessage', true)
           this.$store.commit("state_loading", false);
           this.getEventType();
           this.event_name = null;
@@ -278,6 +284,8 @@ export default {
           this.showSave = false;
           this.$store.commit("state_loading", false);
         }, this.timeout).catch((err)=> {
+          this.$store.commit('changeMessage', 'Please Try Again')
+          this.$store.commit('changeStatusMessage', true)
           this.$store.commit("state_loading", false);
         });
     },
@@ -303,9 +311,13 @@ export default {
     confirmDel() {
       this.$store.commit("state_loading", true);
       this.$axios.delete("event_types/" + this.id).then(response => {
+          this.$store.commit('changeMessage', 'Successfully Deleted')
+          this.$store.commit('changeStatusMessage', true)
         this.$store.commit("state_loading", false);
         this.getEventType();
       }, this.timeout).catch((err) => {
+          this.$store.commit('changeMessage', 'Please Try Again')
+          this.$store.commit('changeStatusMessage', true)
           this.$store.commit("state_loading", false);
       });
     }

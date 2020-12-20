@@ -285,13 +285,18 @@ export default {
           last_name: this.datum.last_name
         };
         this.$axios.post("user_info/" + this.user_id, params).then(response => {
+          this.$store.commit('changeMessage', 'Successfully Updated')
+          this.$store.commit('changeStatusMessage', true)
           if (response.data === 1) {
             this.$parent.$parent.$parent.getInfo();
           } else {
             this.$parent.$parent.$parent.getInfo();
           }
           this.dialog = false;
-        });
+        }).catch(err => {
+          this.$store.commit('changeMessage', 'Please Try Again')
+          this.$store.commit('changeStatusMessage', true)
+        })
       }
     }
   }

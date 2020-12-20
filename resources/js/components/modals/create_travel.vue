@@ -326,9 +326,14 @@ export default {
         this.$axios
           .post("travel_auth_request", formData, config)
           .then(res => {
+            this.$store.commit('changeMessage', 'Successfully Created')
+            this.$store.commit('changeStatusMessage', true)
             this.$parent.$parent.$parent.$parent.$parent.retrieve();
-          });
-        this.dialog = false;
+            this.dialog = false;
+          }).catch(err => {
+                this.$store.commit('changeMessage', 'Please Try Again')
+                this.$store.commit('changeStatusMessage', true)
+            });
         this.error = false;
         this.val = false;
       }

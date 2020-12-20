@@ -123,10 +123,14 @@ export default {
             finance_mngr_assigned: this.user_finance
           }
           this.$axios.post("budget_request", parameter).then(res =>{
+            this.$store.commit('changeMessage', 'Succesfully Created')
+            this.$store.commit('changeStatusMessage', true)
             this.$parent.$parent.$parent.$parent.$parent.retrieve()
-            // this.dialog = false
-          })
-          this.dialog = false
+            this.dialog = false
+          }).catch(err => {
+                this.$store.commit('changeMessage', 'Please Try Again')
+                this.$store.commit('changeStatusMessage', true)
+            });
         } else {
         if(this.errorMessage === null){
           this.error = true;

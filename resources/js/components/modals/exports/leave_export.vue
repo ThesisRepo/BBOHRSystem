@@ -75,13 +75,13 @@ export default {
         this.$axios
           .post("hr/summary/leave_request", param)
           .then(response => {
-            this.summary = response.data.feedbacked_leave_requests;
+            this.summary = response.data;
           });
       } else if (item === "Disapproved Requests") {
         this.$axios
           .post("hr/summary/leave_request", param)
           .then(response => {
-            this.summary = response.data.feedbacked_leave_requests ;
+            this.summary = response.data;
           });
       }
       this.dialog = true;

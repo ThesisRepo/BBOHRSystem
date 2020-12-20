@@ -371,10 +371,10 @@ export default {
       this.$axios.get("petty_cash_request/" + this.user_id).then(response => {
         this.petty = response.data
         this.loading = false;
-      })
-      .catch(e => {
-        console.log(e);
-      })
+      }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
+          })
     },
     retrievePetty() {
       this.$axios
@@ -385,10 +385,10 @@ export default {
         .then(response => {
           this.pettyPending = response.data;
           console.log(this.pettyPending)
-        })
-        .catch(e => {
-          console.log(e);
-        });
+        }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
+          });
     },
 
     editItem(item) {
@@ -420,8 +420,13 @@ export default {
           finance_mngr_assigned: this.user_finance
         }
         this.$axios.post('petty_cash_request/' + this.editedItem.id, params).then(response=>{
+          this.$store.commit('changeMessage', 'Successfully Updated')
+          this.$store.commit('changeStatusMessage', true)
           this.retrieve()
-        })
+        }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
+          })
         this.dialog = false
       }else {
         if(this.errorMessage === null){
@@ -466,8 +471,13 @@ export default {
       this.$axios
         .delete("petty_cash_request/" + this.id)
         .then(response => {
+          this.$store.commit('changeMessage', 'Successfully Deleted')
+          this.$store.commit('changeStatusMessage', true)
           this.retrieve();
-        });
+        }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
+          });
     },
     close(){
       this.dialog = false
@@ -501,9 +511,14 @@ export default {
           parameter
         )
         .then(response => {
+          this.$store.commit('changeMessage', 'Approved Successfully')
+          this.$store.commit('changeStatusMessage', true)
           this.retrievePetty();
           this.getAllFeedback();
-        });
+        }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
+          });
       }else{
         let parameter = {
           user_id: this.user_id,
@@ -515,8 +530,13 @@ export default {
             parameter
           )
           .then(response => {
+            this.$store.commit('changeMessage', 'Approved Successfully')
+            this.$store.commit('changeStatusMessage', true)
             this.retrievePetty();
             this.getAllFeedback();
+          }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
           });
       }
     },
@@ -531,9 +551,14 @@ export default {
           parameter
         )
         .then(res => {
+          this.$store.commit('changeMessage', 'Disapproved Successfully')
+          this.$store.commit('changeStatusMessage', true)
           this.retrievePetty();
           this.getAllFeedback();
-        });
+        }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
+          });
     },
     getAllFeedback() {
       this.$axios
@@ -543,7 +568,10 @@ export default {
         )
         .then(response => {
           this.feedbacks = response.data.feedbacked_petty_cash_requests;
-        });
+        }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
+          });
     },
     getColor(status) {
       if (status === 'pending') return '#ffa500'

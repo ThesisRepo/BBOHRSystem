@@ -23,10 +23,11 @@
            <v-card-text>
             <ejs-grid ref='grid' id='Grid' :dataSource='summary' :toolbar='toolbarOptions' height='270px' :allowPaging='true' :allowExcelExport='true' :toolbarClick='toolbarClick'>
                 <e-columns>
-                    <e-column field='date' headerText='Date' width=150></e-column>
-                    <e-column field='department.department_name' headerText='Department' width=150></e-column>
-                    <e-column field='details' headerText='Details' width=120></e-column>
-                    <e-column field='amount' headerText='Amount' width=150></e-column>
+                    <e-column field='user.email' headerText='REQUESTER' width=150></e-column>
+                    <e-column field='date' headerText='DATE' width=150></e-column>
+                    <e-column field='department.department_name' headerText='DEPARTMENT' width=150></e-column>
+                    <e-column field='details' headerText='DETAILS' width=120></e-column>
+                    <e-column field='amount' headerText='AMOUNT' width=150></e-column>
                 </e-columns>
             </ejs-grid>
           </v-card-text>
@@ -64,19 +65,7 @@ export default {
     dialog: false,
     summary: [],
     start_date: "",
-    end_date: "",
-    headers: [
-      {
-        text: "REQUESTER",
-        align: "start",
-        value: "user_id"
-      },
-      { text: "DESCRIPTION", value: "details" },
-      { text: "DATE", value: "date" },
-      { text: "DEPARTMENT", value: "department" },
-      { text: "TOTAL AMOUNT", value: "total_amount" },
-      { text: "STATUS", value: "status.status_name" }
-    ]
+    end_date: ""
   }),
   provide: {
       grid: [Toolbar, ExcelExport]
@@ -93,19 +82,35 @@ export default {
         this.$axios
         .post("hr/summary/budget_request", param)
         .then(response => {
-            this.summary = response.data.feedbacked_budget_requests;
+            this.summary = response.data;
+            console.log(this.summary)
         });
       }else if(item === 'Disapproved Requests'){
         this.$axios
         .post("hr/summary/budget_request", param)
         .then(response => {
-            this.summary = response.data.feedbacked_budget_requests;
+            this.summary = response.data;
         });
       }
       this.dialog = true;
     },
-    
-    
+    toolbarClick(args) {
+        if (args.item.id === 'Grid_excelexport') { // 'Grid_excelexport' -> Grid component id + _ + toolbar item name
+            let excelExportProperties = {
+                fileName: 'Budget Request.xlsx',
+                header: {
+                    headerRows: 5,
+                    rows: [
+                        { cells: [{ colSpan: 5, value: "BBO REQUEST MANAGEMENT SYSTEM", style: { fontColor: '#0000FF', fontSize: 20, hAlign: 'Center', bold: true, } }] },
+                        { cells: [{ colSpan: 5, value: "Unit 1, 8F Mabuhay Tower IT Park", style: { fontColor: '#0000FF', fontSize: 15, hAlign: 'Center', bold: true, } }] },
+                        { cells: [{ colSpan: 5, value: "Cebu City, 6000 Cebu, Philippine", style: { fontColor: '#0000FF', fontSize: 15, hAlign: 'Center', bold: true, } }] },
+                        { cells: [{ colSpan: 5, value: "(032) 328 2321", style: { fontColor: '#0000FF', fontSize: 15, hAlign: 'Center', bold: true, } }] }
+                    ]
+                },
+            };
+            this.$refs.grid.excelExport(excelExportProperties);
+        }
+    },
   }
 };
 </script>

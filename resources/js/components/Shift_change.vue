@@ -386,10 +386,10 @@ export default {
         .then(response => {
           this.shifts = response.data;
           this.loading = false;
-        })
-        .catch(e => {
-          console.log(e);
-        });
+        }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
+          });
     },
     retrieveShift() {
       this.$axios
@@ -399,10 +399,10 @@ export default {
         )
         .then(response => {
           this.shiftPending = response.data;
-        })
-        .catch(e => {
-          console.log(e);
-        });
+        }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
+          });
     },
 
     editItem(item) {
@@ -436,7 +436,12 @@ export default {
             params
           )
           .then(response => {
+          this.$store.commit('changeMessage', 'Successfully Updated')
+          this.$store.commit('changeStatusMessage', true)
             this.retrieve();
+          }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
           });
         this.dialog = false;
       } else {
@@ -455,6 +460,8 @@ export default {
       this.$axios
         .delete("shift_change_request/" + this.id)
         .then(response => {
+          this.$store.commit('changeMessage', 'Successfully Deleted')
+          this.$store.commit('changeStatusMessage', true)
           this.retrieve();
           this.dialogDelete = false;
         });
@@ -534,9 +541,14 @@ export default {
           parameter
         )
         .then(response => {
+          this.$store.commit('changeMessage', 'Approved Successfully')
+          this.$store.commit('changeStatusMessage', true)
           this.retrieveShift();
           this.getAllFeedback();
-        });
+        }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
+          });
       }else{
         let parameter = {
           user_id: this.user_id,
@@ -548,8 +560,13 @@ export default {
             parameter
           )
           .then(response => {
+            this.$store.commit('changeMessage', 'Approved Successfully')
+            this.$store.commit('changeStatusMessage', true)
             this.retrieveShift();
             this.getAllFeedback();
+          }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
           });
       }
     },
@@ -564,9 +581,14 @@ export default {
           parameter
         )
         .then(res => {
+          this.$store.commit('changeMessage', 'Disapproved Successfully')
+          this.$store.commit('changeStatusMessage', true)
           this.retrieveShift();
           this.getAllFeedback();
-        });
+        }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
+          });
     },
     getAllFeedback() {
       this.$axios

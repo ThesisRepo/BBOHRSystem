@@ -252,7 +252,7 @@
 import createBudget from "./modals/create_budget.vue";
 import Confirmation from "./modals/confirmation/confirm.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
-import SummaryTemplate from "./modals/exports/overtime_export.vue";
+import SummaryTemplate from "./modals/exports/budget_export.vue";
 import Reminder from "./modals/confirmation/reminder.vue";
 import Loading from "./Loading.vue";
 export default {
@@ -365,11 +365,11 @@ export default {
         .then(response => {
           this.loading = false
           this.budget = response.data;
-        })
-        .catch(e => {
-          this.loading = false
-          console.log(e);
-        });
+        }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
+            this.loading = false
+          })
     },
     retrieveBudget() {
       this.$axios
@@ -379,10 +379,10 @@ export default {
         )
         .then(response => {
           this.budgetPending = response.data;
-        })
-        .catch(e => {
-          console.log(e);
-        });
+        }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
+          });
     },
 
     editItem(item) {
@@ -424,7 +424,12 @@ export default {
             params
           )
           .then(response => {
+            this.$store.commit('changeMessage', 'Successfully Updated')
+            this.$store.commit('changeStatusMessage', true)
             this.retrieve();
+          }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
           });
         this.dialog = false;
       } else {
@@ -444,8 +449,13 @@ export default {
       this.$axios
         .delete("budget_request/" + this.id)
         .then(response => {
+          this.$store.commit('changeMessage', 'Successfully Deleted')
+          this.$store.commit('changeStatusMessage', true)
           this.retrieve();
-        });
+        }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
+          });
     },
     close(){
       this.dialog = false
@@ -505,8 +515,13 @@ export default {
             parameter
           )
           .then(response => {
+            this.$store.commit('changeMessage', 'Approved Successfully')
+            this.$store.commit('changeStatusMessage', true)
             this.retrieveBudget();
             this.getAllFeedback();
+          }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
           });
       }else{
           let parameter = {
@@ -519,9 +534,14 @@ export default {
               parameter
             )
             .then(response => {
+              this.$store.commit('changeMessage', 'Approved Successfully')
+              this.$store.commit('changeStatusMessage', true)
               this.retrieveBudget();
               this.getAllFeedback();
-            });
+            }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
+          });
       }
     },
     disapprove() {
@@ -535,9 +555,14 @@ export default {
           parameter
         )
         .then(res => {
+          this.$store.commit('changeMessage', 'Disapproved Successfully')
+          this.$store.commit('changeStatusMessage', true)
           this.retrieveBudget();
           this.getAllFeedback();
-        });
+        }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
+          });
     },
     getAllFeedback() {
       this.$axios
@@ -550,7 +575,10 @@ export default {
           // this.feedbacks.forEach(element => {
           //   console.log('feedbacksarray', element)
           // })
-        });
+        }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
+          });
     },
     getColor(status) {
       if (status === 'pending') return '#ffa500'

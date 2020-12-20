@@ -89,6 +89,8 @@ export default {
           .then(res => {
             this.prp.forEach(element => {
               if (element.id === this.selectPrp) {
+                this.$store.commit('changeMessage', 'Successfully Updated')
+                this.$store.commit('changeStatusMessage', true)
                 localStorage.setItem(
                   "prp_assign",
                   element.first_name + " " + element.last_name
@@ -98,7 +100,10 @@ export default {
                 this.$parent.$parent.$parent.getInfo();
               }
             });
-          }); 
+          }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
+          })
         this.dialog = false;
       } else {
         this.error = true;

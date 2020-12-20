@@ -135,10 +135,14 @@ export default {
           prp_assigned_id: this.prp_assigned_id
         }
         this.$axios.post("overtime_request", parameter).then(res =>{
+          this.$store.commit('changeMessage', 'Successfully Created')
+          this.$store.commit('changeStatusMessage', true)
           this.$parent.$parent.$parent.$parent.$parent.retrieve()
-
           this.dialog = false
-        })
+        }).catch(err => {
+                this.$store.commit('changeMessage', 'Please Try Again')
+                this.$store.commit('changeStatusMessage', true)
+            });
       }else{
         this.error = true
         this.dialog = true

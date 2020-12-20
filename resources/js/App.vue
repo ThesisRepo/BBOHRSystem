@@ -7,6 +7,10 @@
                 <router-view>
                 </router-view>
                 <Loading v-if="loading"></Loading>
+                <succesMessage ref="success" :messages="messageData"></succesMessage>
+                <!-- <v-btn @click="showed(true)">show</v-btn>
+                <v-btn @click="showed(false)">hide</v-btn> -->
+                <!-- <v-btn>hide</v-btn> -->
             </v-container>
         </v-main>
         
@@ -20,35 +24,50 @@ import Vuetify from "vuetify";
 import sidebar from "./modules/sidebar.vue";
 import Loading from "./components/Loading.vue";
 import { mapGetters } from "vuex";
+import succesMessage from "./components/modals/confirmation/success.vue"
 
 export default {
     name: "app",
     props: ['user'],
     components: {
         sidebar,
-        Loading
+        Loading,
+        succesMessage
     },
     data(){
         return {
+            messageData: this.$store.getters.message,
             user_id: localStorage.getItem("id"),
-            loading:  this.$store.getters.isLoading,
+            loading:  this.$store.getters.isLoading
         }
     },
     created() {
         this.setUserType();
     },
     computed: {
-        ...mapGetters(["isLoading"])
+        ...mapGetters(["isLoading", "message", "show"])
     },
     watch: {
         isLoading: function(newVal) {
             this.loading = newVal;
         },
+        message: function(newVal) {
+            this.messageData = newVal;
+        },
+        show: function(newVal) {
+            if(newVal) {
+                this.$refs.success.show()
+            }
+        }
     },
     mounted(){
+        this.$store.commit('changeMessage', 'Successfully Updated')
         this.listenForChanges();
     },
     methods: {
+        showed(bol) {
+            this.$store.commit('changeStatusMessage', bol)
+        },
         setUserType(){
             var roleList=[]
             this.user.roles.forEach(element => {

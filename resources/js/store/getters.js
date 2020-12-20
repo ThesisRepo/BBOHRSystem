@@ -16,6 +16,12 @@ let getters = {
     },
     roleList: state => {
         return state.roleList;
+    },
+    message: state => {
+        return state.message;
+    },
+    show: state => {
+        return state.show;
     }
 }
 export default getters
