@@ -25,6 +25,9 @@ class NewRequest implements ShouldBroadcast
     public $id;
 
     public $data;
+
+    public $action;
+
     /**
      * Create a new event instance.
      *
@@ -36,6 +39,7 @@ class NewRequest implements ShouldBroadcast
         $this->username = $username;
         $this->data = $data;
         $this->id = $id;
+        $this->action = $action;
         switch($request_type){
             case 'leave_request':
                     $this->request_type = 'Leave Request';

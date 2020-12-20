@@ -19,8 +19,8 @@ class UserRequestService
     event(new NewCalendarEvent($action, $user,$user_id, $data));
   }
 
-  public function notifyNewAdminRequest($action, $user, $user_id, $type, $requester, $data) {
-    event(new AdminEvent($action, $user,$user_id, $type, $requester, $data));
+  public function notifyNewAdminRequest($action, $user, $user_id, $type, $requester, $data, $Approver) {
+    event(new AdminEvent($action, $user,$user_id, $type, $requester, $data, $Approver));
   }
   
 }

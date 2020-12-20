@@ -28,5 +28,9 @@ return $user->id === (int) $userId;
 });
 
 Broadcast::channel('publiccalendar', function () {
-    return true;
-  });
+  return true;
+});
+
+Broadcast::channel('adminevent.{userId}', function ($user, $userId) {
+  return $user->id === (int) $userId;
+});

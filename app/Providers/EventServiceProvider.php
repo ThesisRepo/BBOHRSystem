@@ -7,6 +7,8 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use App\Events\NewRequest;
+use App\Events\AdminEvent;
+
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -19,10 +21,10 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        NewRequest::class => [
-            \App\Listeners\NotifyViaGmailListener::class,
-            // \App\Listeners\NotifyViaSlackListener::class,
-        ]
+    ];
+
+    protected $subscribe = [
+        'App\Listeners\NotifyViaGmailListener',
     ];
 
     /**

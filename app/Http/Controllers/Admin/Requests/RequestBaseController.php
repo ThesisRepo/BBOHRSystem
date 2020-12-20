@@ -51,8 +51,7 @@ class RequestBaseController extends Controller
         }
         $next_approver = $this->request_service->getNextApprover($max_role);
         $employee_name = $this->user_service->getFullNameWithParams($user->first_name, $user->last_name);
-        $requester = $this->user_service->getFullNameWithParams($user->first_name, $user->last_name);
-        // dd($user->toArray());
+        $requester = $this->user_service->getFullNameWithParams($current_request->user->first_name, $current_request->user->last_name);
         $action = "";
         if($request->status_id == 3){
             $data['status_id'] = $request->status_id;
@@ -60,7 +59,8 @@ class RequestBaseController extends Controller
             $action = "Disapproved (ADMIN)";
             $res = $this->model->disapproveRequest($id, $data, $current_request, $user);
             $this->notifyApprovedRequest($action, $employee_name,  $current_request->user->id, $this->request_type, $res);
-            $this->notifyNewAdminRequest('Disapproved', 'Admin', $user->id, $this->request_type, $requester, $res);
+            $this->notifyNewAdminRequest('Disapproved', 'Admin', $user->id, $this->request_type, $requester, $res, $user);
+            $current_request->overriden_requests()->create(['roles_id' => $current_request->approver_role_id]);
             return $res;
         }
         if($max_role != 5) {
@@ -71,7 +71,8 @@ class RequestBaseController extends Controller
         $action = "Approved (ADMIN)";
         $res = $this->model->approveRequest($id, $data, $current_request, $user);
         $this->notifyApprovedRequest($action, $employee_name, $current_request->user->id, $this->request_type, $res);
-        $this->notifyNewAdminRequest('Approved', 'Admin', $user->id, $this->request_type, $requester, $res);
+        $this->notifyNewAdminRequest('Approved', 'Admin', $user->id, $this->request_type, $requester, $res, $user);
+        $current_request->overriden_requests()->create(['roles_id' => $current_request->approver_role_id]);
         return $res;
     }
 
@@ -84,7 +85,7 @@ class RequestBaseController extends Controller
         return $this->user_request_service->notifyNewRequest($action, $user, $id, $type, $data);  
     }
 
-    public function notifyNewAdminRequest($action, $user, $id, $type, $requester, $data) {
-        return $this->user_request_service->notifyNewAdminRequest($action, $user, $id, $type, $requester, $data);  
+    public function notifyNewAdminRequest($action, $user, $id, $type, $requester, $data, $approver) {
+        return $this->user_request_service->notifyNewAdminRequest($action, $user, $id, $type, $requester, $data, $approver);  
     }
 }

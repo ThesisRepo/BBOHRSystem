@@ -57,7 +57,7 @@
 @yield('js')
 
 <body>  
-    <div id="app" class="container-fluid">
+    <div  id="app" class="container-fluid">
         @guest
         <div class=" row d-md-flex h-md-100 align-items-center" id="guest">
 
@@ -75,14 +75,13 @@
                     @yield('content')
                 </div>
             </div>
-
         </div>
         @endguest
         @auth
         <div id="app">
-            <main class="py-4">
+            <!-- <main class="py-4"> -->
                 @yield('content')
-            </main>
+            <!-- </main> -->
         </div>
         @endauth
     </div>
