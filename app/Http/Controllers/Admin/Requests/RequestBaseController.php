@@ -65,6 +65,7 @@ class RequestBaseController extends Controller
         }
         if($max_role != 5) {
             $data['approver_role_id'] = $next_approver;
+            $data['status_id'] = $request->status_id;
         }else {
             $data['status_id'] = $request->status_id;
         }
