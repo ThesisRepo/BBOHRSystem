@@ -184,7 +184,7 @@ export default {
             this.$store.commit("state_loading", false);
             this.$parent.$parent.retrieve()
             this.dialog = false
-          }, this.timeout).catch(err => {
+          }, this.timeoutForRequest).catch(err => {
             this.$store.commit("state_loading", false);            
           }).catch(err => {
             this.$store.commit('changeMessage', 'Please Try Again')

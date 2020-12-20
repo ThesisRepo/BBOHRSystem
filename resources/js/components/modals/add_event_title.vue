@@ -248,7 +248,7 @@ export default {
           this.getEventType();
           this.event_name = null, 
           this.color = "Colors"
-        }, this.timeout)  
+        }, this.timeoutForRequest)  
         .catch(err => {
           this.$store.commit('changeMessage', 'Please Try Again')
           this.$store.commit('changeStatusMessage', true)
@@ -264,7 +264,7 @@ export default {
             event_types.push(element);
           });
           this.event_types = event_types.reverse();
-        }, this.timeout);
+        }, this.timeoutForRequest);
     },
     update() {
       let parameter = {
@@ -283,7 +283,7 @@ export default {
           this.color = "Colors";
           this.showSave = false;
           this.$store.commit("state_loading", false);
-        }, this.timeout).catch((err)=> {
+        }, this.timeoutForRequest).catch((err)=> {
           this.$store.commit('changeMessage', 'Please Try Again')
           this.$store.commit('changeStatusMessage', true)
           this.$store.commit("state_loading", false);
@@ -315,7 +315,7 @@ export default {
           this.$store.commit('changeStatusMessage', true)
         this.$store.commit("state_loading", false);
         this.getEventType();
-      }, this.timeout).catch((err) => {
+      }, this.timeoutForRequest).catch((err) => {
           this.$store.commit('changeMessage', 'Please Try Again')
           this.$store.commit('changeStatusMessage', true)
           this.$store.commit("state_loading", false);

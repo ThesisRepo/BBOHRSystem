@@ -14,7 +14,7 @@ window.Vue = require('vue');
 Vue.mixin({
   data: function() {
     return {
-      get timeout() {
+      get timeoutForRequest() {
         return 3000;
       }
     }
