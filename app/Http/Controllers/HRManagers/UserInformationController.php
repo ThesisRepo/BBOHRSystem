@@ -238,7 +238,7 @@ class UserInformationController extends Controller
         return $res;
     }
 
-    public function getAllFeedbackedDatePettyCash($user_id, Request $request) {
+    public function getAllFeedbackedDatePettyCash(Request $request) {
         $start_date = $request->start_date;
         $end_date = $request->end_date;
         $relationship = 'feedbacked_petty_cash_requests';
@@ -246,7 +246,7 @@ class UserInformationController extends Controller
         return $res;
     }
 
-    public function getAllFeedbackedDatePettyCashNegate($user_id, Request $request) {
+    public function getAllFeedbackedDatePettyCashNegate(Request $request) {
         $start_date = $request->start_date;
         $end_date = $request->end_date;
         $relationship = 'feedbacked_petty_cash_requests';

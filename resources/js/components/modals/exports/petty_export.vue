@@ -85,16 +85,20 @@ export default {
         start_date: param1,
         end_date: param2
       };
+      let route = "hr/summary/petty_cash_request"
+      if(this.$store.getters.roleList.includes('finance mngr')) {
+        route = "finance/summary/petty_cash_request";
+      }
       if(item === 'Approved Requests'){
         this.$axios
-        .post("finance/summary/petty_cash_request", param)
+        .post(route, param)
         .then(response => {
           this.summary = response.data;
           console.log(this.summary)
         });
       }else if(item === 'Disapproved Requests'){
         this.$axios
-        .post("finance/summary/petty_cash_request", param)
+        .post(route, param)
         .then(response => {
             this.summary = response.data;
         });
