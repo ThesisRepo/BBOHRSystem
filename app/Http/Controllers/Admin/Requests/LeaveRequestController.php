@@ -24,13 +24,19 @@ class LeaveRequestController  extends RequestBaseController
         parent::__construct($request_service,  $leave_request, $user_request_service, 'leave_request', $user_service);
     }
 
+    public function pending() {
+        $with =  ['leave_type', 'status','approver_role', 'user'];
+        $res = $this->getBasePendingRequest($with);     
+        return $res;
+    }
+
     public function requestFeedback(Request $request, $id) {
         $res = $this->requestBaseFeedback($id, $request);     
         return $res;
     }
 
     public function getAllNonPendingLeaveRequest() {
-        $res = $this->getAllNonPendingRequestBase();     
+        $res = $this->getAllNonPendingRequestBase(['leave_type', 'status','approver_role', 'user']);     
         return $res;
     }
 }

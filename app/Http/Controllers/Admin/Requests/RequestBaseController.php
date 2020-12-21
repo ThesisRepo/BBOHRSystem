@@ -35,6 +35,11 @@ class RequestBaseController extends Controller
         $this->user_service = $user_service;
     }
 
+    public function getBasePendingRequest($relationship){
+        $res = $this->model->whereWith('status_id', 1, $relationship)->get(); 
+        return $res;
+    }
+
     public function requestBaseFeedback($id, Request $request){
         $data = [];
         $current_request = $this->model->with('user')->find($id);
@@ -65,6 +70,7 @@ class RequestBaseController extends Controller
         }
         if($max_role != 5) {
             $data['approver_role_id'] = $next_approver;
+            $data['status_id'] = $request->status_id;
         }else {
             $data['status_id'] = $request->status_id;
         }
@@ -76,8 +82,8 @@ class RequestBaseController extends Controller
         return $res;
     }
 
-    public function getAllNonPendingRequestBase() {
-        $res = $this->model->with(['leave_type', 'status','approver_role', 'user'])->where('status_id', '!=', 1)->get();   
+    public function getAllNonPendingRequestBase($with = []) {
+        $res = $this->model->with($with)->where('status_id', '!=', 1)->get();   
         return $res;
     }
 

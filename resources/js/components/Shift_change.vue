@@ -91,6 +91,16 @@
       <template v-slot:item.reason="{ item }">{{convertData(item)}}</template>
       <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
+      <template 
+        v-if="user_type.includes('admin')"
+        v-slot:item.actions="{ item }">
+        <v-icon medium 
+        v-if="item.status_id != 2"
+        class="mr-2" @click="approveModal(item)" style="color:green">mdi-check-decagram</v-icon>
+        <v-icon 
+        v-else
+        medium @click="disapproveModal(item)" style="color:red">mdi-close-circle</v-icon>
+      </template>
     </v-data-table>
 
     <!-- Employee Shift -->
@@ -120,7 +130,9 @@
     <Confirmation
       ref="confirms"
       :title="approveThis === 'approve' || 'disapproved' ? 'Confirmation' : ''"
-      :message="approveThis === 'approve' ? 'Are you sure you want to approve this request?' : 'Are you sure you want to reject this request?'"
+      :message="!user_type.includes('admin') ? 
+        approveThis === 'approve' ? 'Are you sure you want to approve this request?' : approveThis === 'disapproved' ? 'Are you sure you want to reject this request?' : '' :
+        approveThis === 'approve' ? 'Are you sure you want to OVERRIDE approval of this request?' : approveThis === 'disapproved' ? 'Are you sure you want to OVERRIDE rejection of this request?' : '' "
       @onConfirm="confirm($event)"
     ></Confirmation>
 
@@ -358,7 +370,12 @@ export default {
     },
   },
   mounted() {
-    this.getShift()
+    if(!this.$store.getters.roleList.includes('admin')) {
+      this.getShift()
+
+    }else{
+      this.headersFeed.push({ text: "ACTIONS", value: "actions", sortable: false });
+    }
     if ((this.user_type.includes("hr mngr") || this.user_type.includes("prp emp")) && !(this.user_type.includes("finance mngr"))) {
       this.retrieveShift();
       this.getAllFeedback();
@@ -392,11 +409,12 @@ export default {
           });
     },
     retrieveShift() {
+      let route =  "prp/shift_change_request/pending/" + this.user_id;
+      if(this.$store.getters.roleList.includes("admin")) {
+      route =  "admin/shift_change_request/pending";
+      }
       this.$axios
-        .get(
-          "prp/shift_change_request/pending/" +
-            this.user_id
-        )
+        .get(route)
         .then(response => {
           this.shiftPending = response.data;
         }).catch(err => {
@@ -530,16 +548,17 @@ export default {
       this.$refs.confirms.show(item)
     },
     approve(item) {
+      var permission = "prp";
+      if(this.$store.getters.roleList.includes("admin")) {
+        permission = "admin";
+      }
+      let route = permission + "/shift_change_request/feedback/" + this.id;
       if(item.id.approver_role_id === 5){
-        let parameter = {
-        user_id: this.user_id,
-        status_id: 2
-      };
-      this.$axios
-        .post(
-          "prp/shift_change_request/feedback/" + this.id,
-          parameter
-        )
+          let parameter = {
+          user_id: this.user_id,
+          status_id: 2
+        };     
+      this.$axios.post(route, parameter)
         .then(response => {
           this.$store.commit('changeMessage', 'Approved Successfully')
           this.$store.commit('changeStatusMessage', true)
@@ -555,10 +574,7 @@ export default {
           status_id: 1
         };
         this.$axios
-          .post(
-            "prp/shift_change_request/feedback/" + this.id,
-            parameter
-          )
+          .post( route, parameter)
           .then(response => {
             this.$store.commit('changeMessage', 'Approved Successfully')
             this.$store.commit('changeStatusMessage', true)
@@ -571,15 +587,17 @@ export default {
       }
     },
     disapprove() {
+      var permission = "prp";
+      if(this.$store.getters.roleList.includes("admin")) {
+        permission = "admin";
+      }
+      let route = permission + "/shift_change_request/feedback/" + this.id;
       let parameter = {
         user_id: this.user_id,
         status_id: 3
       };
       this.$axios
-        .post(
-          "prp/shift_change_request/feedback/" + this.id,
-          parameter
-        )
+        .post(route, parameter)
         .then(res => {
           this.$store.commit('changeMessage', 'Disapproved Successfully')
           this.$store.commit('changeStatusMessage', true)
@@ -591,13 +609,18 @@ export default {
           });
     },
     getAllFeedback() {
+      let route = "prp/shift_change_request/feedbacked/" + this.user_id;
+      if(this.$store.getters.roleList.includes('admin')) {
+        route = "admin/shift_change_request";
+      }
       this.$axios
-        .get(
-          "prp/shift_change_request/feedbacked/" +
-            this.user_id
-        )
+        .get(route)
         .then(response => {
-          this.feedbacks = response.data.feedbacked_shift_change_requests;
+          if(!this.$store.getters.roleList.includes('admin')) {
+            this.feedbacks = response.data.feedbacked_shift_change_requests;
+          }else {
+            this.feedbacks = response.data;
+          }
         });
     },
     summary(item){
