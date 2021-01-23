@@ -22,6 +22,12 @@ let getters = {
     },
     show: state => {
         return state.show;
+    },
+    screenSize: state => {
+        return state.screenSize;
+    },
+    hasSmallScreen: state => {
+        return state.hasSmallScreen;
     }
 }
 export default getters

@@ -55,6 +55,13 @@ let mutations = {
     },
     changeStatusMessage(state, payload){
         state.show = payload;
+    },
+    setScreenSize(state, payload){
+        state.screenSize = payload.screenSize;
+    },
+    hasSmallScreen(state, payload) {
+        state.screenSize = payload.screenSize;
+        state.hasSmallScreen = payload.screenSize >= 768;
     }
 }
 export default mutations

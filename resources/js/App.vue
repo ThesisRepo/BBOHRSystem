@@ -43,6 +43,11 @@ export default {
     },
     created() {
         this.setUserType();
+        this.$store.commit('hasSmallScreen', { screenSize: window.innerWidth});
+        window.addEventListener("resize", this.isSmall);
+    },
+    destroyed() {
+        window.removeEventListener("resize", this.isSmall);
     },
     computed: {
         ...mapGetters(["isLoading", "message", "show"])
@@ -60,11 +65,15 @@ export default {
             }
         }
     },
+    
     mounted(){
         this.$store.commit('changeMessage', 'Successfully Updated')
         this.listenForChanges();
     },
     methods: {
+        isSmall(e) {
+            this.$store.commit('hasSmallScreen', { screenSize: window.innerWidth});
+        },
         showed(bol) {
             this.$store.commit('changeStatusMessage', bol)
         },

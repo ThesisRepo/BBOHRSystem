@@ -1,20 +1,146 @@
 <template>
-  <div>
+  <v-container fluid>
+    <v-toolbar-title
+      class="py-4"
+      >
+      SHIFT CHANGE REQUESTS
+    </v-toolbar-title>
     <v-toolbar flat>
-      <template v-slot:extension>
+      <!-- <template v-slot:extension> -->
         <v-tabs dark background-color="primary" fixed-tabs v-if="((user_type.includes('hr mngr') || user_type.includes('prp emp') || user_type.includes('general mngr')) && !user_type.includes('finance mngr'))">
           <v-tabs-slider></v-tabs-slider>
           <v-tab v-if="!user_type.includes('general mngr') && !user_type.includes('admin')" @click="employees = false, requests = true, feedback = false">My Requests</v-tab>
           <v-tab @click="requests = false, employees = true, feedback = false">Employees Requests</v-tab>
           <v-tab @click="requests = false, employees = false, feedback = true">History</v-tab>
         </v-tabs>
-      </template>
+      <!-- </template> -->
     </v-toolbar>
     <!-- Feedback -->
     <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat v-if="(user_type.includes('hr mngr') || user_type.includes('general mngr'))">
-          <v-col class="mt-8" v-if="!user_type.includes('general mngr')">
+          <v-menu 
+            :close-on-content-click="false"
+            transition="scale-transition"
+            offset-y
+            min-width="290px"
+            >
+            <template v-slot:activator="{ on, attrs }">
+              <v-app-bar-nav-icon 
+                class="d-md-none .d-lg-none .d-xl-none .d-lg-flex"
+                v-bind="attrs"
+                v-on="on"
+                ></v-app-bar-nav-icon>
+            </template>
+            <v-list
+              class="d-md-none .d-lg-none .d-xl-none .d-lg-flex"
+            >
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    <v-menu
+                      :close-on-content-click="false"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="290px"
+                      >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          v-model="dateRangeText"
+                          hide-details
+                          solo-inverted
+                          flat
+                          prepend-inner-icon="mdi-calendar"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                        ></v-text-field>
+                      </template>
+                      <v-date-picker v-model="dates" range ></v-date-picker>
+                    </v-menu>
+                    <v-menu transition="slide-y-transition" bottom>
+                      <template v-slot:activator="{ on, attrs }" v-if="!user_type.includes('general mngr')">
+                        <v-btn class="purple" color="primary" style="width:100%" dark v-bind="attrs" v-on="on">Summary</v-btn>
+                      </template>
+                      <v-list>
+                        <v-list-item v-for="(item, i) in items" :key="i">
+                          <v-list-item-title
+                            @click="summary(item.title)"
+                            style="cursor: pointer;"
+                          >{{ item.title }}</v-list-item-title>
+                        </v-list-item>
+                      </v-list>
+                    </v-menu>
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>  
+                <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    <v-text-field
+                      v-model="search"
+                      clearable
+                      flat
+                      solo-inverted
+                      hide-details
+                      prepend-inner-icon="mdi-magnify"
+                      label="Search"
+                    ></v-text-field>
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>  
+            </v-list>
+          </v-menu>
+          <template v-if="$store.getters.hasSmallScreen">
+            <v-col class="mt-8" v-if="!user_type.includes('general mngr')">
+              <v-menu
+                :close-on-content-click="false"
+                transition="scale-transition"
+                offset-y
+                min-width="290px"
+                >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    class="input-name"
+                    v-model="dateRangeText"
+                    chips
+                    label="DATE"
+                    prepend-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker v-model="dates" range></v-date-picker>
+              </v-menu>
+            </v-col>
+            <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+            <!-- <v-btn color="light blue darken-2" @click="summary()" outlined>SUMMARY</v-btn> -->
+            <v-menu transition="slide-y-transition" bottom>
+              <template v-slot:activator="{ on, attrs }" v-if="!user_type.includes('general mngr')">
+                <v-btn class="purple" color="primary" dark v-bind="attrs" v-on="on">Summary</v-btn>
+              </template>
+              <v-list>
+                <v-list-item v-for="(item, i) in items" :key="i">
+                  <v-list-item-title
+                    @click="summary(item.title)"
+                    style="cursor: pointer;"
+                  >{{ item.title }}</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+            <v-spacer></v-spacer>
+            <v-text-field
+              v-model="search"
+              clearable
+              flat
+              solo-inverted
+              hide-details
+              prepend-inner-icon="mdi-magnify"
+              label="Search"
+            ></v-text-field>
+          </template>
+          <!-- <v-col class="mt-8" v-if="!user_type.includes('general mngr')">
             <v-menu
               :close-on-content-click="false"
               transition="scale-transition"
@@ -42,7 +168,7 @@
           <v-menu
             transition="slide-y-transition"
             bottom
-          >
+           >
             <template v-slot:activator="{ on, attrs }" v-if="!user_type.includes('general mngr')">
               <v-btn
                 class="purple"
@@ -62,10 +188,10 @@
                 <v-list-item-title @click="summary(item.title)" style="cursor: pointer;">{{ item.title }}</v-list-item-title>
               </v-list-item>
             </v-list>
-          </v-menu>
-          <v-divider class="mx-4" vertical v-if="!user_type.includes('general mngr')"></v-divider>
+          </v-menu> -->
+          <!-- <v-divider class="mx-4" vertical v-if="!user_type.includes('general mngr')"></v-divider> -->
           <!-- <v-spacer></v-spacer> -->
-          <v-text-field
+          <!-- <v-text-field
             v-model="search"
             clearable
             flat
@@ -74,8 +200,8 @@
             prepend-inner-icon="mdi-magnify"
             label="Search"
           ></v-text-field>
+        </v-toolbar> -->
         </v-toolbar>
-        
         <v-toolbar class="mb-2" color="blue darken-1" dark flat v-if="((user_type.includes('prp emp') || user_type.includes('finance mngr')) && (!user_type.includes('hr mngr') && !user_type.includes('general mngr')))">
           <v-text-field
             v-model="search"
@@ -220,7 +346,7 @@
       >
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
-          <v-toolbar-title class="col pa-3 py-4 white--text" style="font-size: 16px" v-if="!user_type.includes('general mngr')">SHIFT REQUEST</v-toolbar-title>
+          <!-- <v-toolbar-title class="col pa-3 py-4 white--text" style="font-size: 16px" v-if="!user_type.includes('general mngr')">SHIFT REQUEST</v-toolbar-title> -->
           <v-text-field
             v-model="search"
             clearable
@@ -277,7 +403,7 @@
     <SummaryTemplate
     ref="summary"
     ></SummaryTemplate>
-  </div>
+  </v-container>  
 </template>
 <script>
 import createShift from "./modals/create_shift.vue";
@@ -371,23 +497,21 @@ export default {
   },
   mounted() {
     if(!this.$store.getters.roleList.includes('admin')) {
-      this.getShift()
-
+      this.getShift();
+      this.retrieve();
     }else{
       this.headersFeed.push({ text: "ACTIONS", value: "actions", sortable: false });
     }
     if ((this.user_type.includes("hr mngr") || this.user_type.includes("prp emp")) && !(this.user_type.includes("finance mngr"))) {
       this.retrieveShift();
       this.getAllFeedback();
-      this.retrieve();
       this.checkUser()
     } else if(this.user_type.includes("general mngr")) {
       this.retrieveShift();
       this.getAllFeedback();
-      this.checkUser()
+      this.checkUser();
     }else{
-      this.retrieve();
-      this.checkUser()
+      this.checkUser();
     }
   },
   methods: {

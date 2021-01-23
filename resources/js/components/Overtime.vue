@@ -96,6 +96,15 @@
       <template v-slot:item.reason="{ item }">{{convertData(item)}}</template>
       <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
+      <template v-slot:item.actions="{ item }">
+        <v-icon
+          medium
+          class="mr-2"
+          @click="approveModal(item)"
+          style="color:green"
+        >mdi-check-decagram</v-icon>
+        <v-icon medium @click="disapproveModal(item)" style="color:red">mdi-close-circle</v-icon>
+      </template>
     </v-data-table>
 
     <!-- Employee Overtime -->
@@ -403,17 +412,20 @@ export default {
     },
   },
   mounted(){
+    if(this.$store.getters.roleList.includes("admin")) {
+      this.headersFeed.push({ text: "ACTIONS", value: "actions", sortable: false });
+    }else{
+      this.retrieve();
+    }
     if ((this.user_type.includes("hr mngr") || this.user_type.includes("prp emp")) && !(this.user_type.includes("finance mngr"))) {
       this.retrieveOvertime();
       this.getAllFeedback();
-      this.retrieve();
       this.checkUser()
     } else if(this.user_type.includes("general mngr")) {
       this.retrieveOvertime();
       this.getAllFeedback();
       this.checkUser()
     }else{
-      this.retrieve();
       this.checkUser()
     }
   },
