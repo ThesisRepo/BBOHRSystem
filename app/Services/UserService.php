@@ -89,7 +89,6 @@ class UserService
         $res = $this->user->whereDoesntHaveWhereIn('roles','roles.id', 6)->whereHas('roles', function($q) use($role_id) {
             return $q->where('roles.id', $role_id);
         })->first();
-        // dd($res->toArray());
         return $res;
     }
 
