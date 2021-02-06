@@ -18,3 +18,21 @@ Route::get('admin/overtime_request/pending','Requests\OvertimeRequestController@
 Route::post('admin/overtime_request/feedback/{id}','Requests\OvertimeRequestController@requestFeedback');
 
 Route::get('admin/overtime_request','Requests\OvertimeRequestController@getAllNonPendingLeaveRequest');
+
+Route::get('admin/petty_cash_request/pending','Requests\PettyCashRequestController@pending');
+
+Route::post('admin/petty_cash_request/feedback/{id}','Requests\PettyCashRequestController@requestFeedback');
+
+Route::get('admin/petty_cash_request','Requests\PettyCashRequestController@getAllNonPendingLeaveRequest');
+
+Route::get('admin/budget_request/pending','Requests\BudgetRequestController@pending');
+
+Route::post('admin/budget_request/feedback/{id}','Requests\BudgetRequestController@requestFeedback');
+
+Route::get('admin/budget_request','Requests\BudgetRequestController@getAllNonPendingLeaveRequest');
+
+Route::get('admin/travel_auth_request/pending','Requests\TravelAuthRequestController@pending');
+
+Route::post('admin/travel_auth_request/feedback/{id}','Requests\TravelAuthRequestController@requestFeedback');
+
+Route::get('admin/travel_auth_request','Requests\TravelAuthRequestController@getAllNonPendingLeaveRequest');

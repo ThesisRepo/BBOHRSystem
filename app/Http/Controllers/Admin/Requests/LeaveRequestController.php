@@ -31,7 +31,7 @@ class LeaveRequestController  extends RequestBaseController
     }
 
     public function requestFeedback(Request $request, $id) {
-        $res = $this->requestBaseFeedback($id, $request);     
+        $res = $this->requestBaseFeedback($id, $request, true);     
         return $res;
     }
 

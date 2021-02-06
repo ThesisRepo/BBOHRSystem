@@ -1,7 +1,12 @@
 <template>
-  <div>
+  <v-container fluid>
+    <v-toolbar-title
+      class="py-4"
+      >
+      BUDGET REQUESTS
+    </v-toolbar-title>
     <v-toolbar flat>
-      <template v-slot:extension>
+      <!-- <template v-slot:extension> -->
         <v-tabs
           dark
           background-color="primary"
@@ -13,7 +18,7 @@
           <v-tab @click="requests = false, employees = true, feedback = false">Employees Requests</v-tab>
           <v-tab v-if="user_type.includes('finance mngr') || user_type.includes('general mngr') || user_type.includes('admin')" @click="requests = false, employees = false, feedback = true">History</v-tab>
         </v-tabs>
-      </template>
+      <!-- </template> -->
     </v-toolbar>
     <!-- Feedback -->
     <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" :search="search" class="elevation-3">
@@ -115,7 +120,9 @@
     <Confirmation
       ref="confirms"
       :title="approveThis === 'approve' || 'disapproved' ? 'Confirmation' : ''"
-      :message="approveThis === 'approve' ? 'Are you sure you want to approve this request?' : 'Are you sure you want to reject this request?'"
+      :message="!user_type.includes('admin') ? 
+        approveThis === 'approve' ? 'Are you sure you want to approve this request?' : approveThis === 'disapproved' ? 'Are you sure you want to reject this request?' : '' :
+        approveThis === 'approve' ? 'Are you sure you want to OVERRIDE approval of this request?' : approveThis === 'disapproved' ? 'Are you sure you want to OVERRIDE rejection of this request?' : '' "
       @onConfirm="confirm($event)"
     ></Confirmation>
     
@@ -191,7 +198,7 @@
     >
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
-          <v-toolbar-title class="col pa-3 py-4 white--text" style="font-size: 16px" v-if="!user_type.includes('general mngr')">BUDGET REQUEST</v-toolbar-title>
+          <!-- <v-toolbar-title class="col pa-3 py-4 white--text" style="font-size: 16px" v-if="!user_type.includes('general mngr')">BUDGET REQUEST</v-toolbar-title> -->
           <v-text-field
             v-model="search"
             clearable
@@ -246,7 +253,7 @@
     ref="summary"
     ></SummaryTemplate>
     <Loading v-if="loading"></Loading>
-  </div>
+  </v-container>
 </template>
 <script>
 import createBudget from "./modals/create_budget.vue";
@@ -363,8 +370,8 @@ export default {
       this.$axios
         .get("budget_request/" + this.user_id)
         .then(response => {
-          this.loading = false
           this.budget = response.data;
+          this.loading = false
         }).catch(err => {
             this.$store.commit('changeMessage', 'Please Try Again')
             this.$store.commit('changeStatusMessage', true)
@@ -372,11 +379,12 @@ export default {
           })
     },
     retrieveBudget() {
+      let route =  "prp/budget_request/pending/" + this.user_id;
+      if(this.$store.getters.roleList.includes("admin")) {
+      route =  "admin/budget_request/pending";
+      }
       this.$axios
-        .get(
-          "prp/budget_request/pending/" +
-            this.user_id
-        )
+        .get(route)
         .then(response => {
           this.budgetPending = response.data;
         }).catch(err => {
@@ -384,7 +392,7 @@ export default {
             this.$store.commit('changeStatusMessage', true)
           });
     },
-
+  
     editItem(item) {
       this.editedItem.id = item.id;
       this.editedIndex = this.budget.indexOf(item);
@@ -504,16 +512,33 @@ export default {
       this.$refs.confirms.show(item)
     },
     approve(item) {
+      var permission = "prp";
+      if(this.$store.getters.roleList.includes("admin")) {
+        permission = "admin";
+      }
+      let route = permission + "/budget_request/feedback/" + this.id;
       if(item.id.approver_role_id === 5){
-        let parameter = {
+          let parameter = {
           user_id: this.user_id,
           status_id: 2
+        };     
+      this.$axios.post(route, parameter)
+        .then(response => {
+          this.$store.commit('changeMessage', 'Approved Successfully')
+          this.$store.commit('changeStatusMessage', true)
+          this.retrieveBudget();
+          this.getAllFeedback();
+        }).catch(err => {
+            this.$store.commit('changeMessage', 'Please Try Again')
+            this.$store.commit('changeStatusMessage', true)
+          });
+      }else{
+        let parameter = {
+          user_id: this.user_id,
+          status_id: 1
         };
         this.$axios
-          .post(
-            "prp/budget_request/feedback/" + this.id,
-            parameter
-          )
+          .post( route, parameter)
           .then(response => {
             this.$store.commit('changeMessage', 'Approved Successfully')
             this.$store.commit('changeStatusMessage', true)
@@ -523,37 +548,21 @@ export default {
             this.$store.commit('changeMessage', 'Please Try Again')
             this.$store.commit('changeStatusMessage', true)
           });
-      }else{
-          let parameter = {
-            user_id: this.user_id,
-            status_id: 1
-          };
-          this.$axios
-            .post(
-              "prp/budget_request/feedback/" + this.id,
-              parameter
-            )
-            .then(response => {
-              this.$store.commit('changeMessage', 'Approved Successfully')
-              this.$store.commit('changeStatusMessage', true)
-              this.retrieveBudget();
-              this.getAllFeedback();
-            }).catch(err => {
-            this.$store.commit('changeMessage', 'Please Try Again')
-            this.$store.commit('changeStatusMessage', true)
-          });
       }
     },
+
     disapprove() {
+      var permission = "prp";
+      if(this.$store.getters.roleList.includes("admin")) {
+        permission = "admin";
+      }
+      let route = permission + "/budget_request/feedback/" + this.id;
       let parameter = {
         user_id: this.user_id,
         status_id: 3
       };
       this.$axios
-        .post(
-          "prp/budget_request/feedback/" + this.id,
-          parameter
-        )
+        .post(route, parameter)
         .then(res => {
           this.$store.commit('changeMessage', 'Disapproved Successfully')
           this.$store.commit('changeStatusMessage', true)
@@ -564,22 +573,23 @@ export default {
             this.$store.commit('changeStatusMessage', true)
           });
     },
+    
     getAllFeedback() {
+      let route = "prp/budget_request/feedbacked/" + this.user_id;
+      if(this.$store.getters.roleList.includes('admin')) {
+        route = "admin/budget_request";
+      }
       this.$axios
-        .get(
-          "prp/budget_request/feedbacked/" +
-            this.user_id
-        )
+        .get(route)
         .then(response => {
-          this.feedbacks = response.data.feedbacked_budget_requests
-          // this.feedbacks.forEach(element => {
-          //   console.log('feedbacksarray', element)
-          // })
-        }).catch(err => {
-            this.$store.commit('changeMessage', 'Please Try Again')
-            this.$store.commit('changeStatusMessage', true)
-          });
+          if(!this.$store.getters.roleList.includes('admin')) {
+            this.feedbacks = response.data.feedbacked_budget_requests;
+          }else {
+            this.feedbacks = response.data;
+          }
+        });
     },
+    
     getColor(status) {
       if (status === 'pending') return '#ffa500'
       else if (status === 'approved') return 'green'

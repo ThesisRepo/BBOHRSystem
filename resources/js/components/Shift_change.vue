@@ -405,6 +405,11 @@
     ></SummaryTemplate>
   </v-container>  
 </template>
+<style>
+.input-name {
+  font-size: 12px;
+}
+</style>
 <script>
 import createShift from "./modals/create_shift.vue";
 import Confirmation from "./modals/confirmation/confirm.vue";

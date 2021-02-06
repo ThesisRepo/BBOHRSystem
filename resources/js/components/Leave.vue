@@ -757,7 +757,8 @@ export default {
         this.$axios
         .get("admin/leave_request/pending")
         .then(response => {
-          this.prpPending = response.data;
+          this.prpPending = response.data
+          console.log('retrieve Pending', this.prpPending)
         }).catch(err => {
             this.$store.commit('changeMessage', 'Please Try Again')
             this.$store.commit('changeStatusMessage', true)
@@ -1218,6 +1219,7 @@ export default {
         this.$axios
           .post("admin/leave_request/feedback/" + this.id, parameter)
           .then(response => {
+            console.log('leave response', response)
             this.$store.commit('changeMessage', 'Approved Successfully')
             this.$store.commit('changeStatusMessage', true)
             this.retrievePendingPrp();
