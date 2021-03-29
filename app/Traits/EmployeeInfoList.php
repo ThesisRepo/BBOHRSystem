@@ -939,7 +939,7 @@ trait EmployeeInfoList
             // 'finance_assigned' => 4,
             'first_name' => 'Admin',
             'last_name' => 'Shan',
-            'email' => 'admin@bbo.com.ph',
+            'email' => 'shin@bbo.com.ph',
             'password' => Hash::make('123456789')
           ],
           'user_info' => [
