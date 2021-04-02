@@ -123,3 +123,6 @@ Route::get('prp/petty_cash_request/pending/{user_id}','Requests\PettyCashRequest
 
 // approve or disapprove a petty cash request
 Route::post('prp/petty_cash_request/feedback/{id}','Requests\PettyCashRequestsController@requestFeedback')->name('prp.petty_cash_request.feedback');
+
+// get all pending petty cash request that belongs of approver
+Route::get('prp/petty_cash_request/pending','Requests\PettyCashRequestsController@getPendingRequestHR')->name('prp.petty_cash_request.pending');

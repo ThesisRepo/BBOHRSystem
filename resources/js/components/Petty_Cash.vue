@@ -99,7 +99,7 @@
     </v-data-table>
 
     <!-- Employee Overtime -->
-    <v-data-table v-if="employees" :headers="(user_type.includes('finance mngr') || user_type.includes('general mngr')) && !user_type.includes('hr mngr') ? headersEmp : headersEmployee" :items="pettyPending" :search="search" class="elevation-3">
+    <v-data-table v-if="employees" :headers="!user_type.includes('hr mngr') || user_type.includes('admin') ? headersEmp : headersEmployee" :items="pettyPending" :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-text-field
@@ -277,6 +277,7 @@ import ConfirmationDel from "./modals/confirmation/delete.vue";
 import SummaryTemplate from "./modals/exports/petty_export.vue";
 import Reminder from "./modals/confirmation/reminder.vue";
 import Loading from "./Loading.vue";
+import travel_exportVue from './modals/exports/travel_export.vue';
 
 export default {
   data: () => ({
@@ -362,22 +363,22 @@ export default {
     },
   },
   mounted(){
-    if (
-      this.user_type.includes("hr mngr") ||
-      this.user_type.includes("finance mngr")
-    ) {
-      this.retrievePetty();
+    if(this.user_type.includes('admin')){
+      this.headersFeed.push({ text: "ACTIONS", value: "actions", sortable: false });
       this.getAllFeedback();
-      this.retrieve();
-      this.checkUser()
-    } else if(this.user_type.includes("general mngr")){
-      this.retrievePetty();
-      this.getAllFeedback();
-      this.checkUser()
-    }else{
-      this.retrieve();
-      this.checkUser()
     }
+    if (
+      this.user_type.includes("hr mngr")
+    ) {
+      this.retrievePetty(travel_exportVue);
+    } else if(this.user_type.includes("general mngr") || this.user_type.includes("finance mngr")){
+      this.retrievePetty();
+      this.getAllFeedback();
+    }
+    if(!this.user_type.includes("general mngr") && !this.user_type.includes("admin") ) {
+      this.retrieve();
+    }
+    this.checkUser()
   },
   methods: {
     disabledDates(date) {
@@ -393,8 +394,13 @@ export default {
         this.$store.commit('changeStatusMessage', true)
       })
     },
-    retrievePetty() {
-      let route =  "prp/petty_cash_request/pending/" + this.user_id;
+    retrievePetty(isHr = false) {
+      let route = '';
+      if(isHr) {
+        route =  "prp/petty_cash_request/pending/";
+      }else {
+        route =  "prp/petty_cash_request/pending/" + this.user_id;
+      }
       if(this.$store.getters.roleList.includes("admin")) {
       route =  "admin/petty_cash_request/pending";
       }
