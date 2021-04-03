@@ -931,50 +931,7 @@ trait EmployeeInfoList
               'color' => '#FFFF00'
             ]
           ]
-        ],
-
-        [
-          'user' => [
-            // 'prp_assigned' => 3,
-            // 'finance_assigned' => 4,
-            'first_name' => 'Admin',
-            'last_name' => 'Shan',
-            'email' => 'shin@bbo.com.ph',
-            'password' => Hash::make('123456789')
-          ],
-          'user_info' => [
-            //   'department_id' => 2,
-            //   'shift_time_id'=> 1,
-            'gender'=> 1,
-            // 'company_number'=> '1234652',
-            // 'profile_url'=> null
-            // 'company_position'=> 'General Manager',
-          //   'date_hired'=> '2018-3-6',
-          //   // 'contact_number'=> 
-          //   'civil_status_id'=> 1,
-            'company_status_id'=> 3,
-          //   'birthday'=>'1984-4-13',
-          //   'address'=> 'Sta. Cruz, Liloan, Cebu',
-          //   // 'tin_number'=> 
-          //   // 'sss_number'=>
-          //   // 'pag_ibig_number'=>
-          //   // 'philhealth_number'=>
-          //   // 'allowed_leave_number'=>
-          ],
-          'user_roles' => [1, 2, 5, 4, 6],
-          'user_company_positions' => [6],
-          'event_types' => [
-            [
-              'event_name' => 'Holiday',
-              'color' => '#FF0000'
-            ],
-            [
-              'event_name' => 'Birthday',
-              'color' => '#FFFF00'
-            ]
-          ]
-        ],
-
+        ]
     ];
   } 
 }
