@@ -370,7 +370,7 @@ export default {
     if (
       this.user_type.includes("hr mngr")
     ) {
-      this.retrievePetty(travel_exportVue);
+      this.retrievePetty(true);
     } else if(this.user_type.includes("general mngr") || this.user_type.includes("finance mngr")){
       this.retrievePetty();
       this.getAllFeedback();

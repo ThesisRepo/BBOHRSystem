@@ -103,6 +103,9 @@ Route::get('prp/budget_request/pending/{user_id}','Requests\BudgetRequestsContro
 // approve or disapprove a budget request
 Route::post('prp/budget_request/feedback/{id}','Requests\BudgetRequestsController@requestFeedback')->name('prp.budget_request.feedback');
 
+// get all pending travel authorization request that belongs of approver
+Route::get('prp/budget_request/pending','Requests\BudgetRequestsController@getPendingRequestHR')->name('prp.budget_request.pending');
+
 
 // -- PETTY CASH REQUEST
 
