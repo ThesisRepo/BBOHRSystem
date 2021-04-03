@@ -70,7 +70,6 @@
             </v-list>
           </v-menu>
           <v-divider class="mx-4" vertical v-if="!user_type.includes('general mngr')"></v-divider>
-          <!-- <v-spacer></v-spacer> -->
           <v-text-field
             v-model="search"
             clearable
@@ -99,7 +98,7 @@
     </v-data-table>
 
     <!-- Employee Overtime -->
-    <v-data-table v-if="employees" :headers="(user_type.includes('finance mngr') || user_type.includes('general mngr')) && !user_type.includes('hr mngr') ? headersEmp : headersEmployee" :items="pettyPending" :search="search" class="elevation-3">
+    <v-data-table v-if="employees" :headers="(user_type.includes('finance mngr') || user_type.includes('general mngr') || user_type.includes('admin')) && (!user_type.includes('hr mngr')) ? headersEmp : headersEmployee" :items="pettyPending" :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-text-field
@@ -362,6 +361,12 @@ export default {
     },
   },
   mounted(){
+    console.log('[shft]', localStorage.getItem("user_type"));
+    if(!this.user_type.includes("admin")) {
+      this.retrieve();
+    }else{
+      this.headersFeed.push({ text: "ACTIONS", value: "actions", sortable: false });
+    }
     if (
       this.user_type.includes("hr mngr") ||
       this.user_type.includes("finance mngr")
