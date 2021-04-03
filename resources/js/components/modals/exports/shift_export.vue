@@ -4,21 +4,18 @@
       <v-dialog v-model="dialog" persistent max-width="650px">
         <v-card>
           <v-toolbar class="mb-2" color="blue darken-1" dark flat>
-            <v-card-title>
-              <v-col>
-                <span style="font-size: 18px">SUMMARY OF SHIFT CHANGE REQUEST:</span>
-              </v-col>
-
-              <span style="font-size: 15px">
-                {{
-                start_date
-                ? start_date
-                : "No start date selected"
-                }}
-                /
-                {{ end_date ? end_date : start_date }}
-              </span>
-            </v-card-title>
+            <!-- <v-card-title> -->
+                <span style="font-size: 18px">SUMMARY OF SHIFT CHANGE REQUEST:
+                  <span style="font-size: 15px">
+                    {{
+                    start_date
+                    ? start_date
+                    : "No start date selected"
+                    }}
+                    {{ end_date ? ' up to ' + end_date : '' }}
+                  </span>
+                </span>
+            <!-- </v-card-title> -->
           </v-toolbar>
           <v-card-text>
             <ejs-grid ref='grid' id='Grid' :dataSource='summary' :toolbar='toolbarOptions' height='270px' :allowPaging='true' :allowExcelExport='true' :toolbarClick='toolbarClick'>

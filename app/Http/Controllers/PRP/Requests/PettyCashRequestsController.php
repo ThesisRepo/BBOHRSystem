@@ -30,6 +30,11 @@ class PettyCashRequestsController extends RequestBaseController
         return $res;
     }
 
+    public function getPendingRequestHR(){
+        $res = $this->petty_cash_request->whereWith('status_id', 1, ['department', 'status','approver_role', 'user'])->get();
+        return $res;
+    }
+
     public function getAllFeedbackedRequest($user_id){
         $res = $this->getBaseAllFeedbackedRequest($user_id, 'feedbacked_petty_cash_requests', ['department', 'status','approver_role', 'user']);
         return $res;

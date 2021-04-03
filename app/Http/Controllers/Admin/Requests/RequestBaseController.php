@@ -40,7 +40,7 @@ class RequestBaseController extends Controller
         return $res;
     }
 
-    public function requestBaseFeedback($id, Request $request){
+    public function requestBaseFeedback($id, Request $request, $isAdmin = false){
         $data = [];
         $current_request = $this->model->with('user')->find($id);
         $with = ['roles'];
@@ -72,6 +72,9 @@ class RequestBaseController extends Controller
             $data['approver_role_id'] = $next_approver;
             $data['status_id'] = $request->status_id;
         }else {
+            if($isAdmin) {
+                $data['approver_role_id'] = 5;
+            }
             $data['status_id'] = $request->status_id;
         }
         $action = "Approved (ADMIN)";

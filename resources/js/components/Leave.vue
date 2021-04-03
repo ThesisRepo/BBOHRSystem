@@ -57,54 +57,173 @@
             dark
             flat
             v-if="(user_type.includes('hr mngr') || user_type.includes('general mngr'))"
-          >
-            <v-col class="mt-8" v-if="!user_type.includes('general mngr')">
-              <v-menu
+            >
+            <v-menu 
+              :close-on-content-click="false"
+              transition="scale-transition"
+              offset-y
+              min-width="290px"
+              >
+              <template v-slot:activator="{ on, attrs }">
+                <v-app-bar-nav-icon 
+                  class="d-md-none .d-lg-none .d-xl-none .d-lg-flex"
+                  v-bind="attrs"
+                  v-on="on"
+                  ></v-app-bar-nav-icon>
+              </template>
+              <v-list
+               class="d-md-none .d-lg-none .d-xl-none .d-lg-flex"
+              >
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title>
+                      <v-menu
+                        :close-on-content-click="false"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="290px"
+                        >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            v-model="dateRangeText"
+                            hide-details
+                            solo-inverted
+                            flat
+                            prepend-inner-icon="mdi-calendar"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker v-model="dates" range ></v-date-picker>
+                      </v-menu>
+                      <v-menu transition="slide-y-transition" bottom>
+                        <template v-slot:activator="{ on, attrs }" v-if="!user_type.includes('general mngr')">
+                          <v-btn class="purple" color="primary" style="width:100%" dark v-bind="attrs" v-on="on">Summary</v-btn>
+                        </template>
+                        <v-list>
+                          <v-list-item v-for="(item, i) in items" :key="i">
+                            <v-list-item-title
+                              @click="summary(item.title)"
+                              style="cursor: pointer;"
+                            >{{ item.title }}</v-list-item-title>
+                          </v-list-item>
+                        </v-list>
+                      </v-menu>
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>  
+                 <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title>
+                      <v-text-field
+                        v-model="search"
+                        clearable
+                        flat
+                        solo-inverted
+                        hide-details
+                        prepend-inner-icon="mdi-magnify"
+                        label="Search"
+                      ></v-text-field>
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>  
+              </v-list>
+            </v-menu>
+            <template v-if="$store.getters.hasSmallScreen">
+              <v-col class="mt-8" v-if="!user_type.includes('general mngr')">
+                <v-menu
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                  >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      class="input-name"
+                      v-model="dateRangeText"
+                      chips
+                      label="DATE"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker v-model="dates" range></v-date-picker>
+                </v-menu>
+              </v-col>
+              <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+              <!-- <v-btn color="light blue darken-2" @click="summary()" outlined>SUMMARY</v-btn> -->
+              <v-menu transition="slide-y-transition" bottom>
+                <template v-slot:activator="{ on, attrs }" v-if="!user_type.includes('general mngr')">
+                  <v-btn class="purple" color="primary" dark v-bind="attrs" v-on="on">Summary</v-btn>
+                </template>
+                <v-list>
+                  <v-list-item v-for="(item, i) in items" :key="i">
+                    <v-list-item-title
+                      @click="summary(item.title)"
+                      style="cursor: pointer;"
+                    >{{ item.title }}</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+              <!-- <v-divider class="mx-4" vertical v-if="!user_type.includes('general mngr')"></v-divider> -->
+              <v-spacer></v-spacer>
+              <v-text-field
+                v-model="search"
+                clearable
+                flat
+                solo-inverted
+                hide-details
+                prepend-inner-icon="mdi-magnify"
+                label="Search"
+              ></v-text-field>
+
+                <!-- <v-menu
                 :close-on-content-click="false"
                 transition="scale-transition"
                 offset-y
                 min-width="290px"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    class="input-name"
-                    v-model="dateRangeText"
-                    chips
-                    label="DATE"
-                    prepend-icon="mdi-calendar"
-                    readonly
-                    v-bind="attrs"
-                    v-on="on"
-                  ></v-text-field>
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="dateRangeText"
+                      hide-details
+                      solo-inverted
+                      flat
+                      prepend-inner-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker v-model="dates" range></v-date-picker>
+                </v-menu>
+                <v-menu transition="slide-y-transition" bottom>
+                <template v-slot:activator="{ on, attrs }" v-if="!user_type.includes('general mngr')">
+                  <v-btn class="purple" color="primary" dark v-bind="attrs" v-on="on">Summary</v-btn>
                 </template>
-                <v-date-picker v-model="dates" range></v-date-picker>
+                <v-list>
+                  <v-list-item v-for="(item, i) in items" :key="i">
+                    <v-list-item-title
+                      @click="summary(item.title)"
+                      style="cursor: pointer;"
+                    >{{ item.title }}</v-list-item-title>
+                  </v-list-item>
+                </v-list>
               </v-menu>
-            </v-col>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <!-- <v-btn color="light blue darken-2" @click="summary()" outlined>SUMMARY</v-btn> -->
-            <v-menu transition="slide-y-transition" bottom>
-              <template v-slot:activator="{ on, attrs }" v-if="!user_type.includes('general mngr')">
-                <v-btn class="purple" color="primary" dark v-bind="attrs" v-on="on">Summary</v-btn>
-              </template>
-              <v-list>
-                <v-list-item v-for="(item, i) in items" :key="i">
-                  <v-list-item-title
-                    @click="summary(item.title)"
-                    style="cursor: pointer;"
-                  >{{ item.title }}</v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-            <v-divider class="mx-4" vertical v-if="!user_type.includes('general mngr')"></v-divider>
-            <!-- <v-spacer></v-spacer> -->
-            <v-text-field
-              v-model="search"
-              clearable
-              flat
-              solo-inverted
-              hide-details
-              prepend-inner-icon="mdi-magnify"
-              label="Search"
-            ></v-text-field>
+              <v-text-field
+                v-model="search"
+                clearable
+                flat
+                solo-inverted
+                hide-details
+                prepend-inner-icon="mdi-magnify"
+                label="Search"
+              ></v-text-field> -->
+            </template>
+            
           </v-toolbar>
           <v-toolbar
             class="mb-2"
@@ -112,7 +231,7 @@
             dark
             flat
             v-if="((user_type.includes('prp emp') || user_type.includes('finance mngr')) && (!user_type.includes('hr mngr') && !user_type.includes('general mngr')))"
-          >
+            >
             <v-text-field
               v-model="search"
               clearable
@@ -468,6 +587,7 @@ import Loading from "./Loading.vue";
 import {formatDateStandard} from  "../helpers/date_format.js"
 export default {
   // "employees = false, requests = true, feedback = false"
+
   data: () => ({
     user_type: localStorage.getItem("user_type"),
     user_id: localStorage.getItem("id"),
@@ -562,25 +682,23 @@ export default {
     }
   },
   mounted() {
-    if (this.$store.getters.roleList.includes("general mngr")
-      ) {
-      this.retrievePendingPrp();
+    if(this.$store.getters.roleList.includes("admin")) {
+      this.headersFeed.push({ text: "ACTIONS", value: "actions", sortable: false });
+    }else{
       this.retrieve();
+    }
+    if (this.$store.getters.roleList.includes("general mngr")) {
+      this.retrievePendingPrp();
       this.getAllFeedback();
       this.checkUser();
     } else if ((this.user_type.includes("hr mngr") ||
         this.user_type.includes("prp emp")) &&
       !this.user_type.includes("finance mngr")) {
       this.retrievePendingPrp();
-      this.retrieve();
       this.getAllFeedback();
       this.checkUser();
     } else {
-      this.retrieve();
       this.checkUser();
-    }
-    if(this.$store.getters.roleList.includes("admin")) {
-      this.headersFeed.push({ text: "ACTIONS", value: "actions", sortable: false });
     }
   },
   methods: {
@@ -639,7 +757,8 @@ export default {
         this.$axios
         .get("admin/leave_request/pending")
         .then(response => {
-          this.prpPending = response.data;
+          this.prpPending = response.data
+          console.log('retrieve Pending', this.prpPending)
         }).catch(err => {
             this.$store.commit('changeMessage', 'Please Try Again')
             this.$store.commit('changeStatusMessage', true)
@@ -1100,6 +1219,7 @@ export default {
         this.$axios
           .post("admin/leave_request/feedback/" + this.id, parameter)
           .then(response => {
+            console.log('leave response', response)
             this.$store.commit('changeMessage', 'Approved Successfully')
             this.$store.commit('changeStatusMessage', true)
             this.retrievePendingPrp();
