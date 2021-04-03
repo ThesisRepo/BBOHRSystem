@@ -42,7 +42,6 @@ export default {
         }
     },
     created() {
-        // dfdf
         this.setUserType();
         this.$store.commit('hasSmallScreen', { screenSize: window.innerWidth});
         window.addEventListener("resize", this.isSmall);
