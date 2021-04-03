@@ -42,6 +42,7 @@ export default {
         }
     },
     created() {
+        // fd
         this.setUserType();
         this.$store.commit('hasSmallScreen', { screenSize: window.innerWidth});
         window.addEventListener("resize", this.isSmall);
