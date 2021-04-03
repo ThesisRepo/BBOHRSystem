@@ -93,7 +93,7 @@
     </v-data-table>
 
     <!-- Employee Budget -->
-    <v-data-table v-if="employees" :headers="(user_type.includes('finance mngr') || user_type.includes('general mngr')) ? headersEmp : headersEmployee" :items="budgetPending" :search="search" class="elevation-3">
+    <v-data-table v-if="employees" :headers="!user_type.includes('hr mngr') || user_type.includes('admin') ? headersEmp : headersEmployee" :items="budgetPending" :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-text-field
@@ -347,19 +347,36 @@ export default {
     },
   },
   mounted(){
-    if (this.user_type.includes("hr mngr") || this.user_type.includes("prp emp")) {
-      this.retrieveBudget();
+    if(this.$store.getters.roleList.includes('admin')) {
+      this.headersFeed.push({ text: "ACTIONS", value: "actions", sortable: false });
       this.getAllFeedback();
-      this.retrieve();
-      this.checkUser()
-    } else if(this.user_type.includes("general mngr")){
-      this.retrieveBudget();
-      this.getAllFeedback();
-      this.checkUser()
-    }else{
-      this.retrieve();
-      this.checkUser()
     }
+    if (
+      this.user_type.includes("hr mngr")
+    ) {
+      this.retrieveBudget(true);
+    } else if(this.user_type.includes("general mngr") || this.user_type.includes("finance mngr")){
+      this.retrieveBudget();
+      this.getAllFeedback();
+    }
+    if(!this.user_type.includes("general mngr") && !this.user_type.includes("admin") ) {
+      this.retrieve();
+    }
+    this.checkUser()
+
+    // if (this.user_type.includes("hr mngr") || this.user_type.includes("prp emp")) {
+    //   this.retrieveBudget();
+    //   this.getAllFeedback();
+    //   this.retrieve();
+    //   this.checkUser()
+    // } else if(this.user_type.includes("general mngr")){
+    //   this.retrieveBudget();
+    //   this.getAllFeedback();
+    //   this.checkUser()
+    // }else{
+    //   this.retrieve();
+    //   this.checkUser()
+    // }
   },
   methods: {
     disabledDates(date) {
@@ -378,8 +395,14 @@ export default {
             this.loading = false
           })
     },
-    retrieveBudget() {
-      let route =  "prp/budget_request/pending/" + this.user_id;
+    retrieveBudget(isHR = false) {
+      let route = '';
+      if(isHR){
+         route =  "prp/budget_request/pending";
+      }else {
+         route =  "prp/budget_request/pending/" + this.user_id;
+      }
+      
       if(this.$store.getters.roleList.includes("admin")) {
       route =  "admin/budget_request/pending";
       }

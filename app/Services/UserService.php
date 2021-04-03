@@ -48,9 +48,10 @@ class UserService
     }
 
     public function getApproverId($request_type) {
-        if($request_type != 'Petty Cash Request' && $request_type != 'Budget Request') {
+        if($request_type != 'petty_cash_request' && $request_type != 'budget_request') {
             $prp_assigned_id = Auth::user()->prp_assigned;    
         } else {
+
             $prp_assigned_id = Auth::user()->finance_mngr_assigned;    
         }
         return $prp_assigned_id;
