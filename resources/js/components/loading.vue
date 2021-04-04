@@ -1,6 +1,11 @@
 <template>
     <div class="loading">Loading&#8230;</div>
 </template>
+<script>
+export default {
+  name: 'Loading'
+}
+</script>
 <style scoped>
 .loading {
   position: fixed;
