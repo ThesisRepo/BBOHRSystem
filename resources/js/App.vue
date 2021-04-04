@@ -104,7 +104,17 @@ export default {
             this.$store.commit('notificationAdd', {data:notif});       
             this.browserPopUp(notif);
           })
-
+        if(this.$store.getters.roleList.includes("admin")) {
+          console.log('ad');
+          Echo.private('*')
+          .listen('NewRequest', notif => {
+            this.$store.commit('notificationCountAdd');
+            this.$store.commit('notificationAdd', {data:notif});       
+            this.browserPopUp(notif);
+          })
+        }
+        
+        
         Echo.channel('newcalendarevent')
           .listen('NewCalendarEvent', notif => {
             this.$store.commit('notificationCountAdd');
