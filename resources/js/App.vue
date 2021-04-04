@@ -96,6 +96,7 @@ export default {
             this.user.user_information ? localStorage.setItem('company_id', this.user.user_information.company_number) : ''
         },
         listenForChanges() {
+          console.log(Echo);
         Echo.private('newrequest.' + this.user.id)
           .listen('NewRequest', notif => {
             this.$store.commit('notificationCountAdd');
