@@ -16,7 +16,9 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('newrequest.{userId}', function ($user, $userId) {
-    return $user->id === (int) $userId;
+    return $user->id === (int) $userId || $user->id == resolve('App\Models\User')->whereHas('roles', function($q){
+      $q->whereIn('role_id', [6]);
+    })->first()->id;
   });
 
 Broadcast::channel('newcalendarevent', function () {
