@@ -62,22 +62,32 @@ class NewRequest implements ShouldBroadcast
         }
         // $this->message  = "{$username} {$action}" "a\an {$this->request_type}";
         $this->message  = "{$username} {$action}" . (in_array($this->request_type[0], ['A', 'E', 'I', 'O', 'U'] ) ?   " an " :  " a ") . $this->request_type;
-        $admin_id = \DB::table('users')->where('email','admin@bbo.com.ph')->first();
+        $admin_id = resolve('App\Models\User')->whereHas('roles', function($q){
+            $q->whereIn('role_id', [6]);
+          })->first()->id;
         $datum = [[
             'user_id' => $this->id,
             'request_type' => $this->request_type,
             'message' => $this->message
-        ],[
-            'user_id' => $admin_id->id,
-            'request_type' => $this->request_type,
-            'message' => $this->message
         ]];
+        if($admin_id) {
+            array_push( $temp, [
+                'user_id' => $admin_id,
+                'request_type' => $this->request_type,
+                'message' => $this->message
+            ]);
+        }
         Notification::insert($datum);
     }
     public function broadcastOn() {
-        $admin_id = \DB::table('users')->where('email','admin@bbo.com.ph')->first()->id;
-
-        return [new PrivateChannel('newrequest.' . $this->id), new PrivateChannel('newrequest.' . $admin_id->id)];
+        $admin_id =  resolve('App\Models\User')->whereHas('roles', function($q){
+            $q->whereIn('role_id', [6]);
+          })->first()->id;
+          $temp = [new PrivateChannel('newrequest.' . $this->id)];
+          if($admin_id) {
+              array_push( $temp, new PrivateChannel('newrequest.' . $admin_id));
+          }
+        return $temp;
         
     }
 }
