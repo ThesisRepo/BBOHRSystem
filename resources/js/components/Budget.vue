@@ -527,6 +527,7 @@ export default {
         this.approve(item)
       }else{
         this.disapprove()
+        // wr
       }
     },
     disapproveModal(item) {
