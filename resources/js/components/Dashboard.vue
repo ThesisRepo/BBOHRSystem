@@ -239,7 +239,7 @@ import DashBoardtable from "./Dashboard_table";
 import CalendarAdd from "./modals/addCalendar.vue";
 import AddEvent from "./modals/add_event_title.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
-import Loading from "./Loading.vue";
+import Loading from "Loading.vue";
 import moment from "moment";
 export default {
   components: {
