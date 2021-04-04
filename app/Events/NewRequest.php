@@ -71,7 +71,7 @@ class NewRequest implements ShouldBroadcast
             'message' => $this->message
         ]];
         if($admin_id) {
-            array_push( $temp, [
+            array_push( $datum, [
                 'user_id' => $admin_id,
                 'request_type' => $this->request_type,
                 'message' => $this->message
