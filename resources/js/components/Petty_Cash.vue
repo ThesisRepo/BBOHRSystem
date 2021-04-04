@@ -70,7 +70,6 @@
             </v-list>
           </v-menu>
           <v-divider class="mx-4" vertical v-if="!user_type.includes('general mngr')"></v-divider>
-          <!-- <v-spacer></v-spacer> -->
           <v-text-field
             v-model="search"
             clearable

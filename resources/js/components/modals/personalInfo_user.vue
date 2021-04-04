@@ -1349,6 +1349,7 @@ export default {
                 birthday: this.birthday,
                 company_number: this.company_number
             };
+            console.log('[params here]', params)
             this.$axios
             .post("user_info/admin/" + this.user_id, params)
             .then(response => {

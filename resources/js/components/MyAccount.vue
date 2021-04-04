@@ -364,11 +364,12 @@ export default {
         .then(response => {
           this.prp_assign = localStorage.getItem("prp_assign");
           this.user_finance = localStorage.getItem("user_finance");
-          console.log('hi', response.data);
           if(response.data.user_information !== null){
             this.datas = response.data.user_information;
             this.datum = response.data
-            this.company_position = response.data.user_information.company_positions[0].position_name;
+            if(this.company_position = response.data.user_information.company_positions[0]) {
+              this.company_position = response.data.user_information.company_positions[0].position_name;
+            }
             if(response.data.user_information.shift_time ) {
               this.shift = response.data.user_information.shift_time.shift_time_name;
             }
@@ -377,6 +378,7 @@ export default {
             }
             this.date_hired = response.data.user_information.date_hired;
             this.address = response.data.user_information.address;
+            console.log('df', this.address );
             this.status = response.data.user_information.civil_status;
             this.company_status = response.data.user_information.company_status;
             this.birthdate = response.data.user_information.birthday;

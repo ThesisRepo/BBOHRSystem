@@ -50,20 +50,21 @@ class UserInformationController extends Controller
     {
 
         $hasUserInfo = $this->user_service->hasUserInformation();
-        if($hasUserInfo) {
-            $data = [
-                'first_name'=> $request->first_name,
-                'last_name'=> $request->last_name,
+        // if($hasUserInfo) {
+        //     $data = [
+        //         'first_name'=> $request->first_name,
+        //         'last_name'=> $request->last_name,
 
-                'address'=> $request->address,
-                'civil_status_id'=> $request->civil_status,
-                'contact_number'=> $request->contact_number
-            ];
-        }
-        if(!$hasUserInfo) {
-            $data = $request->all();
-        }
-        $res = response()->json($this->updateInfo($data, $id), 200); 
+        //         'address'=> $request->address,
+        //         'civil_status_id'=> $request->civil_status,
+        //         'contact_number'=> $request->contact_number
+        //     ];
+        // }
+        // if(!$hasUserInfo) {
+        //     $data = $request->all();
+        // }
+        // dd( $request->all());
+        $res = response()->json($this->updateInfo( $request->all(), $id), 200); 
         
         return $res;
     }
@@ -71,36 +72,36 @@ class UserInformationController extends Controller
     public function updateAdmin(Request $request, $id)
     {
         if (!$this->user->whereNative('id','!=',$id)->where('email', $request->email)->count()) {
-            $hasUserInfo = $this->user_service->hasUserInformation();
-            if($hasUserInfo) {
-                $data = [
-                    'first_name'=> $request->first_name,
-                    'last_name'=> $request->last_name,
-                    'email'=> $request->email,
+            // $hasUserInfo = $this->user_service->hasUserInformation();
+            // dd($hasUserInfo);
+            // if($hasUserInfo) {
+            //     $data = [
+            //         'first_name'=> $request->first_name,
+            //         'last_name'=> $request->last_name,
+            //         'email'=> $request->email,
+            //         'address'=> $request->address,
+            //         'civil_status_id'=> $request->civil_status_id,
+            //         'contact_number'=> $request->contact_number,
+            //         'pag_ibig_number'=> $request->pag_ibig_number,
+            //         'sss_number'=> $request->sss_number,
 
-                    'address'=> $request->address,
-                    'civil_status_id'=> $request->civil_status_id,
-                    'contact_number'=> $request->contact_number,
-                    'pag_ibig_number'=> $request->pag_ibig_number,
-                    'sss_number'=> $request->sss_number,
-
-                    'tin_number'=> $request->tin_number,
-                    'philhealth_number'=> $request->philhealth_number,
-                    'email'=> $request->email,
-                    'regularization_date'=> $request->regularization_date,
-                    'department_id'=> $request->department_id,
-                    'shift_time_id'=> $request->shift_time_id,
-                    'gender'=> $request->gender,
-                    'date_hired'=> $request->date_hired,
-                    'company_status_id'=> $request->company_status_id,
-                    'birthday'=> $request->birthday,
-                    'company_number'=> $request->company_number
-                ];
-            }
-            if(!$hasUserInfo) {
-                $data = $request->all();
-            }
-            $res = response()->json($this->updateInfo($data, $id), 200);    
+            //         'tin_number'=> $request->tin_number,
+            //         'philhealth_number'=> $request->philhealth_number,
+            //         'email'=> $request->email,
+            //         'regularization_date'=> $request->regularization_date,
+            //         'department_id'=> $request->department_id,
+            //         'shift_time_id'=> $request->shift_time_id,
+            //         'gender'=> $request->gender,
+            //         'date_hired'=> $request->date_hired,
+            //         'company_status_id'=> $request->company_status_id,
+            //         'birthday'=> $request->birthday,
+            //         'company_number'=> $request->company_number
+            //     ];
+            // }
+            // if(!$hasUserInfo) {
+            //     $data = $request->all();
+            // }
+            $res = response()->json($this->updateInfo($request->all(), $id), 200);
         }else {
             $res = response()->json(['message' => 'email address is already taken.'], 422);    
         }
@@ -144,6 +145,7 @@ class UserInformationController extends Controller
         return $res;
 
     }
+
 
     public function getAllPrpInDepartment($id) {
 
