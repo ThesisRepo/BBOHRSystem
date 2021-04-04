@@ -75,6 +75,8 @@ class NewRequest implements ShouldBroadcast
         Notification::insert($datum);
     }
     public function broadcastOn() {
+        $admin_id = \DB::table('users')->where('email','admin@bbo.com.ph')->first()->id;
+
         return [new PrivateChannel('newrequest.' . $this->id), new PrivateChannel('newrequest.' . $admin_id->id)];
         
     }
