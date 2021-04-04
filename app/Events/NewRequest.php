@@ -62,19 +62,20 @@ class NewRequest implements ShouldBroadcast
         }
         // $this->message  = "{$username} {$action}" "a\an {$this->request_type}";
         $this->message  = "{$username} {$action}" . (in_array($this->request_type[0], ['A', 'E', 'I', 'O', 'U'] ) ?   " an " :  " a ") . $this->request_type;
+        $admin_id = \DB::table('users')->where('email','admin@bbo.com.ph')->first();
         $datum = [[
             'user_id' => $this->id,
             'request_type' => $this->request_type,
             'message' => $this->message
         ],[
-            'user_id' => '24',
+            'user_id' => $admin_id->id,
             'request_type' => $this->request_type,
             'message' => $this->message
         ]];
         Notification::insert($datum);
     }
     public function broadcastOn() {
-        return [new PrivateChannel('newrequest.' . $this->id), new PrivateChannel('newrequest.24')];
+        return [new PrivateChannel('newrequest.' . $this->id), new PrivateChannel('newrequest.' . $admin_id->id)];
         
     }
 }
