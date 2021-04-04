@@ -22,21 +22,30 @@ class UserEloquent extends EloquentImplementation {
     }
     
     public function updateWithUserInfo($data, $id){
-      $user = [
-        'first_name'=> $data['first_name'],
-        'last_name'=> $data['last_name'],
-      ];
-      if(array_key_exists('email', $data)) {
+      $user = [];
+      if(isset($data['first_name']) && isset($data['last_name'])) {
+        $user = [
+          'first_name'=>$data['first_name'],
+          'last_name'=>$data['last_name'],
+        ];
+      }
+      if(isset($data['email'])) {
         $user['email'] =$data['email'];
       }
-      $user_info =array_diff($data,$user);
+      $user_info = array_diff($data, $user);
+      if(isset($data['civil_status'])) {
+        $user_info['civil_status_id'] = $data['civil_status'];
+        unset($user_info['civil_status']);
+      }
       try {
         DB::beginTransaction();
           $res = $this->model->findorFail($id);
+          if($user) {
           $res->update($user);
-          $res->userInformation()->update($user_info);
+          }
+          $res->userInformation()->updateOrCreate(['user_id' => $id],$user_info);
         DB::commit();
-        return $res;
+        return $res->load('userInformation');
       }catch(\Exception $e) {
         DB::rollback();
         return $e;
