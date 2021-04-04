@@ -23,7 +23,7 @@
 <script>
 import Vuetify from "vuetify";
 import sidebar from "./modules/sidebar.vue";
-import Loading from "./components/Loading.vue";
+import Loading from "./components/loading.vue";
 import { mapGetters } from "vuex";
 import succesMessage from "./components/modals/confirmation/success.vue"
 

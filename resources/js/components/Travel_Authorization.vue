@@ -487,7 +487,7 @@ import Confirmation from "./modals/confirmation/confirm.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
 import Remind from "./modals/confirmation/Remind.vue";
 import Reminder from "./modals/confirmation/reminder.vue";
-import loading from "./Loading.vue";
+import loading from "./loading.vue";
 import SummaryTemplate from "./modals/exports/travel_export.vue";
 export default {
   data: () => ({

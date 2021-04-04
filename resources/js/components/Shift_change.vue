@@ -416,7 +416,7 @@ import Confirmation from "./modals/confirmation/confirm.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
 import SummaryTemplate from "./modals/exports/shift_export.vue";
 import Reminder from "./modals/confirmation/reminder.vue";
-import Loading from "./Loading.vue";
+import Loading from "./loading.vue";
 import {isTwoFourHrLater, formatDateStandardDateOnly} from  "../helpers/date_format.js"
 export default {
   data: () => ({

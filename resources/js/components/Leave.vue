@@ -583,7 +583,7 @@ import Confirmation from "./modals/confirmation/confirm.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
 import Reminder from "./modals/confirmation/reminder.vue";
 import SummaryTemplate from "./modals/exports/leave_export.vue";
-import Loading from "./Loading.vue";
+import Loading from "./loading.vue";
 import {formatDateStandard} from  "../helpers/date_format.js"
 export default {
   // "employees = false, requests = true, feedback = false"
