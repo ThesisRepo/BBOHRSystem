@@ -105,7 +105,7 @@ export default {
                     rows: [
                         { cells: [{ colSpan: 5, value: "Blue Bee One Management System", style: { fontColor: '#0000FF', fontSize: 20, hAlign: 'Center', bold: true, } }] },
                         { cells: [{ colSpan: 5, value: "Unit 1, 8F Mabuhay Tower IT Park", style: { fontColor: '#0000FF', fontSize: 15, hAlign: 'Center', bold: true, } }] },
-                        { cells: [{ colSpan: 5, value: "Cebu City, 6000 Cebu", style: { fontColor: '#0000FF', fontSize: 15, hAlign: 'Center', bold: true, } }] },
+                        { cells: [{ colSpan: 5, value: "Cebu City, 6000 Cebu, Philippines", style: { fontColor: '#0000FF', fontSize: 15, hAlign: 'Center', bold: true, } }] },
                         { cells: [{ colSpan: 5, value: "(032) 328 2321", style: { fontColor: '#0000FF', fontSize: 15, hAlign: 'Center', bold: true, } }] }
                     ]
                 }
