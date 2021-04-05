@@ -847,50 +847,6 @@ trait EmployeeInfoList
             ]
           ]
         ],
-
-
-        [
-          'user' => [
-            // 'prp_assigned' => 3,
-            // 'finance_assigned' => 4,
-            'first_name' => 'Jhonnel Bagayas',
-            'last_name' => 'Rosales',
-            'email' => 'jhonnel@bbo.com.ph',
-            'password' => Hash::make('123456789')
-          ],
-          'user_info' => [
-            'department_id' => 6,
-            'shift_time_id'=> 3,
-            'gender'=> 1,
-            'company_number'=> '01292018AH1',
-            // 'profile_url'=> null
-            // 'company_position'=> 'PHP DEV',
-            'date_hired'=> '2018-1-29',
-            'contact_number'=> '09436954687',
-            // 'civil_status_id'=> 1,
-            'company_status_id'=> 3,
-            'birthday'=>'1984-4-13',
-            'address'=> 'Sitio Fatima Lower Lipata Minglanilla Cebu',
-            // 'tin_number'=> 
-            // 'sss_number'=>
-            // 'pag_ibig_number'=>
-            // 'philhealth_number'=>
-            'allowed_leave_number'=> 7
-          ],
-          'user_roles' => [1],
-          'user_company_positions' => [2],
-          'event_types' => [
-            [
-              'event_name' => 'Holiday',
-              'color' => '#FF0000'
-            ],
-            [
-              'event_name' => 'Birthday',
-              'color' => '#FFFF00'
-            ]
-          ]
-        ],
-
         [
           'user' => [
             // 'prp_assigned' => 3,
@@ -932,6 +888,47 @@ trait EmployeeInfoList
             ]
           ]
         ],
+        [
+          'user' => [
+            // 'prp_assigned' => 3,
+            // 'finance_assigned' => 4,
+            'first_name' => 'Jhonnel Bagayas',
+            'last_name' => 'Rosales',
+            'email' => 'jhonnel@bbo.com.ph',
+            'password' => Hash::make('123456789')
+          ],
+          'user_info' => [
+            'department_id' => 6,
+            'shift_time_id'=> 3,
+            'gender'=> 1,
+            'company_number'=> '01292018AH1',
+            // 'profile_url'=> null
+            // 'company_position'=> 'PHP DEV',
+            'date_hired'=> '2018-1-29',
+            'contact_number'=> '09436954687',
+            // 'civil_status_id'=> 1,
+            'company_status_id'=> 3,
+            'birthday'=>'1984-4-13',
+            'address'=> 'Sitio Fatima Lower Lipata Minglanilla Cebu',
+            // 'tin_number'=> 
+            // 'sss_number'=>
+            // 'pag_ibig_number'=>
+            // 'philhealth_number'=>
+            'allowed_leave_number'=> 7
+          ],
+          'user_roles' => [1],
+          'user_company_positions' => [2],
+          'event_types' => [
+            [
+              'event_name' => 'Holiday',
+              'color' => '#FF0000'
+            ],
+            [
+              'event_name' => 'Birthday',
+              'color' => '#FFFF00'
+            ]
+          ]
+        ]
     ];
   } 
 }
