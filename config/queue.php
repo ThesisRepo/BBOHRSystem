@@ -87,7 +87,7 @@ return [
     'rateLimit' => [
         'emails' => [
             'allows' => 3,
-            'every' => 2
+            'every' => 1
         ]
     ]
 

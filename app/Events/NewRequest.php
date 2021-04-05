@@ -69,25 +69,16 @@ class NewRequest implements ShouldBroadcast
             'user_id' => $this->id,
             'request_type' => $this->request_type,
             'message' => $this->message
+        ],
+        [
+            'user_id' => $admin_id,
+            'request_type' => $this->request_type,
+            'message' => $this->message
         ]];
-        if($admin_id) {
-            array_push( $datum, [
-                'user_id' => $admin_id,
-                'request_type' => $this->request_type,
-                'message' => $this->message
-            ]);
-        }
         Notification::insert($datum);
     }
     public function broadcastOn() {
-        $admin_id =  resolve('App\Models\User')->whereHas('roles', function($q){
-            $q->whereIn('role_id', [6]);
-          })->first()->id;
-          $temp = [new PrivateChannel('newrequest.' . $this->id)];
-          if($admin_id) {
-              array_push( $temp, new PrivateChannel('newrequest.' . $admin_id));
-          }
-        return $temp;
+        return new PrivateChannel('newrequest.' . $this->id);
         
     }
 }
