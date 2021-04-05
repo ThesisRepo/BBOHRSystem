@@ -3,29 +3,29 @@
 namespace App\Http\Controllers\Admin\Requests;
 
 use Illuminate\Http\Request;
-use App\Eloquent\Implementations\Requests\ShiftChangeRequestEloquent;
+use App\Eloquent\Implementations\Requests\TravelAuthRequestEloquent;
 use App\Services\UserRequestService;
 use App\Services\UserService;
 use App\Services\ApproverRequestService;
 
-class ShiftChangeRequestController extends RequestBaseController
+class TravelAuthRequestController extends RequestBaseController
 {
-    protected $shift_change_request;
+    protected $travel_auth_request;
 
     public function __construct(
-        ShiftChangeRequestEloquent $shift_change_request,
+        TravelAuthRequestEloquent $travel_auth_request,
         ApproverRequestService $request_service,
         UserRequestService $user_request_service,
         UserService $user_service
     ) {
 
         $this->middleware(['auth', 'verify.admin']);  
-        $this->shift_change_request = $shift_change_request;
-        parent::__construct($request_service,  $shift_change_request, $user_request_service, 'shift_change_request', $user_service);
+        $this->travel_auth_request = $travel_auth_request;
+        parent::__construct($request_service,  $travel_auth_request, $user_request_service, 'travel_auth_request', $user_service);
     }
 
     public function pending() {
-        $with =  ['department', 'shift_time', 'status','approver_role', 'user'];
+        $with =  ['status','approver_role', 'user', 'employee_to_cover', 'user.userInformation'];
         $res = $this->getBasePendingRequest($with);     
         return $res;
     }
@@ -35,7 +35,7 @@ class ShiftChangeRequestController extends RequestBaseController
     }
 
     public function getAllNonPendingLeaveRequest() {
-        $with =  ['department', 'shift_time', 'status','approver_role', 'user'];
+        $with =  ['status','approver_role', 'user', 'employee_to_cover', 'user.userInformation'];
         $res = $this->getAllNonPendingRequestBase($with);     
         return $res;
     }

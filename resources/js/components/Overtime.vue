@@ -1,7 +1,12 @@
 <template>
-  <div>
+  <v-container fluid>
+    <v-toolbar-title
+      class="py-4"
+      >
+      OVERTIME REQUESTS
+    </v-toolbar-title>
     <v-toolbar flat>
-      <template v-slot:extension>
+      <!-- <template v-slot:extension> -->
         <v-tabs
           dark
           background-color="primary"
@@ -13,7 +18,7 @@
           <v-tab @click="requests = false, employees = true, feedback = false">Employees Requests</v-tab>
           <v-tab @click="requests = false, employees = false, feedback = true">History</v-tab>
         </v-tabs>
-      </template>
+      <!-- </template> -->
     </v-toolbar>
 
     <!-- Feedback -->
@@ -96,6 +101,16 @@
       <template v-slot:item.reason="{ item }">{{convertData(item)}}</template>
       <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
+      <template 
+        v-if="user_type.includes('admin')"
+        v-slot:item.actions="{ item }">
+        <v-icon medium 
+        v-if="item.status_id != 2"
+        class="mr-2" @click="approveModal(item)" style="color:green">mdi-check-decagram</v-icon>
+        <v-icon 
+        v-else
+        medium @click="disapproveModal(item)" style="color:red">mdi-close-circle</v-icon>
+      </template>
     </v-data-table>
 
     <!-- Employee Overtime -->
@@ -125,7 +140,9 @@
     <Confirmation
       ref="confirms"
       :title="approveThis === 'approve' || 'disapproved' ? 'Confirmation' : ''"
-      :message="approveThis === 'approve' ? 'Are you sure you want to approve this request?' : 'Are you sure you want to reject this request?'"
+      :message="!user_type.includes('admin') ? 
+        approveThis === 'approve' ? 'Are you sure you want to approve this request?' : approveThis === 'disapproved' ? 'Are you sure you want to reject this request?' : '' :
+        approveThis === 'approve' ? 'Are you sure you want to OVERRIDE approval of this request?' : approveThis === 'disapproved' ? 'Are you sure you want to OVERRIDE rejection of this request?' : '' "
       @onConfirm="confirm($event)"
     ></Confirmation>
 
@@ -224,11 +241,11 @@
 
       <v-toolbar class="mb-2  hidden-sm-and-down" color="blue darken-1" dark flat>
       
-        <v-toolbar-title v-if="!user_type.includes('general mngr')"
+        <!-- <v-toolbar-title v-if="!user_type.includes('general mngr')"
           >
           OVERTIME REQUEST
         </v-toolbar-title>
-        <v-spacer></v-spacer>
+        <v-spacer></v-spacer> -->
         <v-text-field
           v-model="search"
           clearable
@@ -313,15 +330,20 @@
     <SummaryTemplate
     ref="summary"
     ></SummaryTemplate>
-  </div>
+  </v-container>
 </template>
+<style>
+.input-name {
+  font-size: 12px;
+}
+</style>
 <script>
 import createOvertime from "./modals/create_overtime.vue";
 import Confirmation from "./modals/confirmation/confirm.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
 import SummaryTemplate from "./modals/exports/overtime_export.vue";
 import Reminder from "./modals/confirmation/reminder.vue";
-import Loading from "./Loading.vue";
+import Loading from "./loading.vue";
 
 export default {
   data: () => ({
@@ -403,17 +425,20 @@ export default {
     },
   },
   mounted(){
+    if(this.$store.getters.roleList.includes("admin")) {
+      this.headersFeed.push({ text: "ACTIONS", value: "actions", sortable: false });
+    }else{
+      this.retrieve();
+    }
     if ((this.user_type.includes("hr mngr") || this.user_type.includes("prp emp")) && !(this.user_type.includes("finance mngr"))) {
       this.retrieveOvertime();
       this.getAllFeedback();
-      this.retrieve();
       this.checkUser()
     } else if(this.user_type.includes("general mngr")) {
       this.retrieveOvertime();
       this.getAllFeedback();
       this.checkUser()
     }else{
-      this.retrieve();
       this.checkUser()
     }
   },
@@ -436,9 +461,9 @@ export default {
         this.overtime = response.data
         this.loading = false;
       }).catch(err => {
-            this.$store.commit('changeMessage', 'Please Try Again')
-            this.$store.commit('changeStatusMessage', true)
-          })
+        this.$store.commit('changeMessage', 'Please Try Again')
+        this.$store.commit('changeStatusMessage', true)
+      })
     },
     checkUser(){
       this.$axios
@@ -464,17 +489,18 @@ export default {
       }
     },
     retrieveOvertime() {
+      let route =  "prp/overtime_request/pending/" + this.user_id
+      if(this.$store.getters.roleList.includes("admin")) {
+      route =  "admin/overtime_request/pending";
+      }
       this.$axios
-        .get(
-          "prp/overtime_request/pending/" +
-            this.user_id
-        )
+        .get(route)
         .then(response => {
           this.overtimePending = response.data;
         }).catch(err => {
-            this.$store.commit('changeMessage', 'Please Try Again')
-            this.$store.commit('changeStatusMessage', true)
-          });
+          this.$store.commit('changeMessage', 'Please Try Again')
+          this.$store.commit('changeStatusMessage', true)
+        });
     },
     convertData(item) {
       return item.reason.toUpperCase();
@@ -551,16 +577,17 @@ export default {
       this.$refs.confirms.show(item)
     },
     approve(item) {
+      var permission = "prp";
+      if(this.$store.getters.roleList.includes("admin")) {
+        permission = "admin";
+      }
+      let route = permission + "/overtime_request/feedback/" + this.id;
       if(item.id.approver_role_id === 5){
-        let parameter = {
-        user_id: this.user_id,
-        status_id: 2
-      };
-      this.$axios
-        .post(
-          "prp/overtime_request/feedback/" + this.id,
-          parameter
-        )
+          let parameter = {
+          user_id: this.user_id,
+          status_id: 2
+        };     
+      this.$axios.post(route, parameter)
         .then(response => {
           this.$store.commit('changeMessage', 'Approved Successfully')
           this.$store.commit('changeStatusMessage', true)
@@ -576,10 +603,7 @@ export default {
           status_id: 1
         };
         this.$axios
-          .post(
-            "prp/overtime_request/feedback/" + this.id,
-            parameter
-          )
+          .post( route, parameter)
           .then(response => {
             this.$store.commit('changeMessage', 'Approved Successfully')
             this.$store.commit('changeStatusMessage', true)
@@ -592,15 +616,17 @@ export default {
       }
     },
     disapprove() {
+      var permission = "prp";
+      if(this.$store.getters.roleList.includes("admin")) {
+        permission = "admin";
+      }
+      let route = permission + "/overtime_request/feedback/" + this.id;
       let parameter = {
         user_id: this.user_id,
         status_id: 3
       };
       this.$axios
-        .post(
-          "prp/overtime_request/feedback/" + this.id,
-          parameter
-        )
+        .post(route, parameter)
         .then(res => {
           this.$store.commit('changeMessage', 'Disapproved Successfully')
           this.$store.commit('changeStatusMessage', true)
@@ -612,17 +638,19 @@ export default {
           });
     },
     getAllFeedback() {
+      let route = "prp/overtime_request/feedbacked/" + this.user_id;
+      if(this.$store.getters.roleList.includes('admin')) {
+        route = "admin/overtime_request";
+      }
       this.$axios
-        .get(
-          "prp/overtime_request/feedbacked/" +
-            this.user_id
-        )
+        .get(route)
         .then(response => {
-          this.feedbacks = response.data.feedbacked_overtime_requests;
-        }).catch(err => {
-            this.$store.commit('changeMessage', 'Please Try Again')
-            this.$store.commit('changeStatusMessage', true)
-          });
+          if(!this.$store.getters.roleList.includes('admin')) {
+            this.feedbacks = response.data.feedbacked_overtime_requests;
+          }else {
+            this.feedbacks = response.data;
+          }
+        });
     },
     getColor(status) {
       if (status === 'pending') return '#ffa500'

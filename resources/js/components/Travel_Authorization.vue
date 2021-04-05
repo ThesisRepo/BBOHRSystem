@@ -1,7 +1,12 @@
 <template>
-  <div>
+  <v-container fluid>
+    <v-toolbar-title
+      class="py-4"
+      >
+      TRAVEL AUTHORIZATION REQUESTS
+    </v-toolbar-title>
     <v-toolbar flat>
-      <template v-slot:extension>
+      <!-- <template v-slot:extension> -->
         <v-tabs
           dark
           background-color="primary"
@@ -16,7 +21,7 @@
           <v-tab @click="requests = false, employees = true, feedback = false">Employees Requests</v-tab>
           <v-tab @click="requests = false, employees = false, feedback = true">History</v-tab>
         </v-tabs>
-      </template>
+      <!-- </template> -->
     </v-toolbar>
     <!-- Feedback -->
     <v-data-table
@@ -179,7 +184,9 @@
     <Confirmation
       ref="confirms"
       :title="approveThis === 'approve' || 'disapproved' ? 'Confirmation' : ''"
-      :message="approveThis === 'approve' ? 'Are you sure you want to approve this request?' : approveThis === 'disapproved' ? 'Are you sure you want to reject this request?' : approveThis === 'image' ? 'Are you sure you want to update this image?' : ''"
+      :message="!user_type.includes('admin') ? 
+        approveThis === 'approve' ? 'Are you sure you want to approve this request?' : approveThis === 'disapproved' ? 'Are you sure you want to reject this request?' : '' :
+        approveThis === 'approve' ? 'Are you sure you want to OVERRIDE approval of this request?' : approveThis === 'disapproved' ? 'Are you sure you want to OVERRIDE rejection of this request?' : '' "
       @onConfirm="confirm($event)"
     ></Confirmation>
 
@@ -373,7 +380,7 @@
     >
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
-          <v-toolbar-title class="col pa-3 py-4 white--text" style="font-size: 16px">TRAVEL REQUEST</v-toolbar-title>
+          <!-- <v-toolbar-title class="col pa-3 py-4 white--text" style="font-size: 16px">TRAVEL REQUEST</v-toolbar-title> -->
           <v-text-field
             v-model="search"
             clearable
@@ -470,7 +477,7 @@
     </v-data-table>
     <SummaryTemplate ref="summary"></SummaryTemplate>
     <loading v-if="showloading"></loading>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -480,7 +487,7 @@ import Confirmation from "./modals/confirmation/confirm.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
 import Remind from "./modals/confirmation/Remind.vue";
 import Reminder from "./modals/confirmation/reminder.vue";
-import loading from "./Loading.vue";
+import loading from "./loading.vue";
 import SummaryTemplate from "./modals/exports/travel_export.vue";
 export default {
   data: () => ({
@@ -815,19 +822,20 @@ export default {
       }
     },
     retrieveTravel() {
-      this.showloading = true;
+      let route =  "prp/travel_auth_request/pending/" + this.user_id;
+      if(this.$store.getters.roleList.includes("admin")) {
+      route =  "admin/travel_auth_request/pending";
+      }
       this.$axios
-        .get("prp/travel_auth_request/pending/" + this.user_id)
+        .get(route)
         .then(response => {
-          this.showloading = false;
           this.travelPending = response.data;
-          console.log('travelPending', this.travelPending)
         }).catch(err => {
             this.$store.commit('changeMessage', 'Please Try Again')
             this.$store.commit('changeStatusMessage', true)
-            this.showloading = true;
-          })
+          });
     },
+
     editItem(item) {
       this.editedItem.id = item.id;
       this.editedIndex = this.travel.indexOf(item);
@@ -945,34 +953,34 @@ export default {
       this.$refs.confirms.show(item);
     },
     approve(item) {
-      if (item.id.approver_role_id === 5) {
-        this.showloading = true;
-        let parameter = {
+      var permission = "prp";
+      if(this.$store.getters.roleList.includes("admin")) {
+        permission = "admin";
+      }
+      let route = permission + "/travel_auth_request/feedback/" + this.id;
+      if(item.id.approver_role_id === 5){
+          let parameter = {
           user_id: this.user_id,
           status_id: 2
-        };
-        this.$axios
-          .post("prp/travel_auth_request/feedback/" + this.id, parameter)
-          .then(response => {
-            this.showloading = false;
-            this.$store.commit('changeMessage', 'Approved Successfully')
-            this.$store.commit('changeStatusMessage', true)
-            this.retrieveTravel();
-            this.getAllFeedback();
-          }).catch(err => {
+        };     
+      this.$axios.post(route, parameter)
+        .then(response => {
+          this.$store.commit('changeMessage', 'Approved Successfully')
+          this.$store.commit('changeStatusMessage', true)
+          this.retrieveTravel();
+          this.getAllFeedback();
+        }).catch(err => {
             this.$store.commit('changeMessage', 'Please Try Again')
             this.$store.commit('changeStatusMessage', true)
           });
-      } else {
-        this.showloading = true;
+      }else{
         let parameter = {
           user_id: this.user_id,
           status_id: 1
         };
         this.$axios
-          .post("prp/travel_auth_request/feedback/" + this.id, parameter)
+          .post( route, parameter)
           .then(response => {
-            this.showloading = false;
             this.$store.commit('changeMessage', 'Approved Successfully')
             this.$store.commit('changeStatusMessage', true)
             this.retrieveTravel();
@@ -983,16 +991,20 @@ export default {
           });
       }
     },
+    
     disapprove() {
-      this.showloading = true;
+      var permission = "prp";
+      if(this.$store.getters.roleList.includes("admin")) {
+        permission = "admin";
+      }
+      let route = permission + "/travel_auth_request/feedback/" + this.id;
       let parameter = {
         user_id: this.user_id,
         status_id: 3
       };
       this.$axios
-        .post("prp/travel_auth_request/feedback/" + this.id, parameter)
+        .post(route, parameter)
         .then(res => {
-          this.showloading = false;
           this.$store.commit('changeMessage', 'Disapproved Successfully')
           this.$store.commit('changeStatusMessage', true)
           this.retrieveTravel();
@@ -1002,17 +1014,21 @@ export default {
             this.$store.commit('changeStatusMessage', true)
           });
     },
+
     getAllFeedback() {
-      this.showloading = true;
+      let route = "prp/travel_auth_request/feedbacked/" + this.user_id;
+      if(this.$store.getters.roleList.includes('admin')) {
+        route = "admin/travel_auth_request";
+      }
       this.$axios
-        .get("prp/travel_auth_request/feedbacked/" + this.user_id)
+        .get(route)
         .then(response => {
-          this.showloading = false;
-          this.feedbacks = response.data.feedbacked_travel_auth_requests;
-        }).catch(err => {
-            this.$store.commit('changeMessage', 'Please Try Again')
-            this.$store.commit('changeStatusMessage', true)
-          });
+          if(!this.$store.getters.roleList.includes('admin')) {
+            this.feedbacks = response.data.feedbacked_travel_auth_requests;
+          }else {
+            this.feedbacks = response.data;
+          }
+        });
     },
     disabledDates(date) {
       return date > new Date().toISOString().substr(0, 10);

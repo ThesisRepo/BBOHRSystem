@@ -1,7 +1,12 @@
 <template>
-  <div>
+  <v-container fluid>
+    <v-toolbar-title
+      class="py-4"
+      >
+      PETTY CASH REQUESTS
+    </v-toolbar-title>
     <v-toolbar flat>
-      <template v-slot:extension>
+      <!-- <template v-slot:extension> -->
         <v-tabs dark background-color="primary" fixed-tabs v-if="user_type.includes('hr mngr') || user_type.includes('finance mngr') || user_type.includes('general mngr')">
           <v-tabs-slider></v-tabs-slider>
           <v-tab v-if="!user_type.includes('general mngr') && !user_type.includes('admin') " 
@@ -9,7 +14,7 @@
           <v-tab @click="requests = false, employees = true, feedback = false">Employees Requests</v-tab>
           <v-tab v-if="user_type.includes('finance mngr') || user_type.includes('general mngr') || user_type.includes('admin') " @click="requests = false, employees = false, feedback = true">History</v-tab>
         </v-tabs>
-      </template>
+      <!-- </template> -->
     </v-toolbar>
     <!-- Feedback -->
     <v-data-table v-if="feedback" :headers="headersFeed" :items="feedbacks" :search="search" class="elevation-3">
@@ -81,10 +86,20 @@
       <template v-slot:item.total_amount="{ item }">₱ {{item.total_amount}}</template>
       <template v-slot:item.status.status_name="{ item }"> <v-chip :color="getColor(item.status.status_name)" :text-color="getColor(item.status.status_name) != '#ffa500'? 'white': 'black'">{{item.status.status_name === 'pending' ? 'PENDING' : item.status.status_name === 'approved' ? 'APPROVED' : item.status.status_name === 'disapproved' ? 'DISAPPROVED' : ''}}</v-chip> </template>
       <template v-slot:item.approver_role.role_name="{ item }"> <v-chip class="ma-2" outlined :color="prpColor(item.approver_role.role_name)">{{item.approver_role.role_name === 'prp emp' ? 'PRP' : item.approver_role.role_name === 'finance mngr' ? 'Finance Manager' : item.approver_role.role_name === 'hr mngr' ? 'HR' : item.approver_role.role_name === 'general mngr' ? 'General Manager': '' }}</v-chip> </template>
+      <template 
+        v-if="user_type.includes('admin')"
+        v-slot:item.actions="{ item }">
+        <v-icon medium 
+        v-if="item.status_id != 2"
+        class="mr-2" @click="approveModal(item)" style="color:green">mdi-check-decagram</v-icon>
+        <v-icon 
+        v-else
+        medium @click="disapproveModal(item)" style="color:red">mdi-close-circle</v-icon>
+      </template>
     </v-data-table>
 
     <!-- Employee Overtime -->
-    <v-data-table v-if="employees" :headers="(user_type.includes('finance mngr') || user_type.includes('general mngr')) && !user_type.includes('hr mngr') ? headersEmp : headersEmployee" :items="pettyPending" :search="search" class="elevation-3">
+    <v-data-table v-if="employees" :headers="!user_type.includes('hr mngr') || user_type.includes('admin') ? headersEmp : headersEmployee" :items="pettyPending" :search="search" class="elevation-3">
       <template v-slot:top>
         <v-toolbar class="mb-2" color="blue darken-1" dark flat>
           <v-text-field
@@ -111,7 +126,9 @@
     <Confirmation
       ref="confirms"
       :title="approveThis === 'approve' || 'disapproved' ? 'Confirmation' : ''"
-      :message="approveThis === 'approve' ? 'Are you sure you want to approve this request?' : 'Are you sure you want to reject this request?'"
+      :message="!user_type.includes('admin') ? 
+        approveThis === 'approve' ? 'Are you sure you want to approve this request?' : approveThis === 'disapproved' ? 'Are you sure you want to reject this request?' : '' :
+        approveThis === 'approve' ? 'Are you sure you want to OVERRIDE approval of this request?' : approveThis === 'disapproved' ? 'Are you sure you want to OVERRIDE rejection of this request?' : '' "
       @onConfirm="confirm($event)"
     ></Confirmation>
     
@@ -193,9 +210,9 @@
     <v-data-table v-if="requests" :headers="headers" :items="petty" :search="search" class="elevation-3">
       <template v-slot:top>
       <v-toolbar class="mb-2" color="blue darken-1" dark flat>
-        <v-toolbar-title class="col pa-3 py-4 white--text"  style="font-size:16px " v-if="!user_type.includes('general mngr')"
+        <!-- <v-toolbar-title class="col pa-3 py-4 white--text"  style="font-size:16px " v-if="!user_type.includes('general mngr')"
           >PETTY REQUEST</v-toolbar-title
-        >
+        > -->
         <v-text-field
           v-model="search"
           clearable
@@ -251,7 +268,7 @@
     <SummaryTemplate
     ref="summary"
     ></SummaryTemplate>
-  </div>
+  </v-container>
 </template>
 <script>
 import createPetty from "./modals/create_petty.vue";
@@ -259,7 +276,8 @@ import Confirmation from "./modals/confirmation/confirm.vue";
 import ConfirmationDel from "./modals/confirmation/delete.vue";
 import SummaryTemplate from "./modals/exports/petty_export.vue";
 import Reminder from "./modals/confirmation/reminder.vue";
-import Loading from "./Loading.vue";
+import Loading from "./loading.vue";
+import travel_exportVue from './modals/exports/travel_export.vue';
 
 export default {
   data: () => ({
@@ -345,22 +363,22 @@ export default {
     },
   },
   mounted(){
-    if (
-      this.user_type.includes("hr mngr") ||
-      this.user_type.includes("finance mngr")
-    ) {
-      this.retrievePetty();
+    if(this.user_type.includes('admin')){
+      this.headersFeed.push({ text: "ACTIONS", value: "actions", sortable: false });
       this.getAllFeedback();
-      this.retrieve();
-      this.checkUser()
-    } else if(this.user_type.includes("general mngr")){
-      this.retrievePetty();
-      this.getAllFeedback();
-      this.checkUser()
-    }else{
-      this.retrieve();
-      this.checkUser()
     }
+    if (
+      this.user_type.includes("hr mngr")
+    ) {
+      this.retrievePetty(true);
+    } else if(this.user_type.includes("general mngr") || this.user_type.includes("finance mngr")){
+      this.retrievePetty();
+      this.getAllFeedback();
+    }
+    if(!this.user_type.includes("general mngr") && !this.user_type.includes("admin") ) {
+      this.retrieve();
+    }
+    this.checkUser()
   },
   methods: {
     disabledDates(date) {
@@ -372,19 +390,24 @@ export default {
         this.petty = response.data
         this.loading = false;
       }).catch(err => {
-            this.$store.commit('changeMessage', 'Please Try Again')
-            this.$store.commit('changeStatusMessage', true)
-          })
+        this.$store.commit('changeMessage', 'Please Try Again')
+        this.$store.commit('changeStatusMessage', true)
+      })
     },
-    retrievePetty() {
+    retrievePetty(isHr = false) {
+      let route = '';
+      if(isHr) {
+        route =  "prp/petty_cash_request/pending/";
+      }else {
+        route =  "prp/petty_cash_request/pending/" + this.user_id;
+      }
+      if(this.$store.getters.roleList.includes("admin")) {
+      route =  "admin/petty_cash_request/pending";
+      }
       this.$axios
-        .get(
-          "prp/petty_cash_request/pending/" +
-            this.user_id
-        )
+        .get(route)
         .then(response => {
           this.pettyPending = response.data;
-          console.log(this.pettyPending)
         }).catch(err => {
             this.$store.commit('changeMessage', 'Please Try Again')
             this.$store.commit('changeStatusMessage', true)
@@ -500,16 +523,17 @@ export default {
       this.$refs.confirms.show(item)
     },
     approve(item) {
+      var permission = "prp";
+      if(this.$store.getters.roleList.includes("admin")) {
+        permission = "admin";
+      }
+      let route = permission + "/petty_cash_request/feedback/" + this.id;
       if(item.id.approver_role_id === 5){
-        let parameter = {
-        user_id: this.user_id,
-        status_id: 2
-      };
-      this.$axios
-        .post(
-          "prp/petty_cash_request/feedback/" + this.id,
-          parameter
-        )
+          let parameter = {
+          user_id: this.user_id,
+          status_id: 2
+        };     
+      this.$axios.post(route, parameter)
         .then(response => {
           this.$store.commit('changeMessage', 'Approved Successfully')
           this.$store.commit('changeStatusMessage', true)
@@ -525,10 +549,7 @@ export default {
           status_id: 1
         };
         this.$axios
-          .post(
-            "prp/petty_cash_request/feedback/" + this.id,
-            parameter
-          )
+          .post( route, parameter)
           .then(response => {
             this.$store.commit('changeMessage', 'Approved Successfully')
             this.$store.commit('changeStatusMessage', true)
@@ -541,15 +562,17 @@ export default {
       }
     },
     disapprove() {
+      var permission = "prp";
+      if(this.$store.getters.roleList.includes("admin")) {
+        permission = "admin";
+      }
+      let route = permission + "/petty_cash_request/feedback/" + this.id;
       let parameter = {
         user_id: this.user_id,
         status_id: 3
       };
       this.$axios
-        .post(
-          "prp/petty_cash_request/feedback/" + this.id,
-          parameter
-        )
+        .post(route, parameter)
         .then(res => {
           this.$store.commit('changeMessage', 'Disapproved Successfully')
           this.$store.commit('changeStatusMessage', true)
@@ -561,17 +584,19 @@ export default {
           });
     },
     getAllFeedback() {
+      let route = "prp/petty_cash_request/feedbacked/" + this.user_id;
+      if(this.$store.getters.roleList.includes('admin')) {
+        route = "admin/petty_cash_request";
+      }
       this.$axios
-        .get(
-          "prp/petty_cash_request/feedbacked/" +
-            this.user_id
-        )
+        .get(route)
         .then(response => {
-          this.feedbacks = response.data.feedbacked_petty_cash_requests;
-        }).catch(err => {
-            this.$store.commit('changeMessage', 'Please Try Again')
-            this.$store.commit('changeStatusMessage', true)
-          });
+          if(!this.$store.getters.roleList.includes('admin')) {
+            this.feedbacks = response.data.feedbacked_petty_cash_requests;
+          }else {
+            this.feedbacks = response.data;
+          }
+        });
     },
     getColor(status) {
       if (status === 'pending') return '#ffa500'

@@ -8,6 +8,7 @@
                 </router-view>
                 <Loading v-if="loading"></Loading>
                 <succesMessage ref="success" :messages="messageData"></succesMessage>
+                
                 <!-- <v-btn @click="showed(true)">show</v-btn>
                 <v-btn @click="showed(false)">hide</v-btn> -->
                 <!-- <v-btn>hide</v-btn> -->
@@ -22,7 +23,7 @@
 <script>
 import Vuetify from "vuetify";
 import sidebar from "./modules/sidebar.vue";
-import Loading from "./components/Loading.vue";
+import Loading from "./components/loading.vue";
 import { mapGetters } from "vuex";
 import succesMessage from "./components/modals/confirmation/success.vue"
 
@@ -43,6 +44,11 @@ export default {
     },
     created() {
         this.setUserType();
+        this.$store.commit('hasSmallScreen', { screenSize: window.innerWidth});
+        window.addEventListener("resize", this.isSmall);
+    },
+    destroyed() {
+        window.removeEventListener("resize", this.isSmall);
     },
     computed: {
         ...mapGetters(["isLoading", "message", "show"])
@@ -60,11 +66,15 @@ export default {
             }
         }
     },
+    
     mounted(){
         this.$store.commit('changeMessage', 'Successfully Updated')
         this.listenForChanges();
     },
     methods: {
+        isSmall(e) {
+            this.$store.commit('hasSmallScreen', { screenSize: window.innerWidth});
+        },
         showed(bol) {
             this.$store.commit('changeStatusMessage', bol)
         },

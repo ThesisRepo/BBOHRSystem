@@ -892,9 +892,9 @@ trait EmployeeInfoList
           'user' => [
             // 'prp_assigned' => 3,
             // 'finance_assigned' => 4,
-            'first_name' => 'Jhonnel Bagayas',
-            'last_name' => 'Rosales',
-            'email' => 'jhonnel@bbo.com.ph',
+            'first_name' => 'Admin',
+            'last_name' => 'Admin',
+            'email' => 'adminAcc@bbo.com.ph',
             'password' => Hash::make('123456789')
           ],
           'user_info' => [

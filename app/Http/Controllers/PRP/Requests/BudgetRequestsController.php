@@ -24,6 +24,12 @@ class BudgetRequestsController extends RequestBaseController
         parent::__construct($request_service,  $budget_request, $user_request_service, 'budget_request', $user_service);
     }
     
+    public function getPendingRequestHR($id){
+        $res = $this->budget_request->whereWith('status_id',1, ['department', 'status','approver_role', 'user'])->get();
+        // dd('asdf');
+        return $res;
+    }
+
     public function getPendingRequest($id){
         $res = $this->getBasePendingRequest($id, ['department', 'status','approver_role', 'user']);
         // dd('asdf');

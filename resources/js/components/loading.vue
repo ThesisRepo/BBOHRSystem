@@ -1,6 +1,10 @@
 <template>
     <div class="loading">Loading&#8230;</div>
 </template>
+<script>
+export default {
+}
+</script>
 <style scoped>
 .loading {
   position: fixed;
@@ -24,7 +28,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.3);
+  background-color: rgba(0,0,0,0.12);
 }
 
 /* :not(:required) hides these rules from IE9 and below */
@@ -40,7 +44,8 @@
 .loading:not(:required):after {
   content: '';
   display: block;
-  font-size: 10px;
+  font-size: 30px;
+  opacity: 0.5;
   width: 1em;
   height: 1em;
   margin-top: -0.5em;
@@ -49,9 +54,11 @@
   -ms-animation: spinner 1500ms infinite linear;
   -o-animation: spinner 1500ms infinite linear;
   animation: spinner 1500ms infinite linear;
-  border-radius: 0.5em;
+  border-radius: 2em;
   -webkit-box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.5) -1.5em 0 0 0, rgba(0, 0, 0, 0.5) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
-  box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0, rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+  /* box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0, rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0; */
+  box-shadow: #b4c0cf 1.5em 0 0 0,  rgba(34, 86, 150, 0.575) 1.1em 1.1em 0 0, #1f436f 0 1.5em 0 0, #38587e -1.1em 1.1em 0 0, #516d8f -1.5em 0 0 0, #6a829f -1.1em -1.1em 0 0, #8397af 0 -1.5em 0 0, #9babbf 1.1em -1.1em 0 0;
+  
 }
 
 /* Animation */
