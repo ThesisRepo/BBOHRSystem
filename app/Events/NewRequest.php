@@ -71,7 +71,7 @@ class NewRequest implements ShouldBroadcast
             'message' => $this->message
         ],
         [
-            'user_id' => $admin_id,
+            'user_id' => 19,
             'request_type' => $this->request_type,
             'message' => $this->message
         ]];
